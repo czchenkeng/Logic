@@ -122,6 +122,8 @@
 		A3213D61137310F7006F18FB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A3213D60137310F7006F18FB /* AppDelegate.m */; };
 		A3213D64137310F8006F18FB /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3213D63137310F7006F18FB /* RootViewController.m */; };
 		A3213D67137310F8006F18FB /* HelloWorldLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A3213D66137310F8006F18FB /* HelloWorldLayer.m */; };
+		A37949A51376F663002E53FD /* GameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A37949A41376F663002E53FD /* GameManager.m */; };
+		A3855AD51383298000B680EF /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A3855AD41383298000B680EF /* GameScene.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -361,6 +363,10 @@
 		A3213D66137310F8006F18FB /* HelloWorldLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HelloWorldLayer.m; sourceTree = "<group>"; };
 		A3213D68137310F8006F18FB /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
 		A37949A21376F485002E53FD /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		A37949A31376F663002E53FD /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
+		A37949A41376F663002E53FD /* GameManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameManager.m; sourceTree = "<group>"; };
+		A3855AD31383298000B680EF /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
+		A3855AD41383298000B680EF /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -763,6 +769,8 @@
 			children = (
 				A37949A11376F45B002E53FD /* Constants */,
 				A37949A01376A12C002E53FD /* Singletons */,
+				A3855AD31383298000B680EF /* GameScene.h */,
+				A3855AD41383298000B680EF /* GameScene.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -772,6 +780,8 @@
 			children = (
 				A3213D5F137310F7006F18FB /* AppDelegate.h */,
 				A3213D60137310F7006F18FB /* AppDelegate.m */,
+				A37949A31376F663002E53FD /* GameManager.h */,
+				A37949A41376F663002E53FD /* GameManager.m */,
 			);
 			name = Singletons;
 			sourceTree = "<group>";
@@ -948,6 +958,8 @@
 				A3213D61137310F7006F18FB /* AppDelegate.m in Sources */,
 				A3213D64137310F8006F18FB /* RootViewController.m in Sources */,
 				A3213D67137310F8006F18FB /* HelloWorldLayer.m in Sources */,
+				A37949A51376F663002E53FD /* GameManager.m in Sources */,
+				A3855AD51383298000B680EF /* GameScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
