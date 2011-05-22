@@ -7,6 +7,7 @@
 //
 
 #import "GameManager.h"
+#import "GameScene.h"
 
 
 @implementation GameManager
@@ -54,7 +55,7 @@ static GameManager* _sharedGameManager = nil;
     id sceneToRun = nil;
     switch (sceneID) {
         case kGameScene: 
-            //sceneToRun = [MainMenuScene node];
+            sceneToRun = [GameScene node];
             break;
         default:
             CCLOG(@"Unknown ID, cannot switch scenes");

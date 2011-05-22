@@ -6,7 +6,6 @@
 //  Copyright 2011 Born2BeChild. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "Constants.h"
 
 @interface GameManager : NSObject {

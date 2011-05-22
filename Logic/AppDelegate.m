@@ -12,6 +12,7 @@
 #import "GameConfig.h"
 #import "HelloWorldLayer.h"
 #import "RootViewController.h"
+#import "GameManager.h"
 
 @implementation AppDelegate
 
@@ -88,7 +89,7 @@
 //	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
 //#endif
 	
-	[director setAnimationInterval:1.0/60];
+	[director setAnimationInterval:1.0/30];
 	[director setDisplayFPS:YES];
 	
 	
@@ -110,7 +111,8 @@
 	[self removeStartupFlicker];
 	
 	// Run the intro Scene
-	[[CCDirector sharedDirector] runWithScene: [HelloWorldLayer scene]];
+	//[[CCDirector sharedDirector] runWithScene: [HelloWorldLayer scene]];
+    [[GameManager sharedGameManager] runSceneWithID:kGameScene];
 }
 
 
