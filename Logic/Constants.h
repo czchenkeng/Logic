@@ -7,6 +7,17 @@
 //
 
 typedef enum {
-    kNoSceneUninitialized=0,
-    kGameScene=1
+    kNoSceneUninitialized = 0,
+    kGameScene = 1
 } SceneTypes;
+
+typedef enum {
+    kYellow = 0,
+    kOrange = 1,
+    kPink = 2,
+    kRed = 3,
+    kPurple = 4,
+    kBlue = 5,
+    kGreen = 6,
+    kWhite = 7
+} FigureTypes;

@@ -122,11 +122,13 @@
 		A3213D61137310F7006F18FB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A3213D60137310F7006F18FB /* AppDelegate.m */; };
 		A3213D64137310F8006F18FB /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3213D63137310F7006F18FB /* RootViewController.m */; };
 		A3213D67137310F8006F18FB /* HelloWorldLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A3213D66137310F8006F18FB /* HelloWorldLayer.m */; };
+		A34D556A13899DC100F061FB /* Figure.m in Sources */ = {isa = PBXBuildFile; fileRef = A34D556913899DC100F061FB /* Figure.m */; };
 		A35F3EF51387CC7700F5D71A /* GameplayLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A35F3EF41387CC7700F5D71A /* GameplayLayer.m */; };
 		A35F3F0A13893F6300F5D71A /* gameAssets.plist in Resources */ = {isa = PBXBuildFile; fileRef = A35F3F0813893F6300F5D71A /* gameAssets.plist */; };
 		A35F3F0B13893F6300F5D71A /* gameAssets.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A35F3F0913893F6300F5D71A /* gameAssets.pvr.ccz */; };
 		A37949A51376F663002E53FD /* GameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A37949A41376F663002E53FD /* GameManager.m */; };
 		A3855AD51383298000B680EF /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A3855AD41383298000B680EF /* GameScene.m */; };
+		A3CFAA37138D4E3900EA5DCB /* gameAssets-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3CFAA36138D4E3900EA5DCB /* gameAssets-hd.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -365,6 +367,8 @@
 		A3213D65137310F8006F18FB /* HelloWorldLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelloWorldLayer.h; sourceTree = "<group>"; };
 		A3213D66137310F8006F18FB /* HelloWorldLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HelloWorldLayer.m; sourceTree = "<group>"; };
 		A3213D68137310F8006F18FB /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
+		A34D556813899DC100F061FB /* Figure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Figure.h; sourceTree = "<group>"; };
+		A34D556913899DC100F061FB /* Figure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Figure.m; sourceTree = "<group>"; };
 		A35F3EF31387CC7600F5D71A /* GameplayLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameplayLayer.h; sourceTree = "<group>"; };
 		A35F3EF41387CC7700F5D71A /* GameplayLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameplayLayer.m; sourceTree = "<group>"; };
 		A35F3F0813893F6300F5D71A /* gameAssets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gameAssets.plist; sourceTree = "<group>"; };
@@ -374,6 +378,7 @@
 		A37949A41376F663002E53FD /* GameManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameManager.m; sourceTree = "<group>"; };
 		A3855AD31383298000B680EF /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
 		A3855AD41383298000B680EF /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
+		A3CFAA36138D4E3900EA5DCB /* gameAssets-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "gameAssets-hd.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -775,6 +780,7 @@
 		A35F3F0713893F6300F5D71A /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A3CFAA36138D4E3900EA5DCB /* gameAssets-hd.plist */,
 				A35F3F0813893F6300F5D71A /* gameAssets.plist */,
 				A35F3F0913893F6300F5D71A /* gameAssets.pvr.ccz */,
 			);
@@ -790,6 +796,8 @@
 				A3855AD41383298000B680EF /* GameScene.m */,
 				A35F3EF31387CC7600F5D71A /* GameplayLayer.h */,
 				A35F3EF41387CC7700F5D71A /* GameplayLayer.m */,
+				A34D556813899DC100F061FB /* Figure.h */,
+				A34D556913899DC100F061FB /* Figure.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -871,6 +879,7 @@
 				A3213C21137310F5006F18FB /* iTunesArtwork in Resources */,
 				A35F3F0A13893F6300F5D71A /* gameAssets.plist in Resources */,
 				A35F3F0B13893F6300F5D71A /* gameAssets.pvr.ccz in Resources */,
+				A3CFAA37138D4E3900EA5DCB /* gameAssets-hd.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -982,6 +991,7 @@
 				A37949A51376F663002E53FD /* GameManager.m in Sources */,
 				A3855AD51383298000B680EF /* GameScene.m in Sources */,
 				A35F3EF51387CC7700F5D71A /* GameplayLayer.m in Sources */,
+				A34D556A13899DC100F061FB /* Figure.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

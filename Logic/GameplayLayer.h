@@ -8,13 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import "GameplayLayer.h"
+#import "Figure.h"
 
 
 @interface GameplayLayer : CCLayer {
-    NSMutableArray *movableFigures;
-    CCSprite * selSprite;
+    //NSMutableArray *movableFigures;
+    //CCSprite * selSprite;
+    Figure *selSprite;
     CCSpriteBatchNode *spritesBgNode;
-    //CCArray *movableFigures;
+    CCArray *movableFigures;
 }
 
 - (void) addFigures;
