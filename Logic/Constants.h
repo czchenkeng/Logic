@@ -21,3 +21,9 @@ typedef enum {
     kGreen = 6,
     kWhite = 7
 } FigureTypes;
+
+typedef enum {
+    kEasy = 4,
+    kMedium = 5,
+    kHard = 6
+} GameDifficulty;

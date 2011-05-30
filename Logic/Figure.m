@@ -11,39 +11,40 @@
 
 @implementation Figure
 
-@synthesize imageSprite;
+@synthesize currentFigure;
 
 - (Figure *) initWithFigureType:(FigureTypes)figureID {    
     //self = [super initWithFile:imageFile];
-    self = [super init];
-    CCLOG(@"FIGURE ID %i", figureID);
+    //self = [super init];
     
-    if (self) {
+    currentFigure = figureID;
+    
+    //if (self) {
         NSString *imageFile;
         switch (figureID) {
             case kYellow: 
-                imageFile = @"figureYellow.png";
+                imageFile = @"pinchYellow.png";
                 break;
             case kOrange:
-                imageFile = @"figureOrange.png";
+                imageFile = @"pinchOrange.png";
                 break;
             case kPink:
-                imageFile = @"figurePink.png";
+                imageFile = @"pinchPink.png";
                 break;
             case kRed:
-                imageFile = @"figureRed.png";
+                imageFile = @"pinchRed.png";
                 break;
             case kPurple:
-                imageFile = @"figurePurple.png";
+                imageFile = @"pinchPurple.png";
                 break;
             case kBlue:
-                imageFile = @"figureBlue.png";
+                imageFile = @"pinchBlue.png";
                 break;
             case kGreen:
-                imageFile = @"figureGreen.png";
+                imageFile = @"pinchGreen.png";
                 break;
             case kWhite:
-                imageFile = @"figureWhite.png";
+                imageFile = @"pinchWhite.png";
                 break;
             default:
                 CCLOG(@"Unknown ID, cannot create figure");
@@ -52,17 +53,15 @@
         }
         
         [CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
-
-        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"gameAssets-hd.plist"];
         
-        self = [CCSprite spriteWithSpriteFrameName:imageFile];
+        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"LevelPinchHd.plist"];
         
-        //imageSprite = [CCSprite spriteWithSpriteFrameName:imageFile];
+        //self = [CCSprite spriteWithSpriteFrameName:imageFile];
         
-        //[self addChild:imageSprite z:1];
-        
+        self = [super initWithSpriteFrameName:imageFile];
         [imageFile release];
-    }
+    //}
     
     return self;
 }

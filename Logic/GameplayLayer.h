@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GameplayLayer.h"
 #import "Figure.h"
+#import "Constants.h"
 
 
 @interface GameplayLayer : CCLayer {
@@ -17,8 +17,13 @@
     Figure *selSprite;
     CCSpriteBatchNode *spritesBgNode;
     CCArray *movableFigures;
+    GameDifficulty currentDifficulty;
+    CCArray *currentCode;
 }
 
+@property GameDifficulty currentDifficulty;
+
 - (void) addFigures;
+- (void) generateCode;
 
 @end

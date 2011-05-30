@@ -42,7 +42,7 @@ static GameManager* _sharedGameManager = nil;
 {
     self = [super init];
     if (self != nil) {
-        CCLOG(@"Game Manager Singleton, init");
+        CCLOG(@"Logic debug: Game Manager Singleton, init");
         currentScene = kNoSceneUninitialized;        
     }
     return self;

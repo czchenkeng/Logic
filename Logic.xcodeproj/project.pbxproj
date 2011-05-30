@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A315E09F1392D1B700331118 /* LevelBgHd-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A315E0991392D1B700331118 /* LevelBgHd-hd.plist */; };
+		A315E0A01392D1B700331118 /* LevelBgHd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A315E09A1392D1B700331118 /* LevelBgHd.plist */; };
+		A315E0A11392D1B700331118 /* LevelBgHd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A315E09B1392D1B700331118 /* LevelBgHd.pvr.ccz */; };
+		A315E0A21392D1B700331118 /* LevelPinchHd-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A315E09C1392D1B700331118 /* LevelPinchHd-hd.plist */; };
+		A315E0A31392D1B700331118 /* LevelPinchHd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A315E09D1392D1B700331118 /* LevelPinchHd.plist */; };
+		A315E0A41392D1B700331118 /* LevelPinchHd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A315E09E1392D1B700331118 /* LevelPinchHd.pvr.ccz */; };
+		A315E0AF1393931300331118 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = A315E0AE1393931200331118 /* Utils.m */; };
 		A3213BFE137310F5006F18FB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3213BFD137310F5006F18FB /* QuartzCore.framework */; };
 		A3213C00137310F5006F18FB /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3213BFF137310F5006F18FB /* OpenGLES.framework */; };
 		A3213C02137310F5006F18FB /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3213C01137310F5006F18FB /* OpenAL.framework */; };
@@ -124,14 +131,19 @@
 		A3213D67137310F8006F18FB /* HelloWorldLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A3213D66137310F8006F18FB /* HelloWorldLayer.m */; };
 		A34D556A13899DC100F061FB /* Figure.m in Sources */ = {isa = PBXBuildFile; fileRef = A34D556913899DC100F061FB /* Figure.m */; };
 		A35F3EF51387CC7700F5D71A /* GameplayLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A35F3EF41387CC7700F5D71A /* GameplayLayer.m */; };
-		A35F3F0A13893F6300F5D71A /* gameAssets.plist in Resources */ = {isa = PBXBuildFile; fileRef = A35F3F0813893F6300F5D71A /* gameAssets.plist */; };
-		A35F3F0B13893F6300F5D71A /* gameAssets.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A35F3F0913893F6300F5D71A /* gameAssets.pvr.ccz */; };
 		A37949A51376F663002E53FD /* GameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A37949A41376F663002E53FD /* GameManager.m */; };
 		A3855AD51383298000B680EF /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A3855AD41383298000B680EF /* GameScene.m */; };
-		A3CFAA37138D4E3900EA5DCB /* gameAssets-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3CFAA36138D4E3900EA5DCB /* gameAssets-hd.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A315E0991392D1B700331118 /* LevelBgHd-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LevelBgHd-hd.plist"; sourceTree = "<group>"; };
+		A315E09A1392D1B700331118 /* LevelBgHd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = LevelBgHd.plist; sourceTree = "<group>"; };
+		A315E09B1392D1B700331118 /* LevelBgHd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = LevelBgHd.pvr.ccz; sourceTree = "<group>"; };
+		A315E09C1392D1B700331118 /* LevelPinchHd-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LevelPinchHd-hd.plist"; sourceTree = "<group>"; };
+		A315E09D1392D1B700331118 /* LevelPinchHd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = LevelPinchHd.plist; sourceTree = "<group>"; };
+		A315E09E1392D1B700331118 /* LevelPinchHd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = LevelPinchHd.pvr.ccz; sourceTree = "<group>"; };
+		A315E0AD1393931200331118 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		A315E0AE1393931200331118 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		A3213BF9137310F5006F18FB /* Logic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Logic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3213BFD137310F5006F18FB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A3213BFF137310F5006F18FB /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -371,14 +383,11 @@
 		A34D556913899DC100F061FB /* Figure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Figure.m; sourceTree = "<group>"; };
 		A35F3EF31387CC7600F5D71A /* GameplayLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameplayLayer.h; sourceTree = "<group>"; };
 		A35F3EF41387CC7700F5D71A /* GameplayLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameplayLayer.m; sourceTree = "<group>"; };
-		A35F3F0813893F6300F5D71A /* gameAssets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gameAssets.plist; sourceTree = "<group>"; };
-		A35F3F0913893F6300F5D71A /* gameAssets.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = gameAssets.pvr.ccz; sourceTree = "<group>"; };
 		A37949A21376F485002E53FD /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		A37949A31376F663002E53FD /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
 		A37949A41376F663002E53FD /* GameManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameManager.m; sourceTree = "<group>"; };
 		A3855AD31383298000B680EF /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
 		A3855AD41383298000B680EF /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
-		A3CFAA36138D4E3900EA5DCB /* gameAssets-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "gameAssets-hd.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -780,9 +789,12 @@
 		A35F3F0713893F6300F5D71A /* images */ = {
 			isa = PBXGroup;
 			children = (
-				A3CFAA36138D4E3900EA5DCB /* gameAssets-hd.plist */,
-				A35F3F0813893F6300F5D71A /* gameAssets.plist */,
-				A35F3F0913893F6300F5D71A /* gameAssets.pvr.ccz */,
+				A315E0991392D1B700331118 /* LevelBgHd-hd.plist */,
+				A315E09A1392D1B700331118 /* LevelBgHd.plist */,
+				A315E09B1392D1B700331118 /* LevelBgHd.pvr.ccz */,
+				A315E09C1392D1B700331118 /* LevelPinchHd-hd.plist */,
+				A315E09D1392D1B700331118 /* LevelPinchHd.plist */,
+				A315E09E1392D1B700331118 /* LevelPinchHd.pvr.ccz */,
 			);
 			path = images;
 			sourceTree = "<group>";
@@ -798,6 +810,8 @@
 				A35F3EF41387CC7700F5D71A /* GameplayLayer.m */,
 				A34D556813899DC100F061FB /* Figure.h */,
 				A34D556913899DC100F061FB /* Figure.m */,
+				A315E0AD1393931200331118 /* Utils.h */,
+				A315E0AE1393931200331118 /* Utils.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -877,9 +891,12 @@
 				A3213C1C137310F5006F18FB /* Icon.png in Resources */,
 				A3213C1E137310F5006F18FB /* Icon@2x.png in Resources */,
 				A3213C21137310F5006F18FB /* iTunesArtwork in Resources */,
-				A35F3F0A13893F6300F5D71A /* gameAssets.plist in Resources */,
-				A35F3F0B13893F6300F5D71A /* gameAssets.pvr.ccz in Resources */,
-				A3CFAA37138D4E3900EA5DCB /* gameAssets-hd.plist in Resources */,
+				A315E09F1392D1B700331118 /* LevelBgHd-hd.plist in Resources */,
+				A315E0A01392D1B700331118 /* LevelBgHd.plist in Resources */,
+				A315E0A11392D1B700331118 /* LevelBgHd.pvr.ccz in Resources */,
+				A315E0A21392D1B700331118 /* LevelPinchHd-hd.plist in Resources */,
+				A315E0A31392D1B700331118 /* LevelPinchHd.plist in Resources */,
+				A315E0A41392D1B700331118 /* LevelPinchHd.pvr.ccz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -992,6 +1009,7 @@
 				A3855AD51383298000B680EF /* GameScene.m in Sources */,
 				A35F3EF51387CC7700F5D71A /* GameplayLayer.m in Sources */,
 				A34D556A13899DC100F061FB /* Figure.m in Sources */,
+				A315E0AF1393931300331118 /* Utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1004,6 +1022,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Dagmar Kruskova (BEC5C5RCH8)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Dagmar Kruskova (BEC5C5RCH8)";
+				"CODE_SIGN_RESOURCE_RULES_PATH[sdk=*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1011,12 +1030,11 @@
 					"COCOS2D_DEBUG=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
-				PROVISIONING_PROFILE = "D69BCB38-D8D5-43CE-9895-B5CC2D75479B";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D69BCB38-D8D5-43CE-9895-B5CC2D75479B";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1027,12 +1045,14 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Dagmar Kruskova (BEC5C5RCH8)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Dagmar Kruskova (BEC5C5RCH8)";
+				"CODE_SIGN_RESOURCE_RULES_PATH[sdk=*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "D69BCB38-D8D5-43CE-9895-B5CC2D75479B";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D69BCB38-D8D5-43CE-9895-B5CC2D75479B";
@@ -1044,13 +1064,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Logic/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = Logic/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -1061,12 +1082,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Logic/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = Logic/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_PRODUCT = YES;

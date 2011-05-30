@@ -7,6 +7,7 @@
 //
 
 #import "GameScene.h"
+#import "Constants.h"
 
 
 @implementation GameScene
@@ -15,6 +16,7 @@
     self = [super init];
     if (self != nil) {
         GameplayLayer* gameLayer = [GameplayLayer node];
+        gameLayer.currentDifficulty = kHard;
         [self addChild:gameLayer z:1 tag:1];
     }
     return self;

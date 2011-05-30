@@ -17,6 +17,6 @@
 
 - (Figure *) initWithFigureType:(FigureTypes)figureID;
 
-@property (assign) CCSprite *imageSprite;
+@property FigureTypes currentFigure;
 
 @end
