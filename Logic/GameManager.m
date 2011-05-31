@@ -12,7 +12,7 @@
 
 @implementation GameManager
 
-@synthesize isMusicON, isSoundEffectsON, currentDifficulty;
+@synthesize isMusicON, isSoundEffectsON, currentDifficulty, managerSoundState;
 static GameManager* _sharedGameManager = nil;
 
 +(GameManager*)sharedGameManager 
@@ -31,7 +31,7 @@ static GameManager* _sharedGameManager = nil;
     @synchronized ([GameManager class])
     {
         NSAssert(_sharedGameManager == nil,
-                 @"Attempted to allocated a second instance of the Game Manager singleton");
+                 @"Logic debug: Attempted to allocated a second instance of the Game Manager singleton");
         _sharedGameManager = [super alloc];
         return _sharedGameManager;
     }
@@ -43,11 +43,44 @@ static GameManager* _sharedGameManager = nil;
     self = [super init];
     if (self != nil) {
         CCLOG(@"Logic debug: Game Manager Singleton, init");
+        isMusicON = YES;
+        isSoundEffectsON = YES;
+        hasAudioBeenInitialized = NO;
+        soundEngine = nil;
+        managerSoundState = kAudioManagerUninitialized;
         currentDifficulty = kHard;
         currentScene = kNoSceneUninitialized;        
     }
     return self;
 }
+
+//-(void)unloadAudioForSceneWithID:(NSNumber*)sceneIDNumber {
+//    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+//    SceneTypes sceneID = (SceneTypes)[sceneIDNumber intValue];
+//    if (sceneID == kNoSceneUninitialized) {
+//        return; // Nothing to unload
+//    }
+//    
+//    
+//    NSDictionary *soundEffectsToUnload = 
+//    [self getSoundEffectsListForSceneWithID:sceneID];
+//    if (soundEffectsToUnload == nil) {
+//        CCLOG(@"Error reading SoundEffects.plist");
+//        return;
+//    }
+//    if (managerSoundState == kAudioManagerReady) {
+//        // Get all of the entries and unload
+//        for( NSString *keyString in soundEffectsToUnload )
+//        {
+//            [soundEffectsState setObject:[NSNumber numberWithBool:SFX_NOTLOADED] forKey:keyString];
+//            [soundEngine unloadEffect:keyString];
+//            CCLOG(@"\nUnloading Audio Key:%@ File:%@", 
+//                  keyString,[soundEffectsToUnload objectForKey:keyString]);
+//            
+//        }
+//    }
+//    [pool release];
+//}
 
 -(void)runSceneWithID:(SceneTypes)sceneID {
     SceneTypes oldScene = currentScene;
@@ -58,8 +91,11 @@ static GameManager* _sharedGameManager = nil;
         case kGameScene: 
             sceneToRun = [GameScene node];
             break;
+        case kMainScene: 
+            sceneToRun = [MainScene node];
+            break;
         default:
-            CCLOG(@"Unknown ID, cannot switch scenes");
+            CCLOG(@"Logic debug: Unknown ID, cannot switch scenes");
             return;
             break;
     }
@@ -70,6 +106,8 @@ static GameManager* _sharedGameManager = nil;
         return;
     }
     
+    //[self performSelectorInBackground:@selector(loadAudioForSceneWithID:) withObject:[NSNumber numberWithInt:sceneID]];
+    
     if ([[CCDirector sharedDirector] runningScene] == nil) {
         [[CCDirector sharedDirector] runWithScene:sceneToRun];
         
@@ -77,7 +115,75 @@ static GameManager* _sharedGameManager = nil;
         
         [[CCDirector sharedDirector] replaceScene:sceneToRun];
     }
+    //[self performSelectorInBackground:@selector(unloadAudioForSceneWithID:) withObject:[NSNumber numberWithInt:oldScene]];
+}
+
+- (void) initAudioAsync {
+    // Initializes the audio engine asynchronously
+    managerSoundState = kAudioManagerInitializing; 
+    // Indicate that we are trying to start up the Audio Manager
+    [CDSoundEngine setMixerSampleRate:CD_SAMPLE_RATE_MID];
     
+    //Init audio manager asynchronously as it can take a few seconds
+    //The FXPlusMusicIfNoOtherAudio mode will check if the user is
+    // playing music and disable background music playback if 
+    // that is the case.
+    [CDAudioManager initAsynchronously:kAMM_FxPlusMusicIfNoOtherAudio];
+    
+    //Wait for the audio manager to initialise
+    while ([CDAudioManager sharedManagerState] != kAMStateInitialised) 
+    {
+        [NSThread sleepForTimeInterval:0.1];
+    }
+    
+    //At this point the CocosDenshion should be initialized
+    // Grab the CDAudioManager and check the state
+    CDAudioManager *audioManager = [CDAudioManager sharedManager];
+    if (audioManager.soundEngine == nil || 
+        audioManager.soundEngine.functioning == NO) {
+        CCLOG(@"Logic debug: CocosDenshion failed to init, no audio will play.");
+        managerSoundState = kAudioManagerFailed; 
+    } else {
+        [audioManager setResignBehavior:kAMRBStopPlay autoHandle:YES];
+        soundEngine = [SimpleAudioEngine sharedEngine];
+        managerSoundState = kAudioManagerReady;
+        CCLOG(@"Logic debug: CocosDenshion is Ready");
+    }
+}
+
+- (void) setupAudioEngine {
+    if (hasAudioBeenInitialized == YES) {
+        return;
+    } else {
+        hasAudioBeenInitialized = YES; 
+        NSOperationQueue *queue = [[NSOperationQueue new] autorelease];
+        NSInvocationOperation *asyncSetupOperation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(initAudioAsync) object:nil];
+        [queue addOperation:asyncSetupOperation];
+        [asyncSetupOperation autorelease];
+    }
+}
+
+- (void) playBackgroundTrack:(NSString*)trackFileName {
+    CCLOG(@"MUSIC PLAYING %@", trackFileName);
+    if ((managerSoundState != kAudioManagerReady) && (managerSoundState != kAudioManagerFailed)) {        
+        int waitCycles = 0;
+        while (waitCycles < AUDIO_MAX_WAITTIME) {
+            [NSThread sleepForTimeInterval:0.1f];
+            if ((managerSoundState == kAudioManagerReady) || 
+                (managerSoundState == kAudioManagerFailed)) {
+                break;
+            }
+            waitCycles = waitCycles + 1;
+        }
+    }
+    
+    if (managerSoundState == kAudioManagerReady) {
+        if ([soundEngine isBackgroundMusicPlaying]) {
+            [soundEngine stopBackgroundMusic];
+        }
+        [soundEngine preloadBackgroundMusic:trackFileName];
+        [soundEngine playBackgroundMusic:trackFileName loop:YES];
+    }
 }
 
 @end

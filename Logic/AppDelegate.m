@@ -112,6 +112,7 @@
 	
 	// Run the intro Scene
 	//[[CCDirector sharedDirector] runWithScene: [HelloWorldLayer scene]];
+    [[GameManager sharedGameManager] setupAudioEngine];
     //[[GameManager sharedGameManager] runSceneWithID:kGameScene];
     [[GameManager sharedGameManager] runSceneWithID:kMainScene];
 }

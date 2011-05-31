@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface MainLayer : CCLayer {
+@interface MainLayer : CCLayerColor {
     
 }
 
