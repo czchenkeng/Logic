@@ -112,7 +112,8 @@
 	
 	// Run the intro Scene
 	//[[CCDirector sharedDirector] runWithScene: [HelloWorldLayer scene]];
-    [[GameManager sharedGameManager] runSceneWithID:kGameScene];
+    //[[GameManager sharedGameManager] runSceneWithID:kGameScene];
+    [[GameManager sharedGameManager] runSceneWithID:kMainScene];
 }
 
 

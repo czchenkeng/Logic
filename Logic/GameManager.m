@@ -12,7 +12,7 @@
 
 @implementation GameManager
 
-@synthesize isMusicON, isSoundEffectsON;
+@synthesize isMusicON, isSoundEffectsON, currentDifficulty;
 static GameManager* _sharedGameManager = nil;
 
 +(GameManager*)sharedGameManager 
@@ -43,6 +43,7 @@ static GameManager* _sharedGameManager = nil;
     self = [super init];
     if (self != nil) {
         CCLOG(@"Logic debug: Game Manager Singleton, init");
+        currentDifficulty = kHard;
         currentScene = kNoSceneUninitialized;        
     }
     return self;

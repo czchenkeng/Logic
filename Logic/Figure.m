@@ -11,7 +11,7 @@
 
 @implementation Figure
 
-@synthesize currentFigure;
+@synthesize currentFigure, originalPosition;
 
 - (Figure *) initWithFigureType:(FigureTypes)figureID {    
     //self = [super initWithFile:imageFile];

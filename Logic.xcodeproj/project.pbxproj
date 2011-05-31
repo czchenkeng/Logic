@@ -14,6 +14,7 @@
 		A315E0A31392D1B700331118 /* LevelPinchHd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A315E09D1392D1B700331118 /* LevelPinchHd.plist */; };
 		A315E0A41392D1B700331118 /* LevelPinchHd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A315E09E1392D1B700331118 /* LevelPinchHd.pvr.ccz */; };
 		A315E0AF1393931300331118 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = A315E0AE1393931200331118 /* Utils.m */; };
+		A315E0B11393BDF900331118 /* LevelPinchHd-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A315E0B01393BDF900331118 /* LevelPinchHd-hd.pvr.ccz */; };
 		A3213BFE137310F5006F18FB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3213BFD137310F5006F18FB /* QuartzCore.framework */; };
 		A3213C00137310F5006F18FB /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3213BFF137310F5006F18FB /* OpenGLES.framework */; };
 		A3213C02137310F5006F18FB /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3213C01137310F5006F18FB /* OpenAL.framework */; };
@@ -130,6 +131,11 @@
 		A3213D64137310F8006F18FB /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3213D63137310F7006F18FB /* RootViewController.m */; };
 		A3213D67137310F8006F18FB /* HelloWorldLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A3213D66137310F8006F18FB /* HelloWorldLayer.m */; };
 		A34D556A13899DC100F061FB /* Figure.m in Sources */ = {isa = PBXBuildFile; fileRef = A34D556913899DC100F061FB /* Figure.m */; };
+		A35D8003139515D600B07F39 /* Main-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A35D8000139515D600B07F39 /* Main-hd.plist */; };
+		A35D8004139515D600B07F39 /* Main.plist in Resources */ = {isa = PBXBuildFile; fileRef = A35D8001139515D600B07F39 /* Main.plist */; };
+		A35D8005139515D600B07F39 /* Main.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A35D8002139515D600B07F39 /* Main.pvr.ccz */; };
+		A35D8009139515FC00B07F39 /* MainScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A35D8008139515FC00B07F39 /* MainScene.m */; };
+		A35D80141395181700B07F39 /* MainLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A35D80131395181500B07F39 /* MainLayer.m */; };
 		A35F3EF51387CC7700F5D71A /* GameplayLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A35F3EF41387CC7700F5D71A /* GameplayLayer.m */; };
 		A37949A51376F663002E53FD /* GameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A37949A41376F663002E53FD /* GameManager.m */; };
 		A3855AD51383298000B680EF /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A3855AD41383298000B680EF /* GameScene.m */; };
@@ -144,6 +150,7 @@
 		A315E09E1392D1B700331118 /* LevelPinchHd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = LevelPinchHd.pvr.ccz; sourceTree = "<group>"; };
 		A315E0AD1393931200331118 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		A315E0AE1393931200331118 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		A315E0B01393BDF900331118 /* LevelPinchHd-hd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LevelPinchHd-hd.pvr.ccz"; sourceTree = "<group>"; };
 		A3213BF9137310F5006F18FB /* Logic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Logic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3213BFD137310F5006F18FB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A3213BFF137310F5006F18FB /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -381,6 +388,13 @@
 		A3213D68137310F8006F18FB /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
 		A34D556813899DC100F061FB /* Figure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Figure.h; sourceTree = "<group>"; };
 		A34D556913899DC100F061FB /* Figure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Figure.m; sourceTree = "<group>"; };
+		A35D8000139515D600B07F39 /* Main-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Main-hd.plist"; sourceTree = "<group>"; };
+		A35D8001139515D600B07F39 /* Main.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Main.plist; sourceTree = "<group>"; };
+		A35D8002139515D600B07F39 /* Main.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = Main.pvr.ccz; sourceTree = "<group>"; };
+		A35D8007139515FC00B07F39 /* MainScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScene.h; sourceTree = "<group>"; };
+		A35D8008139515FC00B07F39 /* MainScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainScene.m; sourceTree = "<group>"; };
+		A35D80121395181500B07F39 /* MainLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainLayer.h; sourceTree = "<group>"; };
+		A35D80131395181500B07F39 /* MainLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainLayer.m; sourceTree = "<group>"; };
 		A35F3EF31387CC7600F5D71A /* GameplayLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameplayLayer.h; sourceTree = "<group>"; };
 		A35F3EF41387CC7700F5D71A /* GameplayLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameplayLayer.m; sourceTree = "<group>"; };
 		A37949A21376F485002E53FD /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -789,6 +803,10 @@
 		A35F3F0713893F6300F5D71A /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A35D8000139515D600B07F39 /* Main-hd.plist */,
+				A35D8001139515D600B07F39 /* Main.plist */,
+				A35D8002139515D600B07F39 /* Main.pvr.ccz */,
+				A315E0B01393BDF900331118 /* LevelPinchHd-hd.pvr.ccz */,
 				A315E0991392D1B700331118 /* LevelBgHd-hd.plist */,
 				A315E09A1392D1B700331118 /* LevelBgHd.plist */,
 				A315E09B1392D1B700331118 /* LevelBgHd.pvr.ccz */,
@@ -812,6 +830,10 @@
 				A34D556913899DC100F061FB /* Figure.m */,
 				A315E0AD1393931200331118 /* Utils.h */,
 				A315E0AE1393931200331118 /* Utils.m */,
+				A35D8007139515FC00B07F39 /* MainScene.h */,
+				A35D8008139515FC00B07F39 /* MainScene.m */,
+				A35D80121395181500B07F39 /* MainLayer.h */,
+				A35D80131395181500B07F39 /* MainLayer.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -897,6 +919,10 @@
 				A315E0A21392D1B700331118 /* LevelPinchHd-hd.plist in Resources */,
 				A315E0A31392D1B700331118 /* LevelPinchHd.plist in Resources */,
 				A315E0A41392D1B700331118 /* LevelPinchHd.pvr.ccz in Resources */,
+				A315E0B11393BDF900331118 /* LevelPinchHd-hd.pvr.ccz in Resources */,
+				A35D8003139515D600B07F39 /* Main-hd.plist in Resources */,
+				A35D8004139515D600B07F39 /* Main.plist in Resources */,
+				A35D8005139515D600B07F39 /* Main.pvr.ccz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1010,6 +1036,8 @@
 				A35F3EF51387CC7700F5D71A /* GameplayLayer.m in Sources */,
 				A34D556A13899DC100F061FB /* Figure.m in Sources */,
 				A315E0AF1393931300331118 /* Utils.m in Sources */,
+				A35D8009139515FC00B07F39 /* MainScene.m in Sources */,
+				A35D80141395181700B07F39 /* MainLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

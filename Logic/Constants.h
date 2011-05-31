@@ -8,7 +8,8 @@
 
 typedef enum {
     kNoSceneUninitialized = 0,
-    kGameScene = 1
+    kGameScene = 1,
+    kMainScene = 2
 } SceneTypes;
 
 typedef enum {

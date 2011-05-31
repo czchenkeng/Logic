@@ -11,36 +11,119 @@
 
 @implementation GameplayLayer
 
-@synthesize currentDifficulty;
+//@synthesize currentDifficulty;
 
-- (id) init {
-    self = [super init];
-    if (self != nil) {
-        currentDifficulty = kHard;
-        [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
-                
-        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
-        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"LevelBgHd.plist"];
-        
-        CCSprite *desk = [CCSprite spriteWithSpriteFrameName:@"6Lines.png"];
-        desk.anchorPoint = CGPointMake(0, 0);
-        [self addChild:desk];
-        [self generateCode];
-        [self addFigures];
+
+- (void) createBackground {
+    [CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
+    [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
+    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"LevelBgHd.plist"];
+    
+    CCSprite *background;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        //background = [CCSprite spriteWithSpriteFrameName:@"6Lines.png"];
+    } else {
+        background = [CCSprite spriteWithSpriteFrameName:@"6Lines.png"];
     }
-    return self;
+
+    background.anchorPoint = CGPointMake(0, 0);
+    [self addChild:background z:-10];
 }
 
 - (void) generateCode {
+    NSString *imageFile;
+    //float *p_pinchXpos[4];
+    float pinchXpos[6] = {37.55, 75.55, 114.55, 151.55, 189.55, 227.55};
+    //vnorit do sprite a bude mit stejny pocatek?
+    
+    switch (currentDifficulty) {
+        case kEasy:     
+            imageFile = @"logik_levelend_4line.png";
+            //float easyXpos[4] = {0, 0, 0, 0};
+            //p_pinchXpos = &easyXpos;
+            break;
+        case kMedium:
+            imageFile = @"logik_levelend_5line.png";
+            break;
+        case kHard:
+            imageFile = @"logik_levelend_6line.png";
+            break;
+        default:
+            CCLOG(@"Unknown ID, cannot create image");
+            return;
+            break;
+    }
+    
+    [CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
+    [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
+    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"LevelPinchHd.plist"];
+    
+    CCSprite *baseTop = [CCSprite spriteWithSpriteFrameName:imageFile];
+    baseTop.position = ccp(133, 460);
+    [self addChild:baseTop z:1];
+    
+    [imageFile release];
+    
     currentCode = [[CCArray alloc] init]; 
     for (int i = 0; i < currentDifficulty; ++i) {
-        float offsetFraction = ((float)(i+1))/9;
         Figure *figure = [[Figure alloc] initWithFigureType:[Utils randomNumberBetween:0 andMax:7]];
+        figure.position = ccp(pinchXpos[i], 450.00f);
+        [self addChild:figure z:i+1000];
         [currentCode addObject:figure];
     }
 }
 
+- (void) createRotor {
+    [CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
+    [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
+    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"LevelPinchHd.plist"];
+    
+    CCSprite *rotors = [CCSprite spriteWithSpriteFrameName:@"rotors.png"];
+    rotors.position = ccp(160, 430);
+    [self addChild:rotors z:2000];
+    
+    CCSprite *sphere = [CCSprite spriteWithSpriteFrameName:@"sphere.png"];
+    sphere.position = ccp(152, 454);
+    [self addChild:sphere z:2001];
+}
+
+//- (void) 
+
+- (void) createLevel {
+    CCLOG(@"CREATE LEVEL");
+    [self createBackground];
+    //[self generateCode];
+    [self createRotor];
+}
+
+- (id) init {
+    self = [super init];
+    if (self != nil) {
+        activeRow = 0;
+        currentDifficulty = [[GameManager sharedGameManager] currentDifficulty];
+        [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+        [self createLevel];
+        [self addFigures];
+        [self constructRowWithIndex:2];
+    }
+    return self;
+}
+
+
+- (void) constructRowWithIndex:(int)row {
+    [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
+    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"LevelPinchHd.plist"];
+    for (int i = 0; i < 6; ++i) {
+        CCSprite *debugPoint = [CCSprite spriteWithSpriteFrameName:@"debug_center.png"];
+        debugPoint.position = ccp(32.0 + i*40, 81.0 + row*44); 
+        [self addChild:debugPoint z:2001 + i]; 
+    }
+}
+
+
 - (void) addFigures {
+    CCLOG(@"ADD FIGURES");
     //CGSize winSize = [CCDirector sharedDirector].winSize;
     
 //    [CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
@@ -86,6 +169,7 @@
         Figure *figure = [[Figure alloc] initWithFigureType:i];
         //figure.position = ccp(10 + winSize.width*offsetFraction, 33.0f);
         figure.position = ccp(pinchXpos[i], 32.0f);
+        figure.originalPosition = ccp(figure.position.x, figure.position.y);
         [self addChild:figure z:i];
         //[self addChild:figure];
         //default z je 0? je, protoze sel z textury - coocs umisti na 0 z index
@@ -160,20 +244,23 @@
     [self selectSpriteForTouch:touchLocation];
     //CCLOG(@"Touch began %f %f", touchLocation.x, touchLocation.y);
     CCLOG(@"Touch began %@", NSStringFromCGPoint(touchLocation));
-    CCLOG(@"RANDOM NUMBER %i", [Utils randomNumberBetween:0 andMax:7]);
     //return TRUE;
     return YES;
 }
 
 - (void) ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
     CCLOG(@"Touch end");
-    CCLOG(@"Sel Sprite %@", selSprite);
+    //CCLOG(@"Sel Sprite %@", selSprite);
     CCLOG(@"ID of sprite %i", selSprite.currentFigure);
     CCLOG(@"x pos sprite %f", selSprite.position.x);
     CCLOG(@"y pos sprite %f", selSprite.position.y);
-//    Figure *figure = [[Figure alloc] initWithFigureType:selSprite.currentFigure];
-//    [self addChild:figure z:1000];
-//    [movableFigures addObject:figure];
+    if (selSprite) {
+        Figure *figure = [[Figure alloc] initWithFigureType:selSprite.currentFigure];
+        figure.position = selSprite.originalPosition;
+        figure.originalPosition = ccp(selSprite.originalPosition.x, selSprite.originalPosition.y);
+        [self addChild:figure z:1000];
+        [movableFigures addObject:figure];
+    }       
 }
 
 - (void) dealloc {

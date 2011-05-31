@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Figure.h"
 #import "Constants.h"
+#import "GameManager.h"
 
 
 @interface GameplayLayer : CCLayer {
@@ -19,11 +20,13 @@
     CCArray *movableFigures;
     GameDifficulty currentDifficulty;
     CCArray *currentCode;
+    int activeRow;
 }
 
-@property GameDifficulty currentDifficulty;
+//@property GameDifficulty currentDifficulty;
 
 - (void) addFigures;
-- (void) generateCode;
+- (void) constructRowWithIndex:(int)row;
+//- (void) generateCode;
 
 @end

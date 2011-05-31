@@ -11,13 +11,16 @@
 @interface GameManager : NSObject {
     BOOL isMusicON;
     BOOL isSoundEffectsON;
+    GameDifficulty currentDifficulty;
     SceneTypes currentScene;
 }
 
 @property (readwrite) BOOL isMusicON;
 @property (readwrite) BOOL isSoundEffectsON;
+@property (readwrite) GameDifficulty currentDifficulty;
 
 + (GameManager*) sharedGameManager;
 - (void) runSceneWithID:(SceneTypes)sceneID;
+//- (void) setGameDifficulty:(GameDifficulty)difficultyID;
 
 @end

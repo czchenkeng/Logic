@@ -12,11 +12,12 @@
 
 @interface Figure : CCSprite {
     FigureTypes currentFigure;
-    CCSprite *imageSprite;
+    CGPoint originalPosition;
 }
 
 - (Figure *) initWithFigureType:(FigureTypes)figureID;
 
 @property FigureTypes currentFigure;
+@property CGPoint originalPosition;
 
 @end
