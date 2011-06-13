@@ -7,10 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Utils.h"
 
 
 @interface MainLayer : CCLayerColor {
-    
+    int counter;
+    int flag;
+    int flag2;
+    BOOL lightOn;
+    CCSprite *light;
+    CCSprite *lightOff;
 }
 
 @end

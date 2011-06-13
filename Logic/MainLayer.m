@@ -25,7 +25,10 @@
 - (id) init {
     self = [super initWithColor:ccc4(0,0,0,0)];
     if (self != nil) {
-        //[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+        [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+        flag = 30;
+        flag2 = 0;
+        lightOn = YES;
         CGSize screenSize = [CCDirector sharedDirector].winSize;
         
         [CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
@@ -52,17 +55,23 @@
         [grass setPosition:ccp(160, 16)];
         [self addChild:grass z:20];
         
+        lightOff = [CCSprite spriteWithSpriteFrameName:@"lightOff.png"];
+        lightOff.anchorPoint = ccp(0.5,1);
+        [lightOff setPosition:ccp(screenSize.width/2, 496)];
+        lightOff.rotation = -4.0;
+        [self addChild:lightOff z:11];
+        lightOff.visible = NO;
         
         //HD sprites
         [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Hq.plist"];
-        
-        CCSprite *light = [CCSprite spriteWithSpriteFrameName:@"light.png"];
+
+        light = [CCSprite spriteWithSpriteFrameName:@"light.png"];
         light.anchorPoint = ccp(0.5,1);
         [light setPosition:ccp(screenSize.width/2, 496)];
-        [self addChild:light z:10];
         light.rotation = -4.0;
-        
+        [self addChild:light z:10];
+
         
         //Animations
         CCRotateTo *rotRight = [CCRotateBy actionWithDuration:1.1 angle:-8.0];
@@ -75,11 +84,22 @@
         CCSequence *rotSeq = [CCSequence actions:easeLeft, easeRight, nil];
         [light runAction:[CCRepeatForever actionWithAction:rotSeq]];
         
+        
+        CCRotateTo *rotRight1 = [CCRotateBy actionWithDuration:1.1 angle:-8.0];
+        CCRotateTo *rotLeft1 = [CCRotateBy actionWithDuration:1.1 angle:8.0];
+        
+        CCEaseInOut *easeRight1 = [CCEaseInOut actionWithAction:rotRight1 rate:3];
+        CCEaseInOut *easeLeft1 = [CCEaseInOut actionWithAction:rotLeft1 rate:3];
+        
+        //CCSequence *rotSeq1 = [CCSequence actions:rotLeft1, rotRight1, nil];
+        CCSequence *rotSeq1 = [CCSequence actions:easeLeft1, easeRight1, nil];
+        [lightOff runAction:[CCRepeatForever actionWithAction:rotSeq1]];
+        
         CCMoveTo *moveLeft = [CCMoveTo actionWithDuration:1.1 position:ccp(screenSize.width/2 - 5, screenSize.height/2 + 146)];
         CCMoveTo *moveRight = [CCMoveTo actionWithDuration:1.1 position:ccp(screenSize.width/2 + 5, screenSize.height/2 + 146)];
         
-        CCEaseInOut *easeMoveLeft = [CCEaseInOut actionWithAction:moveLeft rate:3];
-        CCEaseInOut *easeMoveRight = [CCEaseInOut actionWithAction:moveRight rate:3];
+        CCEaseInOut *easeMoveLeft = [CCEaseInOut actionWithAction:moveRight rate:3];
+        CCEaseInOut *easeMoveRight = [CCEaseInOut actionWithAction:moveLeft rate:3];
         
         //CCSequence *moveSeq = [CCSequence actions:moveLeft, moveRight, nil];
         CCSequence *moveSeq = [CCSequence actions:easeMoveLeft, easeMoveRight, nil];
@@ -87,10 +107,38 @@
         
         //[[GameManager sharedGameManager] playBackgroundTrack:BACKGROUND_TRACK_MAIN];
         [self runParticle];
+        [self scheduleUpdate];
     }
     return self;
 }
 
+- (void) update:(ccTime)deltaTime
+{
+    counter++;
+    if (counter == flag) {
+        counter = 0;
+        if (flag2 == 7) {
+            CCLOG(@"LONG INTERVAL");
+            flag2 = 0;
+            flag = [Utils randomNumberBetween:140 andMax:240];
+            lightOff.visible = NO;
+            light.visible = YES;
+        }else{
+            CCLOG(@"SHORT INTERVAL");
+            flag = [Utils randomNumberBetween:1 andMax:4];
+            lightOff.visible = lightOn;
+            light.visible = !lightOn;
+            lightOn = !lightOn;
+        }
+        flag2++;
+    }
+    //CCLOG(@"counter %i", counter);
+}
+
+- (BOOL) ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {    
+    //[[GameManager sharedGameManager] runSceneWithID:kGameScene];
+    return YES;
+}
 
 
 @end

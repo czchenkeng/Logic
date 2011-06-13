@@ -11,13 +11,15 @@
 
 @implementation Figure
 
-@synthesize currentFigure, originalPosition;
+@synthesize currentFigure, originalPosition, place, isActive;
 
 - (Figure *) initWithFigureType:(FigureTypes)figureID {    
     //self = [super initWithFile:imageFile];
     //self = [super init];
     
     currentFigure = figureID;
+    place = -1;
+    isActive = YES;
     
     //if (self) {
         NSString *imageFile;
@@ -52,21 +54,25 @@
                 break;
         }
         
-        [CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
-        
-        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
-        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"LevelPinchHd.plist"];
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Level.plist"];
         
         //self = [CCSprite spriteWithSpriteFrameName:imageFile];
         
-        self = [super initWithSpriteFrameName:imageFile];
+        self = [super initWithSpriteFrameName:imageFile];//je convenient?
+        //self.anchorPoint = CGPointMake(0.5, 0);
         [imageFile release];
     //}
     
     return self;
 }
 
+- (void) destroy {
+    [self removeFromParentAndCleanup:YES];
+}
+
 - (void) dealloc {
+    CCLOG(@"Sprite dealloc");
+    //self = nil;
     [super dealloc];
 }
 

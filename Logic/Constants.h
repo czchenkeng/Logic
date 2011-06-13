@@ -29,6 +29,7 @@ typedef enum {
     kHard = 6
 } GameDifficulty;
 
+#define MIN_DISTANCE_SWIPE 200
 
 #define AUDIO_MAX_WAITTIME 150
 #define BACKGROUND_TRACK_MAIN @"main_theme.mp3"

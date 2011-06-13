@@ -10,7 +10,6 @@
 
 #import "AppDelegate.h"
 #import "GameConfig.h"
-#import "HelloWorldLayer.h"
 #import "RootViewController.h"
 #import "GameManager.h"
 
@@ -104,17 +103,17 @@
 	// Default texture format for PNG/BMP/TIFF/JPEG/GIF images
 	// It can be RGBA8888, RGBA4444, RGB5_A1, RGB565
 	// You can change anytime.
-	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
+    [CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
+	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
 
 	
 	// Removes the startup flicker
 	[self removeStartupFlicker];
 	
 	// Run the intro Scene
-	//[[CCDirector sharedDirector] runWithScene: [HelloWorldLayer scene]];
     [[GameManager sharedGameManager] setupAudioEngine];
-    //[[GameManager sharedGameManager] runSceneWithID:kGameScene];
-    [[GameManager sharedGameManager] runSceneWithID:kMainScene];
+    [[GameManager sharedGameManager] runSceneWithID:kGameScene];
+    //[[GameManager sharedGameManager] runSceneWithID:kMainScene];
 }
 
 
