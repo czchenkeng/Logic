@@ -122,6 +122,9 @@
     
     [movableNode addChild:highlightSprite z:200];
     
+    ProgressTimer *timer = [[ProgressTimer alloc] init];
+    [self addChild:timer z:10000];
+    
 //    CCMoveTo *moveDown = [CCMoveTo actionWithDuration:.3 position:CGPointMake(movableNode.position.x, movableNode.position.y - 64)];
 //    [movableNode runAction:moveDown];
     //release memory
@@ -335,7 +338,6 @@
     
     highlightSprite.visible = NO; 
     Figure *deadFigure = [[Figure alloc] initWithFigureType:sprite.currentFigure];//convenient init, tj. prenest alloc do Figure?
-    //deadFigure.place = currentPlace;
     deadFigure.place = sprite.place;
     deadFigure.isActive = NO;
     CGPoint newPos = ccp(sprite.position.x, sprite.position.y + dislocation);
@@ -344,21 +346,16 @@
     [movableFigures removeObject:sprite];
     Figure *tempSprite = nil;
     for (Figure *userSprite in userCode) {
-        //if (userSprite.place == currentPlace) {
         if (userSprite.place == sprite.place) {
             tempSprite = userSprite;
         }
     }
-    int posSprite;
     if (tempSprite) {
-        posSprite = [userCode indexOfObject:tempSprite];
         [userCode removeObject:tempSprite];
         [tempSprite destroy];
     }
     [sprite destroy];
     [userCode addObject:deadFigure];
-    //[userCode insertObject:deadFigure atIndex:posSprite];
-    CCLOG(@"Logic debug: USER CODE LENGTH %i", userCode.count);
     
     if (userCode.count == currentDifficulty) {
         //CCLOG(@"Logic debug: END ROW");

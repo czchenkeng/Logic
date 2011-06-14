@@ -12,6 +12,7 @@
 #import "Constants.h"
 #import "GameManager.h"
 #import "Utils.h"
+#import "ProgressTimer.h"
 
 
 @interface GameplayLayer : CCLayerColor <CCStandardTouchDelegate> {

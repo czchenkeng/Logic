@@ -152,6 +152,7 @@
 		A35F3EF51387CC7700F5D71A /* GameplayLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A35F3EF41387CC7700F5D71A /* GameplayLayer.m */; };
 		A37949A51376F663002E53FD /* GameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A37949A41376F663002E53FD /* GameManager.m */; };
 		A37D867213A68F7500B880BA /* RowScore.m in Sources */ = {isa = PBXBuildFile; fileRef = A37D867113A68F7500B880BA /* RowScore.m */; };
+		A37D867E13A6D55D00B880BA /* ProgressTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = A37D867D13A6D55C00B880BA /* ProgressTimer.m */; };
 		A3855AD51383298000B680EF /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A3855AD41383298000B680EF /* GameScene.m */; };
 		A3C25263139EA4D5002A31B1 /* LevelBg-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3C2525D139EA4D4002A31B1 /* LevelBg-hd.plist */; };
 		A3C25264139EA4D5002A31B1 /* LevelBg-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A3C2525E139EA4D4002A31B1 /* LevelBg-hd.pvr.ccz */; };
@@ -434,6 +435,8 @@
 		A37949A41376F663002E53FD /* GameManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameManager.m; sourceTree = "<group>"; };
 		A37D867013A68F7500B880BA /* RowScore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RowScore.h; sourceTree = "<group>"; };
 		A37D867113A68F7500B880BA /* RowScore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RowScore.m; sourceTree = "<group>"; };
+		A37D867C13A6D55C00B880BA /* ProgressTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressTimer.h; sourceTree = "<group>"; };
+		A37D867D13A6D55C00B880BA /* ProgressTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressTimer.m; sourceTree = "<group>"; };
 		A3855AD31383298000B680EF /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
 		A3855AD41383298000B680EF /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
 		A3C2525D139EA4D4002A31B1 /* LevelBg-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LevelBg-hd.plist"; sourceTree = "<group>"; };
@@ -862,6 +865,8 @@
 				A34D556913899DC100F061FB /* Figure.m */,
 				A37D867013A68F7500B880BA /* RowScore.h */,
 				A37D867113A68F7500B880BA /* RowScore.m */,
+				A37D867C13A6D55C00B880BA /* ProgressTimer.h */,
+				A37D867D13A6D55C00B880BA /* ProgressTimer.m */,
 			);
 			name = Level;
 			sourceTree = "<group>";
@@ -1142,6 +1147,7 @@
 				A35D8009139515FC00B07F39 /* MainScene.m in Sources */,
 				A35D80141395181700B07F39 /* MainLayer.m in Sources */,
 				A37D867213A68F7500B880BA /* RowScore.m in Sources */,
+				A37D867E13A6D55D00B880BA /* ProgressTimer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
