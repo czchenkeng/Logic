@@ -15,6 +15,7 @@
     CGPoint originalPosition;
     int place;
     BOOL isActive;//vyhodit? uz se umistene neposouvaji
+    BOOL isCalculated;
 }
 
 - (Figure *) initWithFigureType:(FigureTypes)figureID;
@@ -23,6 +24,7 @@
 @property CGPoint originalPosition;
 @property int place;
 @property BOOL isActive;
+@property BOOL isCalculated;
 
 - (void) destroy;
 

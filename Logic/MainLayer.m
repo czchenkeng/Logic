@@ -22,6 +22,27 @@
 }
 
 
+- (void) buttonTapped:(CCMenuItem *)sender { 
+    switch (sender.tag) {
+        case kButtonInfo: 
+            CCLOG(@"TAP ON INFO");
+            break;
+        case kButtonSettings: 
+            CCLOG(@"TAP ON SETTINGS");
+            break;
+        case kButtonSinglePlay:
+            CCLOG(@"TAP ON SINGLE");
+            break;
+        case kButtonCareerPlay:
+            CCLOG(@"TAP ON CAREER");
+            break;
+        default:
+            CCLOG(@"Logic debug: Unknown ID, cannot tap button");
+            return;
+            break;
+    }
+}
+
 - (id) init {
     self = [super initWithColor:ccc4(0,0,0,0)];
     if (self != nil) {
@@ -36,7 +57,7 @@
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Main.plist"];
 
         CCSprite *doors = [CCSprite spriteWithSpriteFrameName:@"doors.png"];
-        [doors setPosition:ccp(screenSize.width/2 + 5, screenSize.height/2 - 67)];
+        [doors setPosition:ccp(screenSize.width/2 + 5, screenSize.height/2 - 51)];
         [self addChild:doors z:1];
         
         CCSprite *background = [CCSprite spriteWithSpriteFrameName:@"background.png"];
@@ -44,20 +65,75 @@
         [self addChild:background z:2];
         
         CCSprite *logoShadow = [CCSprite spriteWithSpriteFrameName:@"logo_shadow.png"];
-        [logoShadow setPosition:ccp(screenSize.width/2, screenSize.height/2 + 146)];
+        [logoShadow setPosition:ccp(screenSize.width/2, screenSize.height/2 + 162)];
         [self addChild:logoShadow z:3];
         
         CCSprite *logo = [CCSprite spriteWithSpriteFrameName:@"logo.png"];
-        [logo setPosition:ccp(screenSize.width/2, screenSize.height/2 + 148)];
+        [logo setPosition:ccp(screenSize.width/2, screenSize.height/2 + 164)];
         [self addChild:logo z:4];
         
         CCSprite *grass = [CCSprite spriteWithSpriteFrameName:@"grass.png"];
         [grass setPosition:ccp(160, 16)];
         [self addChild:grass z:20];
         
+        
+        CCSprite *rightGib = [CCSprite spriteWithSpriteFrameName:@"rameno_right.png"];
+        [rightGib setPosition:ccp(446.00, 257.50)];
+        [self addChild:rightGib z:10];
+        
+        CCSprite *leftGib = [CCSprite spriteWithSpriteFrameName:@"rameno_left.png"];
+        [leftGib setPosition:ccp(-132.00, 135.00)];
+        [self addChild:leftGib z:11];
+        
+        CCSprite *buttonSingleOff = [CCSprite spriteWithSpriteFrameName:@"logik_single1.png"];
+        CCSprite *buttonSingleOn = [CCSprite spriteWithSpriteFrameName:@"logik_single2.png"];
+        
+        CCSprite *buttonCareerOff = [CCSprite spriteWithSpriteFrameName:@"logik_career1.png"];
+        CCSprite *buttonCareerOn = [CCSprite spriteWithSpriteFrameName:@"logik_career2.png"];
+        
+        CCMenuItem *singlePlayItem = [CCMenuItemSprite itemFromNormalSprite:buttonSingleOff selectedSprite:buttonSingleOn target:self selector:@selector(buttonTapped:)];
+        singlePlayItem.tag = kButtonSinglePlay;
+        CCMenu *singleMenu = [CCMenu menuWithItems:singlePlayItem, nil];
+        singleMenu.position = ccp(66.00, 31.50);;
+        [rightGib addChild:singleMenu];
+        
+        CCMenuItem *careerPlayItem = [CCMenuItemSprite itemFromNormalSprite:buttonCareerOff selectedSprite:buttonCareerOn target:self selector:@selector(buttonTapped:)];
+        careerPlayItem.tag = kButtonCareerPlay;
+        CCMenu *careerMenu = [CCMenu menuWithItems:careerPlayItem, nil];
+        careerMenu.position = ccp(195.50, 35.50);
+        [leftGib addChild:careerMenu];
+        
+        CCSprite *buttonInfoOff = [CCSprite spriteWithSpriteFrameName:@"i_off.png"];
+        CCSprite *buttonInfoOn = [CCSprite spriteWithSpriteFrameName:@"i_on.png"];
+        CCSprite *buttonSettingsOff = [CCSprite spriteWithSpriteFrameName:@"settings_off.png"];
+        CCSprite *buttonSettingsOn = [CCSprite spriteWithSpriteFrameName:@"settings_on.png"];
+
+        CCMenuItem *infoItem = [CCMenuItemSprite itemFromNormalSprite:buttonInfoOff selectedSprite:buttonInfoOn target:self selector:@selector(buttonTapped:)];
+        infoItem.tag = kButtonInfo;
+        infoItem.position = ccp(300.00, 448.50);
+        CCMenuItem *settingsItem = [CCMenuItemSprite itemFromNormalSprite:buttonSettingsOff selectedSprite:buttonSettingsOn target:self selector:@selector(buttonTapped:)];
+        settingsItem.tag = kButtonSettings;
+        settingsItem.position = ccp(37.50, 446.00);
+        
+        CCMenu *topMenu = [CCMenu menuWithItems:infoItem, settingsItem, nil];
+        topMenu.position = CGPointZero;
+        [self addChild:topMenu z:12];
+        
+        CCMoveTo *rightGibMoveIn = [CCMoveTo actionWithDuration:2.5 position:ccp(229.00, 235.00)];
+        CCEaseInOut *easeRightGibMoveIn = [CCEaseInOut actionWithAction:rightGibMoveIn rate:5];
+        CCSequence *moveRightGibSeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.1f], easeRightGibMoveIn, nil];
+        
+        CCMoveTo *leftGibMoveIn = [CCMoveTo actionWithDuration:2.5 position:ccp(100.00, 160.50)];
+        CCEaseInOut *easeleftGibMoveIn = [CCEaseInOut actionWithAction:leftGibMoveIn rate:5];
+        CCSequence *moveLeftGibSeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.1f], easeleftGibMoveIn, nil];
+        
+        [rightGib runAction:moveRightGibSeq];
+        [leftGib runAction:moveLeftGibSeq];
+        
+        
         lightOff = [CCSprite spriteWithSpriteFrameName:@"lightOff.png"];
         lightOff.anchorPoint = ccp(0.5,1);
-        [lightOff setPosition:ccp(screenSize.width/2, 496)];
+        [lightOff setPosition:ccp(screenSize.width/2, 487)];
         lightOff.rotation = -4.0;
         [self addChild:lightOff z:11];
         lightOff.visible = NO;
@@ -68,7 +144,7 @@
 
         light = [CCSprite spriteWithSpriteFrameName:@"light.png"];
         light.anchorPoint = ccp(0.5,1);
-        [light setPosition:ccp(screenSize.width/2, 496)];
+        [light setPosition:ccp(screenSize.width/2, 487)];
         light.rotation = -4.0;
         [self addChild:light z:10];
 
@@ -95,8 +171,8 @@
         CCSequence *rotSeq1 = [CCSequence actions:easeLeft1, easeRight1, nil];
         [lightOff runAction:[CCRepeatForever actionWithAction:rotSeq1]];
         
-        CCMoveTo *moveLeft = [CCMoveTo actionWithDuration:1.1 position:ccp(screenSize.width/2 - 5, screenSize.height/2 + 146)];
-        CCMoveTo *moveRight = [CCMoveTo actionWithDuration:1.1 position:ccp(screenSize.width/2 + 5, screenSize.height/2 + 146)];
+        CCMoveTo *moveLeft = [CCMoveTo actionWithDuration:1.1 position:ccp(screenSize.width/2 - 5, screenSize.height/2 + 162)];
+        CCMoveTo *moveRight = [CCMoveTo actionWithDuration:1.1 position:ccp(screenSize.width/2 + 5, screenSize.height/2 + 162)];
         
         CCEaseInOut *easeMoveLeft = [CCEaseInOut actionWithAction:moveRight rate:3];
         CCEaseInOut *easeMoveRight = [CCEaseInOut actionWithAction:moveLeft rate:3];
@@ -118,13 +194,13 @@
     if (counter == flag) {
         counter = 0;
         if (flag2 == 7) {
-            CCLOG(@"LONG INTERVAL");
+            //CCLOG(@"LONG INTERVAL");
             flag2 = 0;
             flag = [Utils randomNumberBetween:140 andMax:240];
             lightOff.visible = NO;
             light.visible = YES;
         }else{
-            CCLOG(@"SHORT INTERVAL");
+            //CCLOG(@"SHORT INTERVAL");
             flag = [Utils randomNumberBetween:1 andMax:4];
             lightOff.visible = lightOn;
             light.visible = !lightOn;
@@ -138,6 +214,12 @@
 - (BOOL) ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {    
     //[[GameManager sharedGameManager] runSceneWithID:kGameScene];
     return YES;
+}
+
+- (void) dealloc {
+    CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
+    
+    [super dealloc];
 }
 
 

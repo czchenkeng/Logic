@@ -9,7 +9,8 @@
 typedef enum {
     kNoSceneUninitialized = 0,
     kGameScene = 1,
-    kMainScene = 2
+    kMainScene = 2,
+    kSettingsScene = 3
 } SceneTypes;
 
 typedef enum {
@@ -29,7 +30,10 @@ typedef enum {
     kHard = 6
 } GameDifficulty;
 
-#define MIN_DISTANCE_SWIPE 200
+#define MIN_DISTANCE_SWIPE_X 200
+#define MIN_DISTANCE_SWIPE_Y 100
+#define LEVEL_SWIPE_AFTER_ROW 7
+#define LEVEL_DISLOCATION 94
 
 #define AUDIO_MAX_WAITTIME 150
 #define BACKGROUND_TRACK_MAIN @"main_theme.mp3"

@@ -13,11 +13,15 @@
 #import "GameManager.h"
 #import "Utils.h"
 #import "ProgressTimer.h"
+#import "Mask.h"
 
 
 @interface GameplayLayer : CCLayerColor <CCStandardTouchDelegate> {
+    CCLayer *clippingNode;
     CCLayer *movableNode;
     CCLayer *figuresNode;
+    
+    CCArray *deadFigures;
     
     CCSprite *codeBase;
     CCSprite *rotor;
@@ -32,6 +36,9 @@
     CCArray *greenLights;
     CCArray *orangeLights;
     
+    CCArray *placeNumbers;
+    CCArray *colorNumbers;
+    
     CCSpriteBatchNode *assetsLevelBgNode;
     CCSpriteBatchNode *assetsLevelNode;
     Figure *selSprite;
@@ -39,13 +46,15 @@
     CCSprite *highlightSprite;
     //CCSpriteBatchNode *spritesBgNode;
     CCArray *movableFigures;
-    CCArray *currentCode;
+    NSMutableArray *currentCode;
     CCArray *targets;
     NSMutableArray *userCode;
     GameDifficulty currentDifficulty;
     int activeRow;
     //int currentPlace;
     BOOL isEndRow;
+    BOOL isMovable;
+    BOOL movableFlag;
     
     CGPoint touchOrigin;
     CGPoint touchStop;
@@ -54,6 +63,8 @@
     
     int places;
     int colors;
+    
+    NSMutableArray *touchArray;
 }
 
 //@property GameDifficulty currentDifficulty;

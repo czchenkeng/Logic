@@ -13,22 +13,20 @@
 
 - (id) init {
     self = [super init];
-    if (self != nil) {
-        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Level.plist"];
-        
+    if (self != nil) {        
         numbers = [CCSprite spriteWithSpriteFrameName:@"logik_number_score18x36.png"];
-        numbers.anchorPoint = CGPointMake(0.5, 1);
-        //numbers.position = ccp(0, 18);
+        numbers.anchorPoint = CGPointMake(0, 1);
         [self addChild:numbers];
     }
     return self;
 }
 
 - (void) moveToPosition:(int)position {
-    CCMoveTo *moveNumbers = [CCMoveTo actionWithDuration:.3 position:CGPointMake(numbers.position.x, 18*position)];
+    CCMoveTo *moveNumbers = [CCMoveTo actionWithDuration:.3 position:CGPointMake(numbers.position.x, 18*(position+1))];
     [numbers runAction:moveNumbers];
-    CCLOG(@"moveNumbers retain count %i", [moveNumbers retainCount]);
-    CCLOG(@"numbers retain count %i", [numbers retainCount]);
+    //[moveNumbers release];
+    //CCLOG(@"moveNumbers retain count %i", [moveNumbers retainCount]);
+    //CCLOG(@"numbers retain count %i", [numbers retainCount]);
 }
 
 @end

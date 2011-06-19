@@ -20,8 +20,10 @@
     greenLights = [[CCArray alloc] init];
     orangeLights = [[CCArray alloc] init];
     
+    clippingNode = [CCLayer node];
     movableNode = [CCLayer node];
     figuresNode = [CCLayer node];
+    //figuresNode = [Mask maskWithRect:CGRectMake(0, 100, 320, 380)];
     
     assetsLevelBgNode = [CCSpriteBatchNode batchNodeWithFile:[NSString stringWithFormat:@"LevelBg%@.pvr.ccz", hw]];
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:[NSString stringWithFormat:@"LevelBg%@.plist", hw]];
@@ -111,14 +113,24 @@
 
     
     //add nodes to display list
-    [self addChild:movableNode z:1 tag:1];
+    [self addChild:clippingNode z:1 tag:1];
+    [self addChild:movableNode z:2 tag:2];
+    //Mask *test = [Mask maskWithRect:CGRectMake(0, 150, 320, 150)];
+    //[movableNode addChild:test z:-1 tag:-1];
+    //[test addChild:bg];
     [movableNode addChild:bg z:-1 tag:-1];
+    //bg.opacity = 80;
     
-    [self addChild:codeBase z:2 tag:2];
-    //[self addChild:rotor z:3 tag:3];
-    //[self addChild:sphereNode z:4 tag:4];
-    [self addChild:base z:5 tag:5];
-    [self addChild:figuresNode z:6];
+    [self addChild:codeBase z:3 tag:3];
+    //[self addChild:rotor z:4 tag:4];
+    //[self addChild:sphereNode z:5 tag:5];
+    [self addChild:base z:6 tag:6];
+    [self addChild:figuresNode z:7];
+    
+    
+//    RowScore *rs = [[RowScore alloc] init];
+//    rs.position = ccp(200, 150);
+//    [self addChild:rs z:8];
     
     [movableNode addChild:highlightSprite z:200];
     
@@ -148,9 +160,10 @@
 }
 
 - (void) generateCode {
-    currentCode = [[CCArray alloc] init]; 
+    //currentCode = [[CCArray alloc] init];
+    currentCode = [[NSMutableArray alloc] init];
     for (int i = 0; i < currentDifficulty; ++i) {
-        Figure *figure = [[Figure alloc] initWithFigureType:[Utils randomNumberBetween:0 andMax:7]];
+        Figure *figure = [[Figure alloc] initWithFigureType:[Utils randomNumberBetween:0 andMax:8]];
         figure.place = i;
         figure.anchorPoint = CGPointMake(0, 0);
         figure.position = ccp(8 + 40*i, 10.0f);
@@ -184,7 +197,7 @@
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Level.plist"];
     for (int i = 0; i < currentDifficulty; ++i) {
         CCSprite *targetPoint = [CCSprite spriteWithSpriteFrameName:@"debug_center.png"];
-        //targetPoint.opacity = 0;
+        targetPoint.opacity = 0;
         [movableNode addChild:targetPoint z:100 + i];
         [targets addObject:targetPoint];
     }
@@ -210,12 +223,17 @@
     self = [super initWithColor:ccc4(0,0,0,0)];
     if (self != nil) {
         dislocation = 0.0;
-        activeRow = 1;
+        activeRow = 0;
         currentDifficulty = [[GameManager sharedGameManager] currentDifficulty];
         targetSprite = nil;
         isEndRow = NO;
+        isMovable = NO;
         //userCode = [[CCArray alloc] init];
         userCode = [[NSMutableArray alloc] init];
+        placeNumbers = [[CCArray alloc] init];
+        colorNumbers = [[CCArray alloc] init];
+        deadFigures = [[CCArray alloc] init];
+        touchArray = [[NSMutableArray alloc] init];
         [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
         [self createLevel];
     }
@@ -236,25 +254,16 @@
             break;
         }
     }
-    //if (newSprite != selSprite) {
-        //CCLOG(@"IS NIL");
-        [selSprite stopAllActions];
-        //[selSprite runAction:[CCRotateTo actionWithDuration:0.1 angle:0]];
-        CCScaleTo *scale = [CCScaleTo actionWithDuration:.2 scale:1.3];
-        [newSprite runAction:scale];
-//        CCRotateTo * rotLeft = [CCRotateBy actionWithDuration:0.1 angle:-4.0];
-//        CCRotateTo * rotCenter = [CCRotateBy actionWithDuration:0.1 angle:0.0];
-//        CCRotateTo * rotRight = [CCRotateBy actionWithDuration:0.1 angle:4.0];
-//        CCSequence * rotSeq = [CCSequence actions:rotLeft, rotCenter, rotRight, rotCenter, nil];
-//        [newSprite runAction:[CCRepeatForever actionWithAction:rotSeq]];            
+    [selSprite stopAllActions];
+    CCScaleTo *scale = [CCScaleTo actionWithDuration:.2 scale:1.3];
+    [newSprite runAction:scale];          
 //        if (selSprite) {
 //            [figuresNode reorderChild:selSprite z:selSprite.zOrder - 100];
 //        }
-        selSprite = newSprite;
-        if (selSprite) {
-            [figuresNode reorderChild:selSprite z:selSprite.zOrder + 100];
-        }
-    //}    
+    selSprite = newSprite;
+    if (selSprite) {
+        [figuresNode reorderChild:selSprite z:selSprite.zOrder + 100];
+    }   
 }
 
 - (void) panForTranslation:(CGPoint)translation {    
@@ -292,6 +301,33 @@
 
 #pragma mark -
 #pragma mark Touches
+- (void) ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event  {       
+    UITouch *touch = [touches anyObject];
+    CGPoint new_location = [touch locationInView: [touch view]];
+    new_location = [[CCDirector sharedDirector] convertToGL:new_location];
+    
+    CGPoint oldTouchLocation = [touch previousLocationInView:touch.view];
+    oldTouchLocation = [[CCDirector sharedDirector] convertToGL:oldTouchLocation];
+    oldTouchLocation = [self convertToNodeSpace:oldTouchLocation];
+
+    [touchArray addObject:NSStringFromCGPoint(new_location)];
+    [touchArray addObject:NSStringFromCGPoint(oldTouchLocation)];
+    CCLOG(@"touches moved");
+}
+
+
+- (void) draw {
+    glEnable(GL_LINE_SMOOTH);
+    
+    for(int i = 0; i < [touchArray count]; i+=2) {
+        CGPoint start = CGPointFromString([touchArray objectAtIndex:i]);
+        CGPoint end = CGPointFromString([touchArray objectAtIndex:i+1]);
+        
+        ccDrawLine(start, end);
+        CCLOG(@"paint %@", NSStringFromCGPoint(start));
+    }
+}
+
 - (void) ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event {       
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
     
@@ -310,11 +346,7 @@
 - (BOOL) ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {    
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
     [self selectSpriteForTouch:touchLocation];
-    //CCLOG(@"Touch began %f %f", touchLocation.x, touchLocation.y);
-    CCLOG(@"Logic debug: Touch began %@", NSStringFromCGPoint(touchLocation));
-    //return TRUE;
-    
-    //swipe
+
     touchOrigin = [touch locationInView:[touch view]];
 	touchOrigin = [[CCDirector sharedDirector] convertToGL:touchOrigin];
     
@@ -334,7 +366,6 @@
     [movableFigures addObject:figure];
     CCMoveTo *moveToBase = [CCMoveTo actionWithDuration:.2 position:CGPointMake(figure.position.x, figure.originalPosition.y)];
     [figure runAction:moveToBase];
-    
     
     highlightSprite.visible = NO; 
     Figure *deadFigure = [[Figure alloc] initWithFigureType:sprite.currentFigure];//convenient init, tj. prenest alloc do Figure?
@@ -358,21 +389,32 @@
     [userCode addObject:deadFigure];
     
     if (userCode.count == currentDifficulty) {
-        //CCLOG(@"Logic debug: END ROW");
         isEndRow = YES;
     }
 }
 
+- (void) swipeArea:(int)direction {
+    CCMoveTo *move = [CCMoveTo actionWithDuration:.3 position:CGPointMake(movableNode.position.x, movableNode.position.y - dislocation * direction)];
+    [movableNode runAction:move];
+    for (Mask *mask in placeNumbers) {
+        [mask redrawRect:CGRectMake(mask.position.x, mask.position.y - dislocation * direction, 12, 18)];
+    }
+    for (Mask *mask in colorNumbers) {
+        [mask redrawRect:CGRectMake(mask.position.x, mask.position.y - dislocation * direction, 12, 18)];
+    }
+    movableFlag = !movableFlag;
+}
+
 - (void) nextRow {
-    CCLOG(@"Logic debug: NEXT ROW");
     [userCode removeAllObjects];
     activeRow ++;
-    if (activeRow == 7) {//7
-        dislocation = 94;
-        CCMoveTo *moveDown = [CCMoveTo actionWithDuration:.3 position:CGPointMake(movableNode.position.x, movableNode.position.y - dislocation)];
-        [movableNode runAction:moveDown];
+    [self constructRowWithIndex:activeRow];
+    if (activeRow == LEVEL_SWIPE_AFTER_ROW) {
+        isMovable = YES;
+        movableFlag = YES;
+        dislocation = LEVEL_DISLOCATION;
+        [self swipeArea:1];
     }
-    [self constructRowWithIndex:activeRow];    
 }
 
 - (void) showResult {
@@ -382,9 +424,15 @@
         id fadeToGreen = [CCFadeTo actionWithDuration:0.5f opacity:255];
         [greenLight runAction:fadeToGreen];
         
+        Mask *holderPlace = [Mask maskWithRect:CGRectMake(greenLight.position.x - 3, greenLight.position.y + 8 - dislocation, 12, 18)];
+        //holderPlace.anchorPoint = CGPointMake(0.5, 0);
+        [clippingNode addChild:holderPlace z:activeRow - 10000];
+        [placeNumbers addObject:holderPlace];
+        
         RowScore *rs = [[RowScore alloc] init];
-        rs.position = ccp(greenLight.position.x + 2, greenLight.position.y + 26);
-        [movableNode addChild:rs z:activeRow - 10000];
+        //rs.position = ccp(greenLight.position.x + 2, greenLight.position.y + 26);
+        //[movableNode addChild:rs z:activeRow - 10000];
+        [holderPlace addChild:rs];
         [rs moveToPosition:places];
         
     }
@@ -392,6 +440,14 @@
         CCSprite *orangeLight = [orangeLights objectAtIndex:activeRow];
         id fadeToOrange = [CCFadeTo actionWithDuration:0.5f opacity:255];
         [orangeLight runAction:fadeToOrange];
+        
+        Mask *holderColors = [Mask maskWithRect:CGRectMake(orangeLight.position.x - 5, orangeLight.position.y + 8 - dislocation, 12, 18)];
+        [clippingNode addChild:holderColors z:activeRow - 10000];
+        [colorNumbers addObject:holderColors];
+        
+        RowScore *rc = [[RowScore alloc] init];
+        [holderColors addChild:rc];
+        [rc moveToPosition:colors];
     }
 }
 
@@ -400,49 +456,29 @@
     colors = 0;
     places = 0;
     int i = 0;
-    
-    NSMutableArray *colorsArray = [[NSMutableArray alloc] init];
-    NSMutableArray *colorsCodeArray = [[NSMutableArray alloc] initWithArray:userCode];
 
     for (Figure *codeSprite in currentCode) {
         for (Figure *userSprite in userCode) {
             if (userSprite.place == i) {
                 if (userSprite.currentFigure == codeSprite.currentFigure) {
                     places++;
-                    [colorsArray addObject:userSprite];
+                    userSprite.isCalculated = YES;
                 }
             }
         }
         i++;
     }
-    for (Figure *colorSprite in colorsArray) {
-        [userCode removeObject:colorSprite];
-        [colorsCodeArray removeObject:colorSprite];
-    }
     
-//    for (Figure *codeSprite in currentCode) {
-//        for (Figure *colorCodeSprite in colorsCodeArray) {
-//            if (colorCodeSprite.currentFigure != codeSprite.currentFigure) {
-//                [colorsCodeArray addObject:codeSprite];
-//            }
-//        }
-//    }
-    
-    
-    CCLOG(@"delka pole %i", [colorsCodeArray count]);
-    
-    [colorsArray release];
-    colorsArray = nil;
-    
-    for (Figure *userSprite in userCode) {
-        for (Figure *codeSprite in currentCode) {
-            if (userSprite.currentFigure == codeSprite.currentFigure) {
+    for (Figure *codeSprite in currentCode) {
+        for (Figure *userSprite in userCode) {
+            if (userSprite.currentFigure == codeSprite.currentFigure && !userSprite.isCalculated) {
                 colors++;
+                userSprite.isCalculated = YES;
                 break;
             }
         }
     }
-    //colors = colorsTotal - places;
+    
     CCLOG(@"Logic debug: PLACES %i AND COLORS %i", places, colors);
     [self showResult];
     if (places == currentDifficulty || activeRow == 9) {
@@ -463,7 +499,7 @@
         if (targetSprite != nil) {//animation to target
             CCLOG(@"sprite selSprite je %@", selSprite);
             CCSequence *moveSeq = [CCSequence actions:
-                                   [CCMoveTo actionWithDuration:.03*activeRow position:CGPointMake(targetSprite.position.x, targetSprite.position.y - dislocation)],
+                                   [CCMoveTo actionWithDuration:.03*activeRow position:CGPointMake(targetSprite.position.x + 1, targetSprite.position.y + 5 - dislocation)],
                                    [CCCallFuncND actionWithTarget:self selector:@selector(figureMoveEnded:data:) data:selSprite],//najit v zalozkach modernejsi zpusob jak volat callback
                                    nil];
             [selSprite runAction:moveSeq];
@@ -477,15 +513,19 @@
         touchStop = [touch locationInView:[touch view]];
         touchStop = [[CCDirector sharedDirector] convertToGL:touchStop];
         
-        float deltaX = touchStop.x - touchOrigin.x;    
-        if (fabs(deltaX) > MIN_DISTANCE_SWIPE) {
-            CCLOG(@"Logic debug: good swipe");
-            if (isEndRow) {
-                isEndRow = NO;
-                [self didEndOfRow];
-            }
-        }else if (deltaX < MIN_DISTANCE_SWIPE) {
-            CCLOG(@"Logic debug: bad swipe");
+        float deltaX = touchStop.x - touchOrigin.x;
+        float deltaY = touchStop.y - touchOrigin.y;
+        
+        if (fabs(deltaX) > MIN_DISTANCE_SWIPE_X && isEndRow) {
+            isEndRow = NO;
+            [self didEndOfRow];
+        }
+        
+        if (fabs(deltaY) > MIN_DISTANCE_SWIPE_Y && isMovable) {
+            if(deltaY < 0 && movableFlag)//down
+                [self swipeArea:1];
+            else if (deltaY > 0 && !movableFlag)
+                [self swipeArea:-1];
         }
     }
 }

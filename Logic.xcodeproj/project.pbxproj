@@ -15,6 +15,12 @@
 		A30B4AB9139EDE7C003598DF /* AnimationsPad.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A30B4AB7139EDE7C003598DF /* AnimationsPad.pvr.ccz */; };
 		A30B4ABC139EDEF3003598DF /* LevelPad.plist in Resources */ = {isa = PBXBuildFile; fileRef = A30B4ABA139EDEF3003598DF /* LevelPad.plist */; };
 		A30B4ABD139EDEF3003598DF /* LevelPad.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A30B4ABB139EDEF3003598DF /* LevelPad.pvr.ccz */; };
+		A3144CD413AE6A7100E292C4 /* Settings-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A3144CD013AE6A7100E292C4 /* Settings-hd.pvr.ccz */; };
+		A3144CD513AE6A7100E292C4 /* Settings-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3144CD113AE6A7100E292C4 /* Settings-hd.plist */; };
+		A3144CD613AE6A7100E292C4 /* Settings.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A3144CD213AE6A7100E292C4 /* Settings.pvr.ccz */; };
+		A3144CD713AE6A7100E292C4 /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3144CD313AE6A7100E292C4 /* Settings.plist */; };
+		A3144CDA13AE6AC100E292C4 /* SettingsScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A3144CD913AE6AC100E292C4 /* SettingsScene.m */; };
+		A3144CDD13AE6ADF00E292C4 /* SettingsLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A3144CDC13AE6ADF00E292C4 /* SettingsLayer.m */; };
 		A315E0AF1393931300331118 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = A315E0AE1393931200331118 /* Utils.m */; };
 		A31B614713958F5100FE697F /* Main_rain.plist in Resources */ = {isa = PBXBuildFile; fileRef = A31B614613958F5100FE697F /* Main_rain.plist */; };
 		A31B61491395911B00FE697F /* particleTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = A31B61481395911B00FE697F /* particleTexture.png */; };
@@ -153,6 +159,7 @@
 		A37949A51376F663002E53FD /* GameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A37949A41376F663002E53FD /* GameManager.m */; };
 		A37D867213A68F7500B880BA /* RowScore.m in Sources */ = {isa = PBXBuildFile; fileRef = A37D867113A68F7500B880BA /* RowScore.m */; };
 		A37D867E13A6D55D00B880BA /* ProgressTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = A37D867D13A6D55C00B880BA /* ProgressTimer.m */; };
+		A37D868113A79D9500B880BA /* Mask.m in Sources */ = {isa = PBXBuildFile; fileRef = A37D868013A79D9500B880BA /* Mask.m */; };
 		A3855AD51383298000B680EF /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A3855AD41383298000B680EF /* GameScene.m */; };
 		A3C25263139EA4D5002A31B1 /* LevelBg-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3C2525D139EA4D4002A31B1 /* LevelBg-hd.plist */; };
 		A3C25264139EA4D5002A31B1 /* LevelBg-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A3C2525E139EA4D4002A31B1 /* LevelBg-hd.pvr.ccz */; };
@@ -171,6 +178,14 @@
 		A30B4AB7139EDE7C003598DF /* AnimationsPad.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = AnimationsPad.pvr.ccz; sourceTree = "<group>"; };
 		A30B4ABA139EDEF3003598DF /* LevelPad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = LevelPad.plist; sourceTree = "<group>"; };
 		A30B4ABB139EDEF3003598DF /* LevelPad.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = LevelPad.pvr.ccz; sourceTree = "<group>"; };
+		A3144CD013AE6A7100E292C4 /* Settings-hd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Settings-hd.pvr.ccz"; sourceTree = "<group>"; };
+		A3144CD113AE6A7100E292C4 /* Settings-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Settings-hd.plist"; sourceTree = "<group>"; };
+		A3144CD213AE6A7100E292C4 /* Settings.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = Settings.pvr.ccz; sourceTree = "<group>"; };
+		A3144CD313AE6A7100E292C4 /* Settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Settings.plist; sourceTree = "<group>"; };
+		A3144CD813AE6AC100E292C4 /* SettingsScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsScene.h; sourceTree = "<group>"; };
+		A3144CD913AE6AC100E292C4 /* SettingsScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsScene.m; sourceTree = "<group>"; };
+		A3144CDB13AE6ADF00E292C4 /* SettingsLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsLayer.h; sourceTree = "<group>"; };
+		A3144CDC13AE6ADF00E292C4 /* SettingsLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsLayer.m; sourceTree = "<group>"; };
 		A315E0AD1393931200331118 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		A315E0AE1393931200331118 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		A31B614613958F5100FE697F /* Main_rain.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Main_rain.plist; sourceTree = "<group>"; };
@@ -437,6 +452,8 @@
 		A37D867113A68F7500B880BA /* RowScore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RowScore.m; sourceTree = "<group>"; };
 		A37D867C13A6D55C00B880BA /* ProgressTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressTimer.h; sourceTree = "<group>"; };
 		A37D867D13A6D55C00B880BA /* ProgressTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressTimer.m; sourceTree = "<group>"; };
+		A37D867F13A79D9400B880BA /* Mask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mask.h; sourceTree = "<group>"; };
+		A37D868013A79D9500B880BA /* Mask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mask.m; sourceTree = "<group>"; };
 		A3855AD31383298000B680EF /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
 		A3855AD41383298000B680EF /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
 		A3C2525D139EA4D4002A31B1 /* LevelBg-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LevelBg-hd.plist"; sourceTree = "<group>"; };
@@ -466,6 +483,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A3144CCE13AE628D00E292C4 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A3144CD813AE6AC100E292C4 /* SettingsScene.h */,
+				A3144CD913AE6AC100E292C4 /* SettingsScene.m */,
+				A3144CDB13AE6ADF00E292C4 /* SettingsLayer.h */,
+				A3144CDC13AE6ADF00E292C4 /* SettingsLayer.m */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
 		A31B614213958C0700FE697F /* particles */ = {
 			isa = PBXGroup;
 			children = (
@@ -867,6 +895,8 @@
 				A37D867113A68F7500B880BA /* RowScore.m */,
 				A37D867C13A6D55C00B880BA /* ProgressTimer.h */,
 				A37D867D13A6D55C00B880BA /* ProgressTimer.m */,
+				A37D867F13A79D9400B880BA /* Mask.h */,
+				A37D868013A79D9500B880BA /* Mask.m */,
 			);
 			name = Level;
 			sourceTree = "<group>";
@@ -882,6 +912,10 @@
 		A35F3F0713893F6300F5D71A /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A3144CD013AE6A7100E292C4 /* Settings-hd.pvr.ccz */,
+				A3144CD113AE6A7100E292C4 /* Settings-hd.plist */,
+				A3144CD213AE6A7100E292C4 /* Settings.pvr.ccz */,
+				A3144CD313AE6A7100E292C4 /* Settings.plist */,
 				A30B4ABA139EDEF3003598DF /* LevelPad.plist */,
 				A30B4ABB139EDEF3003598DF /* LevelPad.pvr.ccz */,
 				A30B4AB6139EDE7C003598DF /* AnimationsPad.plist */,
@@ -914,6 +948,7 @@
 		A379499E1376A11E002E53FD /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				A3144CCE13AE628D00E292C4 /* Settings */,
 				A3339DE9139E610200EE5D71 /* Level */,
 				A37949A11376F45B002E53FD /* Constants */,
 				A37949A01376A12C002E53FD /* Singletons */,
@@ -1032,6 +1067,10 @@
 				A30B4AB9139EDE7C003598DF /* AnimationsPad.pvr.ccz in Resources */,
 				A30B4ABC139EDEF3003598DF /* LevelPad.plist in Resources */,
 				A30B4ABD139EDEF3003598DF /* LevelPad.pvr.ccz in Resources */,
+				A3144CD413AE6A7100E292C4 /* Settings-hd.pvr.ccz in Resources */,
+				A3144CD513AE6A7100E292C4 /* Settings-hd.plist in Resources */,
+				A3144CD613AE6A7100E292C4 /* Settings.pvr.ccz in Resources */,
+				A3144CD713AE6A7100E292C4 /* Settings.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1148,6 +1187,9 @@
 				A35D80141395181700B07F39 /* MainLayer.m in Sources */,
 				A37D867213A68F7500B880BA /* RowScore.m in Sources */,
 				A37D867E13A6D55D00B880BA /* ProgressTimer.m in Sources */,
+				A37D868113A79D9500B880BA /* Mask.m in Sources */,
+				A3144CDA13AE6AC100E292C4 /* SettingsScene.m in Sources */,
+				A3144CDD13AE6ADF00E292C4 /* SettingsLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

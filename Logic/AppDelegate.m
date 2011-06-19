@@ -88,7 +88,7 @@
 //	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
 //#endif
 	
-	[director setAnimationInterval:1.0/30];
+	[director setAnimationInterval:1.0/60];
 	[director setDisplayFPS:YES];
 	
 	
@@ -112,8 +112,8 @@
 	
 	// Run the intro Scene
     [[GameManager sharedGameManager] setupAudioEngine];
-    [[GameManager sharedGameManager] runSceneWithID:kGameScene];
-    //[[GameManager sharedGameManager] runSceneWithID:kMainScene];
+    //[[GameManager sharedGameManager] runSceneWithID:kGameScene];
+    [[GameManager sharedGameManager] runSceneWithID:kMainScene];
 }
 
 
