@@ -7,10 +7,25 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CCSlider.h"
+#import "PressMenu.h"
 
-
-@interface SettingsLayer : CCLayer {
+@interface SettingsLayer : CCLayer <CCSliderControlDelegate> {
+    CCArray *difficulty;
     
+    CCSprite *easy;
+    CCSprite *normal;
+    CCSprite *hard;
+    
+    CCSprite *joyStick;
+    CCSprite *selJoystick;
+    
+    CCMenuItem *easyItem;
+    CCMenuItem *normalItem;
+    CCMenuItem *hardItem;
+    
+    CGPoint touchOrigin;
+    CGPoint touchStop;
 }
 
 @end

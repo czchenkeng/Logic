@@ -1,16 +1,15 @@
 //
-//  SettingsScene.h
+//  CareerLayer.h
 //  Logic
 //
-//  Created by Pavel Krusek on 6/19/11.
+//  Created by Pavel Krusek on 6/20/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "SettingsLayer.h"
 
 
-@interface SettingsScene : CCScene {
+@interface CareerLayer : CCLayer {
     
 }
 

@@ -18,7 +18,7 @@
     
     //CGSize winSize = [[CCDirector sharedDirector] winSize];
     //system.position = CGPointMake(winSize.width/2, 480);
-    [self addChild:system z:100 tag:1];
+    [self addChild:system z:14 tag:1];
 }
 
 
@@ -28,10 +28,10 @@
             CCLOG(@"TAP ON INFO");
             break;
         case kButtonSettings: 
-            CCLOG(@"TAP ON SETTINGS");
+            [[GameManager sharedGameManager] runSceneWithID:kSettingsScene];
             break;
         case kButtonSinglePlay:
-            CCLOG(@"TAP ON SINGLE");
+            [[GameManager sharedGameManager] runSceneWithID:kGameScene];
             break;
         case kButtonCareerPlay:
             CCLOG(@"TAP ON CAREER");
@@ -43,10 +43,21 @@
     }
 }
 
+- (void) onEnter {
+    CCLOG(@"ON ENTER");
+	[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+	[super onEnter];
+}
+
+- (void) onExit {
+    CCLOG(@"ON EXIT");
+	[[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
+	[super onExit];
+}
+
 - (id) init {
     self = [super initWithColor:ccc4(0,0,0,0)];
     if (self != nil) {
-        [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
         flag = 30;
         flag2 = 0;
         lightOn = YES;
@@ -117,7 +128,7 @@
         
         CCMenu *topMenu = [CCMenu menuWithItems:infoItem, settingsItem, nil];
         topMenu.position = CGPointZero;
-        [self addChild:topMenu z:12];
+        [self addChild:topMenu z:15];
         
         CCMoveTo *rightGibMoveIn = [CCMoveTo actionWithDuration:2.5 position:ccp(229.00, 235.00)];
         CCEaseInOut *easeRightGibMoveIn = [CCEaseInOut actionWithAction:rightGibMoveIn rate:5];
@@ -212,7 +223,6 @@
 }
 
 - (BOOL) ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {    
-    //[[GameManager sharedGameManager] runSceneWithID:kGameScene];
     return YES;
 }
 

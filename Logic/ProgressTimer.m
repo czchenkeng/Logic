@@ -37,7 +37,7 @@
 		myTime = currentTime;
 		[timeLabel setString:[NSString stringWithFormat:@"%i", myTime]];
         //CCLOG(@"timer %@",  [NSString stringWithFormat:@"%02d:%02d", myTime/60, myTime%60]);
-        int seconds = myTime % 10;
+        //int seconds = myTime % 10;
         //CCLOG(@"timer %i",  seconds < 10 ? seconds : abs(10 - seconds));
         //CCLOG(@"timer %i",  seconds);
 	}

@@ -9,14 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "Utils.h"
 
-typedef enum {
-    kButtonInfo,
-    kButtonSettings,
-    kButtonSinglePlay,
-    kButtonCareerPlay
-} buttonTypes;
-
-
 @interface MainLayer : CCLayerColor {
     int counter;
     int flag;

@@ -12,7 +12,7 @@
 
 @implementation GameManager
 
-@synthesize isMusicON, isSoundEffectsON, currentDifficulty, managerSoundState;
+@synthesize isMusicON, isSoundEffectsON, currentDifficulty, managerSoundState, musicVolume, soundVolume;
 static GameManager* _sharedGameManager = nil;
 
 +(GameManager*)sharedGameManager 
@@ -43,12 +43,14 @@ static GameManager* _sharedGameManager = nil;
     self = [super init];
     if (self != nil) {
         CCLOG(@"Logic debug: Game Manager Singleton, init");
+        musicVolume = 0.50;
+        soundVolume = 0.70;
         isMusicON = YES;
         isSoundEffectsON = YES;
         hasAudioBeenInitialized = NO;
         soundEngine = nil;
         managerSoundState = kAudioManagerUninitialized;
-        currentDifficulty = kHard;
+        currentDifficulty = kEasy;
         currentScene = kNoSceneUninitialized;        
     }
     return self;
@@ -94,6 +96,12 @@ static GameManager* _sharedGameManager = nil;
         case kMainScene: 
             sceneToRun = [MainScene node];
             break;
+        case kSettingsScene: 
+            sceneToRun = [SettingsScene node];
+            break;
+        case kCareerScene: 
+            sceneToRun = [CareerScene node];
+            break;    
         default:
             CCLOG(@"Logic debug: Unknown ID, cannot switch scenes");
             return;

@@ -9,7 +9,7 @@
 #import "MainLayer.h"
 
 @interface MainScene : CCScene {
-    
+    CCLayer *mainLayer;
 }
 
 @end

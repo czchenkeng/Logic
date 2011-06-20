@@ -11,4 +11,19 @@
 
 @implementation SettingsScene
 
+- (id) init {
+    self = [super init];
+    if (self != nil) {
+        SettingsLayer *settingsLayer = [SettingsLayer node];
+        [self addChild:settingsLayer];
+    }
+    return self;
+}
+
+- (void) dealloc {
+    CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
+    
+    [super dealloc];
+}
+
 @end

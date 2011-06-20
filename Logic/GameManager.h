@@ -7,6 +7,8 @@
 //
 #import "Constants.h"
 #import "MainScene.h"
+#import "SettingsScene.h"
+#import "CareerScene.h"
 #import "SimpleAudioEngine.h"
 
 @interface GameManager : NSObject {
@@ -17,12 +19,16 @@
     GameManagerSoundState managerSoundState;
     GameDifficulty currentDifficulty;
     SceneTypes currentScene;
+    float musicVolume;
+    float soundVolume;
 }
 
 @property (readwrite) BOOL isMusicON;
 @property (readwrite) BOOL isSoundEffectsON;
 @property (readwrite) GameDifficulty currentDifficulty;
 @property (readwrite) GameManagerSoundState managerSoundState;
+@property (readwrite) float musicVolume;
+@property (readwrite) float soundVolume;
 
 + (GameManager*) sharedGameManager;
 - (void) runSceneWithID:(SceneTypes)sceneID;

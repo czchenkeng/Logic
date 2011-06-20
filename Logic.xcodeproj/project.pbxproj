@@ -161,6 +161,26 @@
 		A37D867E13A6D55D00B880BA /* ProgressTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = A37D867D13A6D55C00B880BA /* ProgressTimer.m */; };
 		A37D868113A79D9500B880BA /* Mask.m in Sources */ = {isa = PBXBuildFile; fileRef = A37D868013A79D9500B880BA /* Mask.m */; };
 		A3855AD51383298000B680EF /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A3855AD41383298000B680EF /* GameScene.m */; };
+		A38596E813AF58BE008CF9C5 /* CCBigImage.m in Sources */ = {isa = PBXBuildFile; fileRef = A38596BB13AF58BE008CF9C5 /* CCBigImage.m */; };
+		A38596E913AF58BE008CF9C5 /* CCTextureCache+CCBigImageExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = A38596BD13AF58BE008CF9C5 /* CCTextureCache+CCBigImageExtensions.m */; };
+		A38596EB13AF58BE008CF9C5 /* CCMenuAdvanced.m in Sources */ = {isa = PBXBuildFile; fileRef = A38596C113AF58BE008CF9C5 /* CCMenuAdvanced.m */; };
+		A38596ED13AF58BE008CF9C5 /* CCMenuItemSpriteIndependent.m in Sources */ = {isa = PBXBuildFile; fileRef = A38596C513AF58BE008CF9C5 /* CCMenuItemSpriteIndependent.m */; };
+		A38596EF13AF58BE008CF9C5 /* CCScrollLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A38596C913AF58BE008CF9C5 /* CCScrollLayer.m */; };
+		A38596F113AF58BE008CF9C5 /* CCSendMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = A38596CD13AF58BE008CF9C5 /* CCSendMessages.m */; };
+		A38596F313AF58BE008CF9C5 /* CCSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = A38596D113AF58BE008CF9C5 /* CCSlider.m */; };
+		A38596F513AF58BE008CF9C5 /* CCVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A38596D513AF58BE008CF9C5 /* CCVideoPlayer.m */; };
+		A38596F613AF58BE008CF9C5 /* CCVideoPlayerImpliOS.m in Sources */ = {isa = PBXBuildFile; fileRef = A38596D813AF58BE008CF9C5 /* CCVideoPlayerImpliOS.m */; };
+		A38596F713AF58BE008CF9C5 /* videoOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = A38596DA13AF58BE008CF9C5 /* videoOverlayView.m */; };
+		A38596F813AF58BE008CF9C5 /* CCVideoPlayerImplMac.m in Sources */ = {isa = PBXBuildFile; fileRef = A38596DD13AF58BE008CF9C5 /* CCVideoPlayerImplMac.m */; };
+		A38596F913AF58BE008CF9C5 /* CustomVideoView.nib in Resources */ = {isa = PBXBuildFile; fileRef = A38596DE13AF58BE008CF9C5 /* CustomVideoView.nib */; };
+		A38596FA13AF58BE008CF9C5 /* MyMovieView.m in Sources */ = {isa = PBXBuildFile; fileRef = A38596E013AF58BE008CF9C5 /* MyMovieView.m */; };
+		A38596FC13AF58BE008CF9C5 /* FilesDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = A38596E413AF58BE008CF9C5 /* FilesDownloader.m */; };
+		A38596FE13AF58BE008CF9C5 /* SingleFileDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = A38596E713AF58BE008CF9C5 /* SingleFileDownloader.m */; };
+		A385970113AF5B0F008CF9C5 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A385970013AF5B0E008CF9C5 /* MediaPlayer.framework */; };
+		A385970313AF7F4D008CF9C5 /* Hq-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A385970213AF7F4D008CF9C5 /* Hq-hd.pvr.ccz */; };
+		A385970613AF97A5008CF9C5 /* PressMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = A385970513AF97A4008CF9C5 /* PressMenu.m */; };
+		A385970A13AFDE72008CF9C5 /* CareerScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A385970913AFDE72008CF9C5 /* CareerScene.m */; };
+		A385970D13AFE17C008CF9C5 /* CareerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A385970C13AFE17C008CF9C5 /* CareerLayer.m */; };
 		A3C25263139EA4D5002A31B1 /* LevelBg-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3C2525D139EA4D4002A31B1 /* LevelBg-hd.plist */; };
 		A3C25264139EA4D5002A31B1 /* LevelBg-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A3C2525E139EA4D4002A31B1 /* LevelBg-hd.pvr.ccz */; };
 		A3C25265139EA4D5002A31B1 /* LevelBg.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3C2525F139EA4D4002A31B1 /* LevelBg.plist */; };
@@ -456,6 +476,51 @@
 		A37D868013A79D9500B880BA /* Mask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mask.m; sourceTree = "<group>"; };
 		A3855AD31383298000B680EF /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
 		A3855AD41383298000B680EF /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
+		A38596BA13AF58BE008CF9C5 /* CCBigImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCBigImage.h; sourceTree = "<group>"; };
+		A38596BB13AF58BE008CF9C5 /* CCBigImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCBigImage.m; sourceTree = "<group>"; };
+		A38596BC13AF58BE008CF9C5 /* CCTextureCache+CCBigImageExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCTextureCache+CCBigImageExtensions.h"; sourceTree = "<group>"; };
+		A38596BD13AF58BE008CF9C5 /* CCTextureCache+CCBigImageExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCTextureCache+CCBigImageExtensions.m"; sourceTree = "<group>"; };
+		A38596BE13AF58BE008CF9C5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		A38596C013AF58BE008CF9C5 /* CCMenuAdvanced.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCMenuAdvanced.h; sourceTree = "<group>"; };
+		A38596C113AF58BE008CF9C5 /* CCMenuAdvanced.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCMenuAdvanced.m; sourceTree = "<group>"; };
+		A38596C213AF58BE008CF9C5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		A38596C413AF58BE008CF9C5 /* CCMenuItemSpriteIndependent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCMenuItemSpriteIndependent.h; sourceTree = "<group>"; };
+		A38596C513AF58BE008CF9C5 /* CCMenuItemSpriteIndependent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCMenuItemSpriteIndependent.m; sourceTree = "<group>"; };
+		A38596C613AF58BE008CF9C5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		A38596C813AF58BE008CF9C5 /* CCScrollLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCScrollLayer.h; sourceTree = "<group>"; };
+		A38596C913AF58BE008CF9C5 /* CCScrollLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCScrollLayer.m; sourceTree = "<group>"; };
+		A38596CA13AF58BE008CF9C5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		A38596CC13AF58BE008CF9C5 /* CCSendMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCSendMessages.h; sourceTree = "<group>"; };
+		A38596CD13AF58BE008CF9C5 /* CCSendMessages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSendMessages.m; sourceTree = "<group>"; };
+		A38596CE13AF58BE008CF9C5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		A38596D013AF58BE008CF9C5 /* CCSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCSlider.h; sourceTree = "<group>"; };
+		A38596D113AF58BE008CF9C5 /* CCSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSlider.m; sourceTree = "<group>"; };
+		A38596D213AF58BE008CF9C5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		A38596D413AF58BE008CF9C5 /* CCVideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCVideoPlayer.h; sourceTree = "<group>"; };
+		A38596D513AF58BE008CF9C5 /* CCVideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCVideoPlayer.m; sourceTree = "<group>"; };
+		A38596D713AF58BE008CF9C5 /* CCVideoPlayerImpliOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCVideoPlayerImpliOS.h; sourceTree = "<group>"; };
+		A38596D813AF58BE008CF9C5 /* CCVideoPlayerImpliOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCVideoPlayerImpliOS.m; sourceTree = "<group>"; };
+		A38596D913AF58BE008CF9C5 /* videoOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = videoOverlayView.h; sourceTree = "<group>"; };
+		A38596DA13AF58BE008CF9C5 /* videoOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = videoOverlayView.m; sourceTree = "<group>"; };
+		A38596DC13AF58BE008CF9C5 /* CCVideoPlayerImplMac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCVideoPlayerImplMac.h; sourceTree = "<group>"; };
+		A38596DD13AF58BE008CF9C5 /* CCVideoPlayerImplMac.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCVideoPlayerImplMac.m; sourceTree = "<group>"; };
+		A38596DE13AF58BE008CF9C5 /* CustomVideoView.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = CustomVideoView.nib; sourceTree = "<group>"; };
+		A38596DF13AF58BE008CF9C5 /* MyMovieView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyMovieView.h; sourceTree = "<group>"; };
+		A38596E013AF58BE008CF9C5 /* MyMovieView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyMovieView.m; sourceTree = "<group>"; };
+		A38596E113AF58BE008CF9C5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		A38596E313AF58BE008CF9C5 /* FilesDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesDownloader.h; sourceTree = "<group>"; };
+		A38596E413AF58BE008CF9C5 /* FilesDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesDownloader.m; sourceTree = "<group>"; };
+		A38596E513AF58BE008CF9C5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		A38596E613AF58BE008CF9C5 /* SingleFileDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleFileDownloader.h; sourceTree = "<group>"; };
+		A38596E713AF58BE008CF9C5 /* SingleFileDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleFileDownloader.m; sourceTree = "<group>"; };
+		A385970013AF5B0E008CF9C5 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		A385970213AF7F4D008CF9C5 /* Hq-hd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hq-hd.pvr.ccz"; sourceTree = "<group>"; };
+		A385970413AF97A4008CF9C5 /* PressMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PressMenu.h; sourceTree = "<group>"; };
+		A385970513AF97A4008CF9C5 /* PressMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PressMenu.m; sourceTree = "<group>"; };
+		A385970813AFDE72008CF9C5 /* CareerScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CareerScene.h; sourceTree = "<group>"; };
+		A385970913AFDE72008CF9C5 /* CareerScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CareerScene.m; sourceTree = "<group>"; };
+		A385970B13AFE17C008CF9C5 /* CareerLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CareerLayer.h; sourceTree = "<group>"; };
+		A385970C13AFE17C008CF9C5 /* CareerLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CareerLayer.m; sourceTree = "<group>"; };
 		A3C2525D139EA4D4002A31B1 /* LevelBg-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LevelBg-hd.plist"; sourceTree = "<group>"; };
 		A3C2525E139EA4D4002A31B1 /* LevelBg-hd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LevelBg-hd.pvr.ccz"; sourceTree = "<group>"; };
 		A3C2525F139EA4D4002A31B1 /* LevelBg.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = LevelBg.plist; sourceTree = "<group>"; };
@@ -469,6 +534,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A385970113AF5B0F008CF9C5 /* MediaPlayer.framework in Frameworks */,
 				A3213BFE137310F5006F18FB /* QuartzCore.framework in Frameworks */,
 				A3213C00137310F5006F18FB /* OpenGLES.framework in Frameworks */,
 				A3213C02137310F5006F18FB /* OpenAL.framework in Frameworks */,
@@ -525,6 +591,7 @@
 		A3213BFC137310F5006F18FB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A385970013AF5B0E008CF9C5 /* MediaPlayer.framework */,
 				A3213BFD137310F5006F18FB /* QuartzCore.framework */,
 				A3213BFF137310F5006F18FB /* OpenGLES.framework */,
 				A3213C01137310F5006F18FB /* OpenAL.framework */,
@@ -540,6 +607,7 @@
 		A3213C0D137310F5006F18FB /* Logic */ = {
 			isa = PBXGroup;
 			children = (
+				A38596B813AF58BE008CF9C5 /* Extensions */,
 				A31B614213958C0700FE697F /* particles */,
 				A35D801B1395675F00B07F39 /* sounds */,
 				A35F3F0713893F6300F5D71A /* images */,
@@ -912,6 +980,7 @@
 		A35F3F0713893F6300F5D71A /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A385970213AF7F4D008CF9C5 /* Hq-hd.pvr.ccz */,
 				A3144CD013AE6A7100E292C4 /* Settings-hd.pvr.ccz */,
 				A3144CD113AE6A7100E292C4 /* Settings-hd.plist */,
 				A3144CD213AE6A7100E292C4 /* Settings.pvr.ccz */,
@@ -948,6 +1017,7 @@
 		A379499E1376A11E002E53FD /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				A385970713AFC7B8008CF9C5 /* Career */,
 				A3144CCE13AE628D00E292C4 /* Settings */,
 				A3339DE9139E610200EE5D71 /* Level */,
 				A37949A11376F45B002E53FD /* Constants */,
@@ -958,6 +1028,8 @@
 				A35D8008139515FC00B07F39 /* MainScene.m */,
 				A35D80121395181500B07F39 /* MainLayer.h */,
 				A35D80131395181500B07F39 /* MainLayer.m */,
+				A385970413AF97A4008CF9C5 /* PressMenu.h */,
+				A385970513AF97A4008CF9C5 /* PressMenu.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -979,6 +1051,141 @@
 				A37949A21376F485002E53FD /* Constants.h */,
 			);
 			name = Constants;
+			sourceTree = "<group>";
+		};
+		A38596B813AF58BE008CF9C5 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A38596B913AF58BE008CF9C5 /* CCBigImage */,
+				A38596BF13AF58BE008CF9C5 /* CCMenuAdvanced */,
+				A38596C313AF58BE008CF9C5 /* CCMenuItemSpriteIndependent */,
+				A38596C713AF58BE008CF9C5 /* CCScrollLayer */,
+				A38596CB13AF58BE008CF9C5 /* CCSendMessages */,
+				A38596CF13AF58BE008CF9C5 /* CCSlider */,
+				A38596D313AF58BE008CF9C5 /* CCVideoPlayer */,
+				A38596E213AF58BE008CF9C5 /* FilesDownloader */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		A38596B913AF58BE008CF9C5 /* CCBigImage */ = {
+			isa = PBXGroup;
+			children = (
+				A38596BA13AF58BE008CF9C5 /* CCBigImage.h */,
+				A38596BB13AF58BE008CF9C5 /* CCBigImage.m */,
+				A38596BC13AF58BE008CF9C5 /* CCTextureCache+CCBigImageExtensions.h */,
+				A38596BD13AF58BE008CF9C5 /* CCTextureCache+CCBigImageExtensions.m */,
+				A38596BE13AF58BE008CF9C5 /* README.md */,
+			);
+			path = CCBigImage;
+			sourceTree = "<group>";
+		};
+		A38596BF13AF58BE008CF9C5 /* CCMenuAdvanced */ = {
+			isa = PBXGroup;
+			children = (
+				A38596C013AF58BE008CF9C5 /* CCMenuAdvanced.h */,
+				A38596C113AF58BE008CF9C5 /* CCMenuAdvanced.m */,
+				A38596C213AF58BE008CF9C5 /* README.md */,
+			);
+			path = CCMenuAdvanced;
+			sourceTree = "<group>";
+		};
+		A38596C313AF58BE008CF9C5 /* CCMenuItemSpriteIndependent */ = {
+			isa = PBXGroup;
+			children = (
+				A38596C413AF58BE008CF9C5 /* CCMenuItemSpriteIndependent.h */,
+				A38596C513AF58BE008CF9C5 /* CCMenuItemSpriteIndependent.m */,
+				A38596C613AF58BE008CF9C5 /* README.md */,
+			);
+			path = CCMenuItemSpriteIndependent;
+			sourceTree = "<group>";
+		};
+		A38596C713AF58BE008CF9C5 /* CCScrollLayer */ = {
+			isa = PBXGroup;
+			children = (
+				A38596C813AF58BE008CF9C5 /* CCScrollLayer.h */,
+				A38596C913AF58BE008CF9C5 /* CCScrollLayer.m */,
+				A38596CA13AF58BE008CF9C5 /* README.md */,
+			);
+			path = CCScrollLayer;
+			sourceTree = "<group>";
+		};
+		A38596CB13AF58BE008CF9C5 /* CCSendMessages */ = {
+			isa = PBXGroup;
+			children = (
+				A38596CC13AF58BE008CF9C5 /* CCSendMessages.h */,
+				A38596CD13AF58BE008CF9C5 /* CCSendMessages.m */,
+				A38596CE13AF58BE008CF9C5 /* README.md */,
+			);
+			path = CCSendMessages;
+			sourceTree = "<group>";
+		};
+		A38596CF13AF58BE008CF9C5 /* CCSlider */ = {
+			isa = PBXGroup;
+			children = (
+				A38596D013AF58BE008CF9C5 /* CCSlider.h */,
+				A38596D113AF58BE008CF9C5 /* CCSlider.m */,
+				A38596D213AF58BE008CF9C5 /* README.md */,
+			);
+			path = CCSlider;
+			sourceTree = "<group>";
+		};
+		A38596D313AF58BE008CF9C5 /* CCVideoPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				A38596D413AF58BE008CF9C5 /* CCVideoPlayer.h */,
+				A38596D513AF58BE008CF9C5 /* CCVideoPlayer.m */,
+				A38596D613AF58BE008CF9C5 /* iOS */,
+				A38596DB13AF58BE008CF9C5 /* Mac */,
+				A38596E113AF58BE008CF9C5 /* README.md */,
+			);
+			path = CCVideoPlayer;
+			sourceTree = "<group>";
+		};
+		A38596D613AF58BE008CF9C5 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				A38596D713AF58BE008CF9C5 /* CCVideoPlayerImpliOS.h */,
+				A38596D813AF58BE008CF9C5 /* CCVideoPlayerImpliOS.m */,
+				A38596D913AF58BE008CF9C5 /* videoOverlayView.h */,
+				A38596DA13AF58BE008CF9C5 /* videoOverlayView.m */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		A38596DB13AF58BE008CF9C5 /* Mac */ = {
+			isa = PBXGroup;
+			children = (
+				A38596DC13AF58BE008CF9C5 /* CCVideoPlayerImplMac.h */,
+				A38596DD13AF58BE008CF9C5 /* CCVideoPlayerImplMac.m */,
+				A38596DE13AF58BE008CF9C5 /* CustomVideoView.nib */,
+				A38596DF13AF58BE008CF9C5 /* MyMovieView.h */,
+				A38596E013AF58BE008CF9C5 /* MyMovieView.m */,
+			);
+			path = Mac;
+			sourceTree = "<group>";
+		};
+		A38596E213AF58BE008CF9C5 /* FilesDownloader */ = {
+			isa = PBXGroup;
+			children = (
+				A38596E313AF58BE008CF9C5 /* FilesDownloader.h */,
+				A38596E413AF58BE008CF9C5 /* FilesDownloader.m */,
+				A38596E513AF58BE008CF9C5 /* README.md */,
+				A38596E613AF58BE008CF9C5 /* SingleFileDownloader.h */,
+				A38596E713AF58BE008CF9C5 /* SingleFileDownloader.m */,
+			);
+			path = FilesDownloader;
+			sourceTree = "<group>";
+		};
+		A385970713AFC7B8008CF9C5 /* Career */ = {
+			isa = PBXGroup;
+			children = (
+				A385970813AFDE72008CF9C5 /* CareerScene.h */,
+				A385970913AFDE72008CF9C5 /* CareerScene.m */,
+				A385970B13AFE17C008CF9C5 /* CareerLayer.h */,
+				A385970C13AFE17C008CF9C5 /* CareerLayer.m */,
+			);
+			name = Career;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1071,6 +1278,8 @@
 				A3144CD513AE6A7100E292C4 /* Settings-hd.plist in Resources */,
 				A3144CD613AE6A7100E292C4 /* Settings.pvr.ccz in Resources */,
 				A3144CD713AE6A7100E292C4 /* Settings.plist in Resources */,
+				A38596F913AF58BE008CF9C5 /* CustomVideoView.nib in Resources */,
+				A385970313AF7F4D008CF9C5 /* Hq-hd.pvr.ccz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1190,6 +1399,23 @@
 				A37D868113A79D9500B880BA /* Mask.m in Sources */,
 				A3144CDA13AE6AC100E292C4 /* SettingsScene.m in Sources */,
 				A3144CDD13AE6ADF00E292C4 /* SettingsLayer.m in Sources */,
+				A38596E813AF58BE008CF9C5 /* CCBigImage.m in Sources */,
+				A38596E913AF58BE008CF9C5 /* CCTextureCache+CCBigImageExtensions.m in Sources */,
+				A38596EB13AF58BE008CF9C5 /* CCMenuAdvanced.m in Sources */,
+				A38596ED13AF58BE008CF9C5 /* CCMenuItemSpriteIndependent.m in Sources */,
+				A38596EF13AF58BE008CF9C5 /* CCScrollLayer.m in Sources */,
+				A38596F113AF58BE008CF9C5 /* CCSendMessages.m in Sources */,
+				A38596F313AF58BE008CF9C5 /* CCSlider.m in Sources */,
+				A38596F513AF58BE008CF9C5 /* CCVideoPlayer.m in Sources */,
+				A38596F613AF58BE008CF9C5 /* CCVideoPlayerImpliOS.m in Sources */,
+				A38596F713AF58BE008CF9C5 /* videoOverlayView.m in Sources */,
+				A38596F813AF58BE008CF9C5 /* CCVideoPlayerImplMac.m in Sources */,
+				A38596FA13AF58BE008CF9C5 /* MyMovieView.m in Sources */,
+				A38596FC13AF58BE008CF9C5 /* FilesDownloader.m in Sources */,
+				A38596FE13AF58BE008CF9C5 /* SingleFileDownloader.m in Sources */,
+				A385970613AF97A5008CF9C5 /* PressMenu.m in Sources */,
+				A385970A13AFDE72008CF9C5 /* CareerScene.m in Sources */,
+				A385970D13AFE17C008CF9C5 /* CareerLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

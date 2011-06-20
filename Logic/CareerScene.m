@@ -1,29 +1,29 @@
 //
-//  MainScene.m
+//  CareerScene.m
 //  Logic
 //
-//  Created by Pavel Krusek on 5/31/11.
+//  Created by Pavel Krusek on 6/20/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "MainScene.h"
+#import "CareerScene.h"
 
 
-@implementation MainScene
+@implementation CareerScene
+
 - (id) init {
     self = [super init];
     if (self != nil) {
-        mainLayer = [MainLayer node];
-        [self addChild:mainLayer];
+        careerLayer = [CareerLayer node];
+        [self addChild:careerLayer];
     }
     return self;
 }
 
 - (void) dealloc {
     CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
-//    [mainLayer release];
-//    mainLayer = nil;
-    [super dealloc];    
+    
+    [super dealloc];
 }
 
 @end

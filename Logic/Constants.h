@@ -7,10 +7,20 @@
 //
 
 typedef enum {
+    kButtonInfo,
+    kButtonSettings,
+    kButtonSinglePlay,
+    kButtonCareerPlay,
+    kButtonBack,  
+    kButtonScore
+} buttonTypes;
+
+typedef enum {
     kNoSceneUninitialized = 0,
     kGameScene = 1,
     kMainScene = 2,
-    kSettingsScene = 3
+    kSettingsScene = 3,
+    kCareerScene = 4
 } SceneTypes;
 
 typedef enum {
