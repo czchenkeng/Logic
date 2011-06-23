@@ -45,15 +45,28 @@ static GameManager* _sharedGameManager = nil;
         CCLOG(@"Logic debug: Game Manager Singleton, init");
         musicVolume = 0.50;
         soundVolume = 0.70;
+        [SimpleAudioEngine sharedEngine].backgroundMusicVolume = musicVolume;
         isMusicON = YES;
         isSoundEffectsON = YES;
         hasAudioBeenInitialized = NO;
         soundEngine = nil;
         managerSoundState = kAudioManagerUninitialized;
-        currentDifficulty = kEasy;
+        currentDifficulty = kMedium;
         currentScene = kNoSceneUninitialized;        
     }
     return self;
+}
+
+- (float) musicVolume {
+    return musicVolume;
+}
+
+- (void) setMusicVolume:(float)musicValue {
+    musicVolume = musicValue;
+    if (musicValue < 0.05) {
+        musicValue = 0.00;
+    }
+    [SimpleAudioEngine sharedEngine].backgroundMusicVolume = musicValue;
 }
 
 //-(void)unloadAudioForSceneWithID:(NSNumber*)sceneIDNumber {
@@ -101,7 +114,10 @@ static GameManager* _sharedGameManager = nil;
             break;
         case kCareerScene: 
             sceneToRun = [CareerScene node];
-            break;    
+            break;
+        case kScoreScene: 
+            sceneToRun = [ScoreScene node];
+            break;            
         default:
             CCLOG(@"Logic debug: Unknown ID, cannot switch scenes");
             return;
@@ -172,7 +188,7 @@ static GameManager* _sharedGameManager = nil;
 }
 
 - (void) playBackgroundTrack:(NSString*)trackFileName {
-    CCLOG(@"MUSIC PLAYING %@", trackFileName);
+    CCLOG(@"Logic: MUSIC PLAYING %@", trackFileName);
     if ((managerSoundState != kAudioManagerReady) && (managerSoundState != kAudioManagerFailed)) {        
         int waitCycles = 0;
         while (waitCycles < AUDIO_MAX_WAITTIME) {

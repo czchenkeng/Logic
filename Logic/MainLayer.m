@@ -192,7 +192,7 @@
         CCSequence *moveSeq = [CCSequence actions:easeMoveLeft, easeMoveRight, nil];
         [logoShadow runAction:[CCRepeatForever actionWithAction:moveSeq]];
         
-        //[[GameManager sharedGameManager] playBackgroundTrack:BACKGROUND_TRACK_MAIN];
+        [[GameManager sharedGameManager] playBackgroundTrack:BACKGROUND_TRACK_MAIN];
         [self runParticle];
         [self scheduleUpdate];
     }

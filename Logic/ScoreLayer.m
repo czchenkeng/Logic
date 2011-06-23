@@ -1,37 +1,32 @@
 //
-//  SettingsLayer.m
+//  ScoreLayer.m
 //  Logic
 //
-//  Created by Pavel Krusek on 6/19/11.
+//  Created by Pavel Krusek on 6/22/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "SettingsLayer.h"
-//#import "CCSlider.h"
+#import "ScoreLayer.h"
 
-enum soundTags
-{
-	kMusicSliderTag,
-	kSoundSliderTag
-};
 
-@implementation SettingsLayer
+@implementation ScoreLayer
+
+
+- (void)onEnter {
+	[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+	[super onEnter];
+}
+
+- (void)onExit {
+	[[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
+	[super onExit];
+}
 
 - (void) buttonTapped:(CCMenuItem *)sender { 
     switch (sender.tag) {
-        case kButtonScore: 
-            CCLOG(@"TAP ON SCORE");
-            [[GameManager sharedGameManager] runSceneWithID:kScoreScene];
-            break;
         case kButtonBack:
             CCLOG(@"TAP ON BACK");
-            [[GameManager sharedGameManager] runSceneWithID:kMainScene];
-            break;
-//        case kButtonSinglePlay:
-//            CCLOG(@"TAP ON SINGLE");
-//            break;
-        case kButtonCareerPlay:
-            [[GameManager sharedGameManager] runSceneWithID:kCareerScene];
+            [[GameManager sharedGameManager] runSceneWithID:kSettingsScene];
             break;
         default:
             CCLOG(@"Logic debug: Unknown ID, cannot tap button");
@@ -69,82 +64,56 @@ enum soundTags
     CCSprite *currentButton = [difficulty objectAtIndex:flag];
     currentButton.visible = YES;
     
-    [GameManager sharedGameManager].currentDifficulty = sender.tag;
+    //[GameManager sharedGameManager].currentDifficulty = sender.tag;
 }
 
-- (void) muteTapped:(CCMenuItem *)sender {
-    musicSlider.value = 0;
-    soundSlider.value = 0; 
-}
-
-- (void)onEnter {
-	[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
-	[super onEnter];
-}
-
-- (void)onExit {
-	[[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
-	[super onExit];
-}
 
 - (id) init {
     self = [super init];
     if (self != nil) {
+
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0]; 
+        NSString *writableDBPath = [documentsDirectory stringByAppendingPathComponent:@"LogicDatabase.sqlite"];
+        CCLOG(@"dir %@", documentsDirectory);
+        db = [FMDatabase databaseWithPath:writableDBPath];
+        if (![db open])
+            CCLOG(@"Could not open db.");
+        else
+            CCLOG(@"Db is here!");
+        
+        FMResultSet *rs = [db executeQuery:@"SELECT * FROM scores", @"main"];
+        if ([db hadError]) {
+            NSLog(@"DB Error %d: %@", [db lastErrorCode], [db lastErrorMessage]);
+        }
+
+        CCLOG(@"co result set? %@", rs);
+        while ([rs next]) {
+            NSString *a = [rs stringForColumnIndex:1];
+            CCLOG(@"dbase result %@", a);
+        }
+        
+        [db close];
+        
         difficulty = [[CCArray alloc] init];
         
-        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Settings.plist"];
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"score.plist"];
         
         CCSprite *background = [CCSprite spriteWithSpriteFrameName:@"background.png"];
         background.anchorPoint = ccp(0,0);
         [self addChild:background z:1];
         
+        
         CCSprite *buttonBackOff = [CCSprite spriteWithSpriteFrameName:@"back_off.png"];
         CCSprite *buttonBackOn = [CCSprite spriteWithSpriteFrameName:@"back_on.png"];
-        CCSprite *buttonScoreOff = [CCSprite spriteWithSpriteFrameName:@"score-off.png"];
-        CCSprite *buttonScoreOn = [CCSprite spriteWithSpriteFrameName:@"score-on.png"];
-        CCSprite *buttonCareerOff = [CCSprite spriteWithSpriteFrameName:@"career-off.png"];
-        CCSprite *buttonCareerOn = [CCSprite spriteWithSpriteFrameName:@"career-on.png"];
         
         CCMenuItem *backItem = [CCMenuItemSprite itemFromNormalSprite:buttonBackOff selectedSprite:buttonBackOn target:self selector:@selector(buttonTapped:)];
         backItem.tag = kButtonBack;
         backItem.position = ccp(29.50, 453.50);
         
-        CCMenuItem *scoreItem = [CCMenuItemSprite itemFromNormalSprite:buttonScoreOff selectedSprite:buttonScoreOn target:self selector:@selector(buttonTapped:)];
-        scoreItem.tag = kButtonScore;
-        scoreItem.anchorPoint = ccp(0.00, 0.50);
-        scoreItem.position = ccp(56.50, 377.50);
-        
-        CCMenuItem *careerItem = [CCMenuItemSprite itemFromNormalSprite:buttonCareerOff selectedSprite:buttonCareerOn target:self selector:@selector(buttonTapped:)];
-        careerItem.tag = kButtonCareerPlay;
-        careerItem.position = ccp(56.50, 323.50);
-        careerItem.anchorPoint = ccp(0.00, 0.50);
-        
-        CCMenu *topMenu = [CCMenu menuWithItems:scoreItem, backItem, careerItem, nil];
+        CCMenu *topMenu = [CCMenu menuWithItems:backItem, nil];
         topMenu.position = CGPointZero;
         [self addChild:topMenu z:2];
-        
-        CCSprite *thumbMusicButtonOff = [CCSprite spriteWithSpriteFrameName:@"thumb.png"];
-        CCSprite *thumbMusicButtonOn = [CCSprite spriteWithSpriteFrameName:@"thumb.png"];
-        
-        CCSprite *thumbSoundButtonOff = [CCSprite spriteWithSpriteFrameName:@"thumb.png"];
-        CCSprite *thumbSoundButtonOn = [CCSprite spriteWithSpriteFrameName:@"thumb.png"];
-        
-        CCMenuItemSprite *thumbMusic = [CCMenuItemSprite itemFromNormalSprite:thumbMusicButtonOff selectedSprite:thumbMusicButtonOn];
-        CCMenuItemSprite *soundMusic = [CCMenuItemSprite itemFromNormalSprite:thumbSoundButtonOff selectedSprite:thumbSoundButtonOn];
-        
-        musicSlider = [CCSlider sliderWithBackgroundSprite: [CCSprite spriteWithSpriteFrameName:@"slider1Bg.png"] thumbMenuItem: thumbMusic];
-        musicSlider.position = ccp(180, 252);
-        musicSlider.tag = kMusicSliderTag;
-        musicSlider.value = [[GameManager sharedGameManager] musicVolume];
-        [self addChild:musicSlider z:3];
-		musicSlider.delegate = self;
-        
-        soundSlider = [CCSlider sliderWithBackgroundSprite: [CCSprite spriteWithSpriteFrameName:@"slider1Bg.png"] thumbMenuItem: soundMusic];
-        soundSlider.position = ccp(180, 213);
-        soundSlider.tag = kSoundSliderTag;
-        soundSlider.value = [[GameManager sharedGameManager] soundVolume];;
-        [self addChild:soundSlider z:4];
-		soundSlider.delegate = self;
         
         joyStick = [CCSprite spriteWithSpriteFrameName:@"logik_settpaka.png"];
         [self addChild:joyStick z:5];
@@ -201,24 +170,17 @@ enum soundTags
         [hard addChild:sprite z:2];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"pin_lezi3.png"];
-        sprite.position = ccp(313.50, 362.00);
-        sprite.rotation = 40;
+        sprite.position = ccp(316.00, 243.50);
+        sprite.rotation = -5;
         [self addChild:sprite z:100];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"pin_lezi2.png"];
-        sprite.position = ccp(296.00, 31.50);
+        sprite.position = ccp(23.50, 346.00);
         [self addChild:sprite z:101];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"pin_lezi1.png"];
-        sprite.position = ccp(278.50, 406.00);
+        sprite.position = ccp(306.50, 17.00);
         [self addChild:sprite z:102];
-        
-        CCSprite *muteOff = [CCSprite spriteWithSpriteFrameName:@"mute.png"];
-        CCSprite *muteOn = [CCSprite spriteWithSpriteFrameName:@"mute.png"];;
-        
-        CCMenuItem *mute = [CCMenuItemSprite itemFromNormalSprite:muteOff selectedSprite:muteOn target:self selector:@selector(muteTapped:)];
-        mute.position = ccp(74.50, 233.00);
-        //[self addChild:mute z:200];
         
         CCSprite *buttonEasyOff = [CCSprite spriteWithSpriteFrameName:@"difficultyButton.png"];
         CCSprite *buttonEasyOn = [CCSprite spriteWithSpriteFrameName:@"difficultyButton.png"];
@@ -239,7 +201,7 @@ enum soundTags
         hardItem.tag = kHard;
         hardItem.position = ccp(205.00, 53.00);
         
-        PressMenu *difficultyMenu = [PressMenu menuWithItems:easyItem, normalItem, hardItem, mute, nil];
+        PressMenu *difficultyMenu = [PressMenu menuWithItems:easyItem, normalItem, hardItem, nil];
         difficultyMenu.position = CGPointZero;
         [self addChild:difficultyMenu z:20];
         
@@ -258,27 +220,9 @@ enum soundTags
     return self;
 }
 
-- (void) valueChanged:(float)value tag:(int)tag {
-    value = MIN(value, 1.0f);
-    value = MAX(value, 0.0f);
-    
-    CCLOG(@"value is %f and tag %i", value, tag);
-    switch (tag) {
-        case kMusicSliderTag:
-            [GameManager sharedGameManager].musicVolume = value;
-            break;
-        case kSoundSliderTag:
-            [GameManager sharedGameManager].soundVolume = value;
-            break;
-        default:
-            break;
-    }
-}
-
-
 - (void) selectJoystick:(CGPoint)touchLocation {
     CCSprite *newSprite = nil;
-
+    
     if (CGRectContainsPoint(joyStick.boundingBox, touchLocation)) {            
         newSprite = joyStick;
     }
@@ -327,15 +271,6 @@ enum soundTags
                 break; 
         }
     }
-}
-
-- (void) dealloc {
-    CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
-    
-    [difficulty release];
-    difficulty = nil;
-    
-    [super dealloc];
 }
 
 @end

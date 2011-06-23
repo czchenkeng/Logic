@@ -13,18 +13,24 @@
 @interface Figure : CCSprite {
     FigureTypes currentFigure;
     CGPoint originalPosition;
+    CGPoint tempPosition;
     int place;
+    int oldPlace;
     BOOL isActive;//vyhodit? uz se umistene neposouvaji
     BOOL isCalculated;
+    BOOL isOnActiveRow;
 }
 
 - (Figure *) initWithFigureType:(FigureTypes)figureID;
 
 @property FigureTypes currentFigure;
 @property CGPoint originalPosition;
+@property CGPoint tempPosition;
 @property int place;
+@property int oldPlace;
 @property BOOL isActive;
 @property BOOL isCalculated;
+@property BOOL isOnActiveRow;
 
 - (void) destroy;
 

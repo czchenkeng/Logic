@@ -15,6 +15,16 @@
 		A30B4AB9139EDE7C003598DF /* AnimationsPad.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A30B4AB7139EDE7C003598DF /* AnimationsPad.pvr.ccz */; };
 		A30B4ABC139EDEF3003598DF /* LevelPad.plist in Resources */ = {isa = PBXBuildFile; fileRef = A30B4ABA139EDEF3003598DF /* LevelPad.plist */; };
 		A30B4ABD139EDEF3003598DF /* LevelPad.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A30B4ABB139EDEF3003598DF /* LevelPad.pvr.ccz */; };
+		A311720D13B20B6200880500 /* ScoreScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A311720C13B20B6200880500 /* ScoreScene.m */; };
+		A311721013B20DBA00880500 /* ScoreLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A311720F13B20DBA00880500 /* ScoreLayer.m */; };
+		A311721513B2103C00880500 /* score-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A311721113B2103C00880500 /* score-hd.plist */; };
+		A311721613B2103C00880500 /* score-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A311721213B2103C00880500 /* score-hd.pvr.ccz */; };
+		A311721713B2103C00880500 /* score.plist in Resources */ = {isa = PBXBuildFile; fileRef = A311721313B2103C00880500 /* score.plist */; };
+		A311721813B2103C00880500 /* score.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A311721413B2103C00880500 /* score.pvr.ccz */; };
+		A311722413B2242A00880500 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = A311721E13B2242A00880500 /* FMDatabase.m */; };
+		A311722513B2242A00880500 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A311722013B2242A00880500 /* FMDatabaseAdditions.m */; };
+		A311722713B2242A00880500 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = A311722313B2242A00880500 /* FMResultSet.m */; };
+		A311723113B226C400880500 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A311723013B226C400880500 /* libsqlite3.dylib */; };
 		A3144CD413AE6A7100E292C4 /* Settings-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A3144CD013AE6A7100E292C4 /* Settings-hd.pvr.ccz */; };
 		A3144CD513AE6A7100E292C4 /* Settings-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3144CD113AE6A7100E292C4 /* Settings-hd.plist */; };
 		A3144CD613AE6A7100E292C4 /* Settings.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A3144CD213AE6A7100E292C4 /* Settings.pvr.ccz */; };
@@ -140,6 +150,8 @@
 		A3213D5E137310F7006F18FB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A3213D5D137310F7006F18FB /* main.m */; };
 		A3213D61137310F7006F18FB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A3213D60137310F7006F18FB /* AppDelegate.m */; };
 		A3213D64137310F8006F18FB /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3213D63137310F7006F18FB /* RootViewController.m */; };
+		A3301BF813B243100059A40B /* LogicDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A3301BF713B243100059A40B /* LogicDatabase.sqlite */; };
+		A3301BFA13B2476B0059A40B /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A3301BF913B2476B0059A40B /* libsqlite3.0.dylib */; };
 		A3339DDD139E475800EE5D71 /* Main-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3339DD9139E475800EE5D71 /* Main-hd.plist */; };
 		A3339DDE139E475800EE5D71 /* Main-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A3339DDA139E475800EE5D71 /* Main-hd.pvr.ccz */; };
 		A3339DDF139E475800EE5D71 /* Main.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3339DDB139E475800EE5D71 /* Main.plist */; };
@@ -181,6 +193,11 @@
 		A385970613AF97A5008CF9C5 /* PressMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = A385970513AF97A4008CF9C5 /* PressMenu.m */; };
 		A385970A13AFDE72008CF9C5 /* CareerScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A385970913AFDE72008CF9C5 /* CareerScene.m */; };
 		A385970D13AFE17C008CF9C5 /* CareerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A385970C13AFE17C008CF9C5 /* CareerLayer.m */; };
+		A385971213AFE5AB008CF9C5 /* Career-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A385970E13AFE5AB008CF9C5 /* Career-hd.pvr.ccz */; };
+		A385971313AFE5AB008CF9C5 /* Career-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A385970F13AFE5AB008CF9C5 /* Career-hd.plist */; };
+		A385971413AFE5AB008CF9C5 /* Career.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A385971013AFE5AB008CF9C5 /* Career.pvr.ccz */; };
+		A385971513AFE5AB008CF9C5 /* Career.plist in Resources */ = {isa = PBXBuildFile; fileRef = A385971113AFE5AB008CF9C5 /* Career.plist */; };
+		A385972013B06FA1008CF9C5 /* ControlsLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A385971F13B06FA1008CF9C5 /* ControlsLayer.m */; };
 		A3C25263139EA4D5002A31B1 /* LevelBg-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3C2525D139EA4D4002A31B1 /* LevelBg-hd.plist */; };
 		A3C25264139EA4D5002A31B1 /* LevelBg-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A3C2525E139EA4D4002A31B1 /* LevelBg-hd.pvr.ccz */; };
 		A3C25265139EA4D5002A31B1 /* LevelBg.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3C2525F139EA4D4002A31B1 /* LevelBg.plist */; };
@@ -198,6 +215,21 @@
 		A30B4AB7139EDE7C003598DF /* AnimationsPad.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = AnimationsPad.pvr.ccz; sourceTree = "<group>"; };
 		A30B4ABA139EDEF3003598DF /* LevelPad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = LevelPad.plist; sourceTree = "<group>"; };
 		A30B4ABB139EDEF3003598DF /* LevelPad.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = LevelPad.pvr.ccz; sourceTree = "<group>"; };
+		A311720B13B20B6200880500 /* ScoreScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreScene.h; sourceTree = "<group>"; };
+		A311720C13B20B6200880500 /* ScoreScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreScene.m; sourceTree = "<group>"; };
+		A311720E13B20DBA00880500 /* ScoreLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreLayer.h; sourceTree = "<group>"; };
+		A311720F13B20DBA00880500 /* ScoreLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreLayer.m; sourceTree = "<group>"; };
+		A311721113B2103C00880500 /* score-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "score-hd.plist"; sourceTree = "<group>"; };
+		A311721213B2103C00880500 /* score-hd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "score-hd.pvr.ccz"; sourceTree = "<group>"; };
+		A311721313B2103C00880500 /* score.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = score.plist; sourceTree = "<group>"; };
+		A311721413B2103C00880500 /* score.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = score.pvr.ccz; sourceTree = "<group>"; };
+		A311721D13B2242A00880500 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
+		A311721E13B2242A00880500 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
+		A311721F13B2242A00880500 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		A311722013B2242A00880500 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		A311722213B2242A00880500 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
+		A311722313B2242A00880500 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
+		A311723013B226C400880500 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		A3144CD013AE6A7100E292C4 /* Settings-hd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Settings-hd.pvr.ccz"; sourceTree = "<group>"; };
 		A3144CD113AE6A7100E292C4 /* Settings-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Settings-hd.plist"; sourceTree = "<group>"; };
 		A3144CD213AE6A7100E292C4 /* Settings.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = Settings.pvr.ccz; sourceTree = "<group>"; };
@@ -445,6 +477,8 @@
 		A3213D62137310F7006F18FB /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		A3213D63137310F7006F18FB /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		A3213D68137310F8006F18FB /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
+		A3301BF713B243100059A40B /* LogicDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = LogicDatabase.sqlite; sourceTree = "<group>"; };
+		A3301BF913B2476B0059A40B /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		A3339DD9139E475800EE5D71 /* Main-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Main-hd.plist"; sourceTree = "<group>"; };
 		A3339DDA139E475800EE5D71 /* Main-hd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Main-hd.pvr.ccz"; sourceTree = "<group>"; };
 		A3339DDB139E475800EE5D71 /* Main.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Main.plist; sourceTree = "<group>"; };
@@ -521,6 +555,12 @@
 		A385970913AFDE72008CF9C5 /* CareerScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CareerScene.m; sourceTree = "<group>"; };
 		A385970B13AFE17C008CF9C5 /* CareerLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CareerLayer.h; sourceTree = "<group>"; };
 		A385970C13AFE17C008CF9C5 /* CareerLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CareerLayer.m; sourceTree = "<group>"; };
+		A385970E13AFE5AB008CF9C5 /* Career-hd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Career-hd.pvr.ccz"; sourceTree = "<group>"; };
+		A385970F13AFE5AB008CF9C5 /* Career-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Career-hd.plist"; sourceTree = "<group>"; };
+		A385971013AFE5AB008CF9C5 /* Career.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = Career.pvr.ccz; sourceTree = "<group>"; };
+		A385971113AFE5AB008CF9C5 /* Career.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Career.plist; sourceTree = "<group>"; };
+		A385971E13B06FA1008CF9C5 /* ControlsLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlsLayer.h; sourceTree = "<group>"; };
+		A385971F13B06FA1008CF9C5 /* ControlsLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlsLayer.m; sourceTree = "<group>"; };
 		A3C2525D139EA4D4002A31B1 /* LevelBg-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LevelBg-hd.plist"; sourceTree = "<group>"; };
 		A3C2525E139EA4D4002A31B1 /* LevelBg-hd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LevelBg-hd.pvr.ccz"; sourceTree = "<group>"; };
 		A3C2525F139EA4D4002A31B1 /* LevelBg.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = LevelBg.plist; sourceTree = "<group>"; };
@@ -534,6 +574,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3301BFA13B2476B0059A40B /* libsqlite3.0.dylib in Frameworks */,
+				A311723113B226C400880500 /* libsqlite3.dylib in Frameworks */,
 				A385970113AF5B0F008CF9C5 /* MediaPlayer.framework in Frameworks */,
 				A3213BFE137310F5006F18FB /* QuartzCore.framework in Frameworks */,
 				A3213C00137310F5006F18FB /* OpenGLES.framework in Frameworks */,
@@ -549,6 +591,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A311721913B2211F00880500 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				A3301BF713B243100059A40B /* LogicDatabase.sqlite */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
+		A311721C13B2242A00880500 /* fmdb */ = {
+			isa = PBXGroup;
+			children = (
+				A311721D13B2242A00880500 /* FMDatabase.h */,
+				A311721E13B2242A00880500 /* FMDatabase.m */,
+				A311721F13B2242A00880500 /* FMDatabaseAdditions.h */,
+				A311722013B2242A00880500 /* FMDatabaseAdditions.m */,
+				A311722213B2242A00880500 /* FMResultSet.h */,
+				A311722313B2242A00880500 /* FMResultSet.m */,
+			);
+			name = fmdb;
+			path = libs/fmdb;
+			sourceTree = "<group>";
+		};
 		A3144CCE13AE628D00E292C4 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -591,6 +655,8 @@
 		A3213BFC137310F5006F18FB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A3301BF913B2476B0059A40B /* libsqlite3.0.dylib */,
+				A311723013B226C400880500 /* libsqlite3.dylib */,
 				A385970013AF5B0E008CF9C5 /* MediaPlayer.framework */,
 				A3213BFD137310F5006F18FB /* QuartzCore.framework */,
 				A3213BFF137310F5006F18FB /* OpenGLES.framework */,
@@ -607,6 +673,7 @@
 		A3213C0D137310F5006F18FB /* Logic */ = {
 			isa = PBXGroup;
 			children = (
+				A311721913B2211F00880500 /* data */,
 				A38596B813AF58BE008CF9C5 /* Extensions */,
 				A31B614213958C0700FE697F /* particles */,
 				A35D801B1395675F00B07F39 /* sounds */,
@@ -642,6 +709,7 @@
 		A3213C22137310F5006F18FB /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				A311721C13B2242A00880500 /* fmdb */,
 				A3213D18137310F7006F18FB /* LICENSE_cocos2d.txt */,
 				A3213D27137310F7006F18FB /* LICENSE_CocosDenshion.txt */,
 				A3213D32137310F7006F18FB /* LICENSE_TouchJSON.txt */,
@@ -980,6 +1048,14 @@
 		A35F3F0713893F6300F5D71A /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A311721113B2103C00880500 /* score-hd.plist */,
+				A311721213B2103C00880500 /* score-hd.pvr.ccz */,
+				A311721313B2103C00880500 /* score.plist */,
+				A311721413B2103C00880500 /* score.pvr.ccz */,
+				A385970E13AFE5AB008CF9C5 /* Career-hd.pvr.ccz */,
+				A385970F13AFE5AB008CF9C5 /* Career-hd.plist */,
+				A385971013AFE5AB008CF9C5 /* Career.pvr.ccz */,
+				A385971113AFE5AB008CF9C5 /* Career.plist */,
 				A385970213AF7F4D008CF9C5 /* Hq-hd.pvr.ccz */,
 				A3144CD013AE6A7100E292C4 /* Settings-hd.pvr.ccz */,
 				A3144CD113AE6A7100E292C4 /* Settings-hd.plist */,
@@ -1017,6 +1093,7 @@
 		A379499E1376A11E002E53FD /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				A385972913B1F5DD008CF9C5 /* Score */,
 				A385970713AFC7B8008CF9C5 /* Career */,
 				A3144CCE13AE628D00E292C4 /* Settings */,
 				A3339DE9139E610200EE5D71 /* Level */,
@@ -1184,8 +1261,21 @@
 				A385970913AFDE72008CF9C5 /* CareerScene.m */,
 				A385970B13AFE17C008CF9C5 /* CareerLayer.h */,
 				A385970C13AFE17C008CF9C5 /* CareerLayer.m */,
+				A385971E13B06FA1008CF9C5 /* ControlsLayer.h */,
+				A385971F13B06FA1008CF9C5 /* ControlsLayer.m */,
 			);
 			name = Career;
+			sourceTree = "<group>";
+		};
+		A385972913B1F5DD008CF9C5 /* Score */ = {
+			isa = PBXGroup;
+			children = (
+				A311720B13B20B6200880500 /* ScoreScene.h */,
+				A311720C13B20B6200880500 /* ScoreScene.m */,
+				A311720E13B20DBA00880500 /* ScoreLayer.h */,
+				A311720F13B20DBA00880500 /* ScoreLayer.m */,
+			);
+			name = Score;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1280,6 +1370,15 @@
 				A3144CD713AE6A7100E292C4 /* Settings.plist in Resources */,
 				A38596F913AF58BE008CF9C5 /* CustomVideoView.nib in Resources */,
 				A385970313AF7F4D008CF9C5 /* Hq-hd.pvr.ccz in Resources */,
+				A385971213AFE5AB008CF9C5 /* Career-hd.pvr.ccz in Resources */,
+				A385971313AFE5AB008CF9C5 /* Career-hd.plist in Resources */,
+				A385971413AFE5AB008CF9C5 /* Career.pvr.ccz in Resources */,
+				A385971513AFE5AB008CF9C5 /* Career.plist in Resources */,
+				A311721513B2103C00880500 /* score-hd.plist in Resources */,
+				A311721613B2103C00880500 /* score-hd.pvr.ccz in Resources */,
+				A311721713B2103C00880500 /* score.plist in Resources */,
+				A311721813B2103C00880500 /* score.pvr.ccz in Resources */,
+				A3301BF813B243100059A40B /* LogicDatabase.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1416,6 +1515,12 @@
 				A385970613AF97A5008CF9C5 /* PressMenu.m in Sources */,
 				A385970A13AFDE72008CF9C5 /* CareerScene.m in Sources */,
 				A385970D13AFE17C008CF9C5 /* CareerLayer.m in Sources */,
+				A385972013B06FA1008CF9C5 /* ControlsLayer.m in Sources */,
+				A311720D13B20B6200880500 /* ScoreScene.m in Sources */,
+				A311721013B20DBA00880500 /* ScoreLayer.m in Sources */,
+				A311722413B2242A00880500 /* FMDatabase.m in Sources */,
+				A311722513B2242A00880500 /* FMDatabaseAdditions.m in Sources */,
+				A311722713B2242A00880500 /* FMResultSet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

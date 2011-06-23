@@ -8,9 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "CareerLayer.h"
+#import "ControlsLayer.h"
 
 @interface CareerScene : CCScene {
     CareerLayer *careerLayer;
+    ControlsLayer *controlLayer;
+    
 }
 
 @end

@@ -20,7 +20,8 @@ typedef enum {
     kGameScene = 1,
     kMainScene = 2,
     kSettingsScene = 3,
-    kCareerScene = 4
+    kCareerScene = 4,
+    kScoreScene = 5
 } SceneTypes;
 
 typedef enum {
@@ -41,7 +42,7 @@ typedef enum {
 } GameDifficulty;
 
 #define MIN_DISTANCE_SWIPE_X 200
-#define MIN_DISTANCE_SWIPE_Y 100
+#define MIN_DISTANCE_SWIPE_Y 20
 #define LEVEL_SWIPE_AFTER_ROW 7
 #define LEVEL_DISLOCATION 94
 

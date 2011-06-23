@@ -1,24 +1,21 @@
 //
-//  CareerScene.m
+//  Score.m
 //  Logic
 //
-//  Created by Pavel Krusek on 6/20/11.
+//  Created by Pavel Krusek on 6/22/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "CareerScene.h"
+#import "ScoreScene.h"
 
 
-@implementation CareerScene
+@implementation ScoreScene
 
 - (id) init {
     self = [super init];
     if (self != nil) {
-        careerLayer = [CareerLayer node];
-        [self addChild:careerLayer z:1];
-        
-        controlLayer = [ControlsLayer node];
-        [self addChild:controlLayer z:2];
+        scoreLayer = [ScoreLayer node];
+        [self addChild:scoreLayer z:1];
     }
     return self;
 }

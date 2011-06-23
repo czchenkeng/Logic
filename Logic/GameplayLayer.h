@@ -65,6 +65,11 @@
     int colors;
     
     NSMutableArray *touchArray;
+    
+    float difficultyPadding;
+    
+    int lastPlace;//asi vyhodit?
+    int dir;
 }
 
 //@property GameDifficulty currentDifficulty;

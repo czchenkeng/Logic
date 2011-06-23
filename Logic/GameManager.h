@@ -9,6 +9,7 @@
 #import "MainScene.h"
 #import "SettingsScene.h"
 #import "CareerScene.h"
+#import "ScoreScene.h"
 #import "SimpleAudioEngine.h"
 
 @interface GameManager : NSObject {

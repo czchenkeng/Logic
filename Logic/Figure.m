@@ -11,7 +11,7 @@
 
 @implementation Figure
 
-@synthesize currentFigure, originalPosition, place, isActive, isCalculated;
+@synthesize currentFigure, originalPosition, tempPosition, place, oldPlace, isActive, isCalculated, isOnActiveRow;
 
 - (Figure *) initWithFigureType:(FigureTypes)figureID {    
     //self = [super initWithFile:imageFile];
@@ -19,8 +19,10 @@
     
     currentFigure = figureID;
     place = -1;
+    oldPlace = -1;
     isActive = YES;
     isCalculated = NO;
+    isOnActiveRow = NO;
     
     //if (self) {
         NSString *imageFile;

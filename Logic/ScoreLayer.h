@@ -1,20 +1,20 @@
 //
-//  SettingsLayer.h
+//  ScoreLayer.h
 //  Logic
 //
-//  Created by Pavel Krusek on 6/19/11.
+//  Created by Pavel Krusek on 6/22/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "CCSlider.h"
-#import "PressMenu.h"
+#import "FMDatabase.h"
+#import "FMDatabaseAdditions.h"
 
-@interface SettingsLayer : CCLayer <CCSliderControlDelegate> {
-    CCArray *difficulty;
+
+@interface ScoreLayer : CCLayer {
+    FMDatabase *db;
     
-    CCSlider *musicSlider;
-    CCSlider *soundSlider;
+    CCArray *difficulty;
     
     CCSprite *easy;
     CCSprite *normal;
