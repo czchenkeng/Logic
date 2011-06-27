@@ -48,5 +48,9 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>BellGothicStd-Bold.otf</string>
+	</array>
 </dict>
 </plist>

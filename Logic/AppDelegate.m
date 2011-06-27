@@ -113,8 +113,8 @@
 	// Run the intro Scene
     [[GameManager sharedGameManager] setupAudioEngine];
     //[[GameManager sharedGameManager] runSceneWithID:kGameScene];
-    //[[GameManager sharedGameManager] runSceneWithID:kMainScene];
-    [[GameManager sharedGameManager] runSceneWithID:kScoreScene];
+    [[GameManager sharedGameManager] runSceneWithID:kMainScene];
+    //[[GameManager sharedGameManager] runSceneWithID:kScoreScene];
 }
 
 

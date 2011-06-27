@@ -36,6 +36,7 @@
 		A31B61491395911B00FE697F /* particleTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = A31B61481395911B00FE697F /* particleTexture.png */; };
 		A31B614B1395914900FE697F /* Main_rain-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A31B614A1395914900FE697F /* Main_rain-hd.plist */; };
 		A31B614D1395917B00FE697F /* particleTexture-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = A31B614C1395917B00FE697F /* particleTexture-hd.png */; };
+		A31F1BE813B651DF00A722FC /* LogicDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A31F1BE713B651DF00A722FC /* LogicDatabase.sqlite */; };
 		A3213BFE137310F5006F18FB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3213BFD137310F5006F18FB /* QuartzCore.framework */; };
 		A3213C00137310F5006F18FB /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3213BFF137310F5006F18FB /* OpenGLES.framework */; };
 		A3213C02137310F5006F18FB /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3213C01137310F5006F18FB /* OpenAL.framework */; };
@@ -150,7 +151,10 @@
 		A3213D5E137310F7006F18FB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A3213D5D137310F7006F18FB /* main.m */; };
 		A3213D61137310F7006F18FB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A3213D60137310F7006F18FB /* AppDelegate.m */; };
 		A3213D64137310F8006F18FB /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3213D63137310F7006F18FB /* RootViewController.m */; };
-		A3301BF813B243100059A40B /* LogicDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A3301BF713B243100059A40B /* LogicDatabase.sqlite */; };
+		A3217DD513B74C7500CEB9FE /* CCUIViewWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = A3217DD413B74C7500CEB9FE /* CCUIViewWrapper.m */; };
+		A3217DD813B74CDB00CEB9FE /* Score.m in Sources */ = {isa = PBXBuildFile; fileRef = A3217DD713B74CDB00CEB9FE /* Score.m */; };
+		A3217DDB13B753C700CEB9FE /* ScoresListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3217DDA13B753C600CEB9FE /* ScoresListViewController.m */; };
+		A3217DDD13B7DA9700CEB9FE /* BellGothicStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A3217DDC13B7DA9600CEB9FE /* BellGothicStd-Bold.otf */; };
 		A3301BFA13B2476B0059A40B /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A3301BF913B2476B0059A40B /* libsqlite3.0.dylib */; };
 		A3339DDD139E475800EE5D71 /* Main-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3339DD9139E475800EE5D71 /* Main-hd.plist */; };
 		A3339DDE139E475800EE5D71 /* Main-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A3339DDA139E475800EE5D71 /* Main-hd.pvr.ccz */; };
@@ -204,6 +208,7 @@
 		A3C25266139EA4D5002A31B1 /* LevelBg.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A3C25260139EA4D4002A31B1 /* LevelBg.pvr.ccz */; };
 		A3C25267139EA4D5002A31B1 /* LevelBgPad.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3C25261139EA4D4002A31B1 /* LevelBgPad.plist */; };
 		A3C25268139EA4D5002A31B1 /* LevelBgPad.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A3C25262139EA4D4002A31B1 /* LevelBgPad.pvr.ccz */; };
+		A3EE22D413B85C160045F932 /* ScoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EE22D313B85C160045F932 /* ScoreCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -244,6 +249,7 @@
 		A31B61481395911B00FE697F /* particleTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = particleTexture.png; sourceTree = "<group>"; };
 		A31B614A1395914900FE697F /* Main_rain-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Main_rain-hd.plist"; sourceTree = "<group>"; };
 		A31B614C1395917B00FE697F /* particleTexture-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "particleTexture-hd.png"; sourceTree = "<group>"; };
+		A31F1BE713B651DF00A722FC /* LogicDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = LogicDatabase.sqlite; sourceTree = "<group>"; };
 		A3213BF9137310F5006F18FB /* Logic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Logic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3213BFD137310F5006F18FB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A3213BFF137310F5006F18FB /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -477,7 +483,13 @@
 		A3213D62137310F7006F18FB /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		A3213D63137310F7006F18FB /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		A3213D68137310F8006F18FB /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
-		A3301BF713B243100059A40B /* LogicDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = LogicDatabase.sqlite; sourceTree = "<group>"; };
+		A3217DD313B74C7500CEB9FE /* CCUIViewWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCUIViewWrapper.h; sourceTree = "<group>"; };
+		A3217DD413B74C7500CEB9FE /* CCUIViewWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCUIViewWrapper.m; sourceTree = "<group>"; };
+		A3217DD613B74CDA00CEB9FE /* Score.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Score.h; sourceTree = "<group>"; };
+		A3217DD713B74CDB00CEB9FE /* Score.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Score.m; sourceTree = "<group>"; };
+		A3217DD913B753C600CEB9FE /* ScoresListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoresListViewController.h; sourceTree = "<group>"; };
+		A3217DDA13B753C600CEB9FE /* ScoresListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoresListViewController.m; sourceTree = "<group>"; };
+		A3217DDC13B7DA9600CEB9FE /* BellGothicStd-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "BellGothicStd-Bold.otf"; path = "Resources/BellGothicStd-Bold.otf"; sourceTree = "<group>"; };
 		A3301BF913B2476B0059A40B /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		A3339DD9139E475800EE5D71 /* Main-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Main-hd.plist"; sourceTree = "<group>"; };
 		A3339DDA139E475800EE5D71 /* Main-hd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Main-hd.pvr.ccz"; sourceTree = "<group>"; };
@@ -567,6 +579,8 @@
 		A3C25260139EA4D4002A31B1 /* LevelBg.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = LevelBg.pvr.ccz; sourceTree = "<group>"; };
 		A3C25261139EA4D4002A31B1 /* LevelBgPad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = LevelBgPad.plist; sourceTree = "<group>"; };
 		A3C25262139EA4D4002A31B1 /* LevelBgPad.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = LevelBgPad.pvr.ccz; sourceTree = "<group>"; };
+		A3EE22D213B85C160045F932 /* ScoreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreCell.h; sourceTree = "<group>"; };
+		A3EE22D313B85C160045F932 /* ScoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -594,7 +608,7 @@
 		A311721913B2211F00880500 /* data */ = {
 			isa = PBXGroup;
 			children = (
-				A3301BF713B243100059A40B /* LogicDatabase.sqlite */,
+				A31F1BE713B651DF00A722FC /* LogicDatabase.sqlite */,
 			);
 			path = data;
 			sourceTree = "<group>";
@@ -692,6 +706,7 @@
 		A3213C0E137310F5006F18FB /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A3217DDC13B7DA9600CEB9FE /* BellGothicStd-Bold.otf */,
 				A3213C0F137310F5006F18FB /* Default.png */,
 				A3213C11137310F5006F18FB /* fps_images.png */,
 				A3213C13137310F5006F18FB /* Icon-72.png */,
@@ -1018,6 +1033,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		A3217DD213B74C7500CEB9FE /* CCUIViewWrapper */ = {
+			isa = PBXGroup;
+			children = (
+				A3217DD313B74C7500CEB9FE /* CCUIViewWrapper.h */,
+				A3217DD413B74C7500CEB9FE /* CCUIViewWrapper.m */,
+			);
+			path = CCUIViewWrapper;
+			sourceTree = "<group>";
+		};
 		A3339DE9139E610200EE5D71 /* Level */ = {
 			isa = PBXGroup;
 			children = (
@@ -1133,6 +1157,7 @@
 		A38596B813AF58BE008CF9C5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				A3217DD213B74C7500CEB9FE /* CCUIViewWrapper */,
 				A38596B913AF58BE008CF9C5 /* CCBigImage */,
 				A38596BF13AF58BE008CF9C5 /* CCMenuAdvanced */,
 				A38596C313AF58BE008CF9C5 /* CCMenuItemSpriteIndependent */,
@@ -1274,6 +1299,12 @@
 				A311720C13B20B6200880500 /* ScoreScene.m */,
 				A311720E13B20DBA00880500 /* ScoreLayer.h */,
 				A311720F13B20DBA00880500 /* ScoreLayer.m */,
+				A3217DD613B74CDA00CEB9FE /* Score.h */,
+				A3217DD713B74CDB00CEB9FE /* Score.m */,
+				A3217DD913B753C600CEB9FE /* ScoresListViewController.h */,
+				A3217DDA13B753C600CEB9FE /* ScoresListViewController.m */,
+				A3EE22D213B85C160045F932 /* ScoreCell.h */,
+				A3EE22D313B85C160045F932 /* ScoreCell.m */,
 			);
 			name = Score;
 			sourceTree = "<group>";
@@ -1378,7 +1409,8 @@
 				A311721613B2103C00880500 /* score-hd.pvr.ccz in Resources */,
 				A311721713B2103C00880500 /* score.plist in Resources */,
 				A311721813B2103C00880500 /* score.pvr.ccz in Resources */,
-				A3301BF813B243100059A40B /* LogicDatabase.sqlite in Resources */,
+				A31F1BE813B651DF00A722FC /* LogicDatabase.sqlite in Resources */,
+				A3217DDD13B7DA9700CEB9FE /* BellGothicStd-Bold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1521,6 +1553,10 @@
 				A311722413B2242A00880500 /* FMDatabase.m in Sources */,
 				A311722513B2242A00880500 /* FMDatabaseAdditions.m in Sources */,
 				A311722713B2242A00880500 /* FMResultSet.m in Sources */,
+				A3217DD513B74C7500CEB9FE /* CCUIViewWrapper.m in Sources */,
+				A3217DD813B74CDB00CEB9FE /* Score.m in Sources */,
+				A3217DDB13B753C700CEB9FE /* ScoresListViewController.m in Sources */,
+				A3EE22D413B85C160045F932 /* ScoreCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1581,6 +1617,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Logic/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Logic/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				OTHER_LDFLAGS = "-lz";
@@ -1600,6 +1637,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Logic/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Logic/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				OTHER_LDFLAGS = "-lz";
@@ -1642,6 +1680,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Logic/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Logic/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				OTHER_LDFLAGS = "-lz";

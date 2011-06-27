@@ -43,6 +43,23 @@
     }
 }
 
+- (void) animationIn {
+    CCMoveTo *rightGibMoveIn = [CCMoveTo actionWithDuration:1.0 position:ccp(229.00, 235.00)];
+    CCScaleTo *rightGibScaleInX = [CCScaleTo actionWithDuration:1.0 scaleX:1.0 scaleY:1.0];
+    CCScaleTo *rightGibScaleInY = [CCScaleTo actionWithDuration:2.0 scaleX:1.0 scaleY:1.0];
+    //CCEaseInOut *easeRightGibMoveIn = [CCEaseInOut actionWithAction:rightGibMoveIn rate:5];
+    CCSpawn *moveRightGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.0f], rightGibMoveIn, rightGibScaleInX, rightGibScaleInY, nil];
+    
+    CCMoveTo *leftGibMoveIn = [CCMoveTo actionWithDuration:1.0 position:ccp(100.00, 160.50)];
+    CCScaleTo *leftGibScaleInX = [CCScaleTo actionWithDuration:1.0 scaleX:1.0 scaleY:1.0];
+    CCScaleTo *leftGibScaleInY = [CCScaleTo actionWithDuration:2.0 scaleX:1.0 scaleY:1.0];
+    //CCEaseInOut *easeleftGibMoveIn = [CCEaseInOut actionWithAction:leftGibMoveIn rate:5];
+    CCSpawn *moveLeftGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.0f], leftGibMoveIn, leftGibScaleInX, leftGibScaleInY, nil];
+    
+    [rightGib runAction:moveRightGibSeq];
+    [leftGib runAction:moveLeftGibSeq];
+}
+
 - (void) onEnter {
     CCLOG(@"ON ENTER");
 	[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
@@ -58,6 +75,7 @@
 - (id) init {
     self = [super initWithColor:ccc4(0,0,0,0)];
     if (self != nil) {
+        CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
         flag = 30;
         flag2 = 0;
         lightOn = YES;
@@ -88,12 +106,16 @@
         [self addChild:grass z:20];
         
         
-        CCSprite *rightGib = [CCSprite spriteWithSpriteFrameName:@"rameno_right.png"];
-        [rightGib setPosition:ccp(446.00, 257.50)];
+        rightGib = [CCSprite spriteWithSpriteFrameName:@"rameno_right.png"];
+        rightGib.scaleY = 5;
+        rightGib.scaleX = 10;
+        [rightGib setPosition:ccp(1600.00, 257.50)];
         [self addChild:rightGib z:10];
         
-        CCSprite *leftGib = [CCSprite spriteWithSpriteFrameName:@"rameno_left.png"];
-        [leftGib setPosition:ccp(-132.00, 135.00)];
+        leftGib = [CCSprite spriteWithSpriteFrameName:@"rameno_left.png"];
+        leftGib.scaleY = 5;
+        leftGib.scaleX = 10;
+        [leftGib setPosition:ccp(-1300.00, 135.00)];
         [self addChild:leftGib z:11];
         
         CCSprite *buttonSingleOff = [CCSprite spriteWithSpriteFrameName:@"logik_single1.png"];
@@ -129,18 +151,6 @@
         CCMenu *topMenu = [CCMenu menuWithItems:infoItem, settingsItem, nil];
         topMenu.position = CGPointZero;
         [self addChild:topMenu z:15];
-        
-        CCMoveTo *rightGibMoveIn = [CCMoveTo actionWithDuration:2.5 position:ccp(229.00, 235.00)];
-        CCEaseInOut *easeRightGibMoveIn = [CCEaseInOut actionWithAction:rightGibMoveIn rate:5];
-        CCSequence *moveRightGibSeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.1f], easeRightGibMoveIn, nil];
-        
-        CCMoveTo *leftGibMoveIn = [CCMoveTo actionWithDuration:2.5 position:ccp(100.00, 160.50)];
-        CCEaseInOut *easeleftGibMoveIn = [CCEaseInOut actionWithAction:leftGibMoveIn rate:5];
-        CCSequence *moveLeftGibSeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.1f], easeleftGibMoveIn, nil];
-        
-        [rightGib runAction:moveRightGibSeq];
-        [leftGib runAction:moveLeftGibSeq];
-        
         
         lightOff = [CCSprite spriteWithSpriteFrameName:@"lightOff.png"];
         lightOff.anchorPoint = ccp(0.5,1);
@@ -193,8 +203,9 @@
         [logoShadow runAction:[CCRepeatForever actionWithAction:moveSeq]];
         
         [[GameManager sharedGameManager] playBackgroundTrack:BACKGROUND_TRACK_MAIN];
-        [self runParticle];
-        [self scheduleUpdate];
+        //[self runParticle];
+        //[self scheduleUpdate];
+        [self animationIn];
     }
     return self;
 }

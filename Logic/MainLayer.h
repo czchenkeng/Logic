@@ -16,6 +16,8 @@
     BOOL lightOn;
     CCSprite *light;
     CCSprite *lightOff;
+    CCSprite *leftGib;
+    CCSprite *rightGib;
 }
 
 @end

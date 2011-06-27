@@ -11,6 +11,7 @@
 
 @implementation MainScene
 - (id) init {
+    CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
     self = [super init];
     if (self != nil) {
         mainLayer = [MainLayer node];

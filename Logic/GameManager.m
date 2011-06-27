@@ -136,11 +136,58 @@ static GameManager* _sharedGameManager = nil;
         [[CCDirector sharedDirector] runWithScene:sceneToRun];
         
     } else {
+        float timeTransition = 0.5;
+        //CCTransitionSlideInR *transition = [CCTransitionSlideInR transitionWithDuration:timeTransition scene:sceneToRun];
+        //CCTransitionSlideInL *transition = [CCTransitionSlideInL transitionWithDuration:timeTransition scene:sceneToRun];
+        //CCTransitionSlideInB *transition = [CCTransitionSlideInB transitionWithDuration:timeTransition scene:sceneToRun];
+        //CCTransitionSlideInT *transition = [CCTransitionSlideInT transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionSplitCols transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionSplitRows transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionTurnOffTiles transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionZoomFlipAngular transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionZoomFlipX transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionZoomFlipY transitionWithDuration:timeTransition scene:sceneToRun];
+        id transition = [CCTransitionShrinkGrow transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionSceneOriented transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionRotoZoom transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionRadialCW transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionRadialCCW transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionPageTurn transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionMoveInT transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionMoveInR transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionMoveInL transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionMoveInB transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionJumpZoom transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionFlipY transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionFlipX  transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionFlipAngular transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionFadeUp transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionFadeTR transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionFadeDown transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionFadeBL transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionFade transitionWithDuration:timeTransition scene:sceneToRun];
+        //id transition = [CCTransitionCrossFade transitionWithDuration:timeTransition scene:sceneToRun];
         
-        [[CCDirector sharedDirector] replaceScene:sceneToRun];
+        [[CCDirector sharedDirector] replaceScene:transition];
+
+        //[[CCDirector sharedDirector] replaceScene:sceneToRun];
     }
     //[self performSelectorInBackground:@selector(unloadAudioForSceneWithID:) withObject:[NSNumber numberWithInt:oldScene]];
+
 }
+
+//CCFadeTransition: Fade to a specific color and back. ␣ 
+//CCFadeTRTransition (three more variations): Tiles flip over to reveal
+//new scene.
+//␣ CCJumpZoomTransition: Scene bounces and gets smaller, new scene does the reverse.
+//␣ CCMoveInLTransition (three more variations): Scene moves out, new scene moves in at the same time, either from left, right, top or bottom.
+//␣ CCOrientedTransitionScene (six more variations): A variety of transitions flipping the whole scene around
+//␣ CCPageTurnTransition: An effect like turning a page. ␣ CCRotoZoomTransition: Scene rotates and gets smaller, new scene
+//does reverse.
+//␣ CCShrinkGrowTransition: Current scene shrinks, new scene grows over it.
+
+//␣ CCSplitColsTransition (one variation): Columns of scene move up or down to reveal new scene.
+//␣ CCTurnOffTilesTransition: Tiles randomly replaced by tiles of new scene.
 
 - (void) initAudioAsync {
     // Initializes the audio engine asynchronously

@@ -14,6 +14,7 @@
 - (id) init {
     self = [super init];
     if (self != nil) {
+        CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
         SettingsLayer *settingsLayer = [SettingsLayer node];
         [self addChild:settingsLayer];
     }
