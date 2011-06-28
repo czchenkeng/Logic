@@ -22,16 +22,41 @@
 }
 
 
+- (void) endAnimation {
+    CCLOG(@"transition here %i", nextScene);
+    //[[GameManager sharedGameManager] runSceneWithID:nextScene];
+}
+
+- (void) animationOut {
+    CCMoveTo *rightGibMoveIn = [CCMoveTo actionWithDuration:1.0 position:ccp(1600.00, 257.50)];
+    CCScaleTo *rightGibScaleInX = [CCScaleTo actionWithDuration:1.0 scaleX:10.0 scaleY:5.0];
+    CCScaleTo *rightGibScaleInY = [CCScaleTo actionWithDuration:2.0 scaleX:10.0 scaleY:5.0];
+    //CCEaseInOut *easeRightGibMoveIn = [CCEaseInOut actionWithAction:rightGibMoveIn rate:5];
+    CCSpawn *moveRightGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.0f], rightGibMoveIn, rightGibScaleInX, rightGibScaleInY, nil];
+    CCSequence *test = [CCSequence actions:moveRightGibSeq, [CCCallFunc actionWithTarget:self selector:@selector(endAnimation)], nil];
+    
+    CCMoveTo *leftGibMoveIn = [CCMoveTo actionWithDuration:1.0 position:ccp(-1300.00, 135.00)];
+    CCScaleTo *leftGibScaleInX = [CCScaleTo actionWithDuration:1.0 scaleX:10.0 scaleY:5.0];
+    CCScaleTo *leftGibScaleInY = [CCScaleTo actionWithDuration:2.0 scaleX:10.0 scaleY:5.0];
+    //CCEaseInOut *easeleftGibMoveIn = [CCEaseInOut actionWithAction:leftGibMoveIn rate:5];
+    CCSpawn *moveLeftGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.0f], leftGibMoveIn, leftGibScaleInX, leftGibScaleInY, nil];
+    
+    [rightGib runAction:test];
+    [leftGib runAction:moveLeftGibSeq];
+}
+
 - (void) buttonTapped:(CCMenuItem *)sender { 
     switch (sender.tag) {
         case kButtonInfo: 
             CCLOG(@"TAP ON INFO");
             break;
         case kButtonSettings: 
-            [[GameManager sharedGameManager] runSceneWithID:kSettingsScene];
+            [[GameManager sharedGameManager] runSceneWithID:kSettingsScene andTransition:kSlideInR];
+            nextScene = kSettingsScene;
             break;
         case kButtonSinglePlay:
-            [[GameManager sharedGameManager] runSceneWithID:kGameScene];
+            [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kLogicTrans];
+            nextScene = kGameScene;
             break;
         case kButtonCareerPlay:
             CCLOG(@"TAP ON CAREER");
@@ -41,20 +66,21 @@
             return;
             break;
     }
+    //[self animationOut];
 }
 
 - (void) animationIn {
     CCMoveTo *rightGibMoveIn = [CCMoveTo actionWithDuration:1.0 position:ccp(229.00, 235.00)];
     CCScaleTo *rightGibScaleInX = [CCScaleTo actionWithDuration:1.0 scaleX:1.0 scaleY:1.0];
-    CCScaleTo *rightGibScaleInY = [CCScaleTo actionWithDuration:2.0 scaleX:1.0 scaleY:1.0];
+    //CCScaleTo *rightGibScaleInY = [CCScaleTo actionWithDuration:5.0 scaleX:1.0 scaleY:1.0];
     //CCEaseInOut *easeRightGibMoveIn = [CCEaseInOut actionWithAction:rightGibMoveIn rate:5];
-    CCSpawn *moveRightGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.0f], rightGibMoveIn, rightGibScaleInX, rightGibScaleInY, nil];
+    CCSpawn *moveRightGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.5f], rightGibMoveIn, rightGibScaleInX, nil];
     
     CCMoveTo *leftGibMoveIn = [CCMoveTo actionWithDuration:1.0 position:ccp(100.00, 160.50)];
     CCScaleTo *leftGibScaleInX = [CCScaleTo actionWithDuration:1.0 scaleX:1.0 scaleY:1.0];
-    CCScaleTo *leftGibScaleInY = [CCScaleTo actionWithDuration:2.0 scaleX:1.0 scaleY:1.0];
+    //CCScaleTo *leftGibScaleInY = [CCScaleTo actionWithDuration:5.0 scaleX:1.0 scaleY:1.0];
     //CCEaseInOut *easeleftGibMoveIn = [CCEaseInOut actionWithAction:leftGibMoveIn rate:5];
-    CCSpawn *moveLeftGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.0f], leftGibMoveIn, leftGibScaleInX, leftGibScaleInY, nil];
+    CCSpawn *moveLeftGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.5f], leftGibMoveIn, leftGibScaleInX, nil];
     
     [rightGib runAction:moveRightGibSeq];
     [leftGib runAction:moveLeftGibSeq];
@@ -107,15 +133,15 @@
         
         
         rightGib = [CCSprite spriteWithSpriteFrameName:@"rameno_right.png"];
-        rightGib.scaleY = 5;
-        rightGib.scaleX = 10;
-        [rightGib setPosition:ccp(1600.00, 257.50)];
+        rightGib.scaleY = 10;
+        rightGib.scaleX = 5;
+        [rightGib setPosition:ccp(1000.00, 257.50)];
         [self addChild:rightGib z:10];
         
         leftGib = [CCSprite spriteWithSpriteFrameName:@"rameno_left.png"];
-        leftGib.scaleY = 5;
-        leftGib.scaleX = 10;
-        [leftGib setPosition:ccp(-1300.00, 135.00)];
+        leftGib.scaleY = 10;
+        leftGib.scaleX = 5;
+        [leftGib setPosition:ccp(-700.00, 135.00)];
         [self addChild:leftGib z:11];
         
         CCSprite *buttonSingleOff = [CCSprite spriteWithSpriteFrameName:@"logik_single1.png"];
@@ -203,8 +229,8 @@
         [logoShadow runAction:[CCRepeatForever actionWithAction:moveSeq]];
         
         [[GameManager sharedGameManager] playBackgroundTrack:BACKGROUND_TRACK_MAIN];
-        //[self runParticle];
-        //[self scheduleUpdate];
+        [self runParticle];
+        [self scheduleUpdate];
         [self animationIn];
     }
     return self;

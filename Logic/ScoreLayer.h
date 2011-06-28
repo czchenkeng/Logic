@@ -28,6 +28,7 @@
     NSMutableArray *scores;
     
     CCArray *difficulty;
+    CCArray *joysticks;
     
     CCSprite *easy;
     CCSprite *normal;

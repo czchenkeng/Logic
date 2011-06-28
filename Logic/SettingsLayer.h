@@ -12,6 +12,7 @@
 
 @interface SettingsLayer : CCLayer <CCSliderControlDelegate> {
     CCArray *difficulty;
+    CCArray *joysticks;
     
     CCSlider *musicSlider;
     CCSlider *soundSlider;

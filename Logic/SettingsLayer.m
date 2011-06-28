@@ -21,17 +21,17 @@ enum soundTags
     switch (sender.tag) {
         case kButtonScore: 
             CCLOG(@"TAP ON SCORE");
-            [[GameManager sharedGameManager] runSceneWithID:kScoreScene];
+            [[GameManager sharedGameManager] runSceneWithID:kScoreScene andTransition:kSlideInR];
             break;
         case kButtonBack:
             CCLOG(@"TAP ON BACK");
-            [[GameManager sharedGameManager] runSceneWithID:kMainScene];
+            [[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kSlideInL];
             break;
 //        case kButtonSinglePlay:
 //            CCLOG(@"TAP ON SINGLE");
 //            break;
         case kButtonCareerPlay:
-            [[GameManager sharedGameManager] runSceneWithID:kCareerScene];
+            [[GameManager sharedGameManager] runSceneWithID:kCareerScene andTransition:kSlideInR];
             break;
         default:
             CCLOG(@"Logic debug: Unknown ID, cannot tap button");
@@ -69,6 +69,12 @@ enum soundTags
     CCSprite *currentButton = [difficulty objectAtIndex:flag];
     currentButton.visible = YES;
     
+    for (CCSprite *joy in joysticks) {
+        joy.visible = NO; 
+    }
+    CCSprite *currentJoy = [joysticks objectAtIndex:flag];
+    currentJoy.visible = YES;
+    
     [GameManager sharedGameManager].currentDifficulty = sender.tag;
 }
 
@@ -91,6 +97,7 @@ enum soundTags
     self = [super init];
     if (self != nil) {
         difficulty = [[CCArray alloc] init];
+        joysticks = [[CCArray alloc] init];
         
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Settings.plist"];
         
@@ -146,8 +153,22 @@ enum soundTags
         [self addChild:soundSlider z:4];
 		soundSlider.delegate = self;
         
-        joyStick = [CCSprite spriteWithSpriteFrameName:@"logik_settpaka.png"];
+        //joyStick = [CCSprite spriteWithSpriteFrameName:@"logik_settpaka.png"];
+        //[self addChild:joyStick z:5];
+        joyStick = [CCSprite spriteWithSpriteFrameName:@"paka_empty.png"];
+        CCSprite *joyEasy = [CCSprite spriteWithSpriteFrameName:@"paka_1.png"];
+        CCSprite *joyNormal = [CCSprite spriteWithSpriteFrameName:@"paka_2.png"];
+        CCSprite *joyHard = [CCSprite spriteWithSpriteFrameName:@"paka_3.png"];
+        joyEasy.anchorPoint = ccp(0, 0);
+        joyNormal.anchorPoint = ccp(0, 0);
+        joyHard.anchorPoint = ccp(0, 0);
+        [joyStick addChild:joyEasy z:1];
+        [joyStick addChild:joyNormal z:2];
+        [joyStick addChild:joyHard z:3];
         [self addChild:joyStick z:5];
+        [joysticks addObject:joyEasy];
+        [joysticks addObject:joyNormal];
+        [joysticks addObject:joyHard];
         
         CCSprite *sprite;
         
@@ -331,7 +352,8 @@ enum soundTags
 
 - (void) dealloc {
     CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
-    
+    [joysticks release];
+    joysticks = nil;
     [difficulty release];
     difficulty = nil;
     

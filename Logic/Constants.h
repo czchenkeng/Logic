@@ -6,6 +6,14 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#define MIN_DISTANCE_SWIPE_X 200
+#define MIN_DISTANCE_SWIPE_Y 20
+#define LEVEL_SWIPE_AFTER_ROW 7
+#define LEVEL_DISLOCATION 94
+
+#define AUDIO_MAX_WAITTIME 150
+#define BACKGROUND_TRACK_MAIN @"main_theme.mp3"
+
 typedef enum {
     kButtonInfo,
     kButtonSettings,
@@ -25,6 +33,13 @@ typedef enum {
 } SceneTypes;
 
 typedef enum {
+    kNoTransition = 0,
+    kSlideInR = 1,
+    kSlideInL = 2,
+    kLogicTrans = 3
+} TransitionTypes;
+
+typedef enum {
     kYellow = 0,
     kOrange = 1,
     kPink = 2,
@@ -40,14 +55,6 @@ typedef enum {
     kMedium = 5,
     kHard = 6
 } GameDifficulty;
-
-#define MIN_DISTANCE_SWIPE_X 200
-#define MIN_DISTANCE_SWIPE_Y 20
-#define LEVEL_SWIPE_AFTER_ROW 7
-#define LEVEL_DISLOCATION 94
-
-#define AUDIO_MAX_WAITTIME 150
-#define BACKGROUND_TRACK_MAIN @"main_theme.mp3"
 
 typedef enum {
     kAudioManagerUninitialized = 0,

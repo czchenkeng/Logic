@@ -66,8 +66,20 @@
     highlightSprite.visible = NO;
     
     codeBase = [CCSprite spriteWithSpriteFrameName:levelEndFrame];
+    cheat = [CCSprite spriteWithSpriteFrameName:levelEndFrame];
     
-    rotor = [CCSprite spriteWithSpriteFrameName:@"rotors.png"];
+    rotorLeftMain = [[CCSprite alloc] init];
+    rotorRightMain = [[CCSprite alloc] init];
+    rotorLeft = [CCSprite spriteWithSpriteFrameName:@"rotor_left.png"];
+    rotorRight = [CCSprite spriteWithSpriteFrameName:@"rotor_right.png"];
+    rotorLeftInside = [CCSprite spriteWithSpriteFrameName:@"rotor_left_inside.png"];
+    rotorRightInside = [CCSprite spriteWithSpriteFrameName:@"rotor_right_inside.png"];
+    rotorLeftLight = [CCSprite spriteWithSpriteFrameName:@"rotor_left_light.png"];
+    rotorRightLight = [CCSprite spriteWithSpriteFrameName:@"rotor_right_light.png"];
+    
+    sphereLight = [CCSprite spriteWithSpriteFrameName:@"lightSphere.png"];
+    
+    krytka = [CCSprite spriteWithSpriteFrameName:@"logik_krytka.png"];
     
     //    NSMutableArray *morphingSphereFrames = [NSMutableArray array];
     //NSMutableArray *morphingSphereFrames = [[NSMutableArray alloc] init];
@@ -104,15 +116,26 @@
         [orangeLights addObject:orangeLight];
     }
     
-    CCSprite *base = [CCSprite spriteWithSpriteFrameName:@"pinchBase.png"];
+    base = [CCSprite spriteWithSpriteFrameName:@"pinchBase.png"];
     base.anchorPoint = CGPointMake(0, 0);
     
     //nodes position
     codeBase.position = ccp(133, 455);
-    //rotor.position = ccp(160, 430);
-    //sphereNode.position = ccp(152, 474);
-    rotor.position = ccp(160, 412);
-    sphereNode.position = ccp(152, 456);
+    
+//    rotorLeft.position = ccp(54.00, 430.00);
+//    rotorRight.position = ccp(259.00, 434.00);
+//    sphereNode.position = ccp(152, 474);
+//    rotorRightInside.position = ccp(259.00, 434.00);
+//    rotorLeftInside.position = ccp(54.00, 430.00);
+//    rotorRightLight.position = ccp(259.00, 434.00);
+//    rotorLeftLight.position = ccp(54.00, 430.00);
+    
+    rotorRightMain.position = ccp(259.00, 434.00);
+    rotorLeftMain.position = ccp(54.00, 430.00);
+    sphereNode.position = ccp(152, 474);
+    
+    sphereLight.position = ccp(150.00, 411.00);
+    krytka.position = ccp(160.00, 456.00);
 
     
     //add nodes to display list
@@ -125,10 +148,27 @@
     //bg.opacity = 80;
     
     [self addChild:codeBase z:3 tag:3];
-    //[self addChild:rotor z:4 tag:4];
-    //[self addChild:sphereNode z:5 tag:5];
-    [self addChild:base z:6 tag:6];
-    [self addChild:figuresNode z:7];
+    [self addChild:krytka z:4];
+    [self addChild:sphereLight z:5];
+    [self addChild:rotorLeftMain z:6];
+    [self addChild:rotorRightMain z:7];
+    [self addChild:sphereNode z:6 tag:8];
+    [self addChild:base z:7 tag:9];
+    [self addChild:figuresNode z:10];
+    
+    
+    
+    cheat.position = ccp(133, 60);
+    cheat.opacity = 0;
+    [self addChild:cheat z:100];
+    
+    [rotorLeftMain addChild:rotorLeft z:1];
+    [rotorLeftMain addChild:rotorLeftLight z:2];
+    [rotorLeftMain addChild:rotorLeftInside z:3];
+    
+    [rotorRightMain addChild:rotorRight z:1];
+    [rotorRightMain addChild:rotorRightLight z:2];
+    [rotorRightMain addChild:rotorRightInside z:3];
     
     
 //    RowScore *rs = [[RowScore alloc] init];
@@ -166,12 +206,21 @@
     //currentCode = [[CCArray alloc] init];
     currentCode = [[NSMutableArray alloc] init];
     for (int i = 0; i < currentDifficulty; ++i) {
-        Figure *figure = [[Figure alloc] initWithFigureType:[Utils randomNumberBetween:0 andMax:8]];
+        int cheatCode = [Utils randomNumberBetween:0 andMax:8];
+        //Figure *figure = [[Figure alloc] initWithFigureType:[Utils randomNumberBetween:0 andMax:8]];
+        Figure *figure = [[Figure alloc] initWithFigureType:cheatCode];
         figure.place = i;
         figure.anchorPoint = CGPointMake(0, 0);
         figure.position = ccp(6 + difficultyPadding*i, 10.0f);
+        
+        Figure *cheatFigure = [[Figure alloc] initWithFigureType:cheatCode];
+        cheatFigure.anchorPoint = CGPointMake(0, 0);
+        cheatFigure.position = ccp(6 + difficultyPadding*i, 10.0f);
+        cheatFigure.opacity = 150;
+        
         //CCLOG(@"retain before is %d", [figure retainCount]);
         [codeBase addChild:figure z:i];
+        [cheat addChild:cheatFigure z:i];
         [currentCode addObject:figure];
         //CCLOG(@"retain is %d", [figure retainCount]);
     }
@@ -221,11 +270,52 @@
     [self constructRowWithIndex:activeRow];
 }
 
+- (void) createEditableCopyOfDatabaseIfNeeded {
+    BOOL success;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *writableDBPath = [documentsDirectory stringByAppendingPathComponent:@"LogicDatabase.sqlite"];
+    success = [fileManager fileExistsAtPath:writableDBPath];
+    CCLOG(@"success %i", success);
+    if (success) return;
+    // The writable database does not exist, so copy the default to the appropriate location.
+    NSString *defaultDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"LogicDatabase.sqlite"];
+    success = [fileManager copyItemAtPath:defaultDBPath toPath:writableDBPath error:&error];
+    if (!success) {
+        NSAssert1(0, @"Failed to create writable database file with message '%@'.", [error localizedDescription]);
+    }
+}
+
 - (id) init {
     self = [super initWithColor:ccc4(0,0,0,0)];
     if (self != nil) {
+        
+        
+        
+        [self createEditableCopyOfDatabaseIfNeeded];
+        
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0]; 
+        NSString *DBPath = [documentsDirectory stringByAppendingPathComponent:@"LogicDatabase.sqlite"];
+        
+        db = [[FMDatabase databaseWithPath:DBPath] retain];
+        if (![db open]) {
+            CCLOG(@"Could not open db.");
+            [db setLogsErrors:TRUE];
+            [db setTraceExecution:TRUE];
+        } else {
+            CCLOG(@"Db is here!");
+        }
+
+        
+        
+        
+        
+        
         dislocation = 0.0;
-        activeRow = 4;
+        activeRow = 0;
         lastPlace = -1;
         currentDifficulty = [[GameManager sharedGameManager] currentDifficulty];
         targetSprite = nil;
@@ -257,6 +347,7 @@
             break;
         }
     }
+    selSprite.startTime = [NSDate date]; 
     [selSprite stopAllActions];
     CCScaleTo *scale = [CCScaleTo actionWithDuration:.3 scale:1.4];
     [newSprite runAction:scale];          
@@ -275,6 +366,8 @@
 - (void) panForTranslation:(CGPoint)translation {    
     //CCLOG(@"Sel Sprite %@", selSprite);
     if (selSprite) {
+        selSprite.endTime = [NSDate date];
+        //CCLOG(@"TIME %i", selSprite.endTime.  - selSprite.startTime);
         CGPoint newPos = ccpAdd(selSprite.position, translation);
         if (newPos.y < 380)
             selSprite.position = newPos;
@@ -501,6 +594,101 @@
     }
 }
 
+- (void) endGame {
+    CCLOG(@"Logic debug: END GAME");
+    
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"d/M/yy"];
+        
+    NSDateFormatter *timeFormat = [[NSDateFormatter alloc] init];
+    [timeFormat setDateFormat:@"h:ma"];
+    NSDate *now = [[NSDate alloc] init];       
+    NSString *theDate = [dateFormat stringFromDate:now];
+    NSString *theTime = [timeFormat stringFromDate:now];
+    [db beginTransaction];         
+    [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:[Utils randomNumberBetween:1000 andMax:99999999]], [NSNumber numberWithInt:currentDifficulty], theDate, theTime];
+    [db commit];
+            
+    [dateFormat release];
+    [timeFormat release];
+    [now release];
+    
+    
+    //faze 1
+    CCMoveTo *rightRotorOut = [CCMoveTo actionWithDuration:0.1 position:ccp(rotorRightMain.position.x + 15, rotorRightMain.position.y)];
+    CCMoveTo *leftRotorOut = [CCMoveTo actionWithDuration:0.1 position:ccp(rotorLeftMain.position.x - 15, rotorLeftMain.position.y)];
+    CCSequence *rotorRightSeq1 = [CCSequence actions:[CCDelayTime actionWithDuration: 0.2f], rightRotorOut, nil];
+    CCSequence *rotorLeftSeq1 = [CCSequence actions:[CCDelayTime actionWithDuration: 0.2f], leftRotorOut, nil];
+    
+    //faze 2
+    CCScaleTo *rightRotorScale = [CCScaleTo actionWithDuration:0.4 scale:1.4];
+    CCScaleTo *leftRotorScale = [CCScaleTo actionWithDuration:0.4 scale:1.4];
+    CCScaleTo *sphereScale = [CCScaleTo actionWithDuration:0.4 scale:1.4];
+    CCMoveTo *sphereMoveBack = [CCMoveTo actionWithDuration:0.4 position:ccp(sphereNode.position.x, sphereNode.position.y + 15)];
+    CCScaleTo *lightScale = [CCScaleTo actionWithDuration:0.4 scale:1.4];
+    CCMoveTo *lightMoveBack = [CCMoveTo actionWithDuration:0.4 position:ccp(sphereLight.position.x, sphereLight.position.y + 15)];
+    CCFadeTo *lightFade = [CCFadeTo actionWithDuration:0.4 opacity:120];
+    CCMoveTo *rightRotorToRightAndBack = [CCMoveTo actionWithDuration:0.4 position:ccp(rotorRightMain.position.x + 50, rotorRightMain.position.y - 15)];
+    CCMoveTo *leftRotorToLeftAndBack = [CCMoveTo actionWithDuration:0.4 position:ccp(rotorLeftMain.position.x - 50, rotorLeftMain.position.y - 15)];
+    CCSpawn *rightRotorSpawn = [CCSpawn actions: rightRotorScale, rightRotorToRightAndBack, nil];
+    CCSpawn *leftRotorSpawn = [CCSpawn actions: leftRotorScale, leftRotorToLeftAndBack, nil];
+    CCSpawn *sphereSpawn = [CCSpawn actions: sphereScale, sphereMoveBack, nil];
+    CCSpawn *lightSpawn = [CCSpawn actions: lightScale, lightMoveBack, lightFade, nil];
+    CCSequence *rotorRightSeq2 = [CCSequence actions:[CCDelayTime actionWithDuration: 0.5f], rightRotorSpawn, nil];
+    CCSequence *rotorLeftSeq2 = [CCSequence actions:[CCDelayTime actionWithDuration: 0.5f], leftRotorSpawn, nil];
+    CCSequence *sphereScaleSeq2 = [CCSequence actions:[CCDelayTime actionWithDuration: 0.5f], sphereSpawn, nil];
+    CCSequence *lightSeq2 = [CCSequence actions:[CCDelayTime actionWithDuration: 0.5f], lightSpawn, nil];
+    
+    //faze 3
+    CCScaleTo *rightRotorScale2 = [CCScaleTo actionWithDuration:0.2 scale:1.5];
+    CCScaleTo *leftRotorScale2 = [CCScaleTo actionWithDuration:0.2 scale:1.5];
+    CCMoveTo *rightRotorToRightAndBack2 = [CCMoveTo actionWithDuration:0.4 position:ccp(rotorRightMain.position.x + 60, rotorRightMain.position.y + 8)];
+    CCMoveTo *leftRotorToLeftAndBack2 = [CCMoveTo actionWithDuration:0.4 position:ccp(rotorLeftMain.position.x - 60, rotorLeftMain.position.y + 8)];
+    CCScaleTo *sphereScale2 = [CCScaleTo actionWithDuration:0.4 scale:1.5];
+    CCMoveTo *sphereMoveBack2 = [CCMoveTo actionWithDuration:0.4 position:ccp(sphereNode.position.x, sphereNode.position.y + 30)];
+    CCSpawn *rightRotorSpawn2 = [CCSpawn actions: rightRotorScale2, rightRotorToRightAndBack2, nil];
+    CCSpawn *leftRotorSpawn2 = [CCSpawn actions: leftRotorScale2, leftRotorToLeftAndBack2, nil];
+    CCSpawn *sphereSpawn2 = [CCSpawn actions: sphereScale2, sphereMoveBack2, nil];
+    CCSequence *rotorRightSeq3 = [CCSequence actions:[CCDelayTime actionWithDuration: 0.9f], rightRotorSpawn2, nil];
+    CCSequence *rotorLeftSeq3 = [CCSequence actions:[CCDelayTime actionWithDuration: 0.9f], leftRotorSpawn2, nil];
+    CCSequence *sphereScaleSeq3 = [CCSequence actions:[CCDelayTime actionWithDuration: 0.9f], sphereSpawn2, nil];
+    CCMoveTo *krytkaBack = [CCMoveTo actionWithDuration:0.8 position:ccp(krytka.position.x, krytka.position.y + 60)];
+    CCSequence *krytkaSeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.9f], krytkaBack, nil];
+    
+    CCSequence *moveSeq = [CCSequence actions:
+                           [CCDelayTime actionWithDuration: 1.3f],
+                           [CCMoveTo actionWithDuration:.4 position:CGPointMake(movableNode.position.x, movableNode.position.y - 47)],
+                           nil];
+    CCSequence *codeSeq = [CCSequence actions:
+                           [CCDelayTime actionWithDuration: 1.3f],
+                           [CCMoveTo actionWithDuration:.4 position:CGPointMake(codeBase.position.x, codeBase.position.y - 47)],
+                           nil];
+    CCSequence *figSeq = [CCSequence actions:
+                           [CCDelayTime actionWithDuration: 1.3f],
+                           [CCMoveTo actionWithDuration:.4 position:CGPointMake(figuresNode.position.x, figuresNode.position.y - 49)],
+                           nil];
+    CCSequence *baseSeq = [CCSequence actions:
+                          [CCDelayTime actionWithDuration: 1.3f],
+                          [CCMoveTo actionWithDuration:.4 position:CGPointMake(base.position.x, base.position.y - 49)],
+                          nil];
+    
+    
+    [rotorRightMain runAction:rotorRightSeq1];
+    [rotorLeftMain runAction:rotorLeftSeq1];
+    [rotorRightMain runAction:rotorRightSeq2];
+    [rotorLeftMain runAction:rotorLeftSeq2];
+    [sphereNode runAction:sphereScaleSeq2];
+    [sphereLight runAction:lightSeq2];
+    [rotorRightMain runAction:rotorRightSeq3];
+    [rotorLeftMain runAction:rotorLeftSeq3];
+    [sphereNode runAction:sphereScaleSeq3];
+    [krytka runAction:krytkaSeq];
+    [movableNode runAction:moveSeq];
+    [codeBase runAction:codeSeq];
+    [figuresNode runAction:figSeq];
+    [base runAction:baseSeq];
+}
+
 - (void) didEndOfRow {
     CCLOG(@"Logic debug: END ROW");
     colors = 0;
@@ -512,55 +700,29 @@
             if (userSprite.place == i) {
                 if (userSprite.currentFigure == codeSprite.currentFigure) {
                     places++;
-                    //userSprite.isCalculated = YES;
-                    //codeSprite.isCalculated = YES;
                 }
             }
         }
         i++;
     }
     
-//    for (Figure *codeSprite in currentCode) {
-//        for (Figure *userSprite in userCode) {
-//            if (userSprite.currentFigure == codeSprite.currentFigure && !userSprite.isCalculated) {
-//                colors++;
-//                userSprite.isCalculated = YES;
-//                break;
-//            }
-//        }
-//    }
-    
-//    for (Figure *codeSprite in currentCode) {
-//        for (Figure *userSprite in userCode) {
-//            if (userSprite.currentFigure == codeSprite.currentFigure && !userSprite.isCalculated && !codeSprite.isCalculated) {
-//                colors++;
-//                userSprite.isCalculated = YES;
-//                codeSprite.isCalculated = YES;
-//                //break;
-//            }
-//        }
-//    }
-    
-    //NSMutableArray *tempArray = [[NSMutableArray alloc] init];
-    
     for (Figure *codeSprite in currentCode) {
         for (Figure *userSprite in userCode) {
             if (codeSprite.currentFigure == userSprite.currentFigure && !userSprite.isCalculated) {
                 userSprite.isCalculated = YES;
                 colors++;
-                //[tempArray addObject:codeSprite];
                 break;
             }
         }    
     }
     
-    //colors = [tempArray count] - places;
     colors = colors - places;
     
     CCLOG(@"Logic debug: PLACES %i AND COLORS %i", places, colors);
     [self showResult];
+    //if (places == currentDifficulty || activeRow == 9) {
     if (places == currentDifficulty || activeRow == 9) {
-        CCLOG(@"Logic debug: END GAME");
+        [self endGame];
     } else {
         [self nextRow];
     }
@@ -634,6 +796,8 @@
 
 - (void) dealloc {
     CCLOG(@"Logic debug: DEALLOC GAME LAYER %@", self);
+    [rotorLeftMain release];
+    [rotorRightMain release];
     [orangeLights release];
     orangeLights = nil;
     [greenLights release];

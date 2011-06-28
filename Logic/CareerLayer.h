@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Mask.h"
 
 
 @interface CareerLayer : CCLayer {

@@ -32,7 +32,7 @@
 @property (readwrite) float soundVolume;
 
 + (GameManager*) sharedGameManager;
-- (void) runSceneWithID:(SceneTypes)sceneID;
+- (void) runSceneWithID:(SceneTypes)sceneID andTransition:(TransitionTypes)transitionID;
 - (void) setupAudioEngine;
 - (void) playBackgroundTrack:(NSString*)trackFileName;
 //- (void) setGameDifficulty:(GameDifficulty)difficultyID;

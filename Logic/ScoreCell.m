@@ -22,6 +22,8 @@
         //self.idLabel = [self newLabelWithPrimaryColor:[UIColor whiteColor] selectedColor:[UIColor whiteColor] fontSize:10.0 bold:NO];
         self.idLabel = [[UILabel alloc] init];
         self.idLabel.textColor = [UIColor whiteColor];
+        self.idLabel.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.75];
+        self.idLabel.shadowOffset = CGSizeMake(5.0, -5.0);
 		self.idLabel.textAlignment = UITextAlignmentLeft; // default
         self.idLabel.backgroundColor = [UIColor clearColor];
         self.idLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:14];
@@ -32,6 +34,8 @@
         //self.scoreLabel = [self newLabelWithPrimaryColor:[UIColor whiteColor] selectedColor:[UIColor whiteColor] fontSize:10.0 bold:NO];
         self.scoreLabel = [[UILabel alloc] init];
         self.scoreLabel.textColor = [UIColor whiteColor];
+        self.scoreLabel.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.75];
+        self.scoreLabel.shadowOffset = CGSizeMake(5.0, -5.0);
 		self.scoreLabel.textAlignment = UITextAlignmentLeft; // default
         self.scoreLabel.backgroundColor=[UIColor clearColor];
         self.scoreLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:14];
@@ -41,6 +45,8 @@
         //self.timeLabel = [self newLabelWithPrimaryColor:[UIColor whiteColor] selectedColor:[UIColor whiteColor] fontSize:10.0 bold:NO];
         self.timeLabel = [[UILabel alloc] init];
         self.timeLabel.textColor = [UIColor whiteColor];
+        self.timeLabel.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.75];
+        self.timeLabel.shadowOffset = CGSizeMake(5.0, -5.0);
 		self.timeLabel.textAlignment = UITextAlignmentLeft; // default
         self.timeLabel.backgroundColor=[UIColor clearColor];
         self.timeLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:14];
@@ -50,6 +56,8 @@
         //self.dateLabel = [self newLabelWithPrimaryColor:[UIColor whiteColor] selectedColor:[UIColor whiteColor] fontSize:10.0 bold:NO];
         self.dateLabel = [[UILabel alloc] init];
         self.dateLabel.textColor = [UIColor whiteColor];
+        self.dateLabel.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.75];
+        self.dateLabel.shadowOffset = CGSizeMake(5.0, -5.0);
 		self.dateLabel.textAlignment = UITextAlignmentLeft; // default
         self.dateLabel.backgroundColor=[UIColor clearColor];
         self.dateLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:14];

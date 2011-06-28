@@ -18,6 +18,8 @@
     CCSprite *lightOff;
     CCSprite *leftGib;
     CCSprite *rightGib;
+    
+    int nextScene;
 }
 
 @end

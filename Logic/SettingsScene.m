@@ -16,7 +16,7 @@
     if (self != nil) {
         CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
         SettingsLayer *settingsLayer = [SettingsLayer node];
-        [self addChild:settingsLayer];
+        [self addChild:settingsLayer z:5];
     }
     return self;
 }

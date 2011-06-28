@@ -15,10 +15,10 @@
     self = [super init];
     if (self != nil) {
         careerLayer = [CareerLayer node];
-        [self addChild:careerLayer z:1];
+        [self addChild:careerLayer z:0];
         
         controlLayer = [ControlsLayer node];
-        [self addChild:controlLayer z:2];
+        [self addChild:controlLayer z:1];
     }
     return self;
 }

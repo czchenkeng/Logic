@@ -14,9 +14,13 @@
 #import "Utils.h"
 #import "ProgressTimer.h"
 #import "Mask.h"
+#import "FMDatabase.h"
+#import "FMDatabaseAdditions.h"
 
 
 @interface GameplayLayer : CCLayerColor <CCStandardTouchDelegate> {
+    FMDatabase *db;
+    
     CCLayer *clippingNode;
     CCLayer *movableNode;
     CCLayer *figuresNode;
@@ -24,11 +28,23 @@
     CCArray *deadFigures;
     
     CCSprite *codeBase;
-    CCSprite *rotor;
+    CCSprite *rotorLeftMain;
+    CCSprite *rotorRightMain;
+    CCSprite *rotorLeft;
+    CCSprite *rotorRight;
+    CCSprite *rotorLeftInside;
+    CCSprite *rotorRightInside;
+    CCSprite *rotorLeftLight;
+    CCSprite *rotorRightLight;
+    CCSprite *krytka;
+    CCSprite *base;
+    CCSprite *cheat;
+    
     CCSpriteBatchNode *sphereNode;
     
     NSMutableArray *morphingSphereFrames;
     CCSprite *sphere;
+    CCSprite *sphereLight;
     
     CCAnimation *sphereAnim;
     CCSequence *sphereSeq;

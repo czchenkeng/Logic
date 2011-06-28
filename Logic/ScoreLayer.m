@@ -105,7 +105,7 @@
     switch (sender.tag) {
         case kButtonBack:
             CCLOG(@"TAP ON BACK");
-            [[GameManager sharedGameManager] runSceneWithID:kSettingsScene];
+            [[GameManager sharedGameManager] runSceneWithID:kSettingsScene andTransition:kSlideInL];
             break;
         default:
             CCLOG(@"Logic debug: Unknown ID, cannot tap button");
@@ -143,30 +143,14 @@
     CCSprite *currentButton = [difficulty objectAtIndex:flag];
     currentButton.visible = YES;
     
+    for (CCSprite *joy in joysticks) {
+        joy.visible = NO; 
+    }
+    CCSprite *currentJoy = [joysticks objectAtIndex:flag];
+    currentJoy.visible = YES;
+    
     [self getRecordsWithDifficulty:sender.tag];
     //[GameManager sharedGameManager].currentDifficulty = sender.tag;
-    
-//    FMResultSet *rs = [db executeQuery:@"SELECT * FROM scores WHERE difficulty = 4 ORDER BY score DESC"];
-//    
-//    if ([db hadError]) {
-//        CCLOG(@"DB Error %d: %@", [db lastErrorCode], [db lastErrorMessage]);
-//    }
-//    
-//    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];  
-//    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-//    
-//    int i = 1;
-//    while ([rs next]) {
-//        NSString *formattedOutput = [formatter stringFromNumber:[NSNumber numberWithInt:[rs intForColumn:@"score"]]];
-//        CCLOG(@"id %@", [NSString stringWithFormat:@"%i.", i]);
-//        CCLOG(@"score %@", [formattedOutput stringByReplacingOccurrencesOfString:@"," withString:@" "]);
-//        CCLOG(@"time form select %@", [rs stringForColumn:@"time"]);
-//        CCLOG(@"date form select %@", [rs stringForColumn:@"date"]);
-//        CCLOG(@"========================================================");
-//        i++;
-//    }
-    
-
 }
 
 - (void)onEnter {
@@ -213,13 +197,13 @@
         
         CCLOG(@"dir %@", documentsDirectory);
         db = [[FMDatabase databaseWithPath:DBPath] retain];
-        if (![db open])
+        if (![db open]) {
             CCLOG(@"Could not open db.");
-        else
+            [db setLogsErrors:TRUE];
+            [db setTraceExecution:TRUE];
+        } else {
             CCLOG(@"Db is here!");
-        
-        [db setLogsErrors:TRUE];
-        [db setTraceExecution:TRUE];
+        }
         
         //NSMutableArray *scores = [[[NSMutableArray alloc] init] autorelease];
         //scores = [[[NSMutableArray alloc] init] autorelease];
@@ -312,6 +296,7 @@
         
         
         difficulty = [[CCArray alloc] init];
+        joysticks = [[CCArray alloc] init];
         
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"score.plist"];
         
@@ -331,8 +316,20 @@
         topMenu.position = CGPointZero;
         [self addChild:topMenu z:3];
         
-        joyStick = [CCSprite spriteWithSpriteFrameName:@"logik_settpaka.png"];
+        joyStick = [CCSprite spriteWithSpriteFrameName:@"paka_empty.png"];
+        CCSprite *joyEasy = [CCSprite spriteWithSpriteFrameName:@"paka_1.png"];
+        CCSprite *joyNormal = [CCSprite spriteWithSpriteFrameName:@"paka_2.png"];
+        CCSprite *joyHard = [CCSprite spriteWithSpriteFrameName:@"paka_3.png"];
+        joyEasy.anchorPoint = ccp(0, 0);
+        joyNormal.anchorPoint = ccp(0, 0);
+        joyHard.anchorPoint = ccp(0, 0);
+        [joyStick addChild:joyEasy z:1];
+        [joyStick addChild:joyNormal z:2];
+        [joyStick addChild:joyHard z:3];
         [self addChild:joyStick z:5];
+        [joysticks addObject:joyEasy];
+        [joysticks addObject:joyNormal];
+        [joysticks addObject:joyHard];
         
         CCSprite *sprite;
         
@@ -497,7 +494,7 @@
     [scores release];
     scores = nil;
     [db close];
-    [db release];
+    [db release];    
     //[rs close];
     //[rs release];
     //rs = nil;
@@ -505,6 +502,8 @@
     //DBPath = nil;
     [difficulty release];
     difficulty = nil;
+    [joysticks release];
+    joysticks = nil;
     [controller release];
     controller = nil;
     [super dealloc];
