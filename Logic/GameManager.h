@@ -11,6 +11,8 @@
 #import "CareerScene.h"
 #import "ScoreScene.h"
 #import "SimpleAudioEngine.h"
+#import "GameData.h"
+#import "FacebookViewController.h"
 
 @interface GameManager : NSObject {
     BOOL isMusicON;
@@ -22,6 +24,8 @@
     SceneTypes currentScene;
     float musicVolume;
     float soundVolume;
+    GameData *gameData;
+    FacebookViewController *controller;
 }
 
 @property (readwrite) BOOL isMusicON;
@@ -30,11 +34,14 @@
 @property (readwrite) GameManagerSoundState managerSoundState;
 @property (readwrite) float musicVolume;
 @property (readwrite) float soundVolume;
+@property (nonatomic, retain) GameData *gameData;
+@property (nonatomic, retain) FacebookViewController *controller;
 
 + (GameManager*) sharedGameManager;
 - (void) runSceneWithID:(SceneTypes)sceneID andTransition:(TransitionTypes)transitionID;
 - (void) setupAudioEngine;
 - (void) playBackgroundTrack:(NSString*)trackFileName;
+- (FacebookViewController *) facebookController:(CGRect)rect;
 //- (void) setGameDifficulty:(GameDifficulty)difficultyID;
 
 @end

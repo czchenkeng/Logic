@@ -9,21 +9,21 @@
 #import <Foundation/Foundation.h>
 #import "Figure.h"
 #import "RowScore.h"
+#import "RowStaticScore.h"
 #import "Constants.h"
 #import "GameManager.h"
 #import "Utils.h"
 #import "ProgressTimer.h"
 #import "Mask.h"
-#import "FMDatabase.h"
-#import "FMDatabaseAdditions.h"
+#import "FacebookViewController.h"
+#import "ScoreNumber.h"
 
 
-@interface GameplayLayer : CCLayerColor <CCStandardTouchDelegate> {
-    FMDatabase *db;
-    
+@interface GameplayLayer : CCLayerColor <CCStandardTouchDelegate> {    
     CCLayer *clippingNode;
     CCLayer *movableNode;
     CCLayer *figuresNode;
+    CCLayer *deadFiguresNode;
     
     CCArray *deadFigures;
     
@@ -39,6 +39,8 @@
     CCSprite *krytka;
     CCSprite *base;
     CCSprite *cheat;
+    
+    CCSprite *scoreTime;
     
     CCSpriteBatchNode *sphereNode;
     
@@ -58,7 +60,7 @@
     CCSpriteBatchNode *assetsLevelBgNode;
     CCSpriteBatchNode *assetsLevelNode;
     Figure *selSprite;
-    CCSprite *targetSprite;
+    CCSprite *targetSprite;//je zamereny target? (umistit nebo zpet na zakladnu)
     CCSprite *highlightSprite;
     //CCSpriteBatchNode *spritesBgNode;
     CCArray *movableFigures;
@@ -86,6 +88,18 @@
     
     int lastPlace;//asi vyhodit?
     int dir;
+    
+    int currAreaPos;
+    
+    CCParticleSystem *dustSystem;
+    
+    /* Time & Score */
+    ProgressTimer *timer;
+    int score;
+    int lastTime;
+    
+    CCLayer *scoreLayer;
+    CCArray *scoreLabelArray;
 }
 
 //@property GameDifficulty currentDifficulty;
@@ -94,5 +108,6 @@
 - (void) constructRowWithIndex:(int)row;
 - (void) sphereAnimEnded;
 //- (void) generateCode;
+- (void) endGame;
 
 @end

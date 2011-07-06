@@ -9,10 +9,32 @@
 #define MIN_DISTANCE_SWIPE_X 200
 #define MIN_DISTANCE_SWIPE_Y 20
 #define LEVEL_SWIPE_AFTER_ROW 7
-#define LEVEL_DISLOCATION 94
+#define LEVEL_DEAD_FIGURES_MASK_HEIGHT 66
+#define LEVEL_DISLOCATION 40
+#define LEVEL_FIGURE_MAX_Y_MOVE 400
 
 #define AUDIO_MAX_WAITTIME 150
 #define BACKGROUND_TRACK_MAIN @"main_theme.mp3"
+
+#define LEFT_BUTTON_TOP_X 33.00
+#define LEFT_BUTTON_TOP_Y 481.00
+
+#define RIGHT_BUTTON_TOP_X 287.00
+#define RIGHT_BUTTON_TOP_Y 481.00
+
+//typedef struct {
+//    float xPos;
+//    float yPos;  
+//} topButtonLeftPositions;
+//
+//typedef struct {
+//    float xPos;
+//    float yPos;
+//} topButtonRightPositions;
+//
+//topButtonLeftPositions topButtonLeft = {33.00, 481.00};
+
+
 
 typedef enum {
     kButtonInfo,
@@ -20,7 +42,9 @@ typedef enum {
     kButtonSinglePlay,
     kButtonCareerPlay,
     kButtonBack,  
-    kButtonScore
+    kButtonScore,
+    kButtonPause,
+    kButtonFb
 } buttonTypes;
 
 typedef enum {

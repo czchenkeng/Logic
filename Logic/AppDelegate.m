@@ -38,7 +38,8 @@
 	
 #endif // GAME_AUTOROTATION == kGameAutorotationUIViewController	
 }
-- (void) applicationDidFinishLaunching:(UIApplication*)application
+//- (void) applicationDidFinishLaunching:(UIApplication*)application
+- (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 	// Init the window
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -115,8 +116,13 @@
     //[[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kNoTransition];
     [[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kNoTransition];
     //[[GameManager sharedGameManager] runSceneWithID:kScoreScene];
+    
+    return YES;
 }
 
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return [[[[GameManager sharedGameManager] controller] facebook] handleOpenURL:url];
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
 	[[CCDirector sharedDirector] pause];

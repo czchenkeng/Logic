@@ -12,7 +12,6 @@
 #import "Score.h"
 #import "CCUIViewWrapper.h"
 #import "ScoresListViewController.h"
-//#import "/usr/include/sqlite3.h"
 
 
 @interface ScoreLayer : CCLayer {
@@ -20,7 +19,6 @@
     FMResultSet *rs;
     NSString *DBPath;
     
-    //sqlite3 *_database;
     NSString *databasePath;
     
     ScoresListViewController *controller;

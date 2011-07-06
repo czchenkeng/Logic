@@ -11,6 +11,13 @@
 
 @implementation GameplayLayer
 
+
+- (void) pauseTapped:(CCMenuItem *)sender { 
+    //CCLOG(@"Logic debug: Pause");
+    [self endGame];
+}
+
+#pragma mark Build level 
 - (void) prepareAssets {
     NSString *hw = @"";
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -23,7 +30,9 @@
     clippingNode = [CCLayer node];
     movableNode = [CCLayer node];
     figuresNode = [CCLayer node];
-    //figuresNode = [Mask maskWithRect:CGRectMake(0, 100, 320, 380)];
+    deadFiguresNode = [CCLayer node];
+    scoreLayer = [CCLayer node];
+    Mask *deadFiguresNodeMask = [Mask maskWithRect:CGRectMake(0, LEVEL_DEAD_FIGURES_MASK_HEIGHT, 320, 480 - LEVEL_DEAD_FIGURES_MASK_HEIGHT)];
     
     assetsLevelBgNode = [CCSpriteBatchNode batchNodeWithFile:[NSString stringWithFormat:@"LevelBg%@.pvr.ccz", hw]];
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:[NSString stringWithFormat:@"LevelBg%@.plist", hw]];
@@ -77,7 +86,11 @@
     rotorLeftLight = [CCSprite spriteWithSpriteFrameName:@"rotor_left_light.png"];
     rotorRightLight = [CCSprite spriteWithSpriteFrameName:@"rotor_right_light.png"];
     
+    [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
+    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Hq.plist"];
     sphereLight = [CCSprite spriteWithSpriteFrameName:@"lightSphere.png"];
+    sphereLight.opacity = 155;
+    [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
     
     krytka = [CCSprite spriteWithSpriteFrameName:@"logik_krytka.png"];
     
@@ -108,27 +121,32 @@
         greenLight.opacity = 0;
         [movableNode addChild:greenLight z:i tag:i];
         [greenLights addObject:greenLight];
+        RowStaticScore *pss = [[RowStaticScore alloc] init];
+        pss.position = ccp(greenLight.position.x - 3, greenLight.position.y + 8);
+        [clippingNode addChild:pss z:1-i];
+        [placeNumbers addObject:pss];
+        
         
         CCSprite *orangeLight = [CCSprite spriteWithSpriteFrameName:@"orangeLight.png"];
         orangeLight.position = ccp(308, 82 + i*44);
         orangeLight.opacity = 0;
         [movableNode addChild:orangeLight z:i + 10 tag:i + 10];
         [orangeLights addObject:orangeLight];
+        RowStaticScore *css = [[RowStaticScore alloc] init];
+        css.position = ccp(orangeLight.position.x - 5, orangeLight.position.y + 8);
+        [clippingNode addChild:css z:1-i];
+        [colorNumbers addObject:css];
     }
     
     base = [CCSprite spriteWithSpriteFrameName:@"pinchBase.png"];
     base.anchorPoint = CGPointMake(0, 0);
     
+    scoreTime = [CCSprite spriteWithSpriteFrameName:@"logik_score_time.png"];
+    scoreTime.anchorPoint = CGPointMake(0.5, 1);
+    
     //nodes position
     codeBase.position = ccp(133, 455);
     
-//    rotorLeft.position = ccp(54.00, 430.00);
-//    rotorRight.position = ccp(259.00, 434.00);
-//    sphereNode.position = ccp(152, 474);
-//    rotorRightInside.position = ccp(259.00, 434.00);
-//    rotorLeftInside.position = ccp(54.00, 430.00);
-//    rotorRightLight.position = ccp(259.00, 434.00);
-//    rotorLeftLight.position = ccp(54.00, 430.00);
     
     rotorRightMain.position = ccp(259.00, 434.00);
     rotorLeftMain.position = ccp(54.00, 430.00);
@@ -136,25 +154,42 @@
     
     sphereLight.position = ccp(150.00, 411.00);
     krytka.position = ccp(160.00, 456.00);
+    
+    scoreTime.position = ccp(160.00, 480.50);
 
     
     //add nodes to display list
-    [self addChild:clippingNode z:1 tag:1];
     [self addChild:movableNode z:2 tag:2];
     //Mask *test = [Mask maskWithRect:CGRectMake(0, 150, 320, 150)];
     //[movableNode addChild:test z:-1 tag:-1];
     //[test addChild:bg];
-    [movableNode addChild:bg z:-1 tag:-1];
-    //bg.opacity = 80;
-    
+    [movableNode addChild:bg z:-1 tag:-1];  
+    [movableNode addChild:deadFiguresNodeMask z:1];
+    [deadFiguresNodeMask addChild:deadFiguresNode];
     [self addChild:codeBase z:3 tag:3];
-    [self addChild:krytka z:4];
-    [self addChild:sphereLight z:5];
-    [self addChild:rotorLeftMain z:6];
-    [self addChild:rotorRightMain z:7];
-    [self addChild:sphereNode z:6 tag:8];
-    [self addChild:base z:7 tag:9];
-    [self addChild:figuresNode z:10];
+    [self addChild:clippingNode z:4 tag:1];
+    [self addChild:krytka z:5];
+    [self addChild:base z:6 tag:11];
+    [self addChild:figuresNode z:7];
+    [self addChild:sphereLight z:8];
+    [self addChild:rotorLeftMain z:9];
+    [self addChild:rotorRightMain z:10];
+    [self addChild:sphereNode z:11 tag:9];
+    [self addChild:scoreLayer z:12];
+    [self addChild:scoreTime z:13];
+
+    
+    CCSprite *buttonPauseOff = [CCSprite spriteWithSpriteFrameName:@"logik_pauza_01.png"];
+    CCSprite *buttonPauseOn = [CCSprite spriteWithSpriteFrameName:@"logik_pauza_02.png"];
+    
+    CCMenuItem *pauseItem = [CCMenuItemSprite itemFromNormalSprite:buttonPauseOff selectedSprite:buttonPauseOn target:self selector:@selector(pauseTapped:)];
+    pauseItem.tag = kButtonPause;
+    pauseItem.anchorPoint = CGPointMake(0.5, 1);
+    pauseItem.position = ccp(152.00, 481.00);
+    
+    CCMenu *pauseMenu = [CCMenu menuWithItems:pauseItem, nil];
+    pauseMenu.position = CGPointZero;
+    [self addChild:pauseMenu z:20];
     
     
     
@@ -177,11 +212,18 @@
     
     [movableNode addChild:highlightSprite z:200];
     
-    ProgressTimer *timer = [[ProgressTimer alloc] init];
+    timer = [[ProgressTimer alloc] init];
     [self addChild:timer z:10000];
     
-//    CCMoveTo *moveDown = [CCMoveTo actionWithDuration:.3 position:CGPointMake(movableNode.position.x, movableNode.position.y - 64)];
-//    [movableNode runAction:moveDown];
+    //CCTimer *alphaTimer = [[CCTimer alloc] initWithTarget:self selector:@selector(alphaShadows:) interval:0.1f];
+    //CCTimer *alphaTimer = [CCTimer timerWithTarget:self selector:@selector(alphaShadows:) interval:0.1f]; 
+    [self schedule:@selector(alphaShadows:) interval:0.1];
+    
+    
+    dustSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"dust.plist"];
+    [self addChild:dustSystem z:1000];
+    
+
     //release memory
     [hw release];
     [bgFrame release];
@@ -190,6 +232,8 @@
 //    morphingSphereFrames = nil;
 }
 
+#pragma mark Callback methods sphere & shadows
+/* callback sphere animation */
 - (void) sphereAnimEnded {
     float delay = 1.0 / (float)[Utils randomNumberBetween:10 andMax:20];
     //CCLOG(@"delay is %f", delay);
@@ -202,6 +246,15 @@
     [sphere runAction:sphereSeq];
 }
 
+/* timer for rotor blue shadows */
+- (void) alphaShadows:(ccTime)dt {
+    int ranAlpha = [Utils randomNumberBetween:50 andMax:155];
+    rotorLeftLight.opacity = ranAlpha;
+    rotorRightLight.opacity = ranAlpha;
+    sphereLight.opacity = ranAlpha;
+}
+
+#pragma mark Generate game code 
 - (void) generateCode {
     //currentCode = [[CCArray alloc] init];
     currentCode = [[NSMutableArray alloc] init];
@@ -220,12 +273,13 @@
         
         //CCLOG(@"retain before is %d", [figure retainCount]);
         [codeBase addChild:figure z:i];
-        [cheat addChild:cheatFigure z:i];
+        //[cheat addChild:cheatFigure z:i];
         [currentCode addObject:figure];
         //CCLOG(@"retain is %d", [figure retainCount]);
     }
 }
 
+#pragma mark 8 figures to base 
 - (void) addFigures {    
     movableFigures = [[CCArray alloc] init];
     
@@ -233,27 +287,27 @@
     
     for (int i = 0; i < 8; ++i) {
         Figure *figure = [[Figure alloc] initWithFigureType:i];
-        //figure.anchorPoint = CGPointMake(0.5, 0);
         figure.position = ccp(pinchXpos[i], 32.0f);
         figure.originalPosition = ccp(figure.position.x, figure.position.y);
         [figuresNode addChild:figure z:i];
         [movableFigures addObject:figure];
-        //[figure destroy];
     }    
 }
 
+#pragma mark Targets for figures
 - (void) generateTargets {
     targets = [[CCArray alloc] init];
     
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Level.plist"];
     for (int i = 0; i < currentDifficulty; ++i) {
         CCSprite *targetPoint = [CCSprite spriteWithSpriteFrameName:@"debug_center.png"];
-        targetPoint.opacity = 0;
+        targetPoint.opacity = 255;
         [movableNode addChild:targetPoint z:100 + i];
         [targets addObject:targetPoint];
     }
 }
 
+#pragma mark Construct row with targets
 - (void) constructRowWithIndex:(int)row {
     int i = 0;
     for (CCSprite *sprite in targets) {
@@ -262,58 +316,36 @@
     }
 }
 
+#pragma mark Construct score Label
+- (void) constructScoreLabel {
+    for (int i = 0; i<8; i++) {
+        Mask *scoreMask = [Mask maskWithRect:CGRectMake(9*i, 456.50, 9, 18)];
+        [scoreLayer addChild:scoreMask z:i];
+        ScoreNumber *scoreNumber = [[ScoreNumber alloc] init];
+        [scoreMask addChild:scoreNumber];
+        [scoreLabelArray addObject:scoreNumber];
+    }
+    [scoreLabelArray reverseObjects];
+
+}
+
+#pragma mark Composite method for starting level
 - (void) createLevel {
     [self prepareAssets];
     [self generateCode];
     [self addFigures];
     [self generateTargets];
     [self constructRowWithIndex:activeRow];
+    [self constructScoreLabel];
 }
 
-- (void) createEditableCopyOfDatabaseIfNeeded {
-    BOOL success;
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *error;
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *writableDBPath = [documentsDirectory stringByAppendingPathComponent:@"LogicDatabase.sqlite"];
-    success = [fileManager fileExistsAtPath:writableDBPath];
-    CCLOG(@"success %i", success);
-    if (success) return;
-    // The writable database does not exist, so copy the default to the appropriate location.
-    NSString *defaultDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"LogicDatabase.sqlite"];
-    success = [fileManager copyItemAtPath:defaultDBPath toPath:writableDBPath error:&error];
-    if (!success) {
-        NSAssert1(0, @"Failed to create writable database file with message '%@'.", [error localizedDescription]);
-    }
-}
-
+#pragma mark Init
 - (id) init {
     self = [super initWithColor:ccc4(0,0,0,0)];
     if (self != nil) {
-        
-        
-        
-        [self createEditableCopyOfDatabaseIfNeeded];
-        
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0]; 
-        NSString *DBPath = [documentsDirectory stringByAppendingPathComponent:@"LogicDatabase.sqlite"];
-        
-        db = [[FMDatabase databaseWithPath:DBPath] retain];
-        if (![db open]) {
-            CCLOG(@"Could not open db.");
-            [db setLogsErrors:TRUE];
-            [db setTraceExecution:TRUE];
-        } else {
-            CCLOG(@"Db is here!");
-        }
-
-        
-        
-        
-        
-        
+        lastTime = 0;
+        score = 0;
+        currAreaPos = 0;
         dislocation = 0.0;
         activeRow = 0;
         lastPlace = -1;
@@ -321,19 +353,17 @@
         targetSprite = nil;
         isEndRow = NO;
         isMovable = NO;
-        //userCode = [[CCArray alloc] init];
         userCode = [[NSMutableArray alloc] init];
         placeNumbers = [[CCArray alloc] init];
         colorNumbers = [[CCArray alloc] init];
         deadFigures = [[CCArray alloc] init];
         touchArray = [[NSMutableArray alloc] init];
+        scoreLabelArray = [[CCArray alloc] init];
         [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
         [self createLevel];
     }
     return self;
 }
-
-
 
 
 #pragma mark -
@@ -364,24 +394,22 @@
 }
 
 - (void) panForTranslation:(CGPoint)translation {    
-    //CCLOG(@"Sel Sprite %@", selSprite);
     if (selSprite) {
-        selSprite.endTime = [NSDate date];
+        //selSprite.endTime = [NSDate date];
         //CCLOG(@"TIME %i", selSprite.endTime.  - selSprite.startTime);
         CGPoint newPos = ccpAdd(selSprite.position, translation);
-        if (newPos.y < 380)
+        if (newPos.y < LEVEL_FIGURE_MAX_Y_MOVE)
             selSprite.position = newPos;
     }  
 }
 
-- (void) activateTargetWithTarget:(CCSprite *)sprite andPlace:(int)place {
+#pragma mark Detect target
+- (void) activateTargetWithSprite:(CCSprite *)sprite andPlace:(int)place {
     if (targetSprite != sprite) {
-        //CCLOG(@"Logic debug: Target sprite %@", sprite);
         targetSprite = sprite;
         highlightSprite.visible = YES;
-        highlightSprite.position = ccp(targetSprite.position.x, targetSprite.position.y);
+        highlightSprite.position = targetSprite.position;
         selSprite.place = place;
-        //currentPlace = place;
     }
 }
 
@@ -390,11 +418,9 @@
         CGSize screenSize = [CCDirector sharedDirector].winSize;
         int i = 0;
         for (CCSprite *sprite in targets) {
-            //CGRect rect = CGRectMake(sprite.position.x, sprite.position.y, sprite.boundingBox.size.width, 80 - sprite.position.y);
             CGRect rect = CGRectMake(sprite.position.x, screenSize.height, sprite.boundingBox.size.width, 80 - screenSize.height);
             if (CGRectIntersectsRect(selSprite.boundingBox, rect)) {
-                [self activateTargetWithTarget:sprite andPlace:i];
-                //CCLOG(@"rects from detect %@", NSStringFromCGRect(rect));
+                [self activateTargetWithSprite:sprite andPlace:i];
             }
             i++;
         } 
@@ -403,33 +429,6 @@
 
 #pragma mark -
 #pragma mark Touches
-//- (void) ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event  {       
-//    UITouch *touch = [touches anyObject];
-//    CGPoint new_location = [touch locationInView: [touch view]];
-//    new_location = [[CCDirector sharedDirector] convertToGL:new_location];
-//    
-//    CGPoint oldTouchLocation = [touch previousLocationInView:touch.view];
-//    oldTouchLocation = [[CCDirector sharedDirector] convertToGL:oldTouchLocation];
-//    oldTouchLocation = [self convertToNodeSpace:oldTouchLocation];
-//
-//    [touchArray addObject:NSStringFromCGPoint(new_location)];
-//    [touchArray addObject:NSStringFromCGPoint(oldTouchLocation)];
-//    CCLOG(@"touches moved");
-//}
-//
-//
-//- (void) draw {
-//    glEnable(GL_LINE_SMOOTH);
-//    
-//    for(int i = 0; i < [touchArray count]; i+=2) {
-//        CGPoint start = CGPointFromString([touchArray objectAtIndex:i]);
-//        CGPoint end = CGPointFromString([touchArray objectAtIndex:i+1]);
-//        
-//        ccDrawLine(start, end);
-//        CCLOG(@"paint %@", NSStringFromCGPoint(start));
-//    }
-//}
-
 - (void) ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event {       
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
     
@@ -438,8 +437,6 @@
     oldTouchLocation = [self convertToNodeSpace:oldTouchLocation];
     
     CGPoint translation = ccpSub(touchLocation, oldTouchLocation);
-    //CCLOG(@"Translation %f %f", translation.x, translation.y);
-    
     
     [self panForTranslation:translation];
     [self detectTarget];
@@ -522,97 +519,102 @@
 }
 
 - (void) swipeEnd {
-    for (Mask *mask in placeNumbers) {
-        [mask redrawRect:CGRectMake(mask.position.x - 50, mask.position.y - dislocation * dir, 12, 18)];
-    }
-    for (Mask *mask in colorNumbers) {
-        [mask redrawRect:CGRectMake(mask.position.x - 50, mask.position.y - dislocation * dir, 12, 18)];
-    }
+
 }
 
 - (void) swipeArea:(int)direction {
-    //CCMoveTo *move = [CCMoveTo actionWithDuration:.3 position:CGPointMake(movableNode.position.x, movableNode.position.y - dislocation * direction)];
-    //[movableNode runAction:move];
     dir = direction;
+    dir > 0 ? currAreaPos++ : currAreaPos--;
+    //dislocation = LEVEL_DISLOCATION * currAreaPos;
+    CCLOG(@"dislocation %f", dislocation);
+    CCLOG(@"area position %i", currAreaPos);
     CCSequence *moveSeq = [CCSequence actions:
                    [CCMoveTo actionWithDuration:.3 position:CGPointMake(movableNode.position.x, movableNode.position.y - dislocation * direction)],
                    [CCCallFunc actionWithTarget:self selector:@selector(swipeEnd)],
                    nil];
+    CCSequence *moveNumbersSeq = [CCSequence actions:
+                           [CCMoveTo actionWithDuration:.3 position:CGPointMake(clippingNode.position.x, clippingNode.position.y - dislocation * direction)],
+                           nil];
+//    CCSpawn *moveSpawn = [CCSpawn actions: [CCMoveTo actionWithDuration:.3 position:CGPointMake(movableNode.position.x, movableNode.position.y - dislocation * direction)],
+//                          [CCMoveTo actionWithDuration:.3 position:CGPointMake(clippingNode.position.x, clippingNode.position.y - dislocation * direction)],
+//                          nil];
     [movableNode runAction:moveSeq];
-    for (Mask *mask in placeNumbers) {
-        [mask redrawRect:CGRectMake(mask.position.x + 50, mask.position.y, 12, 18)];
-    }
-    for (Mask *mask in colorNumbers) {
-        [mask redrawRect:CGRectMake(mask.position.x + 50, mask.position.y, 12, 18)];
-    }
-    movableFlag = !movableFlag;
+    [clippingNode runAction:moveNumbersSeq];
+    //movableFlag = !movableFlag;
 }
 
 - (void) nextRow {
     [userCode removeAllObjects];
     activeRow ++;
     [self constructRowWithIndex:activeRow];
+    if (currAreaPos == 1) {
+        [self swipeArea:1];
+    }
     if (activeRow == LEVEL_SWIPE_AFTER_ROW) {
         isMovable = YES;
-        movableFlag = YES;
+        //movableFlag = YES;
         dislocation = LEVEL_DISLOCATION;
+        //currAreaPos ++;
         [self swipeArea:1];
     }
 }
 
 - (void) showResult {
+    CCSprite *greenLight = [greenLights objectAtIndex:activeRow];
     if (places > 0) {
-        CCSprite *greenLight = [greenLights objectAtIndex:activeRow];
-        //CCFadeTo *fadeTo = [CCFadeTo actionWithDuration:0.5f opacity:255];
         id fadeToGreen = [CCFadeTo actionWithDuration:0.5f opacity:255];
-        [greenLight runAction:fadeToGreen];
+        [greenLight runAction:fadeToGreen]; 
+    }   
+    RowStaticScore *place = [placeNumbers objectAtIndex:activeRow];
+    [place showNumber:places];
+    Mask *holderPlace = [Mask maskWithRect:CGRectMake(greenLight.position.x - 3, greenLight.position.y + 8 - dislocation, 9, 18)];
+    [clippingNode addChild:holderPlace z:21 + activeRow];
+    RowScore *rs = [[RowScore alloc] init];
+    [holderPlace addChild:rs z:1];
+    [rs moveToPosition:places andMask:holderPlace];
         
-        Mask *holderPlace = [Mask maskWithRect:CGRectMake(greenLight.position.x - 3, greenLight.position.y + 8 - dislocation, 12, 18)];
-        //holderPlace.anchorPoint = CGPointMake(0.5, 0);
-        [clippingNode addChild:holderPlace z:activeRow - 10000];
-        [placeNumbers addObject:holderPlace];
-        
-        RowScore *rs = [[RowScore alloc] init];
-        //rs.position = ccp(greenLight.position.x + 2, greenLight.position.y + 26);
-        //[movableNode addChild:rs z:activeRow - 10000];
-        [holderPlace addChild:rs z:1 tag:1];
-        [rs moveToPosition:places];
-        
-    }
+
+    CCSprite *orangeLight = [orangeLights objectAtIndex:activeRow];
     if (colors > 0) {
-        CCSprite *orangeLight = [orangeLights objectAtIndex:activeRow];
         id fadeToOrange = [CCFadeTo actionWithDuration:0.5f opacity:255];
         [orangeLight runAction:fadeToOrange];
-        
-        Mask *holderColors = [Mask maskWithRect:CGRectMake(orangeLight.position.x - 5, orangeLight.position.y + 8 - dislocation, 12, 18)];
-        [clippingNode addChild:holderColors z:activeRow - 10000];
-        [colorNumbers addObject:holderColors];
-        
-        RowScore *rc = [[RowScore alloc] init];
-        [holderColors addChild:rc z:1 tag:1];
-        [rc moveToPosition:colors];
+    }    
+    RowStaticScore *color = [colorNumbers objectAtIndex:activeRow];
+    [color showNumber:colors];
+    Mask *holderColors = [Mask maskWithRect:CGRectMake(orangeLight.position.x - 5, orangeLight.position.y + 8 - dislocation, 9, 18)];
+    [clippingNode addChild:holderColors z:21 + activeRow];
+    RowScore *rc = [[RowScore alloc] init];
+    [holderColors addChild:rc z:1];
+    [rc moveToPosition:colors andMask:holderColors];
+}
+
+- (void) fbTapped:(CCMenuItem *)sender { 
+    switch (sender.tag) {
+        case kButtonFb: 
+            CCLOG(@"TAP ON FB");
+            [sender removeFromParentAndCleanup:YES];
+            
+            CGRect frame = CGRectMake(40, 100, 240, 180);
+            FacebookViewController *controller = [[GameManager sharedGameManager] facebookController:frame];
+            
+//            UIView *tableContainer = [[UIView alloc] initWithFrame:frame];
+//            [tableContainer addSubview:controller.view];
+            
+            CCUIViewWrapper *fbWrapper = [CCUIViewWrapper wrapperForUIView:controller.view];
+            [self addChild:fbWrapper z:120];
+            
+            break;
+        default:
+            CCLOG(@"Logic debug: Unknown ID, cannot tap button");
+            return;
+            break;
     }
 }
 
 - (void) endGame {
     CCLOG(@"Logic debug: END GAME");
     
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"d/M/yy"];
-        
-    NSDateFormatter *timeFormat = [[NSDateFormatter alloc] init];
-    [timeFormat setDateFormat:@"h:ma"];
-    NSDate *now = [[NSDate alloc] init];       
-    NSString *theDate = [dateFormat stringFromDate:now];
-    NSString *theTime = [timeFormat stringFromDate:now];
-    [db beginTransaction];         
-    [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:[Utils randomNumberBetween:1000 andMax:99999999]], [NSNumber numberWithInt:currentDifficulty], theDate, theTime];
-    [db commit];
-            
-    [dateFormat release];
-    [timeFormat release];
-    [now release];
-    
+    [[[GameManager sharedGameManager] gameData] writeScore:[Utils randomNumberBetween:1000 andMax:99999999] andDifficulty:currentDifficulty];
     
     //faze 1
     CCMoveTo *rightRotorOut = [CCMoveTo actionWithDuration:0.1 position:ccp(rotorRightMain.position.x + 15, rotorRightMain.position.y)];
@@ -687,10 +689,60 @@
     [codeBase runAction:codeSeq];
     [figuresNode runAction:figSeq];
     [base runAction:baseSeq];
+    
+    
+    //temporary end screen
+    CCSprite *buttonFbOff = [CCSprite spriteWithSpriteFrameName:@"logik_iconfcb1.png"];
+    CCSprite *buttonFbOn = [CCSprite spriteWithSpriteFrameName:@"logik_iconfcb2.png"];
+    
+    CCMenuItem *fbItem = [CCMenuItemSprite itemFromNormalSprite:buttonFbOff selectedSprite:buttonFbOn target:self selector:@selector(fbTapped:)];
+    fbItem.tag = kButtonFb;
+    fbItem.position = ccp(100.00, 300.00);
+    
+    CCMenu *finalMenu = [CCMenu menuWithItems:fbItem, nil];
+    finalMenu.position = CGPointZero;
+    //[self addChild:finalMenu z:20];
+    
+    //end temp screen
 }
 
+
+- (void) calculateScore {
+    lastTime = timer.gameTime - lastTime;
+    //CCLOG(@"ACTIVE ROW %i", activeRow + 1);
+    //CCLOG(@"GAME TIME %i", lastTime);
+    float sc = 264000 * ( (10 / (activeRow + 1)) + ( 25 / lastTime ) - 1 );
+    int diffCoef;
+    switch (currentDifficulty) {
+        case kEasy:
+            diffCoef = 64;
+            break;
+        case kMedium:
+            diffCoef = 8;
+            break;
+        case kHard:
+            diffCoef = 1;
+            break;
+    }
+    sc /= diffCoef;
+    score += (int)sc;
+    
+    CCLOG(@"AND SCORE IS %i", score);
+    NSString *scoreString = [NSString stringWithFormat:@"%i", score];
+    NSMutableArray *characters = [[NSMutableArray alloc] initWithCapacity:[scoreString length]];
+    for (int i=0; i < [scoreString length]; i++) {
+        NSString *ichar  = [NSString stringWithFormat:@"%c", [scoreString characterAtIndex:i]];
+        [characters addObject:ichar];
+    }
+    ScoreNumber *tempScoreNumber;
+    for (int i=0; i < [characters count]; i++) {
+        tempScoreNumber = [scoreLabelArray objectAtIndex:i];
+        [tempScoreNumber moveToPosition:[[[[characters reverseObjectEnumerator] allObjects] objectAtIndex:i] intValue]];
+    }
+}
+
+
 - (void) didEndOfRow {
-    CCLOG(@"Logic debug: END ROW");
     colors = 0;
     places = 0;
     int i = 0;
@@ -720,10 +772,10 @@
     
     CCLOG(@"Logic debug: PLACES %i AND COLORS %i", places, colors);
     [self showResult];
-    //if (places == currentDifficulty || activeRow == 9) {
     if (places == currentDifficulty || activeRow == 9) {
         [self endGame];
     } else {
+        [self calculateScore];
         [self nextRow];
     }
 }
@@ -733,16 +785,16 @@
         Figure *deadFigure = [[Figure alloc] initWithFigureType:userSprite.currentFigure];
         //deadFigure.place = userSprite.place;
         deadFigure.isActive = NO;//neni treba? neni v movable figures
-        CGPoint newPos = ccp(userSprite.position.x, userSprite.position.y + dislocation);
+        CGPoint newPos = ccp(userSprite.position.x, userSprite.position.y + dislocation - LEVEL_DEAD_FIGURES_MASK_HEIGHT);
         deadFigure.position = newPos;
-        [movableNode addChild:deadFigure z:2000];//mrknout na z-index
+        //[movableNode addChild:deadFigure z:2000];//mrknout na z-index
+        [deadFiguresNode addChild:deadFigure z:2000];//mrknout na z-index
         [movableFigures removeObject:userSprite];
         [userSprite destroy];
     }
 }
 
 - (void) ccTouchEnded: (UITouch *)touch withEvent: (UIEvent *)event {
-    //CCLOG(@"Logic debug: Touch end");
     if (selSprite) {
         //[movableFigures removeObject:selSprite];
         //[selSprite destroy];
@@ -786,9 +838,11 @@
         }
         
         if (fabs(deltaY) > MIN_DISTANCE_SWIPE_Y && isMovable) {
-            if(deltaY < 0 && movableFlag)//down
+            //if(deltaY < 0 && movableFlag)//down
+            if(deltaY < 0 && currAreaPos < 2)//down    
                 [self swipeArea:1];
-            else if (deltaY > 0 && !movableFlag)
+            //else if (deltaY > 0 && !movableFlag)
+            else if (deltaY > 0 && currAreaPos > 0)
                 [self swipeArea:-1];
         }
     }
@@ -796,6 +850,8 @@
 
 - (void) dealloc {
     CCLOG(@"Logic debug: DEALLOC GAME LAYER %@", self);
+    [scoreLabelArray release];
+    scoreLabelArray = nil;
     [rotorLeftMain release];
     [rotorRightMain release];
     [orangeLights release];

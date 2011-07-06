@@ -1,15 +1,15 @@
 //
-//  RowScore.m
+//  ScoreNumber.m
 //  Logic
 //
-//  Created by Pavel Krusek on 6/13/11.
+//  Created by Pavel Krusek on 7/6/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "RowScore.h"
+#import "ScoreNumber.h"
 
 
-@implementation RowScore
+@implementation ScoreNumber
 
 - (id) init {
     self = [super init];
@@ -23,22 +23,20 @@
 }
 
 - (void) endAnimation {
-    [numbers removeFromParentAndCleanup:YES];
-    [_mask removeFromParentAndCleanup:YES];
+//    [numbers removeFromParentAndCleanup:YES];
+//    [_mask removeFromParentAndCleanup:YES];
 }
 
-- (void) moveToPosition:(int)position andMask:(Mask *)mask {
-    _mask = mask;
-    //CCMoveTo *moveNumbers = [CCMoveTo actionWithDuration:.3 position:CGPointMake(numbers.position.x, 18*(position+2))];
+- (void) moveToPosition:(int)position {
+    //_mask = mask;
     CCSequence *moveNumbers = [CCSequence actions:
-                               [CCMoveTo actionWithDuration:.3 position:CGPointMake(numbers.position.x, 18*(position+2))],
+                               [CCDelayTime actionWithDuration: 0.4f],
+                               [CCMoveTo actionWithDuration:.5 position:CGPointMake(numbers.position.x, 18*(position+2))],
                                [CCCallFunc actionWithTarget:self selector:@selector(endAnimation)],
                                nil];
     [numbers runAction:moveNumbers];
-    //[moveNumbers release];
-    //CCLOG(@"moveNumbers retain count %i", [moveNumbers retainCount]);
-    //CCLOG(@"numbers retain count %i", [numbers retainCount]);
 }
+
 
 - (void) dealloc {
     CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);

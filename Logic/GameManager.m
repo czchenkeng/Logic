@@ -12,7 +12,7 @@
 
 @implementation GameManager
 
-@synthesize isMusicON, isSoundEffectsON, currentDifficulty, managerSoundState, musicVolume, soundVolume;
+@synthesize isMusicON, isSoundEffectsON, currentDifficulty, managerSoundState, musicVolume, soundVolume, gameData, controller;
 static GameManager* _sharedGameManager = nil;
 
 + (GameManager*) sharedGameManager {
@@ -48,10 +48,16 @@ static GameManager* _sharedGameManager = nil;
         hasAudioBeenInitialized = NO;
         soundEngine = nil;
         managerSoundState = kAudioManagerUninitialized;
-        currentDifficulty = kMedium;
-        currentScene = kNoSceneUninitialized;        
+        currentDifficulty = kEasy;
+        currentScene = kNoSceneUninitialized;
+        gameData = [[GameData alloc] init];
     }
     return self;
+}
+
+- (FacebookViewController *) facebookController:(CGRect)rect {
+    controller = [[FacebookViewController alloc] initWithFrame:rect];
+    return controller;
 }
 
 - (float) musicVolume {
@@ -229,6 +235,11 @@ static GameManager* _sharedGameManager = nil;
         [soundEngine preloadBackgroundMusic:trackFileName];
         [soundEngine playBackgroundMusic:trackFileName loop:YES];
     }
+}
+
+- (void) dealloc {
+    [controller release];
+    [super dealloc];
 }
 
 @end

@@ -20,50 +20,51 @@
         [controller removeScores];
     }
 
-    
-    rs = [db executeQuery:[NSString stringWithFormat:@"SELECT * FROM scores WHERE difficulty = %i ORDER BY score DESC", diff]];
-    //rs = [db executeQuery:@"SELECT * FROM scores ORDER BY score DESC"];
-
-    if ([db hadError]) {
-        CCLOG(@"DB Error %d: %@", [db lastErrorCode], [db lastErrorMessage]);
-    }
-    
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];  
-    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-    
-    int i = 1;
-    while ([rs next]) {
-        NSString *formattedOutput = [formatter stringFromNumber:[NSNumber numberWithInt:[rs intForColumn:@"score"]]];
-//        CCLOG(@"id %@", [NSString stringWithFormat:@"%i.", i]);
-//        CCLOG(@"score %@", [formattedOutput stringByReplacingOccurrencesOfString:@"," withString:@" "]);
-//        CCLOG(@"time form select %@", [rs stringForColumn:@"time"]);
-//        CCLOG(@"date form select %@", [rs stringForColumn:@"date"]);
-//        CCLOG(@"========================================================");
-        NSString *uid = [NSString stringWithFormat:@"%i.", i];
-        NSString *score = [formattedOutput stringByReplacingOccurrencesOfString:@"," withString:@" "];
-        NSString *time = [rs stringForColumn:@"time"];
-        NSString *date = [rs stringForColumn:@"date"];
-        Score *scoreObj = [[Score alloc] initWithUniqueId:uid score:score time:time date:date];                        
-        [scores addObject:scoreObj];
-        //[controller.scores addObject:scoreObj];
-        [uid release];
-        [score release];
-        [time release];
-        [date release];
-        //[scoreObj release];
-        i++;
-    }
-    //[rs close];
-    //rs = nil;
-    //[db commit];
-    
-    CCLOG(@"scores %@ %i", scores, scores.count);
-    [formatter release];
+    //******************************TEST SHARED GAME DATA
+//    rs = [db executeQuery:[NSString stringWithFormat:@"SELECT * FROM scores WHERE difficulty = %i ORDER BY score DESC", diff]];
+//
+//    if ([db hadError]) {
+//        CCLOG(@"DB Error %d: %@", [db lastErrorCode], [db lastErrorMessage]);
+//    }
+//    
+//    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];  
+//    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+//    
+//    int i = 1;
+//    while ([rs next]) {
+//        NSString *formattedOutput = [formatter stringFromNumber:[NSNumber numberWithInt:[rs intForColumn:@"score"]]];
+////        CCLOG(@"id %@", [NSString stringWithFormat:@"%i.", i]);
+////        CCLOG(@"score %@", [formattedOutput stringByReplacingOccurrencesOfString:@"," withString:@" "]);
+////        CCLOG(@"time form select %@", [rs stringForColumn:@"time"]);
+////        CCLOG(@"date form select %@", [rs stringForColumn:@"date"]);
+////        CCLOG(@"========================================================");
+//        NSString *uid = [NSString stringWithFormat:@"%i.", i];
+//        NSString *score = [formattedOutput stringByReplacingOccurrencesOfString:@"," withString:@" "];
+//        NSString *time = [rs stringForColumn:@"time"];
+//        NSString *date = [rs stringForColumn:@"date"];
+//        Score *scoreObj = [[Score alloc] initWithUniqueId:uid score:score time:time date:date];                        
+//        [scores addObject:scoreObj];
+//        //[controller.scores addObject:scoreObj];
+//        [uid release];
+//        [score release];
+//        [time release];
+//        [date release];
+//        //[scoreObj release];
+//        i++;
+//    }
+//    //[rs close];
+//    //rs = nil;
+//    //[db commit];
+//    
+//    CCLOG(@"scores %@ %i", scores, scores.count);
+//    [formatter release];
+    //******************************TEST SHARED GAME DATA
     
     
     //[controller removeScores];
     //controller.scores = nil;
-    controller.scores = scores;
+    //controller.scores = scores;
+    controller.scores = [[[GameManager sharedGameManager] gameData] getScores:diff];
 //    for (Score *sc in scores) {
 //        [controller.scores addObject:sc];
 //    }
@@ -78,26 +79,6 @@
 
     [controller.tableView reloadData];
     //[controller.tableView setNeedsDisplay];
-    
-    CCLOG(@"jen tak");
-//    NSString *query = @"SELECT * FROM scores WHERE difficulty = 4 ORDER BY score DESC";
-//    sqlite3_stmt *statement;
-//    if (sqlite3_prepare_v2(_database, [query UTF8String], -1, &statement, nil) == SQLITE_OK) {
-//        while (sqlite3_step(statement) == SQLITE_ROW) {
-//            int uniqueId = sqlite3_column_int(statement, 1);
-//            char *cityChars = (char *) sqlite3_column_text(statement, 3);
-//             NSString *date = [[NSString alloc] initWithUTF8String:cityChars];
-//            CCLOG(@"a ted? %i", uniqueId);
-//            CCLOG(@"a ted? %@", date);
-//            //            char *nameChars = (char *) sqlite3_column_text(statement, 1);
-//            //            char *cityChars = (char *) sqlite3_column_text(statement, 2);
-//            //            char *stateChars = (char *) sqlite3_column_text(statement, 3);
-//        }
-//        //sqlite3_finalize(statement);
-//    } else {
-//        NSLog(@"wrong");
-//    }
-//    NSLog(@"OK");
 }
 
 
@@ -185,25 +166,30 @@
     self = [super init];
     if (self != nil) {
         
-        [self createEditableCopyOfDatabaseIfNeeded];
-
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0]; 
-        DBPath = [documentsDirectory stringByAppendingPathComponent:@"LogicDatabase.sqlite"];
-        
-//        NSFileManager *fileManager = [NSFileManager defaultManager];
-//        [fileManager removeItemAtPath:writableDBPath error:NULL];
         
         
-        CCLOG(@"dir %@", documentsDirectory);
-        db = [[FMDatabase databaseWithPath:DBPath] retain];
-        if (![db open]) {
-            CCLOG(@"Could not open db.");
-            [db setLogsErrors:TRUE];
-            [db setTraceExecution:TRUE];
-        } else {
-            CCLOG(@"Db is here!");
-        }
+//        [self createEditableCopyOfDatabaseIfNeeded];
+//
+//        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//        NSString *documentsDirectory = [paths objectAtIndex:0]; 
+//        DBPath = [documentsDirectory stringByAppendingPathComponent:@"LogicDatabase.sqlite"];
+//        
+////        NSFileManager *fileManager = [NSFileManager defaultManager];
+////        [fileManager removeItemAtPath:writableDBPath error:NULL];
+//        
+//        
+//        CCLOG(@"dir %@", documentsDirectory);
+//        db = [[FMDatabase databaseWithPath:DBPath] retain];
+//        if (![db open]) {
+//            CCLOG(@"Could not open db.");
+//            [db setLogsErrors:TRUE];
+//            [db setTraceExecution:TRUE];
+//        } else {
+//            CCLOG(@"Db is here!");
+//        }
+        
+        
+        
         
         //NSMutableArray *scores = [[[NSMutableArray alloc] init] autorelease];
         //scores = [[[NSMutableArray alloc] init] autorelease];

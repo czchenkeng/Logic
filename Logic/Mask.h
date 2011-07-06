@@ -12,7 +12,7 @@
 @interface Mask : CCNode {
 }
 
-+ (Mask*) maskWithRect:(CGRect)rect;
++ (Mask *) maskWithRect:(CGRect)rect;
 - (id) initWithRect:(CGRect)rect;
 - (void) redrawRect:(CGRect)rect;
 

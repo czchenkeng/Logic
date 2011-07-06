@@ -7,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Mask.h"
 
 
-@interface RowScore : CCSprite {
+@interface RowScore : CCLayer {
     CCSprite *numbers;
+    Mask *_mask;
 }
 
-- (void) moveToPosition:(int)position;
+- (void) moveToPosition:(int)position andMask:(Mask *)mask;
 
 @end

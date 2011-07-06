@@ -14,6 +14,9 @@
 	ccTime totalTime;
 	int myTime;
 	int currentTime;
+    int gameTime;
 }
+
+@property (readonly) int gameTime;
 
 @end

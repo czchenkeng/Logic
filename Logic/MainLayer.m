@@ -12,13 +12,19 @@
 @implementation MainLayer
 
 - (void) runParticle {
-    //[self removeChildByTag:1 cleanup:YES];
-    CCParticleSystem *system; 
-    system = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"Main_rain.plist"];
+    CCSprite *sysSprite = [[CCSprite alloc] init];
+    [self addChild:sysSprite z:21 tag:1];
     
-    //CGSize winSize = [[CCDirector sharedDirector] winSize];
-    //system.position = CGPointMake(winSize.width/2, 480);
-    [self addChild:system z:14 tag:1];
+    CCParticleSystem *system;
+    system = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"Dest1.plist"];
+    system.rotation = -5;
+    
+    CCFadeTo *fadeRain = [CCFadeTo actionWithDuration:2.5f opacity:0];
+    CCSequence *rainSeq = [CCSequence actions:[CCDelayTime actionWithDuration: 5.0f], fadeRain, nil];
+    
+    [sysSprite runAction:rainSeq];
+
+    [sysSprite addChild:system z:21 tag:1];
 }
 
 
@@ -28,27 +34,27 @@
 }
 
 - (void) animationOut {
-    CCMoveTo *rightGibMoveIn = [CCMoveTo actionWithDuration:1.0 position:ccp(1600.00, 257.50)];
-    CCScaleTo *rightGibScaleInX = [CCScaleTo actionWithDuration:1.0 scaleX:10.0 scaleY:5.0];
-    CCScaleTo *rightGibScaleInY = [CCScaleTo actionWithDuration:2.0 scaleX:10.0 scaleY:5.0];
-    //CCEaseInOut *easeRightGibMoveIn = [CCEaseInOut actionWithAction:rightGibMoveIn rate:5];
-    CCSpawn *moveRightGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.0f], rightGibMoveIn, rightGibScaleInX, rightGibScaleInY, nil];
-    CCSequence *test = [CCSequence actions:moveRightGibSeq, [CCCallFunc actionWithTarget:self selector:@selector(endAnimation)], nil];
+    float debugSlow = -0.60;
     
-    CCMoveTo *leftGibMoveIn = [CCMoveTo actionWithDuration:1.0 position:ccp(-1300.00, 135.00)];
-    CCScaleTo *leftGibScaleInX = [CCScaleTo actionWithDuration:1.0 scaleX:10.0 scaleY:5.0];
-    CCScaleTo *leftGibScaleInY = [CCScaleTo actionWithDuration:2.0 scaleX:10.0 scaleY:5.0];
-    //CCEaseInOut *easeleftGibMoveIn = [CCEaseInOut actionWithAction:leftGibMoveIn rate:5];
-    CCSpawn *moveLeftGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.0f], leftGibMoveIn, leftGibScaleInX, leftGibScaleInY, nil];
+    CCMoveTo *rightGibMoveIn = [CCMoveTo actionWithDuration:debugSlow + 1.0 position:ccp(1000.00, 367.00)];
+    CCScaleTo *rightGibScaleInX = [CCScaleTo actionWithDuration:debugSlow + 1.0 scaleX:5 scaleY:22];
+    CCRotateTo *rightGibRotationIn = [CCRotateTo actionWithDuration:debugSlow + 1.0 angle:0];        
+    CCSpawn *moveRightGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.5f], rightGibMoveIn, rightGibScaleInX, rightGibRotationIn, nil];
     
-    [rightGib runAction:test];
+    CCMoveTo *leftGibMoveIn = [CCMoveTo actionWithDuration:debugSlow + 1.0 position:ccp(-700.00, 0.00)];
+    CCScaleTo *leftGibScaleInX = [CCScaleTo actionWithDuration:debugSlow + 1.0 scaleX:5 scaleY:22];
+    CCRotateTo *leftGibRotationIn = [CCRotateTo actionWithDuration:debugSlow + 1.0 angle:0];
+    CCSpawn *moveLeftGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.5f], leftGibMoveIn, leftGibScaleInX, leftGibRotationIn, nil];
+    
+    CCSequence *rightGibCallback = [CCSequence actions:moveRightGibSeq, [CCCallFunc actionWithTarget:self selector:@selector(endAnimation)], nil];
+    [rightGib runAction:rightGibCallback];
     [leftGib runAction:moveLeftGibSeq];
 }
 
 - (void) buttonTapped:(CCMenuItem *)sender { 
     switch (sender.tag) {
         case kButtonInfo: 
-            CCLOG(@"TAP ON INFO");
+            [self animationOut];
             break;
         case kButtonSettings: 
             [[GameManager sharedGameManager] runSceneWithID:kSettingsScene andTransition:kSlideInR];
@@ -70,17 +76,17 @@
 }
 
 - (void) animationIn {
-    CCMoveTo *rightGibMoveIn = [CCMoveTo actionWithDuration:1.0 position:ccp(229.00, 235.00)];
-    CCScaleTo *rightGibScaleInX = [CCScaleTo actionWithDuration:1.0 scaleX:1.0 scaleY:1.0];
-    //CCScaleTo *rightGibScaleInY = [CCScaleTo actionWithDuration:5.0 scaleX:1.0 scaleY:1.0];
-    //CCEaseInOut *easeRightGibMoveIn = [CCEaseInOut actionWithAction:rightGibMoveIn rate:5];
-    CCSpawn *moveRightGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.5f], rightGibMoveIn, rightGibScaleInX, nil];
+    float debugSlow = -0.40;
     
-    CCMoveTo *leftGibMoveIn = [CCMoveTo actionWithDuration:1.0 position:ccp(100.00, 160.50)];
-    CCScaleTo *leftGibScaleInX = [CCScaleTo actionWithDuration:1.0 scaleX:1.0 scaleY:1.0];
-    //CCScaleTo *leftGibScaleInY = [CCScaleTo actionWithDuration:5.0 scaleX:1.0 scaleY:1.0];
-    //CCEaseInOut *easeleftGibMoveIn = [CCEaseInOut actionWithAction:leftGibMoveIn rate:5];
-    CCSpawn *moveLeftGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.5f], leftGibMoveIn, leftGibScaleInX, nil];
+    CCMoveTo *rightGibMoveIn = [CCMoveTo actionWithDuration:debugSlow + 1.0 position:ccp(225.50, 235.00)];
+    CCScaleTo *rightGibScaleInX = [CCScaleTo actionWithDuration:debugSlow + 1.0 scaleX:1.0 scaleY:1.0];
+    CCRotateTo *rightGibRotationIn = [CCRotateTo actionWithDuration:debugSlow + 1.0 angle:1];        
+    CCSpawn *moveRightGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.5f], rightGibMoveIn, rightGibScaleInX, rightGibRotationIn, nil];
+    
+    CCMoveTo *leftGibMoveIn = [CCMoveTo actionWithDuration:debugSlow + 1.0 position:ccp(100.00, 161.00)];
+    CCScaleTo *leftGibScaleInX = [CCScaleTo actionWithDuration:debugSlow + 1.0 scaleX:1.0 scaleY:1.0];
+    CCRotateTo *leftGibRotationIn = [CCRotateTo actionWithDuration:debugSlow + 1.0 angle:-2];
+    CCSpawn *moveLeftGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.5f], leftGibMoveIn, leftGibScaleInX, leftGibRotationIn, nil];
     
     [rightGib runAction:moveRightGibSeq];
     [leftGib runAction:moveLeftGibSeq];
@@ -133,15 +139,17 @@
         
         
         rightGib = [CCSprite spriteWithSpriteFrameName:@"rameno_right.png"];
-        rightGib.scaleY = 10;
+        rightGib.scaleY = 22;
         rightGib.scaleX = 5;
-        [rightGib setPosition:ccp(1000.00, 257.50)];
+        //[rightGib setPosition:ccp(1000.00, 267.00)];
+        [rightGib setPosition:ccp(1000.00, 367.00)];
         [self addChild:rightGib z:10];
         
         leftGib = [CCSprite spriteWithSpriteFrameName:@"rameno_left.png"];
-        leftGib.scaleY = 10;
+        leftGib.scaleY = 22;
         leftGib.scaleX = 5;
-        [leftGib setPosition:ccp(-700.00, 135.00)];
+        //[leftGib setPosition:ccp(-700.00, 100.00)];
+        [leftGib setPosition:ccp(-700.00, 0.00)];
         [self addChild:leftGib z:11];
         
         CCSprite *buttonSingleOff = [CCSprite spriteWithSpriteFrameName:@"logik_single1.png"];
@@ -169,14 +177,16 @@
 
         CCMenuItem *infoItem = [CCMenuItemSprite itemFromNormalSprite:buttonInfoOff selectedSprite:buttonInfoOn target:self selector:@selector(buttonTapped:)];
         infoItem.tag = kButtonInfo;
-        infoItem.position = ccp(300.00, 448.50);
+        infoItem.anchorPoint = CGPointMake(0.5, 1);
+        infoItem.position = ccp(RIGHT_BUTTON_TOP_X, RIGHT_BUTTON_TOP_Y);
         CCMenuItem *settingsItem = [CCMenuItemSprite itemFromNormalSprite:buttonSettingsOff selectedSprite:buttonSettingsOn target:self selector:@selector(buttonTapped:)];
         settingsItem.tag = kButtonSettings;
-        settingsItem.position = ccp(37.50, 446.00);
+        settingsItem.anchorPoint = CGPointMake(0.5, 1);
+        settingsItem.position = ccp(LEFT_BUTTON_TOP_X, LEFT_BUTTON_TOP_Y);
         
         CCMenu *topMenu = [CCMenu menuWithItems:infoItem, settingsItem, nil];
         topMenu.position = CGPointZero;
-        [self addChild:topMenu z:15];
+        [self addChild:topMenu z:30];
         
         lightOff = [CCSprite spriteWithSpriteFrameName:@"lightOff.png"];
         lightOff.anchorPoint = ccp(0.5,1);

@@ -50,7 +50,7 @@
 
 #pragma mark Init & Dealloc
 
-+ (Mask*) maskWithRect:(CGRect)rect {
++ (Mask *) maskWithRect:(CGRect)rect {
 	return [[[self alloc] initWithRect:rect] autorelease];
 }
 
