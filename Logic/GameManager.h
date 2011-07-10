@@ -26,6 +26,7 @@
     float soundVolume;
     GameData *gameData;
     FacebookViewController *controller;
+    BOOL gameInProgress;
 }
 
 @property (readwrite) BOOL isMusicON;
@@ -36,6 +37,7 @@
 @property (readwrite) float soundVolume;
 @property (nonatomic, retain) GameData *gameData;
 @property (nonatomic, retain) FacebookViewController *controller;
+@property (readonly) BOOL gameInProgress;
 
 + (GameManager*) sharedGameManager;
 - (void) runSceneWithID:(SceneTypes)sceneID andTransition:(TransitionTypes)transitionID;

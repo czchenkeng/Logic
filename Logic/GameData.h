@@ -20,4 +20,10 @@ FMResultSet *rs;
 - (void) writeScore:(int)score andDifficulty:(int)diff;
 - (NSMutableArray *) getScores:(int)diff;
 
+- (void) updateSettingsWithDifficulty:(int)diff andMusicLevel:(float)music andSoundLevel:(float)sound;
+- (settings) getSettings;
+
+- (void) insertDeadFigure:(deadFigure)figure;
+
+
 @end

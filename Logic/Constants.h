@@ -22,19 +22,20 @@
 #define RIGHT_BUTTON_TOP_X 287.00
 #define RIGHT_BUTTON_TOP_Y 481.00
 
-//typedef struct {
-//    float xPos;
-//    float yPos;  
-//} topButtonLeftPositions;
-//
-//typedef struct {
-//    float xPos;
-//    float yPos;
-//} topButtonRightPositions;
-//
-//topButtonLeftPositions topButtonLeft = {33.00, 481.00};
 
+typedef struct {
+    int gameDifficulty;
+    float musicLevel;
+    float soundLevel;
+} settings;
 
+typedef struct {
+    int row;
+    int color;
+    //int place;
+    double posX;
+    double posY;
+} deadFigure;
 
 typedef enum {
     kButtonInfo,

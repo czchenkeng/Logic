@@ -12,7 +12,7 @@
 
 @implementation GameManager
 
-@synthesize isMusicON, isSoundEffectsON, currentDifficulty, managerSoundState, musicVolume, soundVolume, gameData, controller;
+@synthesize isMusicON, isSoundEffectsON, managerSoundState, musicVolume, soundVolume, gameData, controller, gameInProgress;
 static GameManager* _sharedGameManager = nil;
 
 + (GameManager*) sharedGameManager {
@@ -40,17 +40,22 @@ static GameManager* _sharedGameManager = nil;
     self = [super init];
     if (self != nil) {
         CCLOG(@"Logic debug: Game Manager Singleton, init");
-        musicVolume = 0.50;
-        soundVolume = 0.70;
         [SimpleAudioEngine sharedEngine].backgroundMusicVolume = musicVolume;
         isMusicON = YES;
         isSoundEffectsON = YES;
         hasAudioBeenInitialized = NO;
         soundEngine = nil;
         managerSoundState = kAudioManagerUninitialized;
-        currentDifficulty = kEasy;
         currentScene = kNoSceneUninitialized;
+        musicVolume = 0.50;
+        soundVolume = 0.70;
+        currentDifficulty = kMedium;
+        gameInProgress = NO;
         gameData = [[GameData alloc] init];
+        settings startSettings = [gameData getSettings];
+        musicVolume = startSettings.musicLevel;
+        soundVolume = startSettings.soundLevel;
+        currentDifficulty = startSettings.gameDifficulty;
     }
     return self;
 }
@@ -58,6 +63,10 @@ static GameManager* _sharedGameManager = nil;
 - (FacebookViewController *) facebookController:(CGRect)rect {
     controller = [[FacebookViewController alloc] initWithFrame:rect];
     return controller;
+}
+
+- (void) updateSettings {
+    [gameData updateSettingsWithDifficulty:currentDifficulty andMusicLevel:musicVolume andSoundLevel:soundVolume];
 }
 
 - (float) musicVolume {
@@ -70,6 +79,16 @@ static GameManager* _sharedGameManager = nil;
         musicValue = 0.00;
     }
     [SimpleAudioEngine sharedEngine].backgroundMusicVolume = musicValue;
+    [self updateSettings];
+}
+
+- (GameDifficulty) currentDifficulty {
+    return currentDifficulty;
+}
+
+- (void) setCurrentDifficulty:(GameDifficulty)diff {
+    currentDifficulty = diff;
+    [self updateSettings];
 }
 
 //-(void)unloadAudioForSceneWithID:(NSNumber*)sceneIDNumber {

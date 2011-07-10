@@ -141,8 +141,9 @@
     base = [CCSprite spriteWithSpriteFrameName:@"pinchBase.png"];
     base.anchorPoint = CGPointMake(0, 0);
     
-    scoreTime = [CCSprite spriteWithSpriteFrameName:@"logik_score_time.png"];
-    scoreTime.anchorPoint = CGPointMake(0.5, 1);
+    scoreTime = [CCLayer node];
+    CCSprite *scoreTimeSprite = [CCSprite spriteWithSpriteFrameName:@"logik_score_time.png"];
+    scoreTimeSprite.anchorPoint = CGPointMake(0.5, 1);
     
     //nodes position
     codeBase.position = ccp(133, 455);
@@ -155,7 +156,23 @@
     sphereLight.position = ccp(150.00, 411.00);
     krytka.position = ccp(160.00, 456.00);
     
-    scoreTime.position = ccp(160.00, 480.50);
+    scoreTimeSprite.position = ccp(160.00, 480.50);
+    
+    Mask *timerMask = [Mask maskWithRect:CGRectMake(279, 456.00, 39.5, 18)];
+    [scoreTime addChild:timerMask z:4];
+    timer = [[ProgressTimer alloc] init];
+    [timerMask addChild:timer z:1];
+    //[self addChild:timer z:10001];
+    //[timer setPosition:ccp(200, 200)];
+    
+    CCSprite *scoreBlackBg = [CCSprite spriteWithSpriteFrameName:@"score_black_bg.png"];
+    scoreBlackBg.position = ccp(36.00, 466.50);
+    CCSprite *timeBlackBg = [CCSprite spriteWithSpriteFrameName:@"time_black_bg.png"];
+    timeBlackBg.position = ccp(300.50, 466.00);
+    
+    [scoreTime addChild:scoreTimeSprite z:5];
+    [scoreTime addChild:scoreBlackBg z:1];
+    [scoreTime addChild:timeBlackBg z:2];
 
     
     //add nodes to display list
@@ -175,7 +192,7 @@
     [self addChild:rotorLeftMain z:9];
     [self addChild:rotorRightMain z:10];
     [self addChild:sphereNode z:11 tag:9];
-    [self addChild:scoreLayer z:12];
+    [scoreTime addChild:scoreLayer z:3];
     [self addChild:scoreTime z:13];
 
     
@@ -211,9 +228,6 @@
 //    [self addChild:rs z:8];
     
     [movableNode addChild:highlightSprite z:200];
-    
-    timer = [[ProgressTimer alloc] init];
-    [self addChild:timer z:10000];
     
     //CCTimer *alphaTimer = [[CCTimer alloc] initWithTarget:self selector:@selector(alphaShadows:) interval:0.1f];
     //CCTimer *alphaTimer = [CCTimer timerWithTarget:self selector:@selector(alphaShadows:) interval:0.1f]; 
@@ -706,6 +720,19 @@
     //end temp screen
 }
 
+- (void) drawScoreToLabel {
+    NSString *scoreString = [NSString stringWithFormat:@"%i", score];
+    NSMutableArray *characters = [[NSMutableArray alloc] initWithCapacity:[scoreString length]];
+    for (int i=0; i < [scoreString length]; i++) {
+        NSString *ichar  = [NSString stringWithFormat:@"%c", [scoreString characterAtIndex:i]];
+        [characters addObject:ichar];
+    }
+    ScoreNumber *tempScoreNumber;
+    for (int i=0; i < [characters count]; i++) {
+        tempScoreNumber = [scoreLabelArray objectAtIndex:i];
+        [tempScoreNumber moveToPosition:[[[[characters reverseObjectEnumerator] allObjects] objectAtIndex:i] intValue]];
+    }
+}
 
 - (void) calculateScore {
     lastTime = timer.gameTime - lastTime;
@@ -728,17 +755,8 @@
     score += (int)sc;
     
     CCLOG(@"AND SCORE IS %i", score);
-    NSString *scoreString = [NSString stringWithFormat:@"%i", score];
-    NSMutableArray *characters = [[NSMutableArray alloc] initWithCapacity:[scoreString length]];
-    for (int i=0; i < [scoreString length]; i++) {
-        NSString *ichar  = [NSString stringWithFormat:@"%c", [scoreString characterAtIndex:i]];
-        [characters addObject:ichar];
-    }
-    ScoreNumber *tempScoreNumber;
-    for (int i=0; i < [characters count]; i++) {
-        tempScoreNumber = [scoreLabelArray objectAtIndex:i];
-        [tempScoreNumber moveToPosition:[[[[characters reverseObjectEnumerator] allObjects] objectAtIndex:i] intValue]];
-    }
+    [self drawScoreToLabel];
+    
 }
 
 
@@ -772,10 +790,10 @@
     
     CCLOG(@"Logic debug: PLACES %i AND COLORS %i", places, colors);
     [self showResult];
+    [self calculateScore];
     if (places == currentDifficulty || activeRow == 9) {
         [self endGame];
     } else {
-        [self calculateScore];
         [self nextRow];
     }
 }
@@ -791,6 +809,9 @@
         [deadFiguresNode addChild:deadFigure z:2000];//mrknout na z-index
         [movableFigures removeObject:userSprite];
         [userSprite destroy];
+        //deadFigure; dFigure;
+        
+        //[[[GameManager sharedGameManager] gameData] insertDeadFigure:
     }
 }
 

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Utils.h"
+#import "HowToLayer.h"
 
 @interface MainLayer : CCLayerColor {
     int counter;
@@ -19,7 +20,11 @@
     CCSprite *leftGib;
     CCSprite *rightGib;
     
+    CCSprite *doors;
+    
     int nextScene;
+    
+    HowToLayer *howToLayer;
 }
 
 @end

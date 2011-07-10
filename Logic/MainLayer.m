@@ -51,10 +51,31 @@
     [leftGib runAction:moveLeftGibSeq];
 }
 
+- (void) doorsOut {
+    CCMoveTo *doorsOut = [CCMoveTo actionWithDuration:0.4 position:ccp(doors.position.x - 195, doors.position.y)];
+    CCSequence *moveDoorsOutSeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.2f], doorsOut, nil];
+    
+    [doors runAction:moveDoorsOutSeq];
+}
+
+- (void) addHowTo {
+    howToLayer = [HowToLayer node];
+    [self addChild:howToLayer z:0];
+}
+
+- (void) howTo {
+    [self addHowTo];
+    [self animationOut];
+    [self doorsOut];
+    [self unscheduleUpdate];
+    lightOff.visible = YES;
+    light.visible = NO;
+}
+
 - (void) buttonTapped:(CCMenuItem *)sender { 
     switch (sender.tag) {
         case kButtonInfo: 
-            [self animationOut];
+            [self howTo];
             break;
         case kButtonSettings: 
             [[GameManager sharedGameManager] runSceneWithID:kSettingsScene andTransition:kSlideInR];
@@ -113,17 +134,17 @@
         lightOn = YES;
         CGSize screenSize = [CCDirector sharedDirector].winSize;
         
-        [CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
-        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Main.plist"];
 
-        CCSprite *doors = [CCSprite spriteWithSpriteFrameName:@"doors.png"];
+        doors = [CCSprite spriteWithSpriteFrameName:@"doors.png"];
         [doors setPosition:ccp(screenSize.width/2 + 5, screenSize.height/2 - 51)];
         [self addChild:doors z:1];
+        //doors.opacity = 50;
         
         CCSprite *background = [CCSprite spriteWithSpriteFrameName:@"background.png"];
         background.anchorPoint = ccp(0,0);
         [self addChild:background z:2];
+        //background.opacity = 50;
         
         CCSprite *logoShadow = [CCSprite spriteWithSpriteFrameName:@"logo_shadow.png"];
         [logoShadow setPosition:ccp(screenSize.width/2, screenSize.height/2 + 162)];
@@ -136,7 +157,6 @@
         CCSprite *grass = [CCSprite spriteWithSpriteFrameName:@"grass.png"];
         [grass setPosition:ccp(160, 16)];
         [self addChild:grass z:20];
-        
         
         rightGib = [CCSprite spriteWithSpriteFrameName:@"rameno_right.png"];
         rightGib.scaleY = 22;
@@ -266,7 +286,6 @@
         }
         flag2++;
     }
-    //CCLOG(@"counter %i", counter);
 }
 
 - (BOOL) ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {    

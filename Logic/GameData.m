@@ -37,12 +37,12 @@
         
         [self createEditableCopyOfDatabaseIfNeeded];
         
-        //NSFileManager *fileManager = [NSFileManager defaultManager];
-        //[fileManager removeItemAtPath:writableDBPath error:NULL];
-        
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0]; 
         NSString *DBPath = [documentsDirectory stringByAppendingPathComponent:@"LogicDatabase.sqlite"];
+        
+//        NSFileManager *fileManager = [NSFileManager defaultManager];
+//        [fileManager removeItemAtPath:DBPath error:NULL];
         
         db = [[FMDatabase databaseWithPath:DBPath] retain];
         if (![db open]) {
@@ -57,7 +57,28 @@
     return self;
 }
 
-- (void) writeScore:(int)score andDifficulty:(int)diff{
+- (void) updateSettingsWithDifficulty:(int)diff andMusicLevel:(float)music andSoundLevel:(float)sound {
+    [db beginTransaction];
+    [db executeUpdate:@"UPDATE game_settings SET difficulty = ?, music_level = ?, sound_level = ? WHERE id=1", [NSNumber numberWithInt:diff], [NSNumber numberWithFloat:music], [NSNumber numberWithFloat:sound]];
+    [db commit];
+}
+
+- (settings) getSettings {
+    rs = [db executeQuery:@"SELECT * FROM game_settings WHERE id = 1"];
+    settings retVal;
+    while ([rs next]) {
+        retVal.gameDifficulty = [rs intForColumn:@"difficulty"];
+        retVal.musicLevel = [rs doubleForColumn:@"music_level"];
+        retVal.soundLevel = [rs doubleForColumn:@"sound_level"];
+    }
+    return retVal;
+}
+
+- (void) insertDeadFigure:(deadFigure)figure {
+    
+}
+
+- (void) writeScore:(int)score andDifficulty:(int)diff {
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"d/M/yy"];
     
@@ -83,7 +104,7 @@
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];  
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     
-    NSMutableArray *retVal = [[NSMutableArray alloc] init];
+    NSMutableArray *retVal = [[NSMutableArray alloc] init];//release?
     
     int i = 1;
     while ([rs next]) {

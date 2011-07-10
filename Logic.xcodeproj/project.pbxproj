@@ -201,6 +201,19 @@
 		A35D801D1395675F00B07F39 /* main_theme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A35D801C1395675F00B07F39 /* main_theme.mp3 */; };
 		A35F3EF51387CC7700F5D71A /* GameplayLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A35F3EF41387CC7700F5D71A /* GameplayLayer.m */; };
 		A37949A51376F663002E53FD /* GameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A37949A41376F663002E53FD /* GameManager.m */; };
+		A37C371613C8669700F54EB4 /* HowToLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A37C371513C8669700F54EB4 /* HowToLayer.m */; };
+		A37C371B13C8E7F900F54EB4 /* Howto-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A37C371713C8E7F800F54EB4 /* Howto-hd.plist */; };
+		A37C371C13C8E7F900F54EB4 /* Howto-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A37C371813C8E7F900F54EB4 /* Howto-hd.pvr.ccz */; };
+		A37C371D13C8E7F900F54EB4 /* Howto.plist in Resources */ = {isa = PBXBuildFile; fileRef = A37C371913C8E7F900F54EB4 /* Howto.plist */; };
+		A37C371E13C8E7F900F54EB4 /* Howto.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A37C371A13C8E7F900F54EB4 /* Howto.pvr.ccz */; };
+		A37C372113C8EF6200F54EB4 /* GloucesterHt.fnt in Resources */ = {isa = PBXBuildFile; fileRef = A37C371F13C8EF6200F54EB4 /* GloucesterHt.fnt */; };
+		A37C372213C8EF6200F54EB4 /* GloucesterHt.png in Resources */ = {isa = PBXBuildFile; fileRef = A37C372013C8EF6200F54EB4 /* GloucesterHt.png */; };
+		A37C372513C8F35900F54EB4 /* GloucesterHt-hd.fnt in Resources */ = {isa = PBXBuildFile; fileRef = A37C372313C8F35900F54EB4 /* GloucesterHt-hd.fnt */; };
+		A37C372613C8F35900F54EB4 /* GloucesterHt-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = A37C372413C8F35900F54EB4 /* GloucesterHt-hd.png */; };
+		A37C372B13C9058E00F54EB4 /* BellGothicBoldHt.png in Resources */ = {isa = PBXBuildFile; fileRef = A37C372713C9058D00F54EB4 /* BellGothicBoldHt.png */; };
+		A37C372C13C9058E00F54EB4 /* BellGothicBoldHt.fnt in Resources */ = {isa = PBXBuildFile; fileRef = A37C372813C9058D00F54EB4 /* BellGothicBoldHt.fnt */; };
+		A37C372D13C9058E00F54EB4 /* BellGothicBoldHt-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = A37C372913C9058D00F54EB4 /* BellGothicBoldHt-hd.png */; };
+		A37C372E13C9058E00F54EB4 /* BellGothicBoldHt-hd.fnt in Resources */ = {isa = PBXBuildFile; fileRef = A37C372A13C9058D00F54EB4 /* BellGothicBoldHt-hd.fnt */; };
 		A37D867213A68F7500B880BA /* RowScore.m in Sources */ = {isa = PBXBuildFile; fileRef = A37D867113A68F7500B880BA /* RowScore.m */; };
 		A37D867E13A6D55D00B880BA /* ProgressTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = A37D867D13A6D55C00B880BA /* ProgressTimer.m */; };
 		A37D868113A79D9500B880BA /* Mask.m in Sources */ = {isa = PBXBuildFile; fileRef = A37D868013A79D9500B880BA /* Mask.m */; };
@@ -587,6 +600,20 @@
 		A37949A21376F485002E53FD /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		A37949A31376F663002E53FD /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
 		A37949A41376F663002E53FD /* GameManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameManager.m; sourceTree = "<group>"; };
+		A37C371413C8669700F54EB4 /* HowToLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HowToLayer.h; sourceTree = "<group>"; };
+		A37C371513C8669700F54EB4 /* HowToLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HowToLayer.m; sourceTree = "<group>"; };
+		A37C371713C8E7F800F54EB4 /* Howto-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Howto-hd.plist"; sourceTree = "<group>"; };
+		A37C371813C8E7F900F54EB4 /* Howto-hd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Howto-hd.pvr.ccz"; sourceTree = "<group>"; };
+		A37C371913C8E7F900F54EB4 /* Howto.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Howto.plist; sourceTree = "<group>"; };
+		A37C371A13C8E7F900F54EB4 /* Howto.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = Howto.pvr.ccz; sourceTree = "<group>"; };
+		A37C371F13C8EF6200F54EB4 /* GloucesterHt.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GloucesterHt.fnt; sourceTree = "<group>"; };
+		A37C372013C8EF6200F54EB4 /* GloucesterHt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GloucesterHt.png; sourceTree = "<group>"; };
+		A37C372313C8F35900F54EB4 /* GloucesterHt-hd.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "GloucesterHt-hd.fnt"; sourceTree = "<group>"; };
+		A37C372413C8F35900F54EB4 /* GloucesterHt-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GloucesterHt-hd.png"; sourceTree = "<group>"; };
+		A37C372713C9058D00F54EB4 /* BellGothicBoldHt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BellGothicBoldHt.png; sourceTree = "<group>"; };
+		A37C372813C9058D00F54EB4 /* BellGothicBoldHt.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = BellGothicBoldHt.fnt; sourceTree = "<group>"; };
+		A37C372913C9058D00F54EB4 /* BellGothicBoldHt-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BellGothicBoldHt-hd.png"; sourceTree = "<group>"; };
+		A37C372A13C9058D00F54EB4 /* BellGothicBoldHt-hd.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "BellGothicBoldHt-hd.fnt"; sourceTree = "<group>"; };
 		A37D867013A68F7500B880BA /* RowScore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RowScore.h; sourceTree = "<group>"; };
 		A37D867113A68F7500B880BA /* RowScore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RowScore.m; sourceTree = "<group>"; };
 		A37D867C13A6D55C00B880BA /* ProgressTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressTimer.h; sourceTree = "<group>"; };
@@ -1220,6 +1247,18 @@
 		A35F3F0713893F6300F5D71A /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A37C372713C9058D00F54EB4 /* BellGothicBoldHt.png */,
+				A37C372813C9058D00F54EB4 /* BellGothicBoldHt.fnt */,
+				A37C372913C9058D00F54EB4 /* BellGothicBoldHt-hd.png */,
+				A37C372A13C9058D00F54EB4 /* BellGothicBoldHt-hd.fnt */,
+				A37C372313C8F35900F54EB4 /* GloucesterHt-hd.fnt */,
+				A37C372413C8F35900F54EB4 /* GloucesterHt-hd.png */,
+				A37C371F13C8EF6200F54EB4 /* GloucesterHt.fnt */,
+				A37C372013C8EF6200F54EB4 /* GloucesterHt.png */,
+				A37C371713C8E7F800F54EB4 /* Howto-hd.plist */,
+				A37C371813C8E7F900F54EB4 /* Howto-hd.pvr.ccz */,
+				A37C371913C8E7F900F54EB4 /* Howto.plist */,
+				A37C371A13C8E7F900F54EB4 /* Howto.pvr.ccz */,
 				A30B4F4313C25ACD0063FCD0 /* i_on.png */,
 				A311721113B2103C00880500 /* score-hd.plist */,
 				A311721213B2103C00880500 /* score-hd.pvr.ccz */,
@@ -1266,6 +1305,7 @@
 		A379499E1376A11E002E53FD /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				A37C371213C8666B00F54EB4 /* HowTo */,
 				A308F44813C0F252000C98D8 /* Facebook */,
 				A31FFBAC13BFC0DC002B46A7 /* SQLite */,
 				A385972913B1F5DD008CF9C5 /* Score */,
@@ -1303,6 +1343,15 @@
 				A37949A21376F485002E53FD /* Constants.h */,
 			);
 			name = Constants;
+			sourceTree = "<group>";
+		};
+		A37C371213C8666B00F54EB4 /* HowTo */ = {
+			isa = PBXGroup;
+			children = (
+				A37C371413C8669700F54EB4 /* HowToLayer.h */,
+				A37C371513C8669700F54EB4 /* HowToLayer.m */,
+			);
+			name = HowTo;
 			sourceTree = "<group>";
 		};
 		A38596B813AF58BE008CF9C5 /* Extensions */ = {
@@ -1576,6 +1625,18 @@
 				A308E0C413C474C8007697A6 /* dest2.plist in Resources */,
 				A308E0C813C47D24007697A6 /* dust.plist in Resources */,
 				A308E0C913C47D24007697A6 /* dustTexture.png in Resources */,
+				A37C371B13C8E7F900F54EB4 /* Howto-hd.plist in Resources */,
+				A37C371C13C8E7F900F54EB4 /* Howto-hd.pvr.ccz in Resources */,
+				A37C371D13C8E7F900F54EB4 /* Howto.plist in Resources */,
+				A37C371E13C8E7F900F54EB4 /* Howto.pvr.ccz in Resources */,
+				A37C372113C8EF6200F54EB4 /* GloucesterHt.fnt in Resources */,
+				A37C372213C8EF6200F54EB4 /* GloucesterHt.png in Resources */,
+				A37C372513C8F35900F54EB4 /* GloucesterHt-hd.fnt in Resources */,
+				A37C372613C8F35900F54EB4 /* GloucesterHt-hd.png in Resources */,
+				A37C372B13C9058E00F54EB4 /* BellGothicBoldHt.png in Resources */,
+				A37C372C13C9058E00F54EB4 /* BellGothicBoldHt.fnt in Resources */,
+				A37C372D13C9058E00F54EB4 /* BellGothicBoldHt-hd.png in Resources */,
+				A37C372E13C9058E00F54EB4 /* BellGothicBoldHt-hd.fnt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1736,6 +1797,7 @@
 				A308F44C13C0F298000C98D8 /* FacebookViewController.m in Sources */,
 				A30B4F4813C2E1810063FCD0 /* RowStaticScore.m in Sources */,
 				A308E0CC13C4A115007697A6 /* ScoreNumber.m in Sources */,
+				A37C371613C8669700F54EB4 /* HowToLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1832,8 +1894,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Flow Studio";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Flow Studio";
 				"CODE_SIGN_RESOURCE_RULES_PATH[sdk=*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
@@ -1844,8 +1906,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				New_Setting = "";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "CD7B437E-711D-4677-9A5E-F3FBD7008C5B";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CD7B437E-711D-4677-9A5E-F3FBD7008C5B";
 				SDKROOT = iphoneos;
 			};
 			name = AdHoc;

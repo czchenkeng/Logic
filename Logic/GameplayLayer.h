@@ -40,7 +40,8 @@
     CCSprite *base;
     CCSprite *cheat;
     
-    CCSprite *scoreTime;
+    //CCSprite *scoreTime;
+    CCLayer *scoreTime;
     
     CCSpriteBatchNode *sphereNode;
     

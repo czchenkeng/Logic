@@ -27,9 +27,6 @@ enum soundTags
             CCLOG(@"TAP ON BACK");
             [[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kSlideInL];
             break;
-//        case kButtonSinglePlay:
-//            CCLOG(@"TAP ON SINGLE");
-//            break;
         case kButtonCareerPlay:
             [[GameManager sharedGameManager] runSceneWithID:kCareerScene andTransition:kSlideInR];
             break;
