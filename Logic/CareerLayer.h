@@ -11,7 +11,18 @@
 
 
 @interface CareerLayer : CCLayer {
+    CCLayerColor *zoomBase;
+    CGPoint zbLastPos;
     
+    CCArray *buttonsArray;
+    CCSprite *selSprite;
+    CCSprite *background;
+    
+    UIPanGestureRecognizer *panGestureRecognizer;
+    UIPinchGestureRecognizer *pinchGestureRecognizer;    
+    UITapGestureRecognizer *singleTapGestureRecognizer;
+    UITapGestureRecognizer *doubleTapGestureRecognizer;
+
 }
 
 @end

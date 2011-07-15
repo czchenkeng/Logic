@@ -14,6 +14,7 @@
 - (id) init {
     self = [super init];
     if (self != nil) {
+        CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
         careerLayer = [CareerLayer node];
         [self addChild:careerLayer z:0];
         

@@ -19,96 +19,64 @@
 #import "ScoreNumber.h"
 
 
-@interface GameplayLayer : CCLayerColor <CCStandardTouchDelegate> {    
-    CCLayer *clippingNode;
+@interface GameplayLayer : CCLayerColor {    
+    UIPanGestureRecognizer *gestureRecognizer;
+    
+    GameDifficulty currentDifficulty;//obtiznost hry
+    float difficultyPadding;//rozestup figur podle obtiznosti
+    int activeRow;//aktivni rada
+    
+    Figure *selSprite;//vybrany sprite
+    CCSprite *targetSprite;//je zamereny target? (umistit nebo zpet na zakladnu)
+    
+    
+    //batches
+//    CCSpriteBatchNode *assetsLevelBgNode;
+//    CCSpriteBatchNode *assetsLevelNode;
+    CCSpriteBatchNode *sphereNode;
+    
+    //layers
     CCLayer *movableNode;
     CCLayer *figuresNode;
-    CCLayer *deadFiguresNode;
     
-    CCArray *deadFigures;
+    CCLayer *rotorLeftLayer;
+    CCLayer *rotorRightLayer;
     
-    CCSprite *codeBase;
-    CCSprite *rotorLeftMain;
-    CCSprite *rotorRightMain;
+    
+    //arrays
+    NSMutableArray *morphingSphereFrames;
+    CCArray *greenLights;
+    CCArray *orangeLights;
+    CCArray *movableFigures;//figury ve hre
+    CCArray *targets;//cile na rade pro figury
+    
+    //sprites
+    CCSprite *highlightSprite;//upozorneni, ze target je zameren - modre kolecko
+    CCSprite *codeBase;//baze pro kod nahore
+    //rotors
     CCSprite *rotorLeft;
     CCSprite *rotorRight;
     CCSprite *rotorLeftInside;
     CCSprite *rotorRightInside;
     CCSprite *rotorLeftLight;
     CCSprite *rotorRightLight;
-    CCSprite *krytka;
-    CCSprite *base;
-    CCSprite *cheat;
     
-    //CCSprite *scoreTime;
-    CCLayer *scoreTime;
-    
-    CCSpriteBatchNode *sphereNode;
-    
-    NSMutableArray *morphingSphereFrames;
-    CCSprite *sphere;
-    CCSprite *sphereLight;
-    
+    CCSprite *mantle;//krytka pod rotorem
+    CCSprite *sphereLight;//svetlo pod kouli
+    //SPHERE
+    CCSprite *sphere;//sphere
     CCAnimation *sphereAnim;
     CCSequence *sphereSeq;
     
-    CCArray *greenLights;
-    CCArray *orangeLights;
+    CCSprite *base;//base pro 8 pinclu dole
     
-    CCArray *placeNumbers;
-    CCArray *colorNumbers;
-    
-    CCSpriteBatchNode *assetsLevelBgNode;
-    CCSpriteBatchNode *assetsLevelNode;
-    Figure *selSprite;
-    CCSprite *targetSprite;//je zamereny target? (umistit nebo zpet na zakladnu)
-    CCSprite *highlightSprite;
-    //CCSpriteBatchNode *spritesBgNode;
-    CCArray *movableFigures;
-    NSMutableArray *currentCode;
-    CCArray *targets;
-    NSMutableArray *userCode;
-    GameDifficulty currentDifficulty;
-    int activeRow;
-    //int currentPlace;
-    BOOL isEndRow;
-    BOOL isMovable;
-    BOOL movableFlag;
-    
-    CGPoint touchOrigin;
-    CGPoint touchStop;
-    
-    float dislocation;
-    
-    int places;
-    int colors;
-    
-    NSMutableArray *touchArray;
-    
-    float difficultyPadding;
-    
-    int lastPlace;//asi vyhodit?
-    int dir;
-    
-    int currAreaPos;
-    
+    //particles
     CCParticleSystem *dustSystem;
+    CCParticleSystem *smokeSystem;
+    BOOL shit;
     
-    /* Time & Score */
-    ProgressTimer *timer;
-    int score;
-    int lastTime;
-    
-    CCLayer *scoreLayer;
-    CCArray *scoreLabelArray;
+        
 }
 
-//@property GameDifficulty currentDifficulty;
-
-- (void) addFigures;
-- (void) constructRowWithIndex:(int)row;
-- (void) sphereAnimEnded;
-//- (void) generateCode;
-- (void) endGame;
 
 @end

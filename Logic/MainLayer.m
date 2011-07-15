@@ -16,7 +16,7 @@
     [self addChild:sysSprite z:21 tag:1];
     
     CCParticleSystem *system;
-    system = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"Dest1.plist"];
+    system = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"dest_test2.plist"];
     system.rotation = -5;
     
     CCFadeTo *fadeRain = [CCFadeTo actionWithDuration:2.5f opacity:0];
@@ -67,9 +67,9 @@
     [self addHowTo];
     [self animationOut];
     [self doorsOut];
-    [self unscheduleUpdate];
-    lightOff.visible = YES;
-    light.visible = NO;
+//    [self unscheduleUpdate];
+//    lightOff.visible = YES;
+//    light.visible = NO;
 }
 
 - (void) buttonTapped:(CCMenuItem *)sender { 
@@ -259,7 +259,7 @@
         [logoShadow runAction:[CCRepeatForever actionWithAction:moveSeq]];
         
         [[GameManager sharedGameManager] playBackgroundTrack:BACKGROUND_TRACK_MAIN];
-        [self runParticle];
+        //[self runParticle];
         [self scheduleUpdate];
         [self animationIn];
     }

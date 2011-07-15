@@ -183,6 +183,16 @@
 		A3217DD813B74CDB00CEB9FE /* Score.m in Sources */ = {isa = PBXBuildFile; fileRef = A3217DD713B74CDB00CEB9FE /* Score.m */; };
 		A3217DDB13B753C700CEB9FE /* ScoresListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3217DDA13B753C600CEB9FE /* ScoresListViewController.m */; };
 		A3217DDD13B7DA9700CEB9FE /* BellGothicStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A3217DDC13B7DA9600CEB9FE /* BellGothicStd-Bold.otf */; };
+		A32DA84913CA072B00F40754 /* dest_test2.plist in Resources */ = {isa = PBXBuildFile; fileRef = A32DA84513CA072B00F40754 /* dest_test2.plist */; };
+		A32DA84A13CA072B00F40754 /* dest_test2-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A32DA84613CA072B00F40754 /* dest_test2-hd.plist */; };
+		A32DA84B13CA072B00F40754 /* dest-test1.plist in Resources */ = {isa = PBXBuildFile; fileRef = A32DA84713CA072B00F40754 /* dest-test1.plist */; };
+		A32DA84C13CA072B00F40754 /* dest-test1-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A32DA84813CA072B00F40754 /* dest-test1-hd.plist */; };
+		A32DA85113CA0A9B00F40754 /* dust2.plist in Resources */ = {isa = PBXBuildFile; fileRef = A32DA84D13CA0A9B00F40754 /* dust2.plist */; };
+		A32DA85213CA0A9B00F40754 /* dust2-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A32DA84E13CA0A9B00F40754 /* dust2-hd.plist */; };
+		A32DA85313CA0A9B00F40754 /* dust1.plist in Resources */ = {isa = PBXBuildFile; fileRef = A32DA84F13CA0A9B00F40754 /* dust1.plist */; };
+		A32DA85413CA0A9B00F40754 /* dust1-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A32DA85013CA0A9B00F40754 /* dust1-hd.plist */; };
+		A32DA85713CA0E2D00F40754 /* smokeTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = A32DA85513CA0E2C00F40754 /* smokeTexture.png */; };
+		A32DA85813CA0E2D00F40754 /* smoke.plist in Resources */ = {isa = PBXBuildFile; fileRef = A32DA85613CA0E2D00F40754 /* smoke.plist */; };
 		A3301BFA13B2476B0059A40B /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A3301BF913B2476B0059A40B /* libsqlite3.0.dylib */; };
 		A3339DDD139E475800EE5D71 /* Main-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3339DD9139E475800EE5D71 /* Main-hd.plist */; };
 		A3339DDE139E475800EE5D71 /* Main-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A3339DDA139E475800EE5D71 /* Main-hd.pvr.ccz */; };
@@ -576,6 +586,16 @@
 		A3217DD913B753C600CEB9FE /* ScoresListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoresListViewController.h; sourceTree = "<group>"; };
 		A3217DDA13B753C600CEB9FE /* ScoresListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoresListViewController.m; sourceTree = "<group>"; };
 		A3217DDC13B7DA9600CEB9FE /* BellGothicStd-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "BellGothicStd-Bold.otf"; path = "Resources/BellGothicStd-Bold.otf"; sourceTree = "<group>"; };
+		A32DA84513CA072B00F40754 /* dest_test2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dest_test2.plist; sourceTree = "<group>"; };
+		A32DA84613CA072B00F40754 /* dest_test2-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "dest_test2-hd.plist"; sourceTree = "<group>"; };
+		A32DA84713CA072B00F40754 /* dest-test1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "dest-test1.plist"; sourceTree = "<group>"; };
+		A32DA84813CA072B00F40754 /* dest-test1-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "dest-test1-hd.plist"; sourceTree = "<group>"; };
+		A32DA84D13CA0A9B00F40754 /* dust2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dust2.plist; sourceTree = "<group>"; };
+		A32DA84E13CA0A9B00F40754 /* dust2-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "dust2-hd.plist"; sourceTree = "<group>"; };
+		A32DA84F13CA0A9B00F40754 /* dust1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dust1.plist; sourceTree = "<group>"; };
+		A32DA85013CA0A9B00F40754 /* dust1-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "dust1-hd.plist"; sourceTree = "<group>"; };
+		A32DA85513CA0E2C00F40754 /* smokeTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smokeTexture.png; sourceTree = "<group>"; };
+		A32DA85613CA0E2D00F40754 /* smoke.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = smoke.plist; sourceTree = "<group>"; };
 		A3301BF913B2476B0059A40B /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		A3339DD9139E475800EE5D71 /* Main-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Main-hd.plist"; sourceTree = "<group>"; };
 		A3339DDA139E475800EE5D71 /* Main-hd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Main-hd.pvr.ccz"; sourceTree = "<group>"; };
@@ -751,6 +771,16 @@
 		A31B614213958C0700FE697F /* particles */ = {
 			isa = PBXGroup;
 			children = (
+				A32DA85513CA0E2C00F40754 /* smokeTexture.png */,
+				A32DA85613CA0E2D00F40754 /* smoke.plist */,
+				A32DA84D13CA0A9B00F40754 /* dust2.plist */,
+				A32DA84E13CA0A9B00F40754 /* dust2-hd.plist */,
+				A32DA84F13CA0A9B00F40754 /* dust1.plist */,
+				A32DA85013CA0A9B00F40754 /* dust1-hd.plist */,
+				A32DA84513CA072B00F40754 /* dest_test2.plist */,
+				A32DA84613CA072B00F40754 /* dest_test2-hd.plist */,
+				A32DA84713CA072B00F40754 /* dest-test1.plist */,
+				A32DA84813CA072B00F40754 /* dest-test1-hd.plist */,
 				A308E0C613C47D24007697A6 /* dust.plist */,
 				A308E0C713C47D24007697A6 /* dustTexture.png */,
 				A308E0B913C474C8007697A6 /* dest_orig-hd.plist */,
@@ -1637,6 +1667,16 @@
 				A37C372C13C9058E00F54EB4 /* BellGothicBoldHt.fnt in Resources */,
 				A37C372D13C9058E00F54EB4 /* BellGothicBoldHt-hd.png in Resources */,
 				A37C372E13C9058E00F54EB4 /* BellGothicBoldHt-hd.fnt in Resources */,
+				A32DA84913CA072B00F40754 /* dest_test2.plist in Resources */,
+				A32DA84A13CA072B00F40754 /* dest_test2-hd.plist in Resources */,
+				A32DA84B13CA072B00F40754 /* dest-test1.plist in Resources */,
+				A32DA84C13CA072B00F40754 /* dest-test1-hd.plist in Resources */,
+				A32DA85113CA0A9B00F40754 /* dust2.plist in Resources */,
+				A32DA85213CA0A9B00F40754 /* dust2-hd.plist in Resources */,
+				A32DA85313CA0A9B00F40754 /* dust1.plist in Resources */,
+				A32DA85413CA0A9B00F40754 /* dust1-hd.plist in Resources */,
+				A32DA85713CA0E2D00F40754 /* smokeTexture.png in Resources */,
+				A32DA85813CA0E2D00F40754 /* smoke.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1808,8 +1848,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Dagmar Kruskova (BEC5C5RCH8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Dagmar Kruskova (BEC5C5RCH8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Petr Fodor (4KW5296M8J)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Petr Fodor (4KW5296M8J)";
 				"CODE_SIGN_RESOURCE_RULES_PATH[sdk=*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1824,6 +1864,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				New_Setting = "";
+				PROVISIONING_PROFILE = "8E00FE15-97D2-462B-AF93-09BD688B8A8C";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8E00FE15-97D2-462B-AF93-09BD688B8A8C";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1832,8 +1874,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Dagmar Kruskova (BEC5C5RCH8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Dagmar Kruskova (BEC5C5RCH8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Petr Fodor (4KW5296M8J)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Petr Fodor (4KW5296M8J)";
 				"CODE_SIGN_RESOURCE_RULES_PATH[sdk=*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
@@ -1844,6 +1886,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				New_Setting = "";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "8E00FE15-97D2-462B-AF93-09BD688B8A8C";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8E00FE15-97D2-462B-AF93-09BD688B8A8C";
 				SDKROOT = iphoneos;
 			};
 			name = Release;

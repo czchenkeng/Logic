@@ -90,7 +90,7 @@
 //#endif
 	
 	[director setAnimationInterval:1.0/60];
-	[director setDisplayFPS:YES];
+	[director setDisplayFPS:NO];
 	
 	
 	// make the OpenGLView a child of the view controller
@@ -113,7 +113,8 @@
 	
 	// Run the intro Scene
     [[GameManager sharedGameManager] setupAudioEngine];
-    [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kNoTransition];
+    //[[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kNoTransition];
+    [[GameManager sharedGameManager] runSceneWithID:kCareerScene andTransition:kNoTransition];
     //[[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kNoTransition];
     //[[GameManager sharedGameManager] runSceneWithID:kScoreScene];
     

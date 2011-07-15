@@ -84,6 +84,8 @@
     
     NSDateFormatter *timeFormat = [[NSDateFormatter alloc] init];
     [timeFormat setDateFormat:@"h:ma"];
+    NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+    [timeFormat setLocale:usLocale];
     NSDate *now = [[NSDate alloc] init];       
     NSString *theDate = [dateFormat stringFromDate:now];
     NSString *theTime = [timeFormat stringFromDate:now];
