@@ -125,7 +125,7 @@ static GameManager* _sharedGameManager = nil;
     
     id transition;
     
-    id sceneToRun = nil;
+    CCScene *sceneToRun = nil;
     switch (sceneID) {
         case kGameScene: 
             sceneToRun = [GameScene node];

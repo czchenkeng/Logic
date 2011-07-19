@@ -8,8 +8,8 @@
 
 #import "CareerLayer.h"
 
-static const float MIN_SCALE = 0.5;
-static const float MAX_SCALE = 2.0;
+static const float MIN_SCALE = 0.8;
+static const float MAX_SCALE = 1.667;
 
 @implementation CareerLayer
 
@@ -40,21 +40,23 @@ static const float MAX_SCALE = 2.0;
     doubleTapGestureRecognizer.numberOfTapsRequired = 2;
     doubleTapGestureRecognizer.numberOfTouchesRequired = 1;
     
-    //[singleTapGestureRecognizer requireGestureRecognizerToFail: doubleTapGestureRecognizer];
+    [singleTapGestureRecognizer requireGestureRecognizerToFail: doubleTapGestureRecognizer];
     
-//    [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:singleTapGestureRecognizer];
-//    [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:doubleTapGestureRecognizer];
-//    [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:panGestureRecognizer];
-//    [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:pinchGestureRecognizer];
+    [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:singleTapGestureRecognizer];
+    [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:doubleTapGestureRecognizer];
+    [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:panGestureRecognizer];
+    [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:pinchGestureRecognizer];
+    
+    //singleTapGestureRecognizer.cancelsTouchesInView = YES;
     
     [super onEnter];
 }
 
 - (void) onExit {
-//    [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:singleTapGestureRecognizer];
-//    [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:doubleTapGestureRecognizer];
-//    [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:panGestureRecognizer];
-//    [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:pinchGestureRecognizer];
+    [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:singleTapGestureRecognizer];
+    [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:doubleTapGestureRecognizer];
+    [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:panGestureRecognizer];
+    [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:pinchGestureRecognizer];
     [super onExit];
 }
 
@@ -72,36 +74,34 @@ static const float MAX_SCALE = 2.0;
         
         zoomBase = [CCColorLayer layerWithColor:ccc4(0,0,0,0)];
 		zoomBase.position = ccp(0, 0);
+        //zoomBase.contentSize = CGSizeMake(740, 600);
 		[self addChild:zoomBase z:1];
         
         zbLastPos = zoomBase.position;
         
         background = [CCSprite spriteWithSpriteFrameName:@"logik_levels.png"];
-        //background.position = ccp(96.00, 282.00);
-        background.position = ccp(150.00, 180.00);
+        background.position = ccp(96.00, 282.00);
+        //background.position = ccp(0, 0);
         [zoomBase addChild:background z:1];
         
         CCSprite *button;
-//        float buttX[24] = {330, 288.50, 0, 0, 330,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0};
-//        float buttY[24] = {483, 258, 0, 0, 483,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0};
-        float buttX[24] = {230, 288.50, 0, 0, 230,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0};
-        float buttY[24] = {383, 258, 0, 0, 383,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0};
+        CGRect pseudoButton;
+        float buttX[24] = {330, 288.50, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0};
+        float buttY[24] = {483, 258, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0};
         for (int i = 0; i < 24; i++) {
             button = [CCSprite spriteWithSpriteFrameName:@"button.png"];
             button.anchorPoint = ccp(0, 0);
-            //[background addChild:button z:100];
+            [background addChild:button z:100];
             button.position = ccp(buttX[i], buttY[i]);
             [buttonsArray addObject:button];
-            CCLOG(@"rect %@", NSStringFromCGRect(button.boundingBox));
+            //CCLOG(@"rect %@", NSStringFromCGRect(button.boundingBox));
+            //CCLOG(@"rect %@", NSStringFromCGRect(button.textureRect));
+            pseudoButton = CGRectMake(buttX[i], buttY[i], 46, 56);
+            rectsArray[i] = pseudoButton;
+            
         }
         
-        CCMenuItem *firstItem = [CCMenuItemSprite itemFromNormalSprite:[buttonsArray objectAtIndex:0] selectedSprite:[buttonsArray objectAtIndex:4] target:self selector:@selector(buttonFake:)];
-        firstItem.tag = 0;
-
-        CCMenu *fakeMenu = [CCMenu menuWithItems:firstItem, nil];
-        fakeMenu.position = CGPointZero;
-        [self addChild:fakeMenu z:30];
-
+    
         
         CCSprite *sprite;
         
@@ -157,17 +157,21 @@ static const float MAX_SCALE = 2.0;
 #pragma mark -
 #pragma mark Gestures methods & callbacks
 - (void) selectSpriteForTouch:(CGPoint)touchLocation {
-    CCSprite *newSprite = nil;
-    for (CCSprite *sprite in buttonsArray) {
-        CCLOG(@"touch loc %@", NSStringFromCGPoint(touchLocation));
-        if (CGRectContainsPoint(sprite.boundingBox, touchLocation)) {            
-            newSprite = sprite;
-            break;
+//    CCSprite *newSprite = nil;
+//    for (CCSprite *sprite in buttonsArray) {
+//        if (CGRectContainsPoint(sprite.boundingBox, touchLocation)) {            
+//            newSprite = sprite;
+//            break;
+//        }
+//    }
+//    selSprite = newSprite;
+//    if (selSprite) {
+//        CCLOG(@"zdar %@", selSprite);
+//    }
+    for (int i=0; i<24; i++) {
+        if (CGRectContainsPoint(rectsArray[i], touchLocation)) {
+            CCLOG(@"here button %@", NSStringFromCGRect(rectsArray[i]));
         }
-    }
-    selSprite = newSprite;
-    if (selSprite) {
-        CCLOG(@"zdar %@", selSprite);
     }
 }
 
@@ -177,7 +181,8 @@ static const float MAX_SCALE = 2.0;
     CCLOG(@"single tap");
     CGPoint touchLocation = [recognizer locationInView:recognizer.view];
     touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
-    touchLocation = [self convertToWorldSpaceAR:touchLocation];                
+    touchLocation = [background convertToNodeSpace:touchLocation];
+    //touchLocation = [self convertToWorldSpaceAR:touchLocation];                
     [self selectSpriteForTouch:touchLocation];
 }
 

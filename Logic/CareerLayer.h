@@ -18,6 +18,8 @@
     CCSprite *selSprite;
     CCSprite *background;
     
+    CGRect rectsArray[24];
+    
     UIPanGestureRecognizer *panGestureRecognizer;
     UIPinchGestureRecognizer *pinchGestureRecognizer;    
     UITapGestureRecognizer *singleTapGestureRecognizer;
