@@ -160,7 +160,7 @@ static GameManager* _sharedGameManager = nil;
         [[CCDirector sharedDirector] runWithScene:sceneToRun];
         
     } else {
-        float timeTransition = 0.3;
+        float timeTransition = .3;
         
         switch (transitionID) {
             case kSlideInR: 
@@ -178,6 +178,7 @@ static GameManager* _sharedGameManager = nil;
                 break;
         }
         
+        //[transition sceneOrder];
         
         [[CCDirector sharedDirector] replaceScene:transition];
 

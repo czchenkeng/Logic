@@ -364,7 +364,7 @@ enum {
 }
 -(void) sceneOrder
 {
-	inSceneOnTop_ = NO;
+	inSceneOnTop_ = YES;
 }
 -(void) initScenes
 {
@@ -391,7 +391,7 @@ enum {
 @implementation CCTransitionSlideInR
 -(void) sceneOrder
 {
-	inSceneOnTop_ = YES;
+	inSceneOnTop_ = NO;
 }
 -(void) initScenes
 {

@@ -1,0 +1,424 @@
+{
+    "button_width": 46,
+    "button_height": 56,
+    "cities": [
+        {
+            "id": 1,
+            "button": [
+                415,
+                374
+            ],
+            "light": [
+                379.5,
+                352.5
+            ],
+            "belongs": [],
+            "difficulty": [
+                4
+            ]
+        },
+        {
+            "id": 2,
+            "button": [
+                288,
+                258
+            ],
+            "light": [
+                251.5,
+                235.5
+            ],
+            "belongs": [],
+            "difficulty": [
+                4
+            ]
+        },
+        {
+            "id": 3,
+            "button": [
+                514,
+                258
+            ],
+            "light": [
+                477,
+                236
+            ],
+            "belongs": [],
+            "difficulty": [
+                5
+            ]
+        },
+        {
+            "id": 4,
+            "button": [
+                330,
+                483
+            ],
+            "light": [
+                293,
+                458
+            ],
+            "belongs": [
+                1,
+                5
+            ],
+            "difficulty": [
+                4,
+                4
+            ]
+        },
+        {
+            "id": 5,
+            "button": [
+                197.5,
+                480
+            ],
+            "light": [
+                162,
+                458
+            ],
+            "belongs": [
+                4,
+                8
+            ],
+            "difficulty": [
+                4,
+                6
+            ]
+        },
+        {
+            "id": 6,
+            "button": [
+                99,
+                480
+            ],
+            "light": [
+                62,
+                458
+            ],
+            "belongs": [
+                5
+            ],
+            "difficulty": [
+                5
+            ]
+        },
+        {
+            "id": 7,
+            "button": [
+                30,
+                408
+            ],
+            "light": [
+                -7,
+                387
+            ],
+            "belongs": [
+                6
+            ],
+            "difficulty": [
+                6
+            ]
+        },
+        {
+            "id": 8,
+            "button": [
+                197.5,
+                331
+            ],
+            "light": [
+                162,
+                309
+            ],
+            "belongs": [
+                5,
+                2
+            ],
+            "difficulty": [
+                6,
+                5
+            ]
+        },
+        {
+            "id": 9,
+            "button": [
+                99,
+                331
+            ],
+            "light": [
+                62,
+                309
+            ],
+            "belongs": [
+                8
+            ],
+            "difficulty": [
+                5
+            ]
+        },
+        {
+            "id": 10,
+            "button": [
+                197.5,
+                168
+            ],
+            "light": [
+                162,
+                146
+            ],
+            "belongs": [
+                2
+            ],
+            "difficulty": [
+                4
+            ]
+        },
+        {
+            "id": 11,
+            "button": [
+                99,
+                168
+            ],
+            "light": [
+                62,
+                146
+            ],
+            "belongs": [
+                10
+            ],
+            "difficulty": [
+                6
+            ]
+        },
+        {
+            "id": 12,
+            "button": [
+                30,
+                99
+            ],
+            "light": [
+                -7,
+                77
+            ],
+            "belongs": [
+                11
+            ],
+            "difficulty": [
+                6
+            ]
+        },
+        {
+            "id": 13,
+            "button": [
+                586.5,
+                188
+            ],
+            "light": [
+                551,
+                164.5
+            ],
+            "belongs": [
+                3,
+                24
+            ],
+            "difficulty": [
+                4,
+                5
+            ]
+        },
+        {
+            "id": 14,
+            "button": [
+                586.5,
+                50
+            ],
+            "light": [
+                551,
+                27
+            ],
+            "belongs": [
+                13
+            ],
+            "difficulty": [
+                6
+            ]
+        },
+        {
+            "id": 15,
+            "button": [
+                675.5,
+                50
+            ],
+            "light": [
+                641,
+                27
+            ],
+            "belongs": [
+                14
+            ],
+            "difficulty": [
+                6
+            ]
+        },
+        {
+            "id": 16,
+            "button": [
+                475.5,
+                50
+            ],
+            "light": [
+                441,
+                27
+            ],
+            "belongs": [
+                14
+            ],
+            "difficulty": [
+                5
+            ]
+        },
+        {
+            "id": 17,
+            "button": [
+                415,
+                103
+            ],
+            "light": [
+                379,
+                81
+            ],
+            "belongs": [
+                16
+            ],
+            "difficulty": [
+                4
+            ]
+        },
+        {
+            "id": 18,
+            "button": [
+                263.5,
+                103
+            ],
+            "light": [
+                227,
+                81
+            ],
+            "belongs": [
+                17
+            ],
+            "difficulty": [
+                4
+            ]
+        },
+        {
+            "id": 19,
+            "button": [
+                263.5,
+                18
+            ],
+            "light": [
+                227,
+                -3
+            ],
+            "belongs": [
+                18
+            ],
+            "difficulty": [
+                5
+            ]
+        },
+        {
+            "id": 20,
+            "button": [
+                152.5,
+                18
+            ],
+            "light": [
+                116,
+                -3
+            ],
+            "belongs": [
+                19
+            ],
+            "difficulty": [
+                6
+            ]
+        },
+        {
+            "id": 21,
+            "button": [
+                514,
+                478
+            ],
+            "light": [
+                477,
+                457.5
+            ],
+            "belongs": [
+                1,
+                22
+            ],
+            "difficulty": [
+                5,
+                5
+            ]
+        },
+        {
+            "id": 22,
+            "button": [
+                586.5,
+                374
+            ],
+            "light": [
+                551,
+                352.5
+            ],
+            "belongs": [
+                3,
+                21,
+                24
+            ],
+            "difficulty": [
+                4,
+                5,
+                5
+            ]
+        },
+        {
+            "id": 23,
+            "button": [
+                661.5,
+                478
+            ],
+            "light": [
+                624,
+                457.5
+            ],
+            "belongs": [
+                22
+            ],
+            "difficulty": [
+                6
+            ]
+        },
+        {
+            "id": 24,
+            "button": [
+                661.5,
+                302
+            ],
+            "light": [
+                625,
+                280
+            ],
+            "belongs": [
+                22,
+                13
+            ],
+            "difficulty": [
+                5,
+                5
+            ]
+        }
+    ]
+}

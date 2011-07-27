@@ -13,6 +13,7 @@
 #import "SimpleAudioEngine.h"
 #import "GameData.h"
 #import "FacebookViewController.h"
+#import "CCTransition.h"
 
 @interface GameManager : NSObject {
     BOOL isMusicON;

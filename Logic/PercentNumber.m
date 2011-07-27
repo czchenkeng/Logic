@@ -1,15 +1,15 @@
 //
-//  ScoreNumber.m
+//  PercentNumber.m
 //  Logic
 //
-//  Created by Pavel Krusek on 7/6/11.
+//  Created by Pavel Krusek on 7/27/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "ScoreNumber.h"
+#import "PercentNumber.h"
 
 
-@implementation ScoreNumber
+@implementation PercentNumber
 
 - (id) init {
     self = [super init];
@@ -24,8 +24,8 @@
 }
 
 - (void) endAnimation {
-//    [numbers removeFromParentAndCleanup:YES];
-//    [_mask removeFromParentAndCleanup:YES];
+    //    [numbers removeFromParentAndCleanup:YES];
+    //    [_mask removeFromParentAndCleanup:YES];
 }
 
 - (void) moveToPosition:(int)position {
@@ -43,5 +43,6 @@
     CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
     [super dealloc];
 }
+
 
 @end

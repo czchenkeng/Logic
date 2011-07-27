@@ -112,7 +112,7 @@
         
         [self moveClock:secondsArray];
         
-        //[self schedule:@selector(update:) interval:0.50];
+        [self schedule:@selector(update:) interval:0.50];
         //[self schedule:@selector(update:)];
     }
     return self;

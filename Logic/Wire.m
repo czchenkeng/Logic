@@ -1,32 +1,31 @@
 //
-//  CareerScene.m
+//  Wire.m
 //  Logic
 //
-//  Created by Pavel Krusek on 6/20/11.
+//  Created by Pavel Krusek on 7/25/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "CareerScene.h"
+#import "Wire.h"
 
 
-@implementation CareerScene
+@implementation Wire
+
+@synthesize lights;
 
 - (id) init {
     self = [super init];
     if (self != nil) {
         CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
-        careerLayer = [CareerLayer node];
-        [self addChild:careerLayer z:0];
-        
-//        controlLayer = [ControlsLayer node];
-//        [self addChild:controlLayer z:1];
+        self.visible = NO;
     }
     return self;
 }
 
 - (void) dealloc {
     CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
-    
+    [lights release];
+    lights = nil;
     [super dealloc];
 }
 

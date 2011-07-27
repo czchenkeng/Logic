@@ -25,6 +25,7 @@
     UISwipeGestureRecognizer *swipeRightRecognizer;
     UISwipeGestureRecognizer *swipeUpRecognizer;
     UISwipeGestureRecognizer *swipeDownRecognizer;
+    UILongPressGestureRecognizer *longPress;
     
     GameDifficulty currentDifficulty;//obtiznost hry
     float difficultyPadding;//rozestup figur podle obtiznosti
@@ -33,7 +34,9 @@
     int places;//spravne mista
     int colors;//spravne barvy
     int score;//skore
-    int lastTime;
+    int lastTime;//???
+    BOOL isMovable;//after predefined row
+    float trans;
     
     Figure *selSprite;//vybrany sprite
     CCSprite *targetSprite;//je zamereny target? (umistit nebo zpet na zakladnu)

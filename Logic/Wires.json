@@ -1,0 +1,139 @@
+{
+    "wires": [
+        {
+            "id": 0,
+            "position": [930, 523],
+            "lights": [3]
+        },
+        {
+            "id": 1,
+            "position": [1039, 611],
+            "lights": [3, 22]
+        },
+        {
+            "id": 2,
+            "position": [1046, 396],
+            "lights": [3, 13]
+        },
+        {
+            "id": 3,
+            "position": [1266, 392],
+            "lights": [13, 24]
+        },
+        {
+            "id": 4,
+            "position": [1265, 698],
+            "lights": [22, 24]
+        },
+        {
+            "id": 5,
+            "position": [1184, 193],
+            "lights": [13, 14]
+        },
+        {
+            "id": 6,
+            "position": [1187, 843],
+            "lights": [22, 23]
+        },
+        {
+            "id": 7,
+            "position": [1050, 790],
+            "lights": [21, 22]
+        },
+        {
+            "id": 8,
+            "position": [1266, 112],
+            "lights": [14, 15]
+        },
+        {
+            "id": 9,
+            "position": [1044, 117],
+            "lights": [14, 16]
+        },
+        {
+            "id": 10,
+            "position": [669, 543],
+            "lights": [2]
+        },
+        {
+            "id": 11,
+            "position": [488, 346],
+            "lights": [2, 10]
+        },
+        {
+            "id": 12,
+            "position": [290, 345],
+            "lights": [10, 11]
+        },
+        {
+            "id": 13,
+            "position": [104, 228],
+            "lights": [11, 12]
+        },
+        {
+            "id": 14,
+            "position": [488, 607],
+            "lights": [2, 8]
+        },
+        {
+            "id": 15,
+            "position": [290, 675],
+            "lights": [8, 9]
+        },
+        {
+            "id": 16,
+            "position": [846, 615],
+            "lights": [1]
+        },
+        {
+            "id": 17,
+            "position": [875, 844],
+            "lights": [1, 21]
+        },
+        {
+            "id": 18,
+            "position": [751, 844],
+            "lights": [1, 4]
+        },
+        {
+            "id": 19,
+            "position": [488, 975],
+            "lights": [4, 5]
+        },
+        {
+            "id": 20,
+            "position": [409, 755],
+            "lights": [5, 8]
+        },
+        {
+            "id": 21,
+            "position": [290, 965],
+            "lights": [5, 6]
+        },
+        {
+            "id": 22,
+            "position": [80, 913],
+            "lights": [6, 7]
+        },
+        {
+            "id": 23,
+            "position": [862, 122],
+            "lights": [16, 17]
+        },
+        {
+            "id": 24,
+            "position": [619, 219],
+            "lights": [17, 18]
+        },
+        {
+            "id": 25,
+            "position": [536, 132],
+            "lights": [18, 19]
+        },
+        {
+            "id": 26,
+            "position": [397, 36],
+            "lights": [19, 20]
+        }
+    ]
+}

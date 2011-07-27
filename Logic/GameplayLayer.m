@@ -27,7 +27,7 @@
 @implementation GameplayLayer
 
 #pragma mark -
-#pragma mark INIT CLASS
+#pragma mark INIT
 #pragma mark Designated initializer
 - (id) init {
     self = [super initWithColor:ccc4(0,0,0,0)];
@@ -39,6 +39,8 @@
         lastTime = 0;
         score = 0;
         targetSprite = nil;
+        isMovable = NO;
+        trans = 0;
         userCode = [[NSMutableArray alloc] init];
         placeNumbers = [[CCArray alloc] init];
         colorNumbers = [[CCArray alloc] init];
@@ -57,11 +59,18 @@
     singleTapRecognizer.numberOfTouchesRequired = 1;
     
     swipeRightRecognizer = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)] autorelease];
-    swipeRightRecognizer.delegate = self;
+    //swipeRightRecognizer.delegate = self;
+    
+    longPress = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handlePress:)] autorelease];
+    longPress.minimumPressDuration = 0.025;
+    longPress.delegate = self;
+    
+    longPress.cancelsTouchesInView = NO;
     
     //[[[CCDirector sharedDirector] openGLView] addGestureRecognizer:singleTapRecognizer];
     [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:panRecognizer];
-    [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:swipeRightRecognizer];
+    //[[[CCDirector sharedDirector] openGLView] addGestureRecognizer:swipeRightRecognizer];
+    [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:longPress];
     //swipeRightRecognizer.direction = UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionUp | UISwipeGestureRecognizerDirectionDown;
     //[swipeRightRecognizer setDirection:UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionUp];
     //singleTapRecognizer.cancelsTouchesInView = NO;
@@ -82,7 +91,7 @@
 #pragma mark -
 #pragma mark GESTURES DELEGATE METHODS
 #pragma mark Simultaneous
-- (BOOL) gestureRecognizer:swipeRightRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:panRecognizer {
+- (BOOL) gestureRecognizer:longPress shouldRecognizeSimultaneouslyWithGestureRecognizer:panRecognizer {
     return YES;
 }
 
@@ -91,9 +100,8 @@
 //    return YES;
 //}
 
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
-{
-    CCLOG(@"podminka");
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    //CCLOG(@"podminka");
     if(gestureRecognizer.state == UIGestureRecognizerStateBegan ||
        gestureRecognizer.state == UIGestureRecognizerStateChanged) 
     {
@@ -179,8 +187,6 @@
     codeBase = [CCSprite spriteWithSpriteFrameName:levelEndFrame];
     codeBase.position = ccp(133, 455);
     
-//    rotorLeftLayer = [CCLayer node];
-//    rotorRightLayer = [CCLayer node];
     rotorLeftLayer = [CCSprite node];
     rotorRightLayer = [CCSprite node];
     rotorLeft = [CCSprite spriteWithSpriteFrameName:@"rotor_left.png"];
@@ -516,7 +522,7 @@
     
     CCSequence *clippingSeq = [CCSequence actions:
                            [CCDelayTime actionWithDuration: delay + 1.3f],
-                           [CCMoveTo actionWithDuration:.4 position:CGPointMake(base.position.x, base.position.y - 49)],
+                           [CCMoveTo actionWithDuration:.4 position:CGPointMake(clippingNode.position.x, clippingNode.position.y - 49)],
                            nil];
     
     CCSequence *scoreSeq = [CCSequence actions:
@@ -677,27 +683,34 @@
     }
 }
 
+- (void) swipeEnd {
+
+}
+
 - (void) nextRow {
     [userCode removeAllObjects];
     activeRow ++;
     [self constructRowWithIndex:activeRow];
-//    if (currAreaPos == 1) {
-//        [self swipeArea:1];
-//    }
-//    if (activeRow == LEVEL_SWIPE_AFTER_ROW) {
-//        isMovable = YES;
-//        //movableFlag = YES;
-//        dislocation = LEVEL_DISLOCATION;
-//        //currAreaPos ++;
-//        [self swipeArea:1];
-//    }
+    if (activeRow == LEVEL_SWIPE_AFTER_ROW) {
+        isMovable = YES;
+        
+        //id move = [CCMoveTo actionWithDuration:.3 position:CGPointMake(movableNode.position.x, movableNode.position.y - 88)];
+        //id move1 = [CCMoveTo actionWithDuration:.3 position:CGPointMake(clippingNode.position.x, clippingNode.position.y - 88)];
+        //id seq = [CCSequence actions:move1, [CCCallFunc actionWithTarget:self selector:@selector(swipeEnd)], nil];
+        //[movableNode runAction:move];
+        //[clippingNode runAction:move1];
+        
+        [movableNode setPosition:ccp(movableNode.position.x, movableNode.position.y - 89)];
+        [clippingNode setPosition:ccp(clippingNode.position.x, clippingNode.position.y - 89)];
+    }
+
 }
 
 - (void) generateDeadRow {
     for (Figure *userSprite in userCode) {
         Figure *deadFigure = [[Figure alloc] initWithFigureType:userSprite.currentFigure];
         //CGPoint newPos = ccp(userSprite.position.x, userSprite.position.y + dislocation - LEVEL_DEAD_FIGURES_MASK_HEIGHT);//DISLOCATION
-        CGPoint newPos = ccp(userSprite.position.x, userSprite.position.y - LEVEL_DEAD_FIGURES_MASK_HEIGHT);
+        CGPoint newPos = ccp(userSprite.position.x, userSprite.position.y - LEVEL_DEAD_FIGURES_MASK_HEIGHT - trans);
         deadFigure.position = newPos;
         [deadFiguresNode addChild:deadFigure z:2000];//mrknout na z-index
         [movableFigures removeObject:userSprite];
@@ -770,6 +783,8 @@
     if (userCode.count == currentDifficulty) {
         isEndRow = YES;
     }
+    
+    selSprite = nil;
 }
 
 - (void) swapFigure:(Figure *)sprite {
@@ -794,6 +809,7 @@
     //sprite.tempPosition = ccp(sprite.position.x, sprite.position.y + dislocation);
     sprite.tempPosition = ccp(sprite.position.x, sprite.position.y);
     [figuresNode reorderChild:selSprite z:sprite.zOrder - 100];
+    selSprite = nil;
 }
 
 #pragma mark -
@@ -810,6 +826,7 @@
     CCScaleTo *scale = [CCScaleTo actionWithDuration:.3 scale:1.4];
     [newSprite runAction:scale];          
     selSprite = newSprite;
+    CCLOG(@"sel sprite %@", selSprite);
     if (selSprite) {
         [figuresNode reorderChild:selSprite z:selSprite.zOrder + 100];
     }   
@@ -825,7 +842,7 @@
 
 - (void) endTouch {
     if (selSprite) {
-        CCScaleTo *scale = [CCScaleTo actionWithDuration:.3 scale:1.0];
+        CCScaleTo *scale = [CCScaleTo actionWithDuration:0.3 scale:1.0];
         [selSprite runAction:scale];        
         if (targetSprite != nil) {//animation to target
             CCSequence *moveSeq;
@@ -833,13 +850,13 @@
                 [self swapFigure:selSprite];
                 moveSeq = [CCSequence actions:
                            //[CCMoveTo actionWithDuration:.03*activeRow position:CGPointMake(targetSprite.position.x + 1, targetSprite.position.y + 5 - dislocation)],//DISLOCATION
-                           [CCMoveTo actionWithDuration:.03*activeRow position:CGPointMake(targetSprite.position.x + 1, targetSprite.position.y + 5)],
+                           [CCMoveTo actionWithDuration:.03*activeRow position:CGPointMake(targetSprite.position.x + 1, targetSprite.position.y + 5 + trans)],
                            [CCCallFuncND actionWithTarget:self selector:@selector(figureSetCorrectPosition:data:) data:selSprite],
                            nil];
             } else {
                 moveSeq = [CCSequence actions:
                            //[CCMoveTo actionWithDuration:.03*activeRow position:CGPointMake(targetSprite.position.x + 1, targetSprite.position.y + 5 - dislocation)],//DISLOCATION
-                           [CCMoveTo actionWithDuration:.03*activeRow position:CGPointMake(targetSprite.position.x + 1, targetSprite.position.y + 5)],
+                           [CCMoveTo actionWithDuration:0.03*activeRow position:CGPointMake(targetSprite.position.x + 1, targetSprite.position.y + 5 + trans)],
                            [CCCallFuncND actionWithTarget:self selector:@selector(figureMoveEnded:data:) data:selSprite],//najit v zalozkach modernejsi zpusob jak volat callback!!!!!!!!!!!!!!!!!!!
                            nil];
             }
@@ -867,28 +884,72 @@
 #pragma mark Pan gestures handler
 - (void) handlePan:(UIPanGestureRecognizer *)recognizer {    
     if (recognizer.state == UIGestureRecognizerStateBegan) {
+//        CGPoint touchLocation = [recognizer locationInView:recognizer.view];
+//        touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
+//        touchLocation = [self convertToNodeSpace:touchLocation];                
+//        [self selectSpriteForTouch:touchLocation];
+    } else if (recognizer.state == UIGestureRecognizerStateChanged) {
+        CGPoint translation = [recognizer translationInView:recognizer.view];
+        translation = ccp(translation.x, -translation.y);
+        //CCLOG(@"translation %i", abs(translation.x));
+        if (abs(translation.x) > 30 && !selSprite) {
+            if (isEndRow) {
+                isEndRow = NO;
+                [self generateDeadRow];
+                [self endOfRow];
+            }
+        } else {
+            if (selSprite) {
+                [self panForTranslation:translation];
+                [self detectTarget];
+            } else {
+                CGPoint touchLocation = [recognizer locationInView:recognizer.view];
+                touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
+                touchLocation = [self convertToNodeSpace:touchLocation];
+                //y swipe - sem ale asi ne
+                if (isMovable && touchLocation.y > MIN_DISTANCE_SWIPE_Y) {
+                //if (isMovable && touchLocation.y > MIN_DISTANCE_SWIPE_Y && (movableNode.position.y > -89)) {
+                    CCLOG(@"Y POS %f", movableNode.position.y);
+                    if (movableNode.position.y >= -89) {
+                        [movableNode setPosition:ccp(movableNode.position.x, movableNode.position.y + translation.y)];
+                        [clippingNode setPosition:ccp(clippingNode.position.x, clippingNode.position.y + translation.y)];
+                        trans = movableNode.position.y;
+                        for (Figure *figure in movableFigures) {
+                            if (figure.isOnActiveRow) {
+                                [figure setPosition:ccp(figure.position.x, figure.position.y + translation.y)];
+                            }
+                        }
+                    } else {
+                        [movableNode setPosition:ccp(movableNode.position.x, -89)];
+                        [clippingNode setPosition:ccp(clippingNode.position.x, -89)];
+                        trans = -89;
+                        for (Figure *figure in movableFigures) {
+                            if (figure.isOnActiveRow) {
+                                [figure setPosition:ccp(figure.position.x, -89)];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        [recognizer setTranslation:CGPointZero inView:recognizer.view];
+
+    } else if (recognizer.state == UIGestureRecognizerStateEnded) {        
+        [self endTouch];
+    }
+}
+
+- (void) handlePress:(UIPanGestureRecognizer *)recognizer {
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
         CGPoint touchLocation = [recognizer locationInView:recognizer.view];
         touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
         touchLocation = [self convertToNodeSpace:touchLocation];                
         [self selectSpriteForTouch:touchLocation];
-    } else if (recognizer.state == UIGestureRecognizerStateChanged) {        
-        CGPoint translation = [recognizer translationInView:recognizer.view];
-        translation = ccp(translation.x, -translation.y);
-        [self panForTranslation:translation];
-        [self detectTarget];
-        [recognizer setTranslation:CGPointZero inView:recognizer.view];
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {        
-        [self endTouch];
+        //CCScaleTo *scale = [CCScaleTo actionWithDuration:.1 scale:1.0];
+        //[selSprite runAction:scale];
+        selSprite.scale = 1;
     }
-//    if (recognizer.state == UIGestureRecognizerStateChanged) {        
-//        CGPoint translation = [recognizer translationInView:recognizer.view];
-//        translation = ccp(translation.x, -translation.y);
-//        [self panForTranslation:translation];
-//        [self detectTarget];
-//        [recognizer setTranslation:CGPointZero inView:recognizer.view];
-//    } else if (recognizer.state == UIGestureRecognizerStateEnded) {        
-//        CCLOG(@"Logic debug: touch ended");
-//    }
 }
 
 - (void) handleSwipe:(UISwipeGestureRecognizer *)recognizer {

@@ -259,7 +259,7 @@
         [logoShadow runAction:[CCRepeatForever actionWithAction:moveSeq]];
         
         [[GameManager sharedGameManager] playBackgroundTrack:BACKGROUND_TRACK_MAIN];
-        //[self runParticle];
+        [self runParticle];
         [self scheduleUpdate];
         [self animationIn];
     }

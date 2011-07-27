@@ -8,22 +8,41 @@
 
 #import <Foundation/Foundation.h>
 #import "Mask.h"
+#import "City.h"
+#import "Wire.h"
+#import "PercentNumber.h"
 
-
-@interface CareerLayer : CCLayer {
+@interface CareerLayer : CCLayer <UIAlertViewDelegate>{
     CCLayerColor *zoomBase;
     CGPoint zbLastPos;
     
-    CCArray *buttonsArray;
-    CCSprite *selSprite;
+    CCArray *citiesArray;
+    CCArray *wiresArray;
+    City *selSprite;
     CCSprite *background;
     
-    CGRect rectsArray[24];
+    CCSprite *infoPanel;
+    
+    int buttonWidth;
+    int buttonHeight;
+    
+    CCMenuItem *infoOff;
+    CCMenuItem *infoOn;
+    
+    CCSprite *progressBar;
+    int prog;
+    float total;
+    int percent;
+    CCArray *percentLabelArray;
+    BOOL panelActive;
     
     UIPanGestureRecognizer *panGestureRecognizer;
     UIPinchGestureRecognizer *pinchGestureRecognizer;    
     UITapGestureRecognizer *singleTapGestureRecognizer;
     UITapGestureRecognizer *doubleTapGestureRecognizer;
+    
+    ///DEBUG PURPOSE
+    CCLabelBMFont *debugText;
 
 }
 

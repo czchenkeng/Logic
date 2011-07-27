@@ -7,10 +7,9 @@
 //
 
 #define MIN_DISTANCE_SWIPE_X 200
-#define MIN_DISTANCE_SWIPE_Y 20
+#define MIN_DISTANCE_SWIPE_Y 150
 #define LEVEL_SWIPE_AFTER_ROW 7
-//#define LEVEL_DEAD_FIGURES_MASK_HEIGHT 66
-#define LEVEL_DEAD_FIGURES_MASK_HEIGHT 10
+#define LEVEL_DEAD_FIGURES_MASK_HEIGHT 5
 #define LEVEL_DISLOCATION 40
 #define LEVEL_FIGURE_MAX_Y_MOVE 400
 
@@ -46,7 +45,8 @@ typedef enum {
     kButtonBack,  
     kButtonScore,
     kButtonPause,
-    kButtonFb
+    kButtonFb,
+    kButtonEraseCareer
 } buttonTypes;
 
 typedef enum {

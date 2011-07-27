@@ -1,32 +1,34 @@
 //
-//  CareerScene.m
+//  City.m
 //  Logic
 //
-//  Created by Pavel Krusek on 6/20/11.
+//  Created by Pavel Krusek on 7/23/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "CareerScene.h"
+#import "City.h"
 
 
-@implementation CareerScene
+@implementation City
+
+@synthesize buttonX, buttonY, idCity, isActive, belongs, difficulty;
 
 - (id) init {
     self = [super init];
     if (self != nil) {
         CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
-        careerLayer = [CareerLayer node];
-        [self addChild:careerLayer z:0];
-        
-//        controlLayer = [ControlsLayer node];
-//        [self addChild:controlLayer z:1];
+        isActive = NO;
+        self.visible = NO;
     }
     return self;
 }
 
 - (void) dealloc {
     CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
-    
+    [belongs release];
+    belongs = nil;
+    [difficulty release];
+    difficulty = nil;
     [super dealloc];
 }
 
