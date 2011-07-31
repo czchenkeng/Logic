@@ -14,6 +14,7 @@
     FigureTypes currentFigure;
     CGPoint originalPosition;
     CGPoint tempPosition;
+    CGPoint movePosition;
     int place;
     int oldPlace;
     BOOL isActive;//vyhodit? uz se umistene neposouvaji
@@ -28,6 +29,7 @@
 @property FigureTypes currentFigure;
 @property CGPoint originalPosition;
 @property CGPoint tempPosition;
+@property CGPoint movePosition;
 @property int place;
 @property int oldPlace;
 @property BOOL isActive;

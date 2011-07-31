@@ -113,9 +113,15 @@
 	
 	// Run the intro Scene
     [[GameManager sharedGameManager] setupAudioEngine];
+    
+    if ([[GameManager sharedGameManager] gameInProgress]) {
+        [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kNoTransition];
+    } else {
+        [[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kNoTransition];
+    }
     //[[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kNoTransition];
     //[[GameManager sharedGameManager] runSceneWithID:kCareerScene andTransition:kNoTransition];
-    [[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kNoTransition];
+    //[[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kNoTransition];
     //[[GameManager sharedGameManager] runSceneWithID:kScoreScene];
     
     return YES;
@@ -138,10 +144,12 @@
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application {
+    CCLOG(@"ENTER BACKGROUND");
 	[[CCDirector sharedDirector] stopAnimation];
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application {
+    CCLOG(@"ENTER FOREGROUND");
 	[[CCDirector sharedDirector] startAnimation];
 }
 

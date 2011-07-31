@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "FMDatabase.h"
 #import "FMDatabaseAdditions.h"
+#import "Figure.h"
 
 @interface GameData : NSObject {
 
@@ -23,7 +24,20 @@ FMResultSet *rs;
 - (void) updateSettingsWithDifficulty:(int)diff andMusicLevel:(float)music andSoundLevel:(float)sound;
 - (settings) getSettings;
 
+//truncate game data tables
+- (void) gameDataCleanup;
+
+- (BOOL) isActiveGame;
+
+//write game data
+- (void) insertGameData:(gameInfo)data;
 - (void) insertDeadFigure:(deadFigure)figure;
+- (void) insertRow:(gameRow)row;
+
+//read game data
+- (gameInfo) getGameData;
+- (NSMutableArray *) getDeadFigures;
+- (NSMutableArray *) getRows;
 
 
 @end

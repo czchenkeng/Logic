@@ -14,10 +14,16 @@
 - (id) init {
     self = [super init];
     if (self != nil) {
+        CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
         GameplayLayer* gameLayer = [GameplayLayer node];
         [self addChild:gameLayer z:1 tag:1];
     }
     return self;
+}
+
+- (void) dealloc {
+    CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
+    [super dealloc];
 }
 
 @end

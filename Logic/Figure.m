@@ -11,7 +11,7 @@
 
 @implementation Figure
 
-@synthesize currentFigure, originalPosition, tempPosition, place, oldPlace, isActive, isCalculated, isOnActiveRow, startTime, endTime;
+@synthesize currentFigure, originalPosition, tempPosition, movePosition, place, oldPlace, isActive, isCalculated, isOnActiveRow, startTime, endTime;
 
 - (Figure *) initWithFigureType:(FigureTypes)figureID {
     

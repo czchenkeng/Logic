@@ -88,6 +88,14 @@
         case kButtonCareerPlay:
             CCLOG(@"TAP ON CAREER");
             break;
+        case kButtonContinuePlay:
+            [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kSlideInL];
+            break;
+        case kButtonNewGame:
+            [[[GameManager sharedGameManager] gameData] gameDataCleanup];
+            [GameManager sharedGameManager].gameInProgress = NO;
+            [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kSlideInL];
+            break;
         default:
             CCLOG(@"Logic debug: Unknown ID, cannot tap button");
             return;
@@ -172,6 +180,7 @@
         [leftGib setPosition:ccp(-700.00, 0.00)];
         [self addChild:leftGib z:11];
         
+        //SINGLE, CAREER
         CCSprite *buttonSingleOff = [CCSprite spriteWithSpriteFrameName:@"logik_single1.png"];
         CCSprite *buttonSingleOn = [CCSprite spriteWithSpriteFrameName:@"logik_single2.png"];
         
@@ -182,13 +191,33 @@
         singlePlayItem.tag = kButtonSinglePlay;
         CCMenu *singleMenu = [CCMenu menuWithItems:singlePlayItem, nil];
         singleMenu.position = ccp(66.00, 31.50);;
-        [rightGib addChild:singleMenu];
+        [rightGib addChild:singleMenu z:1];
         
         CCMenuItem *careerPlayItem = [CCMenuItemSprite itemFromNormalSprite:buttonCareerOff selectedSprite:buttonCareerOn target:self selector:@selector(buttonTapped:)];
         careerPlayItem.tag = kButtonCareerPlay;
         CCMenu *careerMenu = [CCMenu menuWithItems:careerPlayItem, nil];
         careerMenu.position = ccp(195.50, 35.50);
-        [leftGib addChild:careerMenu];
+        [leftGib addChild:careerMenu z:1];
+        
+        //CONTINUE, NEW
+        CCSprite *buttonContinueOff = [CCSprite spriteWithSpriteFrameName:@"logik_cont1.png"];
+        CCSprite *buttonContinueOn = [CCSprite spriteWithSpriteFrameName:@"logik_cont2.png"];
+        
+        CCSprite *buttonNewGameOff = [CCSprite spriteWithSpriteFrameName:@"logik_new1.png"];
+        CCSprite *buttonNewGameOn = [CCSprite spriteWithSpriteFrameName:@"logik_new2.png"];
+        
+        CCMenuItem *continuePlayItem = [CCMenuItemSprite itemFromNormalSprite:buttonContinueOff selectedSprite:buttonContinueOn target:self selector:@selector(buttonTapped:)];
+        continuePlayItem.tag = kButtonContinuePlay;
+        CCMenu *continueMenu = [CCMenu menuWithItems:continuePlayItem, nil];
+        continueMenu.position = ccp(66.00, 31.50);;
+        [rightGib addChild:continueMenu z:2];
+        
+        CCMenuItem *newGameItem = [CCMenuItemSprite itemFromNormalSprite:buttonNewGameOff selectedSprite:buttonNewGameOn target:self selector:@selector(buttonTapped:)];
+        newGameItem.tag = kButtonNewGame;
+        CCMenu *newGameMenu = [CCMenu menuWithItems:newGameItem, nil];
+        newGameMenu.position = ccp(195.50, 35.50);
+        [leftGib addChild:newGameMenu z:2];
+        
         
         CCSprite *buttonInfoOff = [CCSprite spriteWithSpriteFrameName:@"i_off.png"];
         CCSprite *buttonInfoOn = [CCSprite spriteWithSpriteFrameName:@"i_on.png"];
@@ -257,6 +286,14 @@
         //CCSequence *moveSeq = [CCSequence actions:moveLeft, moveRight, nil];
         CCSequence *moveSeq = [CCSequence actions:easeMoveLeft, easeMoveRight, nil];
         [logoShadow runAction:[CCRepeatForever actionWithAction:moveSeq]];
+        
+        if ([[GameManager sharedGameManager] gameInProgress]) {
+            singleMenu.visible = NO;
+            careerMenu.visible = NO;
+        } else {
+            continueMenu.visible = NO;
+            newGameMenu.visible = NO;
+        }
         
         [[GameManager sharedGameManager] playBackgroundTrack:BACKGROUND_TRACK_MAIN];
         [self runParticle];

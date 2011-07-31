@@ -368,7 +368,7 @@ static const float POS_Y = -40;
 	zoomBase.scale = zoomBase.scale*zoomScale;
 }
 
-- (CGPoint)boundLayerPos:(CGPoint)newPos {
+- (CGPoint) boundLayerPos:(CGPoint)newPos {
     //CCLOG(@"SCALE %f", zoomBase.scale);
     CGSize winSize = [CCDirector sharedDirector].winSize;
     CGPoint retval = newPos;

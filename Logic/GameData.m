@@ -47,14 +47,32 @@
         db = [[FMDatabase databaseWithPath:DBPath] retain];
         if (![db open]) {
             CCLOG(@"Could not open db.");
-            [db setLogsErrors:TRUE];
-            [db setTraceExecution:TRUE];
         } else {
             CCLOG(@"Db is here!");
+            [db setLogsErrors:TRUE];
+            [db setTraceExecution:TRUE];
         }
-
+        
     }
     return self;
+}
+
+- (BOOL) isActiveGame {
+    int totalCount = 0;
+    rs = [db executeQuery:@"SELECT COUNT(*) FROM game_data"];
+    if ([rs next]) {
+        totalCount = [rs intForColumnIndex:0];
+        CCLOG(@"total count %i", totalCount);
+    }
+    return totalCount == 0 ? NO : YES;
+}
+
+- (void) gameDataCleanup {
+    [db beginTransaction];
+    [db executeUpdate:@"DELETE FROM game_dead_figures"];
+    [db executeUpdate:@"DELETE FROM game_data"];
+    [db executeUpdate:@"DELETE FROM game_rows"];
+    [db commit];
 }
 
 - (void) updateSettingsWithDifficulty:(int)diff andMusicLevel:(float)music andSoundLevel:(float)sound {
@@ -74,8 +92,57 @@
     return retVal;
 }
 
-- (void) insertDeadFigure:(deadFigure)figure {
+- (void) insertGameData:(gameInfo)data {
+    [db beginTransaction];
+    [db executeUpdate:@"INSERT INTO game_data (difficulty, active_row) values (?, ?)", [NSNumber numberWithInt:data.difficulty], [NSNumber numberWithInt:data.activeRow]];
+    [db commit];
+}
+
+- (gameInfo) getGameData {
+    gameInfo retVal;    
+    rs = [db executeQuery:@"SELECT * FROM game_data ORDER BY rowid DESC LIMIT 1"];
+    if ([rs next]) {
+        retVal.difficulty = [rs intForColumn:@"difficulty"];
+        retVal.activeRow = [rs intForColumn:@"active_row"];
+    }
     
+    return retVal;
+}
+
+- (void) insertDeadFigure:(deadFigure)figure {
+    [db beginTransaction];
+    [db executeUpdate:@"INSERT INTO game_dead_figures (color, posX, posY) values (?, ?, ?)", [NSNumber numberWithInt:figure.color], [NSNumber numberWithFloat:figure.position.x], [NSNumber numberWithFloat:figure.position.y]];
+    [db commit];
+}
+
+- (NSMutableArray *) getDeadFigures {
+    rs = [db executeQuery:@"SELECT * FROM game_dead_figures"];
+    NSMutableArray *retVal = [[NSMutableArray alloc] init];//release?
+    while ([rs next]) {
+        Figure *figure = [[Figure alloc] initWithFigureType:[rs intForColumn:@"color"]];
+        figure.tempPosition = ccp([rs doubleForColumn:@"posX"], [rs doubleForColumn:@"posY"]);
+        [retVal addObject:figure];
+    }
+    return retVal;
+}
+
+- (void) insertRow:(gameRow)row {
+    [db beginTransaction];
+    [db executeUpdate:@"INSERT INTO game_rows (row, places, colors) values (?, ?, ?)", [NSNumber numberWithInt:row.row], [NSNumber numberWithInt:row.places], [NSNumber numberWithInt:row.colors]];
+    [db commit];
+}
+
+- (NSMutableArray *) getRows {
+    rs = [db executeQuery:@"SELECT * FROM game_rows"];
+    NSMutableArray *retVal = [[NSMutableArray alloc] init];//release?
+    while ([rs next]) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+        [dict setObject:[NSNumber numberWithInt:[rs intForColumn:@"row"]] forKey:@"row"];
+        [dict setObject:[NSNumber numberWithInt:[rs intForColumn:@"places"]] forKey:@"places"];
+        [dict setObject:[NSNumber numberWithInt:[rs intForColumn:@"colors"]] forKey:@"colors"];
+        [retVal addObject:dict];
+    }
+    return retVal;
 }
 
 - (void) writeScore:(int)score andDifficulty:(int)diff {
@@ -136,6 +203,12 @@
     [formatter release];
     
     return retVal;
+}
+
+- (void) dealloc {
+    CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
+    [db release];
+    [super dealloc];
 }
 
 @end

@@ -50,12 +50,12 @@ static GameManager* _sharedGameManager = nil;
         musicVolume = 0.50;
         soundVolume = 0.70;
         currentDifficulty = kMedium;
-        gameInProgress = NO;
         gameData = [[GameData alloc] init];
-//        settings startSettings = [gameData getSettings];
-//        musicVolume = startSettings.musicLevel;
-//        soundVolume = startSettings.soundLevel;
-//        currentDifficulty = startSettings.gameDifficulty;
+        gameInProgress = [gameData isActiveGame];
+        settings startSettings = [gameData getSettings];
+        musicVolume = startSettings.musicLevel;
+        soundVolume = startSettings.soundLevel;
+        currentDifficulty = startSettings.gameDifficulty;
     }
     return self;
 }

@@ -83,7 +83,8 @@
 
 - (void)onExit {
     [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:panRecognizer];
-    [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:swipeRightRecognizer];
+    [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:longPress];
+    //[[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:swipeRightRecognizer];
     //[[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:singleTapRecognizer];
     [super onExit];
 }
@@ -120,12 +121,86 @@
 #pragma mark INITIALIZATION OF LEVEL
 #pragma mark Composite method for starting level
 - (void) createGame {
+    gameInfo infoData;
+    if ([[GameManager sharedGameManager] gameInProgress]) {
+        infoData = [[[GameManager sharedGameManager] gameData] getGameData];
+        currentDifficulty = infoData.difficulty;
+        activeRow = infoData.activeRow;
+        if (activeRow >= LEVEL_SWIPE_AFTER_ROW) {
+            isMovable = YES;
+        }
+        CCLOG(@"pokus nacist data %i %i", infoData.activeRow, infoData.difficulty);
+    } else {
+        infoData.difficulty = currentDifficulty;
+        infoData.activeRow = 0;
+        [[[GameManager sharedGameManager] gameData] insertGameData:infoData];
+        [GameManager sharedGameManager].gameInProgress = YES;
+    }
+    
     [self buildLevel];
     [self addFigures];
     [self generateTargets];
     [self generateCode];
     [self constructScoreLabel];
     [self constructRowWithIndex:activeRow];
+    
+    if ([[GameManager sharedGameManager] gameInProgress]) {
+        NSMutableArray *deadFigures = [[[GameManager sharedGameManager] gameData] getDeadFigures];
+        if ([deadFigures count] > 0) {
+            for (Figure *figure in deadFigures) {
+                figure.position = figure.tempPosition;
+                [deadFiguresNode addChild:figure z:2000];
+            }
+        }
+        
+        NSMutableArray *rows = [[[GameManager sharedGameManager] gameData] getRows];
+        if ([rows count] > 0) {
+            int dataRow;
+            int dataPlaces;
+            int dataColors;
+            for (NSMutableDictionary *dict in rows) {
+                CCLOG(@"row is %i", [[dict objectForKey:@"row"] intValue]);
+                CCLOG(@"places are %i", [[dict objectForKey:@"places"] intValue]);
+                CCLOG(@"colors are %i", [[dict objectForKey:@"colors"] intValue]);
+                dataRow = [[dict objectForKey:@"row"] intValue];
+                dataPlaces = [[dict objectForKey:@"places"] intValue];
+                dataColors = [[dict objectForKey:@"colors"] intValue];
+                //tohle do jedne funkce sjednotit s normalni hrou
+                CCSprite *greenLight = [greenLights objectAtIndex:dataRow];
+                if (dataPlaces > 0) {
+                    id fadeToGreen = [CCFadeTo actionWithDuration:0.5f opacity:255];
+                    [greenLight runAction:fadeToGreen];
+                }
+                    
+                RowStaticScore *place = [placeNumbers objectAtIndex:dataRow];
+                [place showNumber:dataPlaces];
+                Mask *holderPlace = [Mask maskWithRect:CGRectMake(greenLight.position.x - 3, greenLight.position.y + 8, 9, 18)];
+                [clippingNode addChild:holderPlace z:21 + dataRow];
+                RowScore *rs = [[RowScore alloc] init];
+                [holderPlace addChild:rs z:1];
+                [rs moveToPosition:dataPlaces andMask:holderPlace];
+                
+                CCSprite *orangeLight = [orangeLights objectAtIndex:dataRow];
+                if (dataColors > 0) {
+                    id fadeToOrange = [CCFadeTo actionWithDuration:0.5f opacity:255];
+                    [orangeLight runAction:fadeToOrange];
+                }
+                    
+                RowStaticScore *color = [colorNumbers objectAtIndex:dataRow];
+                [color showNumber:dataColors];
+                Mask *holderColors = [Mask maskWithRect:CGRectMake(orangeLight.position.x - 5, orangeLight.position.y + 8, 9, 18)];
+                [clippingNode addChild:holderColors z:21 + dataRow];
+                RowScore *rc = [[RowScore alloc] init];
+                [holderColors addChild:rc z:1];
+                [rc moveToPosition:dataColors andMask:holderColors];
+            }
+        }
+        
+        [deadFigures release];
+        deadFigures = nil;
+        [rows release];
+        rows = nil;
+    }
 }
 
 #pragma mark Build level
@@ -308,8 +383,8 @@
     [self addChild:pauseMenu z:20];
 
     
-    dustSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"dust1.plist"];
-    [self addChild:dustSystem z:1000];
+    //dustSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"dust1.plist"];
+    //[self addChild:dustSystem z:1000];
     
 //    smokeSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"smoke.plist"];
 //    [self addChild:smokeSystem z:1001];
@@ -337,30 +412,39 @@
     currentCode = [[NSMutableArray alloc] init];
     for (int i = 0; i < currentDifficulty; ++i) {
         int cheatCode = [Utils randomNumberBetween:0 andMax:8];
+        NSString *debugCode = @"";
         switch (cheatCode) {
             case kYellow: 
                 CCLOG(@"YELLOW");
+                debugCode = @"YELLOW";
                 break;
             case kOrange:
                 CCLOG(@"ORANGE");
+                debugCode = @"ORANGE";
                 break;
             case kPink:
                 CCLOG(@"PINK");
+                debugCode = @"PINK";
                 break;
             case kRed:
                 CCLOG(@"RED");
+                debugCode = @"RED";
                 break;
             case kPurple:
                 CCLOG(@"PURPLE");
+                debugCode = @"PURPLE";
                 break;
             case kBlue:
                 CCLOG(@"BLUE");
+                debugCode = @"BLUE";
                 break;
             case kGreen:
                 CCLOG(@"GREEN");
+                debugCode = @"GREEN";
                 break;
             case kWhite:
                 CCLOG(@"WHITE");
+                debugCode = @"WHITE";
                 break;
             default:
                 CCLOG(@"Unknown ID, cannot print code");
@@ -373,14 +457,20 @@
         figure.anchorPoint = CGPointMake(0, 0);
         figure.position = ccp(6 + difficultyPadding*i, 10.0f);
         
-        //        Figure *cheatFigure = [[Figure alloc] initWithFigureType:cheatCode];
-        //        cheatFigure.anchorPoint = CGPointMake(0, 0);
-        //        cheatFigure.position = ccp(6 + difficultyPadding*i, 10.0f);
-        //        cheatFigure.opacity = 150;
+        Figure *cheatFigure = [[Figure alloc] initWithFigureType:cheatCode];
+        cheatFigure.anchorPoint = CGPointMake(0, 0);
+        cheatFigure.position = ccp(100 + 20*i, 460);
+        cheatFigure.scale = 0.5;
+        cheatFigure.opacity = 255;
         
         [codeBase addChild:figure z:i];
         //[cheat addChild:cheatFigure z:i];
         [currentCode addObject:figure];
+        
+//        CCLabelBMFont *debugText = [CCLabelBMFont labelWithString:debugCode fntFile:@"BellGothicBoldHt.fnt"];
+//        debugText.anchorPoint = ccp(0, 0.5);
+//        [debugText setPosition:ccp(10 + i*60, 470)];
+        [self addChild:cheatFigure z:3000 + i];
     }
     CCLOG(@"***********************END CODE*******************************");
     CCLOG(@"**************************************************************");
@@ -444,9 +534,9 @@
 
 #pragma mark Pause button
 - (void) pauseTapped:(CCMenuItem *)sender { 
-    //[[GameManager sharedGameManager] runSceneWithID:kSettingsScene andTransition:kSlideInR];
     CCLOG(@"pause tapped");
-    [self endGame];
+    //[self endGame];
+    [[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kSlideInR];
 }
 
 #pragma mark -
@@ -455,6 +545,8 @@
 - (void) endGame {
     CCLOG(@"Logic debug: END GAME");
     [[[GameManager sharedGameManager] gameData] writeScore:[Utils randomNumberBetween:1000 andMax:99999999] andDifficulty:currentDifficulty];
+    [[[GameManager sharedGameManager] gameData] gameDataCleanup];
+    isMovable = NO;
     [self openLock];
 }
 
@@ -604,6 +696,14 @@
     colors = colors - places;
     
     CCLOG(@"Logic debug: PLACES %i AND COLORS %i", places, colors);
+    
+    gameRow row;
+    row.row = activeRow;
+    row.colors = colors;
+    row.places = places;
+    [[[GameManager sharedGameManager] gameData] insertRow:row];
+    
+    
     [self showResult];
     [self calculateScore];
     if (places == currentDifficulty || activeRow == 9) {
@@ -614,7 +714,7 @@
 }
 
 - (void) showResult {
-    CCSprite *greenLight = [greenLights objectAtIndex:activeRow];
+    CCSprite *greenLight = [greenLights objectAtIndex:activeRow];//dej to do te podminky - nemuzu kvuli nule //asi
     if (places > 0) {
         id fadeToGreen = [CCFadeTo actionWithDuration:0.5f opacity:255];
         [greenLight runAction:fadeToGreen]; 
@@ -684,7 +784,8 @@
 }
 
 - (void) swipeEnd {
-
+//    [movableNode setPosition:ccp(movableNode.position.x, -90)];
+//    [clippingNode setPosition:ccp(clippingNode.position.x, -90)];
 }
 
 - (void) nextRow {
@@ -693,30 +794,48 @@
     [self constructRowWithIndex:activeRow];
     if (activeRow == LEVEL_SWIPE_AFTER_ROW) {
         isMovable = YES;
-        
-        //id move = [CCMoveTo actionWithDuration:.3 position:CGPointMake(movableNode.position.x, movableNode.position.y - 88)];
-        //id move1 = [CCMoveTo actionWithDuration:.3 position:CGPointMake(clippingNode.position.x, clippingNode.position.y - 88)];
-        //id seq = [CCSequence actions:move1, [CCCallFunc actionWithTarget:self selector:@selector(swipeEnd)], nil];
-        //[movableNode runAction:move];
-        //[clippingNode runAction:move1];
-        
-        [movableNode setPosition:ccp(movableNode.position.x, movableNode.position.y - 89)];
-        [clippingNode setPosition:ccp(clippingNode.position.x, clippingNode.position.y - 89)];
     }
+    float jump;
+    if (activeRow == 7) {
+        jump = -45;
+    }
+    if (activeRow == 8) {
+        jump = -90;
+    }
+    
+    if (activeRow == 7 || activeRow == 8) {
+        id move = [CCMoveTo actionWithDuration:.3 position:CGPointMake(movableNode.position.x, jump)];
+        id move1 = [CCMoveTo actionWithDuration:.3 position:CGPointMake(clippingNode.position.x, jump)];
+        //id seq = [CCSequence actions:move, [CCCallFunc actionWithTarget:self selector:@selector(swipeEnd)], nil];
+        [movableNode runAction:move];
+        [clippingNode runAction:move1];
+        
+        trans = jump;
+    }
+
 
 }
 
 - (void) generateDeadRow {
     for (Figure *userSprite in userCode) {
-        Figure *deadFigure = [[Figure alloc] initWithFigureType:userSprite.currentFigure];
-        //CGPoint newPos = ccp(userSprite.position.x, userSprite.position.y + dislocation - LEVEL_DEAD_FIGURES_MASK_HEIGHT);//DISLOCATION
+        Figure *deadFig = [[Figure alloc] initWithFigureType:userSprite.currentFigure];
         CGPoint newPos = ccp(userSprite.position.x, userSprite.position.y - LEVEL_DEAD_FIGURES_MASK_HEIGHT - trans);
-        deadFigure.position = newPos;
-        [deadFiguresNode addChild:deadFigure z:2000];//mrknout na z-index
+        deadFig.position = newPos;
+        [deadFiguresNode addChild:deadFig z:2000];//mrknout na z-index
+        
+        deadFigure dbFigure;
+        dbFigure.color = deadFig.currentFigure;
+        dbFigure.position = deadFig.position;
+        [[[GameManager sharedGameManager] gameData] insertDeadFigure:dbFigure];
+        
         [movableFigures removeObject:userSprite];
         [userSprite destroy];        
-        //[[[GameManager sharedGameManager] gameData] insertDeadFigure://SQL for save game
     }
+    
+    gameInfo infoData;
+    infoData.difficulty = currentDifficulty;
+    infoData.activeRow = activeRow + 1;//posledni radek? data length v dbase a tak... zatim srat
+    [[[GameManager sharedGameManager] gameData] insertGameData:infoData];
 }
 
 #pragma mark -
@@ -761,8 +880,10 @@
     
     sprite.isOnActiveRow = YES;
     sprite.oldPlace = sprite.place;
-    //sprite.tempPosition = ccp(sprite.position.x, sprite.position.y + dislocation);//DISLOCATION
     sprite.tempPosition = ccp(sprite.position.x, sprite.position.y);
+    spriteEndPosition = sprite.position.y;//mozna vyhodime
+    sprite.movePosition = ccp(sprite.position.x, sprite.position.y - trans);
+    CCLOG(@"JAKY JE Y? %f", sprite.position.y);
     
     Figure *tempSprite = nil;
     for (Figure *userSprite in userCode) {
@@ -799,14 +920,12 @@
         existSprite.place = sprite.oldPlace;
         existSprite.oldPlace = sprite.oldPlace;
         existSprite.position = sprite.tempPosition;
-        //existSprite.tempPosition = ccp(sprite.tempPosition.x, sprite.tempPosition.y + dislocation);
         existSprite.tempPosition = ccp(sprite.tempPosition.x, sprite.tempPosition.y);
     }
     sprite.oldPlace = sprite.place;
 }
 
 - (void) figureSetCorrectPosition:(id)sender data:(Figure *)sprite {
-    //sprite.tempPosition = ccp(sprite.position.x, sprite.position.y + dislocation);
     sprite.tempPosition = ccp(sprite.position.x, sprite.position.y);
     [figuresNode reorderChild:selSprite z:sprite.zOrder - 100];
     selSprite = nil;
@@ -849,13 +968,11 @@
             if (selSprite.isOnActiveRow) {
                 [self swapFigure:selSprite];
                 moveSeq = [CCSequence actions:
-                           //[CCMoveTo actionWithDuration:.03*activeRow position:CGPointMake(targetSprite.position.x + 1, targetSprite.position.y + 5 - dislocation)],//DISLOCATION
                            [CCMoveTo actionWithDuration:.03*activeRow position:CGPointMake(targetSprite.position.x + 1, targetSprite.position.y + 5 + trans)],
                            [CCCallFuncND actionWithTarget:self selector:@selector(figureSetCorrectPosition:data:) data:selSprite],
                            nil];
             } else {
                 moveSeq = [CCSequence actions:
-                           //[CCMoveTo actionWithDuration:.03*activeRow position:CGPointMake(targetSprite.position.x + 1, targetSprite.position.y + 5 - dislocation)],//DISLOCATION
                            [CCMoveTo actionWithDuration:0.03*activeRow position:CGPointMake(targetSprite.position.x + 1, targetSprite.position.y + 5 + trans)],
                            [CCCallFuncND actionWithTarget:self selector:@selector(figureMoveEnded:data:) data:selSprite],//najit v zalozkach modernejsi zpusob jak volat callback!!!!!!!!!!!!!!!!!!!
                            nil];
@@ -867,6 +984,8 @@
             [figuresNode reorderChild:selSprite z:selSprite.zOrder - 100];
         }
         targetSprite = nil;
+    } else {
+        
     }
 }
 
@@ -881,8 +1000,19 @@
 //    [self selectSpriteForTouch:touchLocation];
 }
 
+
+- (CGPoint) boundMovePos:(CGPoint)translation withPosition:(CGPoint)position andNode:(CCNode *)node {
+    CGPoint retval = ccp(node.position.x, node.position.y + translation.y);
+    retval.y = MIN(retval.y, position.y);
+    //CCLOG(@"retval1 %@", NSStringFromCGPoint(retval));
+    retval.y = MAX(retval.y, position.y - 90);
+    //CCLOG(@"retval2 %@", NSStringFromCGPoint(retval));
+    return retval;
+}
+
 #pragma mark Pan gestures handler
-- (void) handlePan:(UIPanGestureRecognizer *)recognizer {    
+- (void) handlePan:(UIPanGestureRecognizer *)recognizer {
+    BOOL moveVector;
     if (recognizer.state == UIGestureRecognizerStateBegan) {
 //        CGPoint touchLocation = [recognizer locationInView:recognizer.view];
 //        touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
@@ -891,7 +1021,6 @@
     } else if (recognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [recognizer translationInView:recognizer.view];
         translation = ccp(translation.x, -translation.y);
-        //CCLOG(@"translation %i", abs(translation.x));
         if (abs(translation.x) > 30 && !selSprite) {
             if (isEndRow) {
                 isEndRow = NO;
@@ -908,33 +1037,55 @@
                 touchLocation = [self convertToNodeSpace:touchLocation];
                 //y swipe - sem ale asi ne
                 if (isMovable && touchLocation.y > MIN_DISTANCE_SWIPE_Y) {
-                //if (isMovable && touchLocation.y > MIN_DISTANCE_SWIPE_Y && (movableNode.position.y > -89)) {
-                    CCLOG(@"Y POS %f", movableNode.position.y);
-                    if (movableNode.position.y >= -89) {
-                        [movableNode setPosition:ccp(movableNode.position.x, movableNode.position.y + translation.y)];
-                        [clippingNode setPosition:ccp(clippingNode.position.x, clippingNode.position.y + translation.y)];
-                        trans = movableNode.position.y;
-                        for (Figure *figure in movableFigures) {
-                            if (figure.isOnActiveRow) {
-                                [figure setPosition:ccp(figure.position.x, figure.position.y + translation.y)];
-                            }
+                    [movableNode setPosition:[self boundMovePos:translation withPosition:ccp(0, 0) andNode:movableNode]];
+                    [clippingNode setPosition:[self boundMovePos:translation withPosition:ccp(0, 0) andNode:clippingNode]];
+                    for (Figure *figure in movableFigures) {
+                        if (figure.isOnActiveRow) {
+                            [figure setPosition:[self boundMovePos:translation withPosition:ccp(0, figure.movePosition.y) andNode:figure]];
+                            figure.tempPosition = figure.position;
                         }
+                    }
+                    trans = movableNode.position.y;
+                    if (translation.y > 0) {
+                        moveVector = YES;
                     } else {
-                        [movableNode setPosition:ccp(movableNode.position.x, -89)];
-                        [clippingNode setPosition:ccp(clippingNode.position.x, -89)];
-                        trans = -89;
-                        for (Figure *figure in movableFigures) {
-                            if (figure.isOnActiveRow) {
-                                [figure setPosition:ccp(figure.position.x, -89)];
-                            }
-                        }
+                        moveVector = NO;
                     }
                 }
             }
         }
         [recognizer setTranslation:CGPointZero inView:recognizer.view];
 
-    } else if (recognizer.state == UIGestureRecognizerStateEnded) {        
+    } else if (recognizer.state == UIGestureRecognizerStateEnded) {
+//        if (isMovable) {
+//            float jump;
+//            if (moveVector) {
+//                if (trans < -45) {
+//                    jump = 0;
+//                } else {
+//                    jump = -45;
+//                }
+//            } else {
+//                if (trans < -45) {
+//                    jump = -90;
+//                } else {
+//                    jump = -45;
+//                } 
+//            }
+//            id move = [CCMoveTo actionWithDuration:.2 position:CGPointMake(movableNode.position.x, jump)];
+//            id move1 = [CCMoveTo actionWithDuration:.2 position:CGPointMake(clippingNode.position.x, jump)];
+//            [movableNode runAction:move];
+//            [clippingNode runAction:move1];
+//            
+//            for (Figure *figure in movableFigures) {
+//                if (figure.isOnActiveRow) {
+//                    figure.tempPosition = figure.position;
+//                }
+//            }
+//            
+//            trans = jump;
+//        }
+
         [self endTouch];
     }
 }

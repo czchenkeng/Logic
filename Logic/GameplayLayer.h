@@ -37,6 +37,7 @@
     int lastTime;//???
     BOOL isMovable;//after predefined row
     float trans;
+    float spriteEndPosition;
     
     Figure *selSprite;//vybrany sprite
     CCSprite *targetSprite;//je zamereny target? (umistit nebo zpet na zakladnu)

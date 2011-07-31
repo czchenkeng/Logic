@@ -30,12 +30,20 @@ typedef struct {
 } settings;
 
 typedef struct {
-    int row;
     int color;
-    //int place;
-    double posX;
-    double posY;
+    CGPoint position;
 } deadFigure;
+
+typedef struct {
+    int row;
+    int places;
+    int colors;
+} gameRow;
+
+typedef struct {
+    int difficulty;
+    int activeRow;
+} gameInfo;
 
 typedef enum {
     kButtonInfo,
@@ -46,7 +54,9 @@ typedef enum {
     kButtonScore,
     kButtonPause,
     kButtonFb,
-    kButtonEraseCareer
+    kButtonEraseCareer,
+    kButtonContinuePlay,
+    kButtonNewGame
 } buttonTypes;
 
 typedef enum {
