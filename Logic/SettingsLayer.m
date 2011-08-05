@@ -76,8 +76,16 @@ enum soundTags
 }
 
 - (void) muteTapped:(CCMenuItem *)sender {
-    musicSlider.value = 0;
-    soundSlider.value = 0; 
+    if (musicSlider.value == 0 && soundSlider.value == 0) {
+        musicSlider.value = previousMusic;
+        soundSlider.value = previousSound;
+    } else {
+        previousMusic = musicSlider.value;
+        previousSound = soundSlider.value;
+        musicSlider.value = 0;
+        soundSlider.value = 0;
+    }
+ 
 }
 
 - (void)onEnter {
@@ -95,6 +103,9 @@ enum soundTags
     if (self != nil) {
         difficulty = [[CCArray alloc] init];
         joysticks = [[CCArray alloc] init];
+        
+        previousMusic = SETTINGS_MUSIC_VOLUME;
+        previousSound = SETTINGS_SOUND_VOLUME;
         
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Settings.plist"];
         
@@ -150,8 +161,6 @@ enum soundTags
         [self addChild:soundSlider z:4];
 		soundSlider.delegate = self;
         
-        //joyStick = [CCSprite spriteWithSpriteFrameName:@"logik_settpaka.png"];
-        //[self addChild:joyStick z:5];
         joyStick = [CCSprite spriteWithSpriteFrameName:@"paka_empty.png"];
         CCSprite *joyEasy = [CCSprite spriteWithSpriteFrameName:@"paka_1.png"];
         CCSprite *joyNormal = [CCSprite spriteWithSpriteFrameName:@"paka_2.png"];
@@ -219,24 +228,21 @@ enum soundTags
         [hard addChild:sprite z:2];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"pin_lezi3.png"];
-        sprite.position = ccp(313.50, 362.00);
-        sprite.rotation = 40;
+        sprite.position = ccp(289, 362.00);
         [self addChild:sprite z:100];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"pin_lezi2.png"];
-        sprite.position = ccp(296.00, 31.50);
+        sprite.position = ccp(281.00, 31.50);
         [self addChild:sprite z:101];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"pin_lezi1.png"];
-        sprite.position = ccp(278.50, 406.00);
+        sprite.position = ccp(287, 406.00);
         [self addChild:sprite z:102];
         
         CCSprite *muteOff = [CCSprite spriteWithSpriteFrameName:@"mute.png"];
-        CCSprite *muteOn = [CCSprite spriteWithSpriteFrameName:@"mute.png"];;
         
-        CCMenuItem *mute = [CCMenuItemSprite itemFromNormalSprite:muteOff selectedSprite:muteOn target:self selector:@selector(muteTapped:)];
+        CCMenuItem *mute = [CCMenuItemSprite itemFromNormalSprite:muteOff selectedSprite:nil target:self selector:@selector(muteTapped:)];
         mute.position = ccp(74.50, 233.00);
-        //[self addChild:mute z:200];
         
         CCSprite *buttonEasyOff = [CCSprite spriteWithSpriteFrameName:@"difficultyButton.png"];
         CCSprite *buttonEasyOn = [CCSprite spriteWithSpriteFrameName:@"difficultyButton.png"];
@@ -279,8 +285,7 @@ enum soundTags
 - (void) valueChanged:(float)value tag:(int)tag {
     value = MIN(value, 1.0f);
     value = MAX(value, 0.0f);
-    
-    CCLOG(@"value is %f and tag %i", value, tag);
+
     switch (tag) {
         case kMusicSliderTag:
             [GameManager sharedGameManager].musicVolume = value;

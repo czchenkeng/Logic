@@ -64,6 +64,7 @@
         totalCount = [rs intForColumnIndex:0];
         CCLOG(@"total count %i", totalCount);
     }
+    CCLOG(@"total count 2 is %i", totalCount);
     return totalCount == 0 ? NO : YES;
 }
 
@@ -73,6 +74,7 @@
     [db executeUpdate:@"DELETE FROM game_data"];
     [db executeUpdate:@"DELETE FROM game_rows"];
     [db commit];
+    [GameManager sharedGameManager].gameInProgress = NO;
 }
 
 - (void) updateSettingsWithDifficulty:(int)diff andMusicLevel:(float)music andSoundLevel:(float)sound {
@@ -165,8 +167,21 @@
     [now release];
 }
 
+- (int) getMaxScore:(int)diff {
+    rs = [db executeQuery:[NSString stringWithFormat:@"SELECT * FROM scores WHERE difficulty = %i ORDER BY score DESC LIMIT 1", diff]];
+    
+    int retVal;
+    if ([rs next]) {
+        retVal = [rs intForColumn:@"score"];
+    } else {
+        retVal = 0;
+    }
+    
+    return retVal;
+}
+
 - (NSMutableArray *) getScores:(int)diff {
-    rs = [db executeQuery:[NSString stringWithFormat:@"SELECT * FROM scores WHERE difficulty = %i ORDER BY score DESC", diff]];
+    rs = [db executeQuery:[NSString stringWithFormat:@"SELECT * FROM scores WHERE difficulty = %i ORDER BY score DESC LIMIT 15", diff]];
     if ([db hadError]) {
         CCLOG(@"DB Error %d: %@", [db lastErrorCode], [db lastErrorMessage]);
     }
@@ -189,17 +204,13 @@
         NSString *date = [rs stringForColumn:@"date"];
         Score *scoreObj = [[Score alloc] initWithUniqueId:uid score:score time:time date:date];                        
         [retVal addObject:scoreObj];
-        [uid release];
-        [score release];
-        [time release];
-        [date release];
+//        [uid release];
+//        [score release];
+//        [time release];
+//        [date release];
         //[scoreObj release];
         i++;
     }
-    //[rs close];
-    //rs = nil;
-    //[db commit];
-    
     [formatter release];
     
     return retVal;

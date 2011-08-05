@@ -20,49 +20,78 @@
         UIView *myContentView = self.contentView;
         
         //self.idLabel = [self newLabelWithPrimaryColor:[UIColor whiteColor] selectedColor:[UIColor whiteColor] fontSize:10.0 bold:NO];
-        self.idLabel = [[UILabel alloc] init];
-        self.idLabel.textColor = [UIColor whiteColor];
-        self.idLabel.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.75];
-        self.idLabel.shadowOffset = CGSizeMake(5.0, -5.0);
-		self.idLabel.textAlignment = UITextAlignmentLeft; // default
-        self.idLabel.backgroundColor = [UIColor clearColor];
-        self.idLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:14];
-		[myContentView addSubview:self.idLabel];
-		[self.idLabel release];
+//        self.idLabel = [[UILabel alloc] init];
+//        self.idLabel.textColor = [UIColor whiteColor];
+//        self.idLabel.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.75];
+//        self.idLabel.shadowOffset = CGSizeMake(5.0, -5.0);
+//		self.idLabel.textAlignment = UITextAlignmentLeft; // default
+//        self.idLabel.backgroundColor = [UIColor clearColor];
+//        self.idLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:14];
+//		//[myContentView addSubview:self.idLabel];
+//		[self.idLabel release];
 		
 
         //self.scoreLabel = [self newLabelWithPrimaryColor:[UIColor whiteColor] selectedColor:[UIColor whiteColor] fontSize:10.0 bold:NO];
-        self.scoreLabel = [[UILabel alloc] init];
-        self.scoreLabel.textColor = [UIColor whiteColor];
-        self.scoreLabel.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.75];
-        self.scoreLabel.shadowOffset = CGSizeMake(5.0, -5.0);
-		self.scoreLabel.textAlignment = UITextAlignmentLeft; // default
-        self.scoreLabel.backgroundColor=[UIColor clearColor];
+//        self.scoreLabel = [[UILabel alloc] init];
+//        self.scoreLabel.textColor = [UIColor whiteColor];
+//        self.scoreLabel.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.75];
+//        self.scoreLabel.shadowOffset = CGSizeMake(5.0, -5.0);
+//		self.scoreLabel.textAlignment = UITextAlignmentLeft; // default
+//        self.scoreLabel.backgroundColor=[UIColor clearColor];
+//        self.scoreLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:14];
+//		[myContentView addSubview:self.scoreLabel];
+//		[self.scoreLabel release];
+        
+        self.idLabel = [[[ShadowedLabel alloc] init] autorelease];
+        self.idLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:14];
+        self.idLabel.backgroundColor = [UIColor clearColor];
+        self.idLabel.textColor = [UIColor whiteColor];
+        [myContentView addSubview:self.idLabel];
+
+        
+        self.scoreLabel = [[[ShadowedLabel alloc] init] autorelease];
         self.scoreLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:14];
-		[myContentView addSubview:self.scoreLabel];
-		[self.scoreLabel release];
+        self.scoreLabel.backgroundColor = [UIColor clearColor];
+        self.scoreLabel.textAlignment = UITextAlignmentRight;
+        self.scoreLabel.textColor = [UIColor whiteColor];
+        [myContentView addSubview:self.scoreLabel];
         
-        //self.timeLabel = [self newLabelWithPrimaryColor:[UIColor whiteColor] selectedColor:[UIColor whiteColor] fontSize:10.0 bold:NO];
-        self.timeLabel = [[UILabel alloc] init];
-        self.timeLabel.textColor = [UIColor whiteColor];
-        self.timeLabel.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.75];
-        self.timeLabel.shadowOffset = CGSizeMake(5.0, -5.0);
-		self.timeLabel.textAlignment = UITextAlignmentLeft; // default
-        self.timeLabel.backgroundColor=[UIColor clearColor];
+        self.timeLabel = [[[ShadowedLabel alloc] init] autorelease];
         self.timeLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:14];
-		[myContentView addSubview:self.timeLabel];
-		[self.timeLabel release];
+        self.timeLabel.backgroundColor = [UIColor clearColor];
+        self.timeLabel.textAlignment = UITextAlignmentRight;
+        self.timeLabel.textColor = [UIColor whiteColor];
+        [myContentView addSubview:self.timeLabel];
         
-        //self.dateLabel = [self newLabelWithPrimaryColor:[UIColor whiteColor] selectedColor:[UIColor whiteColor] fontSize:10.0 bold:NO];
-        self.dateLabel = [[UILabel alloc] init];
-        self.dateLabel.textColor = [UIColor whiteColor];
-        self.dateLabel.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.75];
-        self.dateLabel.shadowOffset = CGSizeMake(5.0, -5.0);
-		self.dateLabel.textAlignment = UITextAlignmentLeft; // default
-        self.dateLabel.backgroundColor=[UIColor clearColor];
+        self.dateLabel = [[[ShadowedLabel alloc] init] autorelease];
         self.dateLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:14];
-		[myContentView addSubview:self.dateLabel];
-		[self.dateLabel release];
+        self.dateLabel.backgroundColor = [UIColor clearColor];
+        self.dateLabel.textAlignment = UITextAlignmentRight;
+        self.dateLabel.textColor = [UIColor whiteColor];
+        [myContentView addSubview:self.dateLabel];
+        
+        
+//        //self.timeLabel = [self newLabelWithPrimaryColor:[UIColor whiteColor] selectedColor:[UIColor whiteColor] fontSize:10.0 bold:NO];
+//        self.timeLabel = [[UILabel alloc] init];
+//        self.timeLabel.textColor = [UIColor whiteColor];
+//        self.timeLabel.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.75];
+//        self.timeLabel.shadowOffset = CGSizeMake(5.0, -5.0);
+//		self.timeLabel.textAlignment = UITextAlignmentLeft; // default
+//        self.timeLabel.backgroundColor=[UIColor clearColor];
+//        self.timeLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:14];
+//		//[myContentView addSubview:self.timeLabel];
+//		[self.timeLabel release];
+//        
+//        //self.dateLabel = [self newLabelWithPrimaryColor:[UIColor whiteColor] selectedColor:[UIColor whiteColor] fontSize:10.0 bold:NO];
+//        self.dateLabel = [[UILabel alloc] init];
+//        self.dateLabel.textColor = [UIColor whiteColor];
+//        self.dateLabel.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.75];
+//        self.dateLabel.shadowOffset = CGSizeMake(5.0, -5.0);
+//		self.dateLabel.textAlignment = UITextAlignmentLeft; // default
+//        self.dateLabel.backgroundColor=[UIColor clearColor];
+//        self.dateLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:14];
+//		//[myContentView addSubview:self.dateLabel];
+//		[self.dateLabel release];
         
     }
     return self;
@@ -79,16 +108,16 @@
         CGFloat boundsX = contentRect.origin.x;
 		CGRect frame;
         
-		frame = CGRectMake(boundsX + 10, 4, 200, 20);
+		frame = CGRectMake(boundsX + 15, 4, 200, 20);
 		self.idLabel.frame = frame;
 
-		frame = CGRectMake(boundsX + 35, 4, 200, 20);
+		frame = CGRectMake(boundsX + 25, 4, 90, 20);
 		self.scoreLabel.frame = frame;
         
-        frame = CGRectMake(boundsX + 112, 4, 200, 20);
+        frame = CGRectMake(boundsX + 125, 4, 60, 20);
 		self.timeLabel.frame = frame;
         
-        frame = CGRectMake(boundsX + 173, 4, 200, 20);
+        frame = CGRectMake(boundsX + 190, 4, 60, 20);
 		self.dateLabel.frame = frame;
 	}
 }

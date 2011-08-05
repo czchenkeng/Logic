@@ -7,7 +7,7 @@
             <key>back_off.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{110,536},{50,61}}</string>
+                <string>{{65,530},{50,61}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -20,7 +20,7 @@
             <key>back_on.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{110,486},{50,61}}</string>
+                <string>{{392,322},{50,61}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -98,11 +98,11 @@
             <key>logik_easy1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{481,534},{79,22}}</string>
+                <string>{{79,508},{79,22}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{79,22}}</string>
                 <key>sourceSize</key>
@@ -111,11 +111,11 @@
             <key>logik_easy2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{481,455},{79,22}}</string>
+                <string>{{0,498},{79,22}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{79,22}}</string>
                 <key>sourceSize</key>
@@ -124,11 +124,11 @@
             <key>logik_hard1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{482,376},{79,22}}</string>
+                <string>{{98,486},{79,22}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{79,22}}</string>
                 <key>sourceSize</key>
@@ -176,7 +176,7 @@
             <key>mute.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{202,482},{65,60}}</string>
+                <string>{{0,520},{65,60}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -189,7 +189,7 @@
             <key>paka_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{202,434},{92,48}}</string>
+                <string>{{190,434},{92,48}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -202,7 +202,7 @@
             <key>paka_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{294,476},{92,40}}</string>
+                <string>{{282,476},{92,40}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -215,7 +215,7 @@
             <key>paka_3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{294,434},{92,42}}</string>
+                <string>{{282,434},{92,42}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -228,7 +228,7 @@
             <key>paka_empty.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{110,434},{92,52}}</string>
+                <string>{{98,434},{92,52}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -241,7 +241,7 @@
             <key>pin_lezi1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,434},{110,110}}</string>
+                <string>{{392,376},{110,110}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -254,28 +254,28 @@
             <key>pin_lezi2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{392,322},{109,90}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{109,90}}</string>
-                <key>sourceSize</key>
-                <string>{109,90}</string>
-            </dict>
-            <key>pin_lezi3.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{392,431},{89,111}}</string>
+                <string>{{190,482},{79,77}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{89,111}}</string>
+                <string>{{0,0},{79,77}}</string>
                 <key>sourceSize</key>
-                <string>{89,111}</string>
+                <string>{79,77}</string>
+            </dict>
+            <key>pin_lezi3.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{0,434},{64,98}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{64,98}}</string>
+                <key>sourceSize</key>
+                <string>{64,98}</string>
             </dict>
             <key>score-off.png</key>
             <dict>
@@ -319,7 +319,7 @@
             <key>thumb.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,544},{33,36}}</string>
+                <string>{{126,530},{33,36}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>

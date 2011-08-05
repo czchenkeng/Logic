@@ -7,19 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FMDatabase.h"
-#import "FMDatabaseAdditions.h"
 #import "Score.h"
 #import "CCUIViewWrapper.h"
 #import "ScoresListViewController.h"
 
 
 @interface ScoreLayer : CCLayer {
-    FMDatabase *db;
-    FMResultSet *rs;
-    NSString *DBPath;
-    
-    NSString *databasePath;
     
     ScoresListViewController *controller;
     
@@ -41,6 +34,8 @@
     
     CGPoint touchOrigin;
     CGPoint touchStop;
+    
+    CCUIViewWrapper *tableWrapper;
     
 }
 

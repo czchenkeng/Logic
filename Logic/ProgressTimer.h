@@ -10,7 +10,6 @@
 
 
 @interface ProgressTimer : CCSprite {
-    CCLabelTTF *timeLabel;
 	ccTime totalTime;
 	int myTime;
 	int currentTime;
@@ -38,5 +37,7 @@
 }
 
 @property (readonly) int gameTime;
+
+- (int) stopTimer;
 
 @end

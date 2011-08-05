@@ -197,6 +197,14 @@
 		A32DA85713CA0E2D00F40754 /* smokeTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = A32DA85513CA0E2C00F40754 /* smokeTexture.png */; };
 		A32DA85813CA0E2D00F40754 /* smoke.plist in Resources */ = {isa = PBXBuildFile; fileRef = A32DA85613CA0E2D00F40754 /* smoke.plist */; };
 		A3301BFA13B2476B0059A40B /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A3301BF913B2476B0059A40B /* libsqlite3.0.dylib */; };
+		A332471613E9591A007D0A25 /* Gloucester_levelSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = A332471413E9591A007D0A25 /* Gloucester_levelSmall.png */; };
+		A332471713E9591A007D0A25 /* Gloucester_levelSmall.fnt in Resources */ = {isa = PBXBuildFile; fileRef = A332471513E9591A007D0A25 /* Gloucester_levelSmall.fnt */; };
+		A332471B13E95A4C007D0A25 /* Gloucester_levelSmall-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = A332471913E95A4C007D0A25 /* Gloucester_levelSmall-hd.png */; };
+		A332471C13E95A4C007D0A25 /* Gloucester_levelSmall-hd.fnt in Resources */ = {isa = PBXBuildFile; fileRef = A332471A13E95A4C007D0A25 /* Gloucester_levelSmall-hd.fnt */; };
+		A332472113E95D1F007D0A25 /* Gloucester_levelBig.png in Resources */ = {isa = PBXBuildFile; fileRef = A332471D13E95D1F007D0A25 /* Gloucester_levelBig.png */; };
+		A332472213E95D1F007D0A25 /* Gloucester_levelBig.fnt in Resources */ = {isa = PBXBuildFile; fileRef = A332471E13E95D1F007D0A25 /* Gloucester_levelBig.fnt */; };
+		A332472313E95D1F007D0A25 /* Gloucester_levelBig-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = A332471F13E95D1F007D0A25 /* Gloucester_levelBig-hd.png */; };
+		A332472413E95D1F007D0A25 /* Gloucester_levelBig-hd.fnt in Resources */ = {isa = PBXBuildFile; fileRef = A332472013E95D1F007D0A25 /* Gloucester_levelBig-hd.fnt */; };
 		A3339DDD139E475800EE5D71 /* Main-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3339DD9139E475800EE5D71 /* Main-hd.plist */; };
 		A3339DDE139E475800EE5D71 /* Main-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A3339DDA139E475800EE5D71 /* Main-hd.pvr.ccz */; };
 		A3339DDF139E475800EE5D71 /* Main.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3339DDB139E475800EE5D71 /* Main.plist */; };
@@ -206,6 +214,8 @@
 		A3339DE7139E60E500EE5D71 /* Level.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A3339DE3139E60E500EE5D71 /* Level.pvr.ccz */; };
 		A3339DE8139E60E500EE5D71 /* Level.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3339DE4139E60E500EE5D71 /* Level.plist */; };
 		A33DB27013DAEA3C00EB9EF2 /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = A33DB26F13DAEA3C00EB9EF2 /* City.m */; };
+		A33FF53813E598F700313CA1 /* ShadowedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A33FF53613E598F600313CA1 /* ShadowedLabel.m */; };
+		A33FF5B213E5B81D00313CA1 /* Blackout.m in Sources */ = {isa = PBXBuildFile; fileRef = A33FF5B113E5B81C00313CA1 /* Blackout.m */; };
 		A34D556A13899DC100F061FB /* Figure.m in Sources */ = {isa = PBXBuildFile; fileRef = A34D556913899DC100F061FB /* Figure.m */; };
 		A35D8009139515FC00B07F39 /* MainScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A35D8008139515FC00B07F39 /* MainScene.m */; };
 		A35D80141395181700B07F39 /* MainLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A35D80131395181500B07F39 /* MainLayer.m */; };
@@ -613,6 +623,14 @@
 		A32DA85513CA0E2C00F40754 /* smokeTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smokeTexture.png; sourceTree = "<group>"; };
 		A32DA85613CA0E2D00F40754 /* smoke.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = smoke.plist; sourceTree = "<group>"; };
 		A3301BF913B2476B0059A40B /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		A332471413E9591A007D0A25 /* Gloucester_levelSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Gloucester_levelSmall.png; sourceTree = "<group>"; };
+		A332471513E9591A007D0A25 /* Gloucester_levelSmall.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Gloucester_levelSmall.fnt; sourceTree = "<group>"; };
+		A332471913E95A4C007D0A25 /* Gloucester_levelSmall-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gloucester_levelSmall-hd.png"; sourceTree = "<group>"; };
+		A332471A13E95A4C007D0A25 /* Gloucester_levelSmall-hd.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Gloucester_levelSmall-hd.fnt"; sourceTree = "<group>"; };
+		A332471D13E95D1F007D0A25 /* Gloucester_levelBig.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Gloucester_levelBig.png; sourceTree = "<group>"; };
+		A332471E13E95D1F007D0A25 /* Gloucester_levelBig.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Gloucester_levelBig.fnt; sourceTree = "<group>"; };
+		A332471F13E95D1F007D0A25 /* Gloucester_levelBig-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gloucester_levelBig-hd.png"; sourceTree = "<group>"; };
+		A332472013E95D1F007D0A25 /* Gloucester_levelBig-hd.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Gloucester_levelBig-hd.fnt"; sourceTree = "<group>"; };
 		A3339DD9139E475800EE5D71 /* Main-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Main-hd.plist"; sourceTree = "<group>"; };
 		A3339DDA139E475800EE5D71 /* Main-hd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Main-hd.pvr.ccz"; sourceTree = "<group>"; };
 		A3339DDB139E475800EE5D71 /* Main.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Main.plist; sourceTree = "<group>"; };
@@ -623,6 +641,10 @@
 		A3339DE4139E60E500EE5D71 /* Level.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Level.plist; sourceTree = "<group>"; };
 		A33DB26E13DAEA3C00EB9EF2 /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = City.h; sourceTree = "<group>"; };
 		A33DB26F13DAEA3C00EB9EF2 /* City.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = City.m; sourceTree = "<group>"; };
+		A33FF53613E598F600313CA1 /* ShadowedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShadowedLabel.m; sourceTree = "<group>"; };
+		A33FF53713E598F600313CA1 /* ShadowedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShadowedLabel.h; sourceTree = "<group>"; };
+		A33FF5B013E5B81C00313CA1 /* Blackout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blackout.h; sourceTree = "<group>"; };
+		A33FF5B113E5B81C00313CA1 /* Blackout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Blackout.m; sourceTree = "<group>"; };
 		A34D556813899DC100F061FB /* Figure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Figure.h; sourceTree = "<group>"; };
 		A34D556913899DC100F061FB /* Figure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Figure.m; sourceTree = "<group>"; };
 		A35D8007139515FC00B07F39 /* MainScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScene.h; sourceTree = "<group>"; };
@@ -1288,6 +1310,8 @@
 				A30B4F4713C2E1810063FCD0 /* RowStaticScore.m */,
 				A308E0CA13C4A114007697A6 /* ScoreNumber.h */,
 				A308E0CB13C4A114007697A6 /* ScoreNumber.m */,
+				A33FF5B013E5B81C00313CA1 /* Blackout.h */,
+				A33FF5B113E5B81C00313CA1 /* Blackout.m */,
 			);
 			name = Level;
 			sourceTree = "<group>";
@@ -1303,6 +1327,14 @@
 		A35F3F0713893F6300F5D71A /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A332471D13E95D1F007D0A25 /* Gloucester_levelBig.png */,
+				A332471E13E95D1F007D0A25 /* Gloucester_levelBig.fnt */,
+				A332471F13E95D1F007D0A25 /* Gloucester_levelBig-hd.png */,
+				A332472013E95D1F007D0A25 /* Gloucester_levelBig-hd.fnt */,
+				A332471913E95A4C007D0A25 /* Gloucester_levelSmall-hd.png */,
+				A332471A13E95A4C007D0A25 /* Gloucester_levelSmall-hd.fnt */,
+				A332471413E9591A007D0A25 /* Gloucester_levelSmall.png */,
+				A332471513E9591A007D0A25 /* Gloucester_levelSmall.fnt */,
 				A317982C13DFDADD00FB51D7 /* 2x2.png */,
 				A384ACCC13DC0C1700BE8B06 /* CareerHq-hd.plist */,
 				A384ACCD13DC0C1700BE8B06 /* CareerHq-hd.pvr.ccz */,
@@ -1562,6 +1594,8 @@
 		A385972913B1F5DD008CF9C5 /* Score */ = {
 			isa = PBXGroup;
 			children = (
+				A33FF53613E598F600313CA1 /* ShadowedLabel.m */,
+				A33FF53713E598F600313CA1 /* ShadowedLabel.h */,
 				A311720B13B20B6200880500 /* ScoreScene.h */,
 				A311720C13B20B6200880500 /* ScoreScene.m */,
 				A311720E13B20DBA00880500 /* ScoreLayer.h */,
@@ -1732,6 +1766,14 @@
 				A384ACD313DC0C1700BE8B06 /* CareerHq.pvr.ccz in Resources */,
 				A384ACD613DC9A3A00BE8B06 /* Wires.json in Resources */,
 				A317982D13DFDADD00FB51D7 /* 2x2.png in Resources */,
+				A332471613E9591A007D0A25 /* Gloucester_levelSmall.png in Resources */,
+				A332471713E9591A007D0A25 /* Gloucester_levelSmall.fnt in Resources */,
+				A332471B13E95A4C007D0A25 /* Gloucester_levelSmall-hd.png in Resources */,
+				A332471C13E95A4C007D0A25 /* Gloucester_levelSmall-hd.fnt in Resources */,
+				A332472113E95D1F007D0A25 /* Gloucester_levelBig.png in Resources */,
+				A332472213E95D1F007D0A25 /* Gloucester_levelBig.fnt in Resources */,
+				A332472313E95D1F007D0A25 /* Gloucester_levelBig-hd.png in Resources */,
+				A332472413E95D1F007D0A25 /* Gloucester_levelBig-hd.fnt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1896,6 +1938,8 @@
 				A33DB27013DAEA3C00EB9EF2 /* City.m in Sources */,
 				A32810A413DDE89E006554EC /* Wire.m in Sources */,
 				A317983113DFEF3800FB51D7 /* PercentNumber.m in Sources */,
+				A33FF53813E598F700313CA1 /* ShadowedLabel.m in Sources */,
+				A33FF5B213E5B81D00313CA1 /* Blackout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

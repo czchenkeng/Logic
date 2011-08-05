@@ -146,6 +146,8 @@ static const float POS_Y = -40;
     //pinchGestureRecognizer.cancelsTouchesInView = YES;
     //singleTapGestureRecognizer.delegate = self;
     
+    pinchGestureRecognizer.delegate = self;
+    
     [super onEnter];
 }
 
@@ -160,9 +162,10 @@ static const float POS_Y = -40;
 #pragma mark -
 #pragma mark GESTURES DELEGATE METHODS
 #pragma mark Simultaneous
-//- (BOOL) gestureRecognizer:singleTapGestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:panGestureRecognizer {
-//    return NO;
-//}
+- (BOOL) gestureRecognizer:pinchGestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:panGestureRecognizer {
+    CCLOG(@"delegate here");
+    return NO;
+}
 
 - (id) init {
     self = [super init];
@@ -186,12 +189,12 @@ static const float POS_Y = -40;
         //zoomBase.contentSize = CGSizeMake(740, 600);
 		[self addChild:zoomBase z:1];
         
-        zbLastPos = zoomBase.position;
+        //zbLastPos = zoomBase.position;
         
         background = [CCSprite spriteWithSpriteFrameName:@"logik_levels.png"];
         //background.position = ccp(96.00, 282.00);
         background.anchorPoint = ccp(0, 0);
-        background.position = ccp(-POS_X, 0);
+        //background.position = ccp(-POS_X, 0);
         [zoomBase addChild:background z:1];
         
         CCSprite *sprite;
@@ -372,10 +375,15 @@ static const float POS_Y = -40;
     //CCLOG(@"SCALE %f", zoomBase.scale);
     CGSize winSize = [CCDirector sharedDirector].winSize;
     CGPoint retval = newPos;
-    retval.x = MIN(retval.x, POS_X);
-    retval.x = MAX(retval.x, -background.contentSize.width*zoomBase.scale + POS_X + winSize.width);
-    retval.y = MIN(retval.y, POS_Y);
-    retval.y = MAX(retval.y, -background.contentSize.height*zoomBase.scale - POS_Y + winSize.height);
+//    retval.x = MIN(retval.x, POS_X);
+//    retval.x = MAX(retval.x, -background.contentSize.width*zoomBase.scale + POS_X + winSize.width);
+//    retval.y = MIN(retval.y, POS_Y);
+//    retval.y = MAX(retval.y, -background.contentSize.height*zoomBase.scale - POS_Y + winSize.height);
+    retval.x = MIN(retval.x, background.contentSize.width*zoomBase.scale - background.contentSize.width);
+    retval.x = MAX(retval.x, -background.contentSize.width + winSize.width);
+    retval.y = MIN(retval.y, 0);
+    retval.y = MAX(retval.y, -background.contentSize.height*zoomBase.scale + winSize.height);
+    CCLOG(@"x is %f", retval.x );
     return retval;
 }
 
@@ -428,12 +436,21 @@ static const float POS_Y = -40;
         }
         if (active) {
             [debugText setString:[NSString stringWithFormat:@"%i", diff]];
-            selSprite.visible = YES;
+            //
+            gameInfo infoData;
+            [[[GameManager sharedGameManager] gameData] gameDataCleanup];
+            infoData.difficulty = diff;
+            infoData.activeRow = 0;
+            [[[GameManager sharedGameManager] gameData] insertGameData:infoData];
+            [GameManager sharedGameManager].gameInProgress = YES;
+            [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kSlideInR];
+            //
+            selSprite.visible = YES;//zablikani
             selSprite.isActive = YES;
-            prog += 1;
-            percent += 4;
-            [self activateWires];
-            [self setProgress];
+            //prog += 1;
+            //percent += 4;
+            //[self activateWires];
+            //[self setProgress];
         }
     }
 }

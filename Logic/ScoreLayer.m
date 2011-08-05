@@ -19,73 +19,15 @@
         [scores removeAllObjects];
         [controller removeScores];
     }
-
-    //******************************TEST SHARED GAME DATA
-//    rs = [db executeQuery:[NSString stringWithFormat:@"SELECT * FROM scores WHERE difficulty = %i ORDER BY score DESC", diff]];
-//
-//    if ([db hadError]) {
-//        CCLOG(@"DB Error %d: %@", [db lastErrorCode], [db lastErrorMessage]);
-//    }
-//    
-//    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];  
-//    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-//    
-//    int i = 1;
-//    while ([rs next]) {
-//        NSString *formattedOutput = [formatter stringFromNumber:[NSNumber numberWithInt:[rs intForColumn:@"score"]]];
-////        CCLOG(@"id %@", [NSString stringWithFormat:@"%i.", i]);
-////        CCLOG(@"score %@", [formattedOutput stringByReplacingOccurrencesOfString:@"," withString:@" "]);
-////        CCLOG(@"time form select %@", [rs stringForColumn:@"time"]);
-////        CCLOG(@"date form select %@", [rs stringForColumn:@"date"]);
-////        CCLOG(@"========================================================");
-//        NSString *uid = [NSString stringWithFormat:@"%i.", i];
-//        NSString *score = [formattedOutput stringByReplacingOccurrencesOfString:@"," withString:@" "];
-//        NSString *time = [rs stringForColumn:@"time"];
-//        NSString *date = [rs stringForColumn:@"date"];
-//        Score *scoreObj = [[Score alloc] initWithUniqueId:uid score:score time:time date:date];                        
-//        [scores addObject:scoreObj];
-//        //[controller.scores addObject:scoreObj];
-//        [uid release];
-//        [score release];
-//        [time release];
-//        [date release];
-//        //[scoreObj release];
-//        i++;
-//    }
-//    //[rs close];
-//    //rs = nil;
-//    //[db commit];
-//    
-//    CCLOG(@"scores %@ %i", scores, scores.count);
-//    [formatter release];
-    //******************************TEST SHARED GAME DATA
-    
-    
-    //[controller removeScores];
-    //controller.scores = nil;
-    //controller.scores = scores;
     controller.scores = [[[GameManager sharedGameManager] gameData] getScores:diff];
-//    for (Score *sc in scores) {
-//        [controller.scores addObject:sc];
-//    }
-    CCLOG(@"controller scores count %i", controller.scores.count);
-
-    //[controller.tableView beginUpdates];
-    
-    CCLOG(@"TABLE VIEW %@", controller.tableView);
-    //[[controller.tableView dataSource] = scores;
-    //NSArray *tempArray = [[NSArray alloc] initWithArray:scores copyItems:YES];
-    //controller.tableView.dataSource = tempArray;
-
     [controller.tableView reloadData];
-    //[controller.tableView setNeedsDisplay];
 }
 
 
 - (void) buttonTapped:(CCMenuItem *)sender { 
     switch (sender.tag) {
         case kButtonBack:
-            CCLOG(@"TAP ON BACK");
+            tableWrapper.visible = NO;
             [[GameManager sharedGameManager] runSceneWithID:kSettingsScene andTransition:kSlideInL];
             break;
         default:
@@ -136,6 +78,19 @@
 
 - (void)onEnter {
 	[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+    
+    switch ([[GameManager sharedGameManager] currentDifficulty]) {
+        case kEasy: 
+            [easyItem activate];
+            break;
+        case kMedium:
+            [normalItem activate];
+            break;
+        case kHard:
+            [hardItem activate];
+            break; 
+    }
+    
 	[super onEnter];
 }
 
@@ -144,142 +99,26 @@
 	[super onExit];
 }
 
-- (void) createEditableCopyOfDatabaseIfNeeded {
-    BOOL success;
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *error;
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *writableDBPath = [documentsDirectory stringByAppendingPathComponent:@"LogicDatabase.sqlite"];
-    success = [fileManager fileExistsAtPath:writableDBPath];
-    CCLOG(@"success %i", success);
-    if (success) return;
-    // The writable database does not exist, so copy the default to the appropriate location.
-    NSString *defaultDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"LogicDatabase.sqlite"];
-    success = [fileManager copyItemAtPath:defaultDBPath toPath:writableDBPath error:&error];
-    if (!success) {
-        NSAssert1(0, @"Failed to create writable database file with message '%@'.", [error localizedDescription]);
-    }
+- (void) onEnterTransitionDidFinish {
+    tableWrapper.visible = YES;
+    [super onEnterTransitionDidFinish];
 }
+
 
 - (id) init {
     self = [super init];
     if (self != nil) {
-        
-        
-        
-//        [self createEditableCopyOfDatabaseIfNeeded];
-//
-//        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//        NSString *documentsDirectory = [paths objectAtIndex:0]; 
-//        DBPath = [documentsDirectory stringByAppendingPathComponent:@"LogicDatabase.sqlite"];
-//        
-////        NSFileManager *fileManager = [NSFileManager defaultManager];
-////        [fileManager removeItemAtPath:writableDBPath error:NULL];
-//        
-//        
-//        CCLOG(@"dir %@", documentsDirectory);
-//        db = [[FMDatabase databaseWithPath:DBPath] retain];
-//        if (![db open]) {
-//            CCLOG(@"Could not open db.");
-//            [db setLogsErrors:TRUE];
-//            [db setTraceExecution:TRUE];
-//        } else {
-//            CCLOG(@"Db is here!");
-//        }
-        
-        
-        
-        
-        //NSMutableArray *scores = [[[NSMutableArray alloc] init] autorelease];
-        //scores = [[[NSMutableArray alloc] init] autorelease];
         scores = [[[NSMutableArray alloc] init] retain];
         
-        CGRect frame = CGRectMake(40, 100, 240, 180);
+        CGRect frame = CGRectMake(30, 100, 260, 180);
         controller = [[ScoresListViewController alloc] init];
         
         UIView *tableContainer = [[UIView alloc] initWithFrame:frame];
         [tableContainer addSubview:controller.view];
         
-        CCUIViewWrapper *tableWrapper = [CCUIViewWrapper wrapperForUIView:tableContainer];
+        tableWrapper = [CCUIViewWrapper wrapperForUIView:tableContainer];
         [self addChild:tableWrapper z:2];
-        
-        
-//        NSString *docsDir;
-//        NSArray *dirPaths;
-//        
-//        // Get the documents directory
-//        dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//        
-//        docsDir = [dirPaths objectAtIndex:0];
-//        
-//        // Build the path to the database file
-//        databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"LogicDatabase.sqlite"]];
-//        
-//        NSFileManager *filemgr = [NSFileManager defaultManager];
-//        
-//        if ([filemgr fileExistsAtPath: databasePath ] == NO) {
-//            CCLOG(@"NENI");
-//        } else {
-//            CCLOG(@"JE");
-//            const char *dbpath = [databasePath UTF8String];
-//            if (sqlite3_open(dbpath, &_database) == SQLITE_OK) {
-//                CCLOG(@"OPEN");
-//            }
-//        }
-        
-//        NSString *sqLiteDb = [[NSBundle mainBundle] pathForResource:@"LogicDatabase.sqlite" 
-//                                                             ofType:@"sqlite3"];
-//        
-//        if (sqlite3_open([sqLiteDb UTF8String], &_database) != SQLITE_OK) {
-//            NSLog(@"Failed to open database!");
-//        } else {
-//            NSLog(@"open database! %@", _database);
-//        }
-        
-        //rs = [FMResultSet 
-        
-//        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-//        [dateFormat setDateFormat:@"d/M/yy"];
-//        
-//        NSDateFormatter *timeFormat = [[NSDateFormatter alloc] init];
-//        [timeFormat setDateFormat:@"h:ma"];
-//        
-//        NSDate *now = [[NSDate alloc] init];
-//        
-//        NSString *theDate = [dateFormat stringFromDate:now];
-//        NSString *theTime = [timeFormat stringFromDate:now];
-//        
-//        NSLog(@"\n"
-//              
-//              "theDate: |%@| \n"
-//              "theTime: |%@| \n"
-//              , theDate, theTime);
-//
-//                
-//        [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:22356789], [NSNumber numberWithInt:5], theDate, theTime];
-//        [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:89213490], [NSNumber numberWithInt:4], theDate, theTime];
-//        [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:99999999], [NSNumber numberWithInt:4], theDate, theTime];
-//        [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:34567345], [NSNumber numberWithInt:6], theDate, theTime];
-//        [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:12345678], [NSNumber numberWithInt:6], theDate, theTime];
-//        [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:84848484], [NSNumber numberWithInt:5], theDate, theTime];
-//        [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:22356789], [NSNumber numberWithInt:5], theDate, theTime];
-//        [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:89213490], [NSNumber numberWithInt:4], theDate, theTime];
-//        [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:99999999], [NSNumber numberWithInt:4], theDate, theTime];
-//        [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:34567345], [NSNumber numberWithInt:6], theDate, theTime];
-//        [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:12345678], [NSNumber numberWithInt:6], theDate, theTime];
-//        [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:84848484], [NSNumber numberWithInt:5], theDate, theTime];
-//        [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:22356789], [NSNumber numberWithInt:5], theDate, theTime];
-//        [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:89213490], [NSNumber numberWithInt:4], theDate, theTime];
-//        [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:99999999], [NSNumber numberWithInt:4], theDate, theTime];
-//        [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:34567345], [NSNumber numberWithInt:6], theDate, theTime];
-//        [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:12345678], [NSNumber numberWithInt:6], theDate, theTime];
-//        [db executeUpdate:@"INSERT INTO scores (score, difficulty, date, time) values (?, ?, ?, ?)", [NSNumber numberWithInt:84848484], [NSNumber numberWithInt:5], theDate, theTime];
-//        
-//        [dateFormat release];
-//        [timeFormat release];
-//        [now release];
-        
+        tableWrapper.visible = NO;
         
         difficulty = [[CCArray alloc] init];
         joysticks = [[CCArray alloc] init];
@@ -288,8 +127,7 @@
         
         CCSprite *background = [CCSprite spriteWithSpriteFrameName:@"background.png"];
         background.anchorPoint = ccp(0,0);
-        [self addChild:background z:1];
-        
+        [self addChild:background z:1];        
         
         CCSprite *buttonBackOff = [CCSprite spriteWithSpriteFrameName:@"back_off.png"];
         CCSprite *buttonBackOn = [CCSprite spriteWithSpriteFrameName:@"back_on.png"];
@@ -369,13 +207,13 @@
         [hard addChild:sprite z:2];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"pin_lezi3.png"];
-        sprite.position = ccp(316.00, 243.50);
+        sprite.position = ccp(319.00, 243.50);
         sprite.rotation = -5;
         [self addChild:sprite z:100];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"pin_lezi2.png"];
         //sprite.position = ccp(23.50, 346.00);
-        sprite.position = ccp(10, 346.00);
+        sprite.position = ccp(25, 346.00);
         [self addChild:sprite z:101];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"pin_lezi1.png"];
@@ -402,22 +240,8 @@
         hardItem.position = ccp(205.00, 53.00);
         
         PressMenu *difficultyMenu = [PressMenu menuWithItems:easyItem, normalItem, hardItem, nil];
-        //CCMenu *difficultyMenu = [CCMenu menuWithItems:easyItem, normalItem, hardItem, nil];
         difficultyMenu.position = CGPointZero;
         [self addChild:difficultyMenu z:20];
-        
-        
-        switch ([[GameManager sharedGameManager] currentDifficulty]) {
-            case kEasy: 
-                [easyItem activate];
-                break;
-            case kMedium:
-                [normalItem activate];
-                break;
-            case kHard:
-                [hardItem activate];
-                break; 
-        }
 
     }
     return self;
@@ -478,14 +302,7 @@
 - (void) dealloc {
     CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
     [scores release];
-    scores = nil;
-    [db close];
-    [db release];    
-    //[rs close];
-    //[rs release];
-    //rs = nil;
-    //[DBPath release];
-    //DBPath = nil;
+    scores = nil;  
     [difficulty release];
     difficulty = nil;
     [joysticks release];

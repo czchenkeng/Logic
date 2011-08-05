@@ -7,20 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Score.h" 
+#import "Score.h"
+#import "ShadowedLabel.h"
 
 
 @interface ScoreCell : UITableViewCell {
-    UILabel *idLabel;
-	UILabel *scoreLabel;
-    UILabel *timeLabel;
-	UILabel *dateLabel;
+    ShadowedLabel *idLabel;
+	ShadowedLabel *scoreLabel;
+    ShadowedLabel *timeLabel;
+	ShadowedLabel *dateLabel;
 }
 
-@property (nonatomic, retain) UILabel *idLabel;
-@property (nonatomic, retain) UILabel *scoreLabel;
-@property (nonatomic, retain) UILabel *timeLabel;
-@property (nonatomic, retain) UILabel *dateLabel;
+@property (nonatomic, retain) ShadowedLabel *idLabel;
+@property (nonatomic, retain) ShadowedLabel *scoreLabel;
+@property (nonatomic, retain) ShadowedLabel *timeLabel;
+@property (nonatomic, retain) ShadowedLabel *dateLabel;
 
 -(void)setData:(Score *)score;
 -(UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold;

@@ -28,6 +28,7 @@
     GameData *gameData;
     FacebookViewController *controller;
     BOOL gameInProgress;
+    BOOL isCareer;
 }
 
 @property (readwrite) BOOL isMusicON;

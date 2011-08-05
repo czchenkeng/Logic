@@ -17,6 +17,7 @@
 #import "Mask.h"
 #import "FacebookViewController.h"
 #import "ScoreNumber.h"
+#import "Blackout.h"
 
 
 @interface GameplayLayer : CCLayerColor <UIGestureRecognizerDelegate> {    
@@ -34,16 +35,21 @@
     int places;//spravne mista
     int colors;//spravne barvy
     int score;//skore
-    int lastTime;//???
+    int lastTime;//time between rows
     BOOL isMovable;//after predefined row
     float trans;
+    BOOL moveVector;
     float spriteEndPosition;
+    BOOL isWinner;
+    int maxScore;
+    float jump;
     
     Figure *selSprite;//vybrany sprite
     CCSprite *targetSprite;//je zamereny target? (umistit nebo zpet na zakladnu)
     
     //timer
     ProgressTimer *timer;
+    Mask *timerMask;
     
     //batches
     CCSpriteBatchNode *sphereNode;
@@ -84,6 +90,7 @@
     CCSprite *rotorRightLight;
     
     CCMenu *pauseMenu;
+    CCMenu *endGameMenu;
     
     CCSprite *mantle;//krytka pod rotorem
     CCSprite *sphereLight;//svetlo pod kouli
@@ -94,9 +101,32 @@
     
     CCSprite *base;//base pro 8 pinclu dole
     
+    //panels
+    CCSprite *scorePanel;
+    CCSprite *replayPanel;
+    CCSprite *continuePanel;//only career
+    CCSprite *gameMenuLeftPanel;//for single play
+    CCSprite *gameMenuRightPanel;//for career play
+    
+    //copy
+    CCLabelBMFont *failLabelSmall;
+    CCLabelBMFont *failLabelBig;
+    CCLabelBMFont *wdBig;
+    CCLabelBMFont *superBig;
+    CCLabelBMFont *superSmall;
+    
     //particles
     CCParticleSystem *dustSystem;
     CCParticleSystem *smokeSystem;
+    
+    //end game - moving labels
+    CCLayer *finalTimeLayer;
+    CCLayer *finalScoreLayer;
+    CCLayer *finalScoreLabel;
+    CCArray *finalScoreArray;
+    
+    CCArray *movingTime;
+    CCArray *movingScore;
     
         
 }

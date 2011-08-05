@@ -11,8 +11,9 @@
 #import "City.h"
 #import "Wire.h"
 #import "PercentNumber.h"
+#import "GameManager.h"
 
-@interface CareerLayer : CCLayer <UIAlertViewDelegate>{
+@interface CareerLayer : CCLayer <UIAlertViewDelegate, UIGestureRecognizerDelegate>{
     CCLayerColor *zoomBase;
     CGPoint zbLastPos;
     

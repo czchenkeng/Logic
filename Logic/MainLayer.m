@@ -29,8 +29,10 @@
 
 
 - (void) endAnimation {
-    CCLOG(@"transition here %i", nextScene);
+    //CCLOG(@"transition here %i", nextScene);
     //[[GameManager sharedGameManager] runSceneWithID:nextScene];
+    leftGib.visible = NO;
+    rightGib.visible = NO;
 }
 
 - (void) animationOut {

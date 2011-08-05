@@ -103,13 +103,6 @@
         
         myTime = 0;
         
-		timeLabel = [CCLabelTTF labelWithString:@"0" fontName:@"Arial" fontSize:48];
-		//timeLabel.position = CGPointMake(size.width / 2, size.height);
-		// Adjust the label's anchorPoint's y position to make it align with the top.
-		timeLabel.anchorPoint = CGPointMake(0.5f, 1.0f);
-		// Add the time label
-		//[self addChild:timeLabel];
-        
         [self moveClock:secondsArray];
         
         [self schedule:@selector(update:) interval:0.50];
@@ -118,6 +111,10 @@
     return self;
 }
 
+- (int) stopTimer {
+    [self unschedule:@selector(update:)];
+    return myTime;
+}
 
 
 - (void) update:(ccTime)dt{
@@ -130,6 +127,7 @@
 		myTime = currentTime;
 		//[timeLabel setString:[NSString stringWithFormat:@"%i", myTime]];
         //CCLOG(@"game timer %@",  [NSString stringWithFormat:@"%02d:%02d", myTime/60, myTime%60]);
+        //CCLOG(@"my time %i",  myTime);
         sec = myTime % 10;
         min = myTime % 60;
         //CCLOG(@"timer %i",  seconds < 10 ? seconds : abs(10 - seconds));

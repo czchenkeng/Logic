@@ -20,6 +20,7 @@ FMResultSet *rs;
 
 - (void) writeScore:(int)score andDifficulty:(int)diff;
 - (NSMutableArray *) getScores:(int)diff;
+- (int) getMaxScore:(int)diff;
 
 - (void) updateSettingsWithDifficulty:(int)diff andMusicLevel:(float)music andSoundLevel:(float)sound;
 - (settings) getSettings;

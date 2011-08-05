@@ -30,6 +30,9 @@
     
     CGPoint touchOrigin;
     CGPoint touchStop;
+    
+    float previousMusic;
+    float previousSound;
 }
 
 @end

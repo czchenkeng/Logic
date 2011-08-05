@@ -22,6 +22,8 @@
 #define RIGHT_BUTTON_TOP_X 287.00
 #define RIGHT_BUTTON_TOP_Y 481.00
 
+#define SETTINGS_MUSIC_VOLUME 0.50
+#define SETTINGS_SOUND_VOLUME 0.70
 
 typedef struct {
     int gameDifficulty;
@@ -54,9 +56,14 @@ typedef enum {
     kButtonScore,
     kButtonPause,
     kButtonFb,
+    kButtonMail,
     kButtonEraseCareer,
     kButtonContinuePlay,
-    kButtonNewGame
+    kButtonNewGame,
+    kButtonEndGame,
+    kButtonReplay,
+    kButtonContinue,
+    kButtonGameMenu
 } buttonTypes;
 
 typedef enum {
