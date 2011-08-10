@@ -40,5 +40,15 @@ FMResultSet *rs;
 - (NSMutableArray *) getDeadFigures;
 - (NSMutableArray *) getRows;
 
+//write career
+- (void) insertCareerData:(int)city;
+- (void) updateCareerData:(BOOL)flag;
+
+//read career
+- (NSMutableArray *) getCareerData;
+
+//delete career
+- (void) resetCareer;
+
 
 @end

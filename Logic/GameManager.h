@@ -10,6 +10,7 @@
 #import "SettingsScene.h"
 #import "CareerScene.h"
 #import "ScoreScene.h"
+#import "PreloaderScene.h"
 #import "SimpleAudioEngine.h"
 #import "GameData.h"
 #import "FacebookViewController.h"

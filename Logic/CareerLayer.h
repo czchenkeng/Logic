@@ -37,13 +37,11 @@
     CCArray *percentLabelArray;
     BOOL panelActive;
     
+    int diff;//default diff
+    
     UIPanGestureRecognizer *panGestureRecognizer;
     UIPinchGestureRecognizer *pinchGestureRecognizer;    
     UITapGestureRecognizer *singleTapGestureRecognizer;
-    UITapGestureRecognizer *doubleTapGestureRecognizer;
-    
-    ///DEBUG PURPOSE
-    CCLabelBMFont *debugText;
 
 }
 

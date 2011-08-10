@@ -25,6 +25,8 @@
     int nextScene;
     
     HowToLayer *howToLayer;
+    
+    CCMenu *topMenu;
 }
 
 @end

@@ -170,6 +170,10 @@ typedef enum {
 {}
 @end
 
+@interface CCTransitionLogic : CCTransitionScene
+{}
+@end
+
 /** CCTransitionFlipX:
  Flips the screen horizontally.
  The front face is the outgoing scene and the back face is the incoming scene.

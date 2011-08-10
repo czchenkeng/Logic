@@ -451,6 +451,35 @@ enum {
 }
 @end
 
+
+@implementation CCTransitionLogic
+-(void) sceneOrder
+{
+	inSceneOnTop_ = NO;
+}
+
+-(void) onEnter
+{
+	[super onEnter];
+	
+	[inScene_ setScale:0.88f];
+	[outScene_ setScale:1.0f];
+    
+    [inScene_ setAnchorPoint:ccp(0.5f,0.0f)];
+	[outScene_ setAnchorPoint:ccp(0.5f,0.07f)];
+	
+    [inScene_ setPosition:ccp(0, -17)];
+	
+	CCActionInterval *scaleIn = [CCScaleTo actionWithDuration:duration_ scale:1.0f];
+    CCActionInterval *moveIn = [CCMoveTo actionWithDuration:duration_ position:ccp(0, 0)];
+    CCActionInterval *scaleOut = [CCScaleTo actionWithDuration:duration_ scale:1.7f];
+    
+    [inScene_ runAction:[CCSpawn actions:scaleIn, moveIn, nil]];
+    [outScene_ runAction:[CCSequence actions:scaleOut, [CCCallFunc actionWithTarget:self selector:@selector(finish)], nil]];
+}
+@end
+
+
 //
 // ShrinkGrow Transition
 //

@@ -53,12 +53,25 @@
     [leftGib runAction:moveLeftGibSeq];
 }
 
+- (void) buttonsOut {
+    id buttonsOut = [CCMoveTo actionWithDuration:.4 position:ccp(topMenu.position.x, topMenu.position.y + 60)];
+    id seq = [CCSequence actions: buttonsOut, [CCCallFunc actionWithTarget:self selector:@selector(startTransition)], nil];
+    [topMenu runAction:seq];
+}
+
 - (void) doorsOut {
     CCMoveTo *doorsOut = [CCMoveTo actionWithDuration:0.4 position:ccp(doors.position.x - 195, doors.position.y)];
     CCSequence *moveDoorsOutSeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.2f], doorsOut, nil];
     
     [doors runAction:moveDoorsOutSeq];
 }
+
+- (void) startTransition {
+    [self doorsOut];
+    [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kSlideInL];
+}
+
+
 
 - (void) addHowTo {
     howToLayer = [HowToLayer node];
@@ -68,10 +81,15 @@
 - (void) howTo {
     [self addHowTo];
     [self animationOut];
-    [self doorsOut];
+    //[self doorsOut];
 //    [self unscheduleUpdate];
 //    lightOff.visible = YES;
 //    light.visible = NO;
+}
+
+- (void) logicTransition {
+    [self animationOut];
+    [self buttonsOut];
 }
 
 - (void) buttonTapped:(CCMenuItem *)sender { 
@@ -84,19 +102,19 @@
             nextScene = kSettingsScene;
             break;
         case kButtonSinglePlay:
-            [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kLogicTrans];
+            [self logicTransition];
             nextScene = kGameScene;
             break;
         case kButtonCareerPlay:
             CCLOG(@"TAP ON CAREER");
             break;
         case kButtonContinuePlay:
-            [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kSlideInL];
+            [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kLogicTrans];
             break;
         case kButtonNewGame:
             [[[GameManager sharedGameManager] gameData] gameDataCleanup];
             [GameManager sharedGameManager].gameInProgress = NO;
-            [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kSlideInL];
+            [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kLogicTrans];
             break;
         default:
             CCLOG(@"Logic debug: Unknown ID, cannot tap button");
@@ -235,7 +253,7 @@
         settingsItem.anchorPoint = CGPointMake(0.5, 1);
         settingsItem.position = ccp(LEFT_BUTTON_TOP_X, LEFT_BUTTON_TOP_Y);
         
-        CCMenu *topMenu = [CCMenu menuWithItems:infoItem, settingsItem, nil];
+        topMenu = [CCMenu menuWithItems:infoItem, settingsItem, nil];
         topMenu.position = CGPointZero;
         [self addChild:topMenu z:30];
         

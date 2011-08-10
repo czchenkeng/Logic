@@ -279,6 +279,8 @@
 		A3C25266139EA4D5002A31B1 /* LevelBg.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A3C25260139EA4D4002A31B1 /* LevelBg.pvr.ccz */; };
 		A3C25267139EA4D5002A31B1 /* LevelBgPad.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3C25261139EA4D4002A31B1 /* LevelBgPad.plist */; };
 		A3C25268139EA4D5002A31B1 /* LevelBgPad.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A3C25262139EA4D4002A31B1 /* LevelBgPad.pvr.ccz */; };
+		A3E1276313EE8CF70071914F /* PreloaderLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A3E1276213EE8CF70071914F /* PreloaderLayer.m */; };
+		A3E1276613EE96B70071914F /* PreloaderScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A3E1276513EE96B70071914F /* PreloaderScene.m */; };
 		A3EE22D413B85C160045F932 /* ScoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EE22D313B85C160045F932 /* ScoreCell.m */; };
 		A3F681B713DAF1DA003D1193 /* Cities.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3F681B613DAF1DA003D1193 /* Cities.plist */; };
 /* End PBXBuildFile section */
@@ -745,6 +747,10 @@
 		A3C25260139EA4D4002A31B1 /* LevelBg.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = LevelBg.pvr.ccz; sourceTree = "<group>"; };
 		A3C25261139EA4D4002A31B1 /* LevelBgPad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = LevelBgPad.plist; sourceTree = "<group>"; };
 		A3C25262139EA4D4002A31B1 /* LevelBgPad.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = LevelBgPad.pvr.ccz; sourceTree = "<group>"; };
+		A3E1276113EE8CF70071914F /* PreloaderLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreloaderLayer.h; sourceTree = "<group>"; };
+		A3E1276213EE8CF70071914F /* PreloaderLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreloaderLayer.m; sourceTree = "<group>"; };
+		A3E1276413EE96B70071914F /* PreloaderScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreloaderScene.h; sourceTree = "<group>"; };
+		A3E1276513EE96B70071914F /* PreloaderScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreloaderScene.m; sourceTree = "<group>"; };
 		A3EE22D213B85C160045F932 /* ScoreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreCell.h; sourceTree = "<group>"; };
 		A3EE22D313B85C160045F932 /* ScoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreCell.m; sourceTree = "<group>"; };
 		A3F681B613DAF1DA003D1193 /* Cities.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.bplist; path = Cities.plist; sourceTree = "<group>"; };
@@ -1398,6 +1404,7 @@
 		A379499E1376A11E002E53FD /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				A3E1275713EE8AA90071914F /* Preloader */,
 				A37C371213C8666B00F54EB4 /* HowTo */,
 				A308F44813C0F252000C98D8 /* Facebook */,
 				A31FFBAC13BFC0DC002B46A7 /* SQLite */,
@@ -1608,6 +1615,17 @@
 				A3EE22D313B85C160045F932 /* ScoreCell.m */,
 			);
 			name = Score;
+			sourceTree = "<group>";
+		};
+		A3E1275713EE8AA90071914F /* Preloader */ = {
+			isa = PBXGroup;
+			children = (
+				A3E1276113EE8CF70071914F /* PreloaderLayer.h */,
+				A3E1276213EE8CF70071914F /* PreloaderLayer.m */,
+				A3E1276413EE96B70071914F /* PreloaderScene.h */,
+				A3E1276513EE96B70071914F /* PreloaderScene.m */,
+			);
+			name = Preloader;
 			sourceTree = "<group>";
 		};
 		A3F681B413DAF181003D1193 /* Plists */ = {
@@ -1940,6 +1958,8 @@
 				A317983113DFEF3800FB51D7 /* PercentNumber.m in Sources */,
 				A33FF53813E598F700313CA1 /* ShadowedLabel.m in Sources */,
 				A33FF5B213E5B81D00313CA1 /* Blackout.m in Sources */,
+				A3E1276313EE8CF70071914F /* PreloaderLayer.m in Sources */,
+				A3E1276613EE96B70071914F /* PreloaderScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

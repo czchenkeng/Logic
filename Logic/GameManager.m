@@ -128,6 +128,9 @@ static GameManager* _sharedGameManager = nil;
     
     CCScene *sceneToRun = nil;
     switch (sceneID) {
+        case kPreloaderScene:
+            sceneToRun = [PreloaderScene node];
+            break;
         case kGameScene: 
             sceneToRun = [GameScene node];
             break;
@@ -171,7 +174,7 @@ static GameManager* _sharedGameManager = nil;
                 transition = [CCTransitionSlideInL transitionWithDuration:timeTransition scene:sceneToRun];
                 break;
             case kLogicTrans:
-                transition = [CCTransitionSlideInR transitionWithDuration:timeTransition scene:sceneToRun];
+                transition = [CCTransitionLogic transitionWithDuration:0.7 scene:sceneToRun];
                 break;            
             default:
                 CCLOG(@"Logic debug: Unknown ID, default transition");
@@ -180,8 +183,12 @@ static GameManager* _sharedGameManager = nil;
         }
         
         //[transition sceneOrder];
+        if (transitionID == kNoTransition) {
+            [[CCDirector sharedDirector] replaceScene:sceneToRun];
+        } else {
+            [[CCDirector sharedDirector] replaceScene:transition];
+        }
         
-        [[CCDirector sharedDirector] replaceScene:transition];
 
         //[[CCDirector sharedDirector] replaceScene:sceneToRun];
     }

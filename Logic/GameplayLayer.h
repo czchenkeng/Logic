@@ -22,10 +22,6 @@
 
 @interface GameplayLayer : CCLayerColor <UIGestureRecognizerDelegate> {    
     UIPanGestureRecognizer *panRecognizer;
-    UITapGestureRecognizer *singleTapRecognizer;
-    UISwipeGestureRecognizer *swipeRightRecognizer;
-    UISwipeGestureRecognizer *swipeUpRecognizer;
-    UISwipeGestureRecognizer *swipeDownRecognizer;
     UILongPressGestureRecognizer *longPress;
     
     GameDifficulty currentDifficulty;//obtiznost hry
@@ -38,11 +34,12 @@
     int lastTime;//time between rows
     BOOL isMovable;//after predefined row
     float trans;
-    BOOL moveVector;
     float spriteEndPosition;
-    BOOL isWinner;
-    int maxScore;
+    BOOL isWinner;//level success?
+    int maxScore;//present max score for final animations - level end 
     float jump;
+    
+    BOOL isCareer;
     
     Figure *selSprite;//vybrany sprite
     CCSprite *targetSprite;//je zamereny target? (umistit nebo zpet na zakladnu)

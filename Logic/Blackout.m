@@ -13,7 +13,7 @@
 
 
 - (id) init {
-    self = [super initWithColor:ccc4(0,0,0,128)];
+    self = [super initWithColor:ccc4(0,0,0,255)];
     if (self != nil) {
 
         

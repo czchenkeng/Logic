@@ -10,13 +10,15 @@
 #import "CJSONDeserializer.h"
 
 @interface CareerLayer (PrivateMethods)
-- (void) buildCareer;
+- (void) buildCities;
 - (void) buildWires;
+- (void) buildCareer;
 - (void) activateWires;
 - (void) setProgress;
 - (void) eraseCareer;
 - (void) constructPercentLabel;
 - (void) drawPercentToLabel;
+- (void) blinkCity:(City *)city;
 - (NSString *) jsonFromFile:(NSString *)file;
 - (void) handleError:(NSError *)error;
 @end
@@ -102,6 +104,7 @@ static const float POS_Y = -40;
 }
 
 - (void) eraseCareer {
+    [[[GameManager sharedGameManager] gameData] resetCareer];
     for (City *city in citiesArray) {
         city.visible = NO;
         city.isActive = NO;
@@ -130,21 +133,11 @@ static const float POS_Y = -40;
     singleTapGestureRecognizer.numberOfTapsRequired = 1;
     singleTapGestureRecognizer.numberOfTouchesRequired = 1;
     
-//    doubleTapGestureRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action: @selector(handleDoubleTapFrom:)] autorelease];
-//    doubleTapGestureRecognizer.numberOfTapsRequired = 2;
-//    doubleTapGestureRecognizer.numberOfTouchesRequired = 1;
-    
-    //[singleTapGestureRecognizer requireGestureRecognizerToFail: doubleTapGestureRecognizer];
-    
     [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:singleTapGestureRecognizer];
-    //[[[CCDirector sharedDirector] openGLView] addGestureRecognizer:doubleTapGestureRecognizer];
     [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:panGestureRecognizer];
-    [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:pinchGestureRecognizer];
+    //[[[CCDirector sharedDirector] openGLView] addGestureRecognizer:pinchGestureRecognizer];
     
     singleTapGestureRecognizer.cancelsTouchesInView = NO;
-    //panGestureRecognizer.cancelsTouchesInView = YES;
-    //pinchGestureRecognizer.cancelsTouchesInView = YES;
-    //singleTapGestureRecognizer.delegate = self;
     
     pinchGestureRecognizer.delegate = self;
     
@@ -153,9 +146,8 @@ static const float POS_Y = -40;
 
 - (void) onExit {
     [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:singleTapGestureRecognizer];
-    //[[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:doubleTapGestureRecognizer];
     [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:panGestureRecognizer];
-    [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:pinchGestureRecognizer];
+    //[[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:pinchGestureRecognizer];
     [super onExit];
 }
 
@@ -163,10 +155,12 @@ static const float POS_Y = -40;
 #pragma mark GESTURES DELEGATE METHODS
 #pragma mark Simultaneous
 - (BOOL) gestureRecognizer:pinchGestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:panGestureRecognizer {
-    CCLOG(@"delegate here");
     return NO;
 }
 
+#pragma mark -
+#pragma mark INIT
+#pragma mark Designated initializer
 - (id) init {
     self = [super init];
     if (self != nil) {
@@ -186,15 +180,13 @@ static const float POS_Y = -40;
         
         zoomBase = [CCColorLayer layerWithColor:ccc4(0,0,0,0)];
 		zoomBase.position = ccp(0, 0);
-        //zoomBase.contentSize = CGSizeMake(740, 600);
+        //zoomBase.scale = MIN_SCALE;//pokud je zakazane pinchovani
 		[self addChild:zoomBase z:1];
         
-        //zbLastPos = zoomBase.position;
         
         background = [CCSprite spriteWithSpriteFrameName:@"logik_levels.png"];
-        //background.position = ccp(96.00, 282.00);
         background.anchorPoint = ccp(0, 0);
-        //background.position = ccp(-POS_X, 0);
+        background.position = ccp(-POS_X, POS_Y);
         [zoomBase addChild:background z:1];
         
         CCSprite *sprite;
@@ -218,11 +210,6 @@ static const float POS_Y = -40;
         backItem.anchorPoint = CGPointMake(0.5, 1);
         backItem.position = ccp(LEFT_BUTTON_TOP_X, LEFT_BUTTON_TOP_Y);
         
-//        CCMenuItem *infoItem = [CCMenuItemSprite itemFromNormalSprite:buttonInfoOff selectedSprite:buttonInfoOn target:self selector:@selector(buttonTapped:)];
-//        infoItem.tag = kButtonInfo;
-//        infoItem.anchorPoint = CGPointMake(0.5, 1);
-//        infoItem.position = ccp(RIGHT_BUTTON_TOP_X, RIGHT_BUTTON_TOP_Y);
-        
         CCMenu *topMenu = [CCMenu menuWithItems:backItem, nil];
         topMenu.position = CGPointZero;
         [self addChild:topMenu z:3];
@@ -241,8 +228,6 @@ static const float POS_Y = -40;
         infoPanel.scaleY = 22;
         infoPanel.scaleX = 5;
         [infoPanel setPosition:ccp(-850.00, 0.00)];
-        
-        //infoPanel.position = ccp(125.00, 98.00);
         [self addChild:infoPanel z:4];
         
         progressBar = [CCSprite spriteWithSpriteFrameName:@"progress.png"];
@@ -264,17 +249,29 @@ static const float POS_Y = -40;
         eraseMenu.position = CGPointZero;
         [infoPanel addChild:eraseMenu z:2];
         
-        debugText = [CCLabelBMFont labelWithString:@"debug" fntFile:@"BellGothicBoldHt.fnt"];
-        debugText.anchorPoint = ccp(0, 0.5);
-        [debugText setPosition:ccp(50, 5)];
-        [self addChild:debugText z:1000];
-        
         [self constructPercentLabel];
-        [self buildCareer];
+        [self buildCities];
         [self buildWires];
+        [self buildCareer];
         //[self setProgress];
     }
     return self;
+}
+
+- (void) buildCareer {
+    for (NSNumber *num in [[[GameManager sharedGameManager] gameData] getCareerData]) {
+        for (City *city in citiesArray) {
+            CCLOG(@"city from database %@", city);
+            if (city.idCity == [num intValue]) {
+                city.visible = YES;
+                city.isActive = YES;
+                prog += 1;
+                percent += 4;
+            }
+        }
+    }
+    [self activateWires];
+    [self setProgress];
 }
 
 #pragma mark Construct score Label
@@ -304,7 +301,10 @@ static const float POS_Y = -40;
     }
 }
 
-- (void) buildCareer {
+#pragma mark -
+#pragma mark BUILD CAREER BOARD
+#pragma mark Build cities
+- (void) buildCities {
     NSString *jsonString = [self jsonFromFile:@"Cities"];
     NSData *jsonData = [jsonString dataUsingEncoding:NSUTF32BigEndianStringEncoding];
     CJSONDeserializer *jsonDeserializer = [CJSONDeserializer deserializer];
@@ -325,11 +325,13 @@ static const float POS_Y = -40;
         city.buttonY = [[buttonsArray objectAtIndex:1] floatValue];
         city.belongs = [cDictionary objectForKey:@"belongs"];
         city.difficulty = [cDictionary objectForKey:@"difficulty"];
+        city.idCity = [[cDictionary objectForKey:@"id"] intValue];
         [background addChild:city z:100];
         [citiesArray addObject:city];
     }
 }
-    
+
+#pragma mark Build wires
 - (void) buildWires {
     NSString *jsonString = [self jsonFromFile:@"Wires"];
     NSData *jsonData = [jsonString dataUsingEncoding:NSUTF32BigEndianStringEncoding];
@@ -352,109 +354,6 @@ static const float POS_Y = -40;
     }
 }
 
-#pragma mark -
-#pragma mark Data from file
-- (NSString *) jsonFromFile:(NSString *)file {
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:file ofType:@"json"];  
-    NSData *myData = [NSData dataWithContentsOfFile:filePath];
-    NSString *s = [[[NSString alloc] initWithData:myData encoding:NSUTF8StringEncoding] autorelease];    
-    return s;
-}
-
-- (void)zoomLayer:(float)zoomScale {
-	if ((zoomBase.scale*zoomScale) <= MIN_SCALE) {
-		zoomScale = MIN_SCALE/zoomBase.scale;
-	}
-	if ((zoomBase.scale*zoomScale) >= MAX_SCALE) {
-		zoomScale =	MAX_SCALE/zoomBase.scale;
-	}
-	zoomBase.scale = zoomBase.scale*zoomScale;
-}
-
-- (CGPoint) boundLayerPos:(CGPoint)newPos {
-    //CCLOG(@"SCALE %f", zoomBase.scale);
-    CGSize winSize = [CCDirector sharedDirector].winSize;
-    CGPoint retval = newPos;
-//    retval.x = MIN(retval.x, POS_X);
-//    retval.x = MAX(retval.x, -background.contentSize.width*zoomBase.scale + POS_X + winSize.width);
-//    retval.y = MIN(retval.y, POS_Y);
-//    retval.y = MAX(retval.y, -background.contentSize.height*zoomBase.scale - POS_Y + winSize.height);
-    retval.x = MIN(retval.x, background.contentSize.width*zoomBase.scale - background.contentSize.width);
-    retval.x = MAX(retval.x, -background.contentSize.width + winSize.width);
-    retval.y = MIN(retval.y, 0);
-    retval.y = MAX(retval.y, -background.contentSize.height*zoomBase.scale + winSize.height);
-    CCLOG(@"x is %f", retval.x );
-    return retval;
-}
-
-//retval.x = MAX(retval.x, -background.contentSize.width*self.scale+winSize.width);
-//retval.y = MIN(retval.y, 0);
-//retval.y = MAX(retval.y, -background.contentSize.height*self.scale+winSize.height);
-
-- (void) moveBoard:(CGPoint)translation from:(CGPoint)lastLocation {
-	CGPoint target_position = ccpAdd(translation, lastLocation);
-    
-	//CGSize size = [[CCDirector sharedDirector] winSize];
-    
-	// Insert routine here to check that target position is not out of bounds for your background
-	// Remember that ZB_last_posn is a variable that holds the current position of zoombase
-    //CCLOG(@"pos %@", NSStringFromCGPoint(target_position));
-	//zoomBase.position = target_position;
-    zoomBase.position = [self boundLayerPos:target_position];
-}
-
-#pragma mark -
-#pragma mark Gestures methods & callbacks
-- (void) selectSpriteForTouch:(CGPoint)touchLocation {
-    CCLOG(@"je tam %i ?", buttonWidth);
-    City *newSprite = nil;
-    for (City *sprite in citiesArray) {
-        if (CGRectContainsPoint(CGRectMake(sprite.buttonX, sprite.buttonY, 46, 56), touchLocation)) {            
-            newSprite = sprite;
-            break;
-        }
-    }
-    selSprite = newSprite;
-    if (selSprite) {
-        BOOL active = NO;
-        int diff = 6;
-        City *city;
-        if ([selSprite.belongs count] == 0) {
-            active = YES;
-            diff = [[selSprite.difficulty objectAtIndex:0] intValue];
-        } else {
-            for (int i = 0; i < [selSprite.belongs count]; i++) {
-                int index = [[selSprite.belongs objectAtIndex:i] intValue];
-                city = [citiesArray objectAtIndex:index - 1];
-                if (city.isActive) {
-                    active = YES;
-                    if ([[selSprite.difficulty objectAtIndex:i] intValue] < diff) {
-                        diff = [[selSprite.difficulty objectAtIndex:i] intValue];
-                    }
-                }
-            }
-        }
-        if (active) {
-            [debugText setString:[NSString stringWithFormat:@"%i", diff]];
-            //
-            gameInfo infoData;
-            [[[GameManager sharedGameManager] gameData] gameDataCleanup];
-            infoData.difficulty = diff;
-            infoData.activeRow = 0;
-            [[[GameManager sharedGameManager] gameData] insertGameData:infoData];
-            [GameManager sharedGameManager].gameInProgress = YES;
-            [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kSlideInR];
-            //
-            selSprite.visible = YES;//zablikani
-            selSprite.isActive = YES;
-            //prog += 1;
-            //percent += 4;
-            //[self activateWires];
-            //[self setProgress];
-        }
-    }
-}
-
 - (void) setProgress {
     if (panelActive) {
         CGRect barRect = [progressBar textureRect];
@@ -464,7 +363,7 @@ static const float POS_Y = -40;
     }
 }
 
-- (void) activateWires {
+- (void) activateWires {//pozor, rozsviti vsechny najednou, nevhodne pro "nalevani"
     for (Wire *wire in wiresArray) {
         int counter = 0;
         City *city;
@@ -481,18 +380,102 @@ static const float POS_Y = -40;
 }
 
 #pragma mark -
+#pragma mark PAN & PINCH METHODS
+#pragma mark Adjust position for pan & pinch
+- (CGPoint) boundLayerPos:(CGPoint)newPos {
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    CGPoint retval = newPos;
+    retval.x = MIN(retval.x, POS_X);
+    retval.x = MAX(retval.x, -background.contentSize.width + POS_X + winSize.width);
+    retval.y = MIN(retval.y, -POS_Y);
+    retval.y = MAX(retval.y, -background.contentSize.height - POS_Y + winSize.height);
+    return retval;
+}
+
+#pragma mark Zooming layer - pinch callback
+- (void)zoomLayer:(float)zoomScale {
+	if ((zoomBase.scale*zoomScale) <= MIN_SCALE) {
+		zoomScale = MIN_SCALE/zoomBase.scale;
+	}
+	if ((zoomBase.scale*zoomScale) >= MAX_SCALE) {
+		zoomScale =	MAX_SCALE/zoomBase.scale;
+	}
+	zoomBase.scale = zoomBase.scale*zoomScale;
+}
+
+#pragma mark Moving layer - pan callback
+- (void) moveBoard:(CGPoint)translation from:(CGPoint)lastLocation {
+	CGPoint target_position = ccpAdd(translation, lastLocation);
+    zoomBase.position = [self boundLayerPos:target_position];
+}
+
+#pragma mark Single tap callback
+- (void) selectSpriteForTouch:(CGPoint)touchLocation {
+    City *newSprite = nil;
+    for (City *sprite in citiesArray) {
+        if (CGRectContainsPoint(CGRectMake(sprite.buttonX, sprite.buttonY, 46, 56), touchLocation)) {            
+            newSprite = sprite;
+            break;
+        }
+    }
+    selSprite = newSprite;
+    if (selSprite) {
+        BOOL active = NO;
+        diff = 6;
+        City *city;
+        if ([selSprite.belongs count] == 0) {//cities with zero belongs (typically cities at start level)
+            active = YES;
+            diff = [[selSprite.difficulty objectAtIndex:0] intValue];//start city has only one difficulty
+        } else {
+            for (int i = 0; i < [selSprite.belongs count]; i++) {
+                int index = [[selSprite.belongs objectAtIndex:i] intValue];
+                city = [citiesArray objectAtIndex:index - 1];
+                if (city.isActive) {
+                    active = YES;
+                    if ([[selSprite.difficulty objectAtIndex:i] intValue] < diff) {
+                        diff = [[selSprite.difficulty objectAtIndex:i] intValue];//set diff to lowest possible value
+                    }
+                }
+            }
+        }
+        if (active) {
+            [self blinkCity:selSprite];
+            singleTapGestureRecognizer.enabled = NO;
+        }
+    }
+}
+
+#pragma mark Blink city
+- (void) blinkCity:(City *)city {
+    id blink = [CCBlink actionWithDuration:0.3 blinks:3];
+    id seq = [CCSequence actions:blink, [CCCallFunc actionWithTarget:self selector:@selector(blinkEnded)], nil];
+    [city runAction: seq];
+}
+
+#pragma mark Run career game
+- (void) blinkEnded {
+    gameInfo infoData;
+    [[[GameManager sharedGameManager] gameData] gameDataCleanup];
+    infoData.difficulty = diff;
+    infoData.activeRow = 0;
+    infoData.career = 1;
+    [[[GameManager sharedGameManager] gameData] insertGameData:infoData];
+    [GameManager sharedGameManager].gameInProgress = YES;//prenest do GameData?
+    [[[GameManager sharedGameManager] gameData] insertCareerData:selSprite.idCity];
+    [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kSlideInR];    
+}
+
+#pragma mark -
 #pragma mark UIGesture recognizer handlers
+#pragma mark Single tap handler
 - (void) handleSingleTapFrom:(UITapGestureRecognizer *)recognizer {
-    //CCLOG(@"single tap");
     CGPoint touchLocation = [recognizer locationInView:recognizer.view];
     touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
     touchLocation = [background convertToNodeSpace:touchLocation];               
     [self selectSpriteForTouch:touchLocation];
 }
 
-- (void) handleDoubleTapFrom:(UITapGestureRecognizer *)recognizer {
-	//zoombase.scale = 1;
-}
+#pragma mark Pan handler
 - (void) handlePanFrom:(UIPanGestureRecognizer *)recognizer {
 	if (recognizer.state == UIGestureRecognizerStateChanged) {
 		CGPoint translation = [recognizer translationInView:recognizer.view];
@@ -503,16 +486,25 @@ static const float POS_Y = -40;
     }
 }
 
+#pragma mark Pinch handler
 - (void) handlePinchFrom:(UIPinchGestureRecognizer *)recognizer {
 	if ((recognizer.state == UIGestureRecognizerStateBegan) || (recognizer.state == UIGestureRecognizerStateChanged)) {
-		float zoomScale = [recognizer scale];
-		[self zoomLayer:zoomScale];
+        float zoomScale = [recognizer scale];
+		[self zoomLayer:zoomScale];        
 		recognizer.scale = 1;
 	}
 	if (recognizer.state == UIGestureRecognizerStateEnded) {
-		// Update the zoombase position
 		zbLastPos = zoomBase.position;
 	}
+}
+
+#pragma mark -
+#pragma mark Data from file - helper method
+- (NSString *) jsonFromFile:(NSString *)file {
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:file ofType:@"json"];  
+    NSData *myData = [NSData dataWithContentsOfFile:filePath];
+    NSString *s = [[[NSString alloc] initWithData:myData encoding:NSUTF8StringEncoding] autorelease];    
+    return s;
 }
 
 #pragma mark -
@@ -525,6 +517,8 @@ static const float POS_Y = -40;
     }
 }
 
+#pragma mark -
+#pragma mark Dealloc memory
 - (void) dealloc {
     CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
     [citiesArray release];

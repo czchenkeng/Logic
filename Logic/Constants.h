@@ -7,7 +7,7 @@
 //
 
 #define MIN_DISTANCE_SWIPE_X 200
-#define MIN_DISTANCE_SWIPE_Y 150
+#define MIN_DISTANCE_SWIPE_Y 80
 #define LEVEL_SWIPE_AFTER_ROW 7
 #define LEVEL_DEAD_FIGURES_MASK_HEIGHT 5
 #define LEVEL_DISLOCATION 40
@@ -24,6 +24,8 @@
 
 #define SETTINGS_MUSIC_VOLUME 0.50
 #define SETTINGS_SOUND_VOLUME 0.70
+
+#define LEVEL_MIN_PRESS_DURATION 0.05
 
 typedef struct {
     int gameDifficulty;
@@ -45,6 +47,7 @@ typedef struct {
 typedef struct {
     int difficulty;
     int activeRow;
+    int career;
 } gameInfo;
 
 typedef enum {
@@ -72,7 +75,8 @@ typedef enum {
     kMainScene = 2,
     kSettingsScene = 3,
     kCareerScene = 4,
-    kScoreScene = 5
+    kScoreScene = 5,
+    kPreloaderScene = 6
 } SceneTypes;
 
 typedef enum {
@@ -98,6 +102,10 @@ typedef enum {
     kMedium = 5,
     kHard = 6
 } GameDifficulty;
+
+typedef enum {
+    kFigureZoom
+} ActionTypes;
 
 typedef enum {
     kAudioManagerUninitialized = 0,

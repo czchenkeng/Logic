@@ -62,7 +62,6 @@
     rs = [db executeQuery:@"SELECT COUNT(*) FROM game_data"];
     if ([rs next]) {
         totalCount = [rs intForColumnIndex:0];
-        CCLOG(@"total count %i", totalCount);
     }
     CCLOG(@"total count 2 is %i", totalCount);
     return totalCount == 0 ? NO : YES;
@@ -96,16 +95,17 @@
 
 - (void) insertGameData:(gameInfo)data {
     [db beginTransaction];
-    [db executeUpdate:@"INSERT INTO game_data (difficulty, active_row) values (?, ?)", [NSNumber numberWithInt:data.difficulty], [NSNumber numberWithInt:data.activeRow]];
+    [db executeUpdate:@"INSERT INTO game_data (difficulty, active_row, career) values (?, ?, ?)", [NSNumber numberWithInt:data.difficulty], [NSNumber numberWithInt:data.activeRow], [NSNumber numberWithInt:data.career]];
     [db commit];
 }
 
 - (gameInfo) getGameData {
     gameInfo retVal;    
-    rs = [db executeQuery:@"SELECT * FROM game_data ORDER BY rowid DESC LIMIT 1"];
+    rs = [db executeQuery:@"SELECT * FROM game_data ORDER BY id DESC LIMIT 1"];
     if ([rs next]) {
         retVal.difficulty = [rs intForColumn:@"difficulty"];
         retVal.activeRow = [rs intForColumn:@"active_row"];
+        retVal.career = [rs intForColumn:@"career"];
     }
     
     return retVal;
@@ -167,6 +167,52 @@
     [now release];
 }
 
+- (void) insertCareerData:(int)city {
+    [db beginTransaction];
+    [db executeUpdate:@"INSERT INTO career (city, is_done) values (?, ?)", [NSNumber numberWithInt:city], [NSNumber numberWithInt:0]];
+    [db commit];
+}
+
+- (void) updateCareerData:(BOOL)flag {
+    int row = 0;
+    rs = [db executeQuery:@"SELECT * FROM career ORDER BY id DESC LIMIT 1"];
+    if ([rs next]) {
+        row = [rs intForColumn:@"id"];
+    }
+    if (row > 0) {
+        if (flag) {//career success
+            CCLOG(@"update career");
+            [db beginTransaction];
+            [db executeUpdate:[NSString stringWithFormat:@"UPDATE career SET is_done = ? WHERE id=%i", row], [NSNumber numberWithInt:1]];
+            [db commit];
+        } else {
+            [db beginTransaction];
+            [db executeUpdate:[NSString stringWithFormat:@"DELETE FROM career WHERE id=%i", row]];
+            [db commit];
+        }
+    }
+}
+
+- (NSMutableArray *) getCareerData {
+    rs = [db executeQuery:@"SELECT COUNT(*) FROM career"];
+    if ([rs next]) {
+        CCLOG(@"total count career is %i", [rs intForColumnIndex:0]);
+    }
+    
+    rs = [db executeQuery:@"SELECT * FROM career WHERE is_done=1"];
+    NSMutableArray *retVal = [[NSMutableArray alloc] init];//release?
+    while ([rs next]) {        
+        [retVal addObject:[NSNumber numberWithInt:[rs intForColumn:@"city"]]];
+    }
+    return retVal;
+}
+
+- (void) resetCareer {
+    [db beginTransaction];
+    [db executeUpdate:@"DELETE FROM career"];
+    [db commit];
+}
+
 - (int) getMaxScore:(int)diff {
     rs = [db executeQuery:[NSString stringWithFormat:@"SELECT * FROM scores WHERE difficulty = %i ORDER BY score DESC LIMIT 1", diff]];
     
@@ -180,7 +226,7 @@
     return retVal;
 }
 
-- (NSMutableArray *) getScores:(int)diff {
+- (NSMutableArray *) getScores:(int)diff {    
     rs = [db executeQuery:[NSString stringWithFormat:@"SELECT * FROM scores WHERE difficulty = %i ORDER BY score DESC LIMIT 15", diff]];
     if ([db hadError]) {
         CCLOG(@"DB Error %d: %@", [db lastErrorCode], [db lastErrorMessage]);
