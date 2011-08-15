@@ -13,7 +13,7 @@
 - (void) buildCities;
 - (void) buildWires;
 - (void) buildCareer;
-- (void) activateWires;
+- (void) activateWires:(BOOL)animation;
 - (void) setProgress;
 - (void) eraseCareer;
 - (void) constructPercentLabel;
@@ -30,101 +30,108 @@ static const float POS_Y = -40;
 
 @implementation CareerLayer
 
-- (void) endAnimation {
-    PercentNumber *tempPercentNumber;
-    for (int i=0; i < 3; i++) {
-        tempPercentNumber = [percentLabelArray objectAtIndex:i];
-        tempPercentNumber.visible = panelActive;
-    }
-    if (panelActive) {
-        [self setProgress];
-    }     
-}
-
-- (void) infoPanelIn {
-    float debugSlow = -0.40;
-    
-    CCMoveTo *infoPanelMoveIn = [CCMoveTo actionWithDuration:debugSlow + 1.0 position:ccp(125.00, 98.00)];
-    CCScaleTo *infoPanelScaleInX = [CCScaleTo actionWithDuration:debugSlow + 1.0 scaleX:1.0 scaleY:1.0];
-    //CCRotateTo *leftGibRotationIn = [CCRotateTo actionWithDuration:debugSlow + 1.0 angle:-2];
-    CCSpawn *infoPanelSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.0f], infoPanelMoveIn, infoPanelScaleInX, nil];
-    CCSequence *inSeq = [CCSequence actions:infoPanelSeq, [CCCallFunc actionWithTarget:self selector:@selector(endAnimation)], nil];
-    
-    [infoPanel runAction:inSeq];
-}
-
-- (void) infoPanelOut {
-    float debugSlow = -0.60;
-    
-    CCMoveTo *infoPanelMoveOut = [CCMoveTo actionWithDuration:debugSlow + 1.0 position:ccp(-850.00, 0.00)];
-    CCScaleTo *infoPanelScaleOutX = [CCScaleTo actionWithDuration:debugSlow + 1.0 scaleX:5 scaleY:22];
-    CCSpawn *infoPanelSeqOut = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.0f], infoPanelScaleOutX, infoPanelMoveOut, nil];
-    
-    [infoPanel runAction:infoPanelSeqOut];
-}
-
-- (void) buttonTapped:(CCMenuItem *)sender { 
-    switch (sender.tag) {
-        case kButtonBack:
-            [[GameManager sharedGameManager] runSceneWithID:kSettingsScene andTransition:kSlideInL];
-            break;
-        case kButtonEraseCareer:
-            //[self eraseCareer];
-            CCLOG(@"erase tap");
-            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"ERASE CAREER" message:@"Do you really want to erase your career?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil] autorelease];
-            [alert addButtonWithTitle:@"Yes"];
-            [alert setTag:1];
-            [alert show];
-            break;
-        default:
-            CCLOG(@"Logic debug: Unknown ID, cannot tap button");
-            return;
-            break;
-    }
-}
-
-- (void) infoButtonTapped:(id)sender {  
-    CCMenuItemToggle *toggleItem = (CCMenuItemToggle *)sender;
-    if (toggleItem.selectedItem == infoOff) {
+#pragma mark -
+#pragma mark INIT
+#pragma mark Designated initializer
+- (id) init {
+    self = [super init];
+    if (self != nil) {
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Career.plist"];
+        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"CareerHq.plist"];
+        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
+        
+        citiesArray = [[CCArray alloc] init];
+        wiresArray = [[CCArray alloc] init];
+        percentLabelArray = [[CCArray alloc] init];
+        
+        prog = 0;
+        percent = 0;
         panelActive = NO;
-        [self endAnimation];
-        [self infoPanelOut];
-    } else if (toggleItem.selectedItem == infoOn) {
-        panelActive = YES;
-        [self infoPanelIn];
-    }  
-}
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if ([alertView tag] == 1) {
-        if (buttonIndex == 1) {
-            [self eraseCareer];
-        }
+        
+        zoomBase = [CCLayerColor layerWithColor:ccc4(0,0,0,0)];
+		zoomBase.position = ccp(0, 0);
+        //zoomBase.scale = MIN_SCALE;//pokud je zakazane pinchovani
+		[self addChild:zoomBase z:1];
+        
+        background = [CCSprite spriteWithSpriteFrameName:@"logik_levels.png"];
+        background.anchorPoint = ccp(0, 0);
+        background.position = ccp(-POS_X, POS_Y);
+        [zoomBase addChild:background z:1];
+        
+        //Main bulbon, shadow
+        CCSprite *sprite;
+        
+        sprite = [CCSprite spriteWithSpriteFrameName:@"logik_levels_bulbon_start.png"];
+        sprite.anchorPoint = ccp(0, 0);
+        sprite.position = ccp(359.5, 222);
+        [background addChild:sprite z:100];
+        
+        sprite = [CCSprite spriteWithSpriteFrameName:@"shadow.png"];
+        sprite.anchorPoint = ccp(0.00, 0.00);
+        [self addChild:sprite z:2];
+        
+        //Back menu
+        CCSprite *buttonBackOff = [CCSprite spriteWithSpriteFrameName:@"back_off.png"];
+        CCSprite *buttonBackOn = [CCSprite spriteWithSpriteFrameName:@"back_on.png"];
+        CCSprite *buttonInfoOff = [CCSprite spriteWithSpriteFrameName:@"i_off.png"];
+        CCSprite *buttonInfoOn = [CCSprite spriteWithSpriteFrameName:@"i_on.png"];
+        
+        CCMenuItem *backItem = [CCMenuItemSprite itemFromNormalSprite:buttonBackOff selectedSprite:buttonBackOn target:self selector:@selector(buttonTapped:)];
+        backItem.tag = kButtonBack;
+        backItem.anchorPoint = CGPointMake(0.5, 1);
+        backItem.position = ccp(LEFT_BUTTON_TOP_X, LEFT_BUTTON_TOP_Y);
+        
+        CCMenu *topMenu = [CCMenu menuWithItems:backItem, nil];
+        topMenu.position = CGPointZero;
+        [self addChild:topMenu z:3];
+        
+        //Info toggle button
+        infoOff = [CCMenuItemSprite itemFromNormalSprite:buttonInfoOff selectedSprite:nil target:nil selector:nil];
+        infoOn = [CCMenuItemSprite itemFromNormalSprite:buttonInfoOn selectedSprite:nil target:nil selector:nil];
+        
+        CCMenuItemToggle *toggleItem = [CCMenuItemToggle itemWithTarget:self selector:@selector(infoButtonTapped:) items:infoOff, infoOn, nil];
+        CCMenu *toggleMenu = [CCMenu menuWithItems:toggleItem, nil];
+        toggleMenu.position = ccp(RIGHT_BUTTON_TOP_X, RIGHT_BUTTON_TOP_Y);
+        toggleItem.anchorPoint = CGPointMake(0.5, 1);
+        [self addChild:toggleMenu z:4];
+        
+        //Info panel
+        infoPanel = [CCSprite spriteWithSpriteFrameName:@"infoPanel.png"];        
+        infoPanel.scaleY = 22;
+        infoPanel.scaleX = 5;
+        [infoPanel setPosition:ccp(-850.00, 0.00)];
+        [self addChild:infoPanel z:4];
+        
+        progressBar = [CCSprite spriteWithSpriteFrameName:@"progress.png"];
+        progressBar.position = ccp(161 - progressBar.contentSize.width/2, 127);
+        progressBar.anchorPoint = ccp(0, 0.5);
+        total = progressBar.contentSize.width;
+        [infoPanel addChild:progressBar z:1];
+        
+        CCSprite *buttonErase = [CCSprite spriteWithFile:@"2x2.png" rect:CGRectMake(0, 0, 111, 30)];
+        CCSprite *diod = [CCSprite spriteWithSpriteFrameName:@"dioda.png"];
+        diod.anchorPoint = ccp(0, 0);
+        diod.position = ccp(-4, 4);
+        CCMenuItem *eraseCareer = [CCMenuItemSprite itemFromNormalSprite:buttonErase selectedSprite:diod target:self selector:@selector(buttonTapped:)];
+        eraseCareer.tag = kButtonEraseCareer;
+        eraseCareer.anchorPoint = CGPointMake(0, 0);
+        eraseCareer.position = ccp(140, 23);
+        
+        CCMenu *eraseMenu = [CCMenu menuWithItems:eraseCareer, nil];
+        eraseMenu.position = CGPointZero;
+        [infoPanel addChild:eraseMenu z:2];
+        
+        [self constructPercentLabel];
+        [self buildCities];
+        [self buildWires];
+        [self buildCareer];
     }
-}
-
-- (void) eraseCareer {
-    [[[GameManager sharedGameManager] gameData] resetCareer];
-    for (City *city in citiesArray) {
-        city.visible = NO;
-        city.isActive = NO;
-    }
-    for (Wire *wire in wiresArray) {
-        wire.visible = NO;
-    }
-    percent = 4;
-    prog = 1;
-    [self setProgress];
-    PercentNumber *tempPercentNumber;
-    for (int i=1; i < 3; i++) {
-        tempPercentNumber = [percentLabelArray objectAtIndex:i];
-        [tempPercentNumber moveToPosition:-1];
-    }
-    [self drawPercentToLabel];
+    return self;
 }
 
 #pragma mark -
-#pragma mark Enter & Exit
+#pragma mark ENTER & EXIT
 - (void) onEnter {
     panGestureRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanFrom:)] autorelease];
     pinchGestureRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)] autorelease];
@@ -159,122 +166,94 @@ static const float POS_Y = -40;
 }
 
 #pragma mark -
-#pragma mark INIT
-#pragma mark Designated initializer
-- (id) init {
-    self = [super init];
-    if (self != nil) {
-        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Career.plist"];
-        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
-        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"CareerHq.plist"];
-        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
-        
-        citiesArray = [[CCArray alloc] init];
-        wiresArray = [[CCArray alloc] init];
-        percentLabelArray = [[CCArray alloc] init];
-        
-        prog = 1;
-        percent = 4;
-        
-        panelActive = NO;
-        
-        zoomBase = [CCColorLayer layerWithColor:ccc4(0,0,0,0)];
-		zoomBase.position = ccp(0, 0);
-        //zoomBase.scale = MIN_SCALE;//pokud je zakazane pinchovani
-		[self addChild:zoomBase z:1];
-        
-        
-        background = [CCSprite spriteWithSpriteFrameName:@"logik_levels.png"];
-        background.anchorPoint = ccp(0, 0);
-        background.position = ccp(-POS_X, POS_Y);
-        [zoomBase addChild:background z:1];
-        
-        CCSprite *sprite;
-        
-        sprite = [CCSprite spriteWithSpriteFrameName:@"logik_levels_bulbon_start.png"];
-        sprite.anchorPoint = ccp(0, 0);
-        sprite.position = ccp(359.5, 222);
-        [background addChild:sprite z:100];
-        
-        sprite = [CCSprite spriteWithSpriteFrameName:@"shadow.png"];
-        sprite.anchorPoint = ccp(0.00, 0.00);
-        [self addChild:sprite z:2];
-        
-        CCSprite *buttonBackOff = [CCSprite spriteWithSpriteFrameName:@"back_off.png"];
-        CCSprite *buttonBackOn = [CCSprite spriteWithSpriteFrameName:@"back_on.png"];
-        CCSprite *buttonInfoOff = [CCSprite spriteWithSpriteFrameName:@"i_off.png"];
-        CCSprite *buttonInfoOn = [CCSprite spriteWithSpriteFrameName:@"i_on.png"];
-        
-        CCMenuItem *backItem = [CCMenuItemSprite itemFromNormalSprite:buttonBackOff selectedSprite:buttonBackOn target:self selector:@selector(buttonTapped:)];
-        backItem.tag = kButtonBack;
-        backItem.anchorPoint = CGPointMake(0.5, 1);
-        backItem.position = ccp(LEFT_BUTTON_TOP_X, LEFT_BUTTON_TOP_Y);
-        
-        CCMenu *topMenu = [CCMenu menuWithItems:backItem, nil];
-        topMenu.position = CGPointZero;
-        [self addChild:topMenu z:3];
-        
-        infoOff = [CCMenuItemSprite itemFromNormalSprite:buttonInfoOff selectedSprite:nil target:nil selector:nil];
-        infoOn = [CCMenuItemSprite itemFromNormalSprite:buttonInfoOn selectedSprite:nil target:nil selector:nil];
-        
-        CCMenuItemToggle *toggleItem = [CCMenuItemToggle itemWithTarget:self selector:@selector(infoButtonTapped:) items:infoOff, infoOn, nil];
-        CCMenu *toggleMenu = [CCMenu menuWithItems:toggleItem, nil];
-        toggleMenu.position = ccp(RIGHT_BUTTON_TOP_X, RIGHT_BUTTON_TOP_Y);
-        toggleItem.anchorPoint = CGPointMake(0.5, 1);
-        [self addChild:toggleMenu z:4];
-
-        infoPanel = [CCSprite spriteWithSpriteFrameName:@"infoPanel.png"];
-        
-        infoPanel.scaleY = 22;
-        infoPanel.scaleX = 5;
-        [infoPanel setPosition:ccp(-850.00, 0.00)];
-        [self addChild:infoPanel z:4];
-        
-        progressBar = [CCSprite spriteWithSpriteFrameName:@"progress.png"];
-        progressBar.position = ccp(161 - progressBar.contentSize.width/2, 127);
-        progressBar.anchorPoint = ccp(0, 0.5);
-        total = progressBar.contentSize.width;
-        [infoPanel addChild:progressBar z:1];
-        
-        CCSprite *buttonErase = [CCSprite spriteWithFile:@"2x2.png" rect:CGRectMake(0, 0, 111, 30)];
-        CCSprite *diod = [CCSprite spriteWithSpriteFrameName:@"dioda.png"];
-        diod.anchorPoint = ccp(0, 0);
-        diod.position = ccp(-4, 4);
-        CCMenuItem *eraseCareer = [CCMenuItemSprite itemFromNormalSprite:buttonErase selectedSprite:diod target:self selector:@selector(buttonTapped:)];
-        eraseCareer.tag = kButtonEraseCareer;
-        eraseCareer.anchorPoint = CGPointMake(0, 0);
-        eraseCareer.position = ccp(140, 23);
-        
-        CCMenu *eraseMenu = [CCMenu menuWithItems:eraseCareer, nil];
-        eraseMenu.position = CGPointZero;
-        [infoPanel addChild:eraseMenu z:2];
-        
-        [self constructPercentLabel];
-        [self buildCities];
-        [self buildWires];
-        [self buildCareer];
-        //[self setProgress];
-    }
-    return self;
+#pragma mark INFO PANEL
+#pragma mark Panel in
+- (void) infoPanelIn {
+    //singleTapGestureRecognizer.enabled = NO;
+    
+    float debugSlow = -0.40;
+    
+    CCMoveTo *infoPanelMoveIn = [CCMoveTo actionWithDuration:debugSlow + 1.0 position:ccp(125.00, 98.00)];
+    CCScaleTo *infoPanelScaleInX = [CCScaleTo actionWithDuration:debugSlow + 1.0 scaleX:1.0 scaleY:1.0];
+    CCSpawn *infoPanelSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.0f], infoPanelMoveIn, infoPanelScaleInX, nil];
+    CCSequence *inSeq = [CCSequence actions:infoPanelSeq, [CCCallFunc actionWithTarget:self selector:@selector(endAnimation)], nil];
+    
+    [infoPanel runAction:inSeq];
 }
 
-- (void) buildCareer {
-    for (NSNumber *num in [[[GameManager sharedGameManager] gameData] getCareerData]) {
-        for (City *city in citiesArray) {
-            CCLOG(@"city from database %@", city);
-            if (city.idCity == [num intValue]) {
-                city.visible = YES;
-                city.isActive = YES;
-                prog += 1;
-                percent += 4;
-            }
+#pragma mark Panel in callback
+- (void) endAnimation {
+    PercentNumber *tempPercentNumber;
+    for (int i=0; i < 3; i++) {
+        tempPercentNumber = [percentLabelArray objectAtIndex:i];
+        tempPercentNumber.visible = panelActive;
+    }
+    if (panelActive) {
+        [self setProgress];
+    }     
+}
+
+#pragma mark Panel out
+- (void) infoPanelOut {
+    singleTapGestureRecognizer.enabled = YES;
+    
+    float debugSlow = -0.60;
+    
+    CCMoveTo *infoPanelMoveOut = [CCMoveTo actionWithDuration:debugSlow + 1.0 position:ccp(-850.00, 0.00)];
+    CCScaleTo *infoPanelScaleOutX = [CCScaleTo actionWithDuration:debugSlow + 1.0 scaleX:5 scaleY:22];
+    CCSpawn *infoPanelSeqOut = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.0f], infoPanelScaleOutX, infoPanelMoveOut, nil];
+    
+    [infoPanel runAction:infoPanelSeqOut];
+}
+
+#pragma mark -
+#pragma mark BUTTONS CALLBACK METHODS
+#pragma mark Button back & erase career
+- (void) buttonTapped:(CCMenuItem *)sender { 
+    switch (sender.tag) {
+        case kButtonBack:
+            //BACK JEN NA SETTINGS SCENE?
+            [[GameManager sharedGameManager] runSceneWithID:kSettingsScene andTransition:kSlideInL];
+            break;
+        case kButtonEraseCareer:
+            CCLOG(@"bug UIAlertView");
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"ERASE CAREER" message:@"Do you really want to erase your career?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil] autorelease];
+            [alert addButtonWithTitle:@"Yes"];
+            [alert setTag:1];
+            [alert show];
+            break;
+        default:
+            CCLOG(@"Logic debug: Unknown ID, cannot tap button");
+            return;
+            break;
+    }
+}
+
+#pragma mark Info button callback
+- (void) infoButtonTapped:(id)sender {  
+    CCMenuItemToggle *toggleItem = (CCMenuItemToggle *)sender;
+    if (toggleItem.selectedItem == infoOff) {
+        panelActive = NO;
+        [self endAnimation];//visible NO
+        [self infoPanelOut];
+    } else if (toggleItem.selectedItem == infoOn) {
+        panelActive = YES;
+        [self infoPanelIn];
+    }  
+}
+
+#pragma mark Alert view
+- (void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if ([alertView tag] == 1) {
+        if (buttonIndex == 1) {
+            [self eraseCareer];
         }
     }
-    [self activateWires];
-    [self setProgress];
 }
 
-#pragma mark Construct score Label
+#pragma mark -
+#pragma mark CONSTRUCT SCORE & PERCENT LABELS
+#pragma mark Construct percent Label
 - (void) constructPercentLabel {
     for (int i = 0; i<3; i++) {
         Mask *percentMask = [Mask maskWithRect:CGRectMake(208 + 9*i, 135, 9, 18)];
@@ -287,6 +266,7 @@ static const float POS_Y = -40;
     [percentLabelArray reverseObjects];
 }
 
+#pragma mark Draw to label
 - (void) drawPercentToLabel {
     NSString *percentString = [NSString stringWithFormat:@"%i", percent];
     NSMutableArray *characters = [[NSMutableArray alloc] initWithCapacity:[percentString length]];
@@ -302,7 +282,7 @@ static const float POS_Y = -40;
 }
 
 #pragma mark -
-#pragma mark BUILD CAREER BOARD
+#pragma mark BUILD/ERASE CAREER BOARD
 #pragma mark Build cities
 - (void) buildCities {
     NSString *jsonString = [self jsonFromFile:@"Cities"];
@@ -354,16 +334,47 @@ static const float POS_Y = -40;
     }
 }
 
-- (void) setProgress {
-    if (panelActive) {
-        CGRect barRect = [progressBar textureRect];
-        barRect.size.width = total / 25 * prog;
-        [progressBar setTextureRect: barRect];
-        [self drawPercentToLabel];
+#pragma mark Build career from data
+- (void) buildCareer {
+    int i = 1;
+    NSMutableArray *citiesDone = [[[GameManager sharedGameManager] gameData] getCareerData];
+    zoomBase.position = ccp([[[citiesDone lastObject] objectForKey:@"posX"] floatValue], [[[citiesDone lastObject] objectForKey:@"posY"] floatValue]);
+    zbLastPos = zoomBase.position;
+    for (NSMutableDictionary *dict in citiesDone) {
+        for (City *city in citiesArray) {
+            //CCLOG(@"city from database %@", city);
+            if (city.idCity == [[dict objectForKey:@"city"] intValue]) {
+                city.visible = YES;
+                prog += 1;
+                if (city.idCity == 7 || city.idCity == 12)
+                    percent += 6;
+                else
+                    percent += 4;
+                if (i < citiesDone.count) {
+                    city.isActive = YES;
+                } else {
+                    city.opacity = 0;
+                    id lastCitySeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.1f], 
+                                      [CCCallFuncND actionWithTarget:self selector:@selector(lastCity:data:) data:city], nil];
+                    [self runAction:lastCitySeq];
+                }
+            }
+        }
+        i++;
     }
+    [self activateWires:NO];
 }
 
-- (void) activateWires {//pozor, rozsviti vsechny najednou, nevhodne pro "nalevani"
+#pragma mark Last city callback
+- (void) lastCity:(id)sender data:(City *)city {
+    city.isActive = YES;
+    [self activateWires:YES];
+    id fadeCitySeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.4f], [CCFadeIn actionWithDuration:0.3f], nil];
+    [city runAction:fadeCitySeq];
+}
+
+#pragma mark Activate wires
+- (void) activateWires:(BOOL)animation {
     for (Wire *wire in wiresArray) {
         int counter = 0;
         City *city;
@@ -374,9 +385,109 @@ static const float POS_Y = -40;
             }
         }
         if (counter == [wire.lights count]) {
-            wire.visible = YES;
+            if (animation) {
+                if (!wire.visible) {
+                    wire.visible = YES;
+                    wire.opacity = 0;
+                    id wireFadeIn = [CCSequence actions:[CCDelayTime actionWithDuration: 0.3f], [CCFadeIn actionWithDuration:0.2f], nil];
+                    [wire runAction:wireFadeIn];
+                }
+            } else {
+                wire.visible = YES;
+            }
         }
     }
+}
+
+#pragma mark Erase career
+- (void) eraseCareer {
+    [[[GameManager sharedGameManager] gameData] resetCareer];
+    for (City *city in citiesArray) {
+        city.visible = NO;
+        city.isActive = NO;
+    }
+    for (Wire *wire in wiresArray) {
+        wire.visible = NO;
+    }
+    percent = 0;
+    prog = 0;
+    [self setProgress];
+    PercentNumber *tempPercentNumber;
+    for (int i=1; i < 3; i++) {
+        tempPercentNumber = [percentLabelArray objectAtIndex:i];
+        [tempPercentNumber moveToPosition:-1];
+    }
+    [self drawPercentToLabel];
+}
+
+#pragma mark Show progress on panel
+- (void) setProgress {
+    if (panelActive) {
+        CGRect barRect = [progressBar textureRect];
+        barRect.size.width = total / 24 * prog;
+        [progressBar setTextureRect: barRect];
+        [self drawPercentToLabel];
+    }
+}
+
+#pragma mark -
+#pragma mark ANALYSE CITY, RUN GAME
+#pragma mark Analyse city
+- (void) analyseCity {
+    BOOL active = NO;
+    diff = 6;
+    City *city;
+    if ([selSprite.belongs count] == 0) {//cities with zero belongs (typically cities at start level)
+        active = YES;
+        diff = [[selSprite.difficulty objectAtIndex:0] intValue];//start city has only one difficulty
+    } else {
+        for (int i = 0; i < [selSprite.belongs count]; i++) {
+            int index = [[selSprite.belongs objectAtIndex:i] intValue];
+            city = [citiesArray objectAtIndex:index - 1];
+            if (city.isActive) {
+                active = YES;
+                if ([[selSprite.difficulty objectAtIndex:i] intValue] < diff) {
+                    diff = [[selSprite.difficulty objectAtIndex:i] intValue];//set diff to lowest possible value
+                }
+            }
+        }
+    }
+    if (active) {
+        [self blinkCity:selSprite];
+        singleTapGestureRecognizer.enabled = NO;
+        //TESTING
+//        selSprite.visible = YES;
+//        selSprite.isActive = YES;
+//        prog += 1;
+//        if (selSprite.idCity == 7 || selSprite.idCity == 12)
+//            percent += 6;
+//        else
+//            percent += 4;
+//        [self activateWires];
+        //TESTING
+    } 
+}
+
+#pragma mark Blink city
+- (void) blinkCity:(City *)city {
+    id blink = [CCBlink actionWithDuration:0.3 blinks:3];
+    id seq = [CCSequence actions:blink, [CCCallFunc actionWithTarget:self selector:@selector(runGame)], nil];
+    [city runAction: seq];
+}
+
+#pragma mark Run career game
+- (void) runGame {
+    //delete career game eventually in progress
+    [[[GameManager sharedGameManager] gameData] updateCareerData:NO];
+    [[[GameManager sharedGameManager] gameData] gameDataCleanup];
+    gameInfo infoData;
+    infoData.difficulty = diff;
+    infoData.activeRow = 0;
+    infoData.career = 1;
+    [[[GameManager sharedGameManager] gameData] insertGameData:infoData];
+    [GameManager sharedGameManager].gameInProgress = YES;//prenest do GameData?
+    [[[GameManager sharedGameManager] gameData] insertCareerData:selSprite.idCity xPos:zbLastPos.x yPos:zbLastPos.y];
+    [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kSlideInR];    
 }
 
 #pragma mark -
@@ -393,7 +504,7 @@ static const float POS_Y = -40;
 }
 
 #pragma mark Zooming layer - pinch callback
-- (void)zoomLayer:(float)zoomScale {
+- (void) zoomLayer:(float)zoomScale {
 	if ((zoomBase.scale*zoomScale) <= MIN_SCALE) {
 		zoomScale = MIN_SCALE/zoomBase.scale;
 	}
@@ -420,49 +531,8 @@ static const float POS_Y = -40;
     }
     selSprite = newSprite;
     if (selSprite) {
-        BOOL active = NO;
-        diff = 6;
-        City *city;
-        if ([selSprite.belongs count] == 0) {//cities with zero belongs (typically cities at start level)
-            active = YES;
-            diff = [[selSprite.difficulty objectAtIndex:0] intValue];//start city has only one difficulty
-        } else {
-            for (int i = 0; i < [selSprite.belongs count]; i++) {
-                int index = [[selSprite.belongs objectAtIndex:i] intValue];
-                city = [citiesArray objectAtIndex:index - 1];
-                if (city.isActive) {
-                    active = YES;
-                    if ([[selSprite.difficulty objectAtIndex:i] intValue] < diff) {
-                        diff = [[selSprite.difficulty objectAtIndex:i] intValue];//set diff to lowest possible value
-                    }
-                }
-            }
-        }
-        if (active) {
-            [self blinkCity:selSprite];
-            singleTapGestureRecognizer.enabled = NO;
-        }
+        [self analyseCity]; 
     }
-}
-
-#pragma mark Blink city
-- (void) blinkCity:(City *)city {
-    id blink = [CCBlink actionWithDuration:0.3 blinks:3];
-    id seq = [CCSequence actions:blink, [CCCallFunc actionWithTarget:self selector:@selector(blinkEnded)], nil];
-    [city runAction: seq];
-}
-
-#pragma mark Run career game
-- (void) blinkEnded {
-    gameInfo infoData;
-    [[[GameManager sharedGameManager] gameData] gameDataCleanup];
-    infoData.difficulty = diff;
-    infoData.activeRow = 0;
-    infoData.career = 1;
-    [[[GameManager sharedGameManager] gameData] insertGameData:infoData];
-    [GameManager sharedGameManager].gameInProgress = YES;//prenest do GameData?
-    [[[GameManager sharedGameManager] gameData] insertCareerData:selSprite.idCity];
-    [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kSlideInR];    
 }
 
 #pragma mark -

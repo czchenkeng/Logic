@@ -167,29 +167,22 @@
     [now release];
 }
 
-- (void) insertCareerData:(int)city {
+- (void) insertCareerData:(int)city xPos:(float)xPos yPos:(float)yPos {
     [db beginTransaction];
-    [db executeUpdate:@"INSERT INTO career (city, is_done) values (?, ?)", [NSNumber numberWithInt:city], [NSNumber numberWithInt:0]];
+    [db executeUpdate:@"INSERT INTO career (city, is_done, lastPosX, lastPosY) values (?, ?, ?, ?)", [NSNumber numberWithInt:city], [NSNumber numberWithInt:0], [NSNumber numberWithFloat:xPos], [NSNumber numberWithFloat:yPos]];
     [db commit];
 }
 
 - (void) updateCareerData:(BOOL)flag {
-    int row = 0;
-    rs = [db executeQuery:@"SELECT * FROM career ORDER BY id DESC LIMIT 1"];
-    if ([rs next]) {
-        row = [rs intForColumn:@"id"];
-    }
-    if (row > 0) {
-        if (flag) {//career success
-            CCLOG(@"update career");
-            [db beginTransaction];
-            [db executeUpdate:[NSString stringWithFormat:@"UPDATE career SET is_done = ? WHERE id=%i", row], [NSNumber numberWithInt:1]];
-            [db commit];
-        } else {
-            [db beginTransaction];
-            [db executeUpdate:[NSString stringWithFormat:@"DELETE FROM career WHERE id=%i", row]];
-            [db commit];
-        }
+    if (flag) {//career success
+        CCLOG(@"update career");
+        [db beginTransaction];
+        [db executeUpdate:@"UPDATE career SET is_done = 1 WHERE is_done=0"];
+        [db commit];
+    } else {
+        [db beginTransaction];
+        [db executeUpdate:@"DELETE FROM career WHERE is_done = 0"];
+        [db commit];
     }
 }
 
@@ -199,10 +192,14 @@
         CCLOG(@"total count career is %i", [rs intForColumnIndex:0]);
     }
     
-    rs = [db executeQuery:@"SELECT * FROM career WHERE is_done=1"];
+    rs = [db executeQuery:@"SELECT * FROM career WHERE is_done=1 ORDER BY id ASC"];
     NSMutableArray *retVal = [[NSMutableArray alloc] init];//release?
-    while ([rs next]) {        
-        [retVal addObject:[NSNumber numberWithInt:[rs intForColumn:@"city"]]];
+    while ([rs next]) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+        [dict setObject:[NSNumber numberWithInt:[rs intForColumn:@"city"]] forKey:@"city"];
+        [dict setObject:[NSNumber numberWithFloat:[rs doubleForColumn:@"lastPosX"]] forKey:@"posX"];
+        [dict setObject:[NSNumber numberWithFloat:[rs doubleForColumn:@"lastPosY"]] forKey:@"posY"];
+        [retVal addObject:dict];
     }
     return retVal;
 }

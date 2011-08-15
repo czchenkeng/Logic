@@ -19,6 +19,7 @@
 - (void) nextRow;
 - (void) jumpGamePlay;
 - (void) showResult;
+- (void) showColors:(id)sender data:(NSNumber *)rowObj;
 - (void) openLock;
 - (void) calculateScore;
 - (void) constructScoreLabelWithLayer:(CCLayer *)layer andArray:(CCArray *)array andRotation:(float)rotation andXpos:(float)xPos andYPos:(float)yPos;
@@ -47,6 +48,8 @@
         trans = 0;
         isWinner = NO;
         isCareer = NO;
+        CGSize screenSize = [CCDirector sharedDirector].winSizeInPixels;
+        isRetina = screenSize.height == 960.0f ? YES : NO;
         maxScore = [[[GameManager sharedGameManager] gameData] getMaxScore:currentDifficulty];
         userCode = [[NSMutableArray alloc] init];
         placeNumbers = [[CCArray alloc] init];
@@ -112,6 +115,7 @@
 #pragma mark INITIALIZATION OF LEVEL
 #pragma mark Composite method for starting level
 - (void) createGame {
+    [[GameManager sharedGameManager] playBackgroundTrack:BACKGROUND_TRACK_LEVEL];
     gameInfo infoData;
     if ([[GameManager sharedGameManager] gameInProgress]) {
         infoData = [[[GameManager sharedGameManager] gameData] getGameData];
@@ -125,7 +129,7 @@
         infoData.activeRow = 0;
         infoData.career = 0;
         [[[GameManager sharedGameManager] gameData] insertGameData:infoData];
-        [GameManager sharedGameManager].gameInProgress = YES;//prenest do game data classy?
+        //[GameManager sharedGameManager].gameInProgress = YES;//prenest do game data classy?
     }
     
     [self buildLevel];
@@ -141,13 +145,12 @@
         CCLOG(@"no career");
     }
     
-    ////////////////
-//    CCLayerColor *blackout = [Blackout node];
+//    blackout = [Blackout node];
 //    [blackout setOpacity:0.9f];
-//    id fadeOut = [CCFadeTo actionWithDuration:1 opacity:0];
+//    id fadeOut = [CCFadeTo actionWithDuration:.7 opacity:0.8];
+//    id fadeSeq = [CCSequence actions:fadeOut,[CCCallFunc actionWithTarget:self selector:@selector(blackoutCallback)], nil];
 //    [self addChild:blackout z:100];
-//    [blackout runAction:fadeOut];
-    ////////////////
+    //[blackout runAction:fadeSeq];
     
     if ([[GameManager sharedGameManager] gameInProgress]) {
         NSMutableArray *deadFigures = [[[GameManager sharedGameManager] gameData] getDeadFigures];
@@ -200,7 +203,7 @@
                 [rc moveToPosition:dataColors andMask:holderColors];
             }
         }
-        
+        [GameManager sharedGameManager].gameInProgress = YES;
         [self jumpGamePlay];
         
         [deadFigures release];
@@ -208,6 +211,10 @@
         [rows release];
         rows = nil;
     }
+}
+
+- (void) blackoutCallback {
+    //[blackout removeFromParentAndCleanup:YES];
 }
 
 #pragma mark Build level
@@ -460,20 +467,17 @@
     
     //dustSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"dust1.plist"];
     //[self addChild:dustSystem z:1000];
-    
-//    smokeSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"smoke.plist"];
-//    [self addChild:smokeSystem z:1001];
 }
 
 #pragma mark 8 figures to base 
 - (void) addFigures {    
     movableFigures = [[CCArray alloc] init];
     
-    float pinchXpos[8] = {27.55, 66.11, 104.66, 143.22, 180.77, 218.33, 256.88, 294.44};
+    float pinchXpos[8] = {30.55, 69.11, 107.66, 145.22, 182.77, 220.33, 258.88, 296.44};
     
     for (int i = 0; i < 8; ++i) {
         Figure *figure = [[Figure alloc] initWithFigureType:i];
-        figure.position = ccp(pinchXpos[i], 32.0f);
+        figure.position = ccp(pinchXpos[i], 29.0f);
         figure.originalPosition = ccp(figure.position.x, figure.position.y);
         [figuresNode addChild:figure z:i];
         [movableFigures addObject:figure];
@@ -530,7 +534,7 @@
         Figure *figure = [[Figure alloc] initWithFigureType:cheatCode];
         figure.place = i;
         figure.anchorPoint = CGPointMake(0, 0);
-        figure.position = ccp(6 + difficultyPadding*i, 10.0f);
+        figure.position = ccp(6 + difficultyPadding*i, 5.0f);
         
         Figure *cheatFigure = [[Figure alloc] initWithFigureType:cheatCode];
         cheatFigure.anchorPoint = CGPointMake(0, 0);
@@ -728,9 +732,14 @@
 #pragma mark Composite method
 - (void) endGame {
     CCLOG(@"Logic debug: END GAME");
+    //if (activeRow == 9) {
+        id actionDelay = [CCDelayTime actionWithDuration:0.2];
+        [self runAction:[CCSequence actions:actionDelay, [CCCallFuncND actionWithTarget:self selector:@selector(results:data:) data:[NSNumber numberWithInt:activeRow]], nil]];
+    //}
     [[[GameManager sharedGameManager] gameData] writeScore:[Utils randomNumberBetween:1000 andMax:99999999] andDifficulty:currentDifficulty];
     [[[GameManager sharedGameManager] gameData] gameDataCleanup];
     isMovable = NO;
+    longPress.enabled = NO;
     isWinner = currentDifficulty == places ? YES : NO;
     [[[GameManager sharedGameManager] gameData] updateCareerData:isWinner];
     [self constructEndLabels:[timer stopTimer]];
@@ -782,7 +791,8 @@
 }
 
 #pragma mark Open lock animations
-- (void) openLock {    
+- (void) openLock {
+    PLAYSOUNDEFFECT(OPEN_LOCK);
     float delay = 0.00;
     
     //faze 1
@@ -836,7 +846,7 @@
                            nil];
     CCSequence *figSeq = [CCSequence actions:
                           [CCDelayTime actionWithDuration: delay + 1.3f],
-                          [CCMoveTo actionWithDuration:.4 position:CGPointMake(figuresNode.position.x, figuresNode.position.y - 49)],
+                          [CCMoveTo actionWithDuration:.4 position:CGPointMake(figuresNode.position.x, figuresNode.position.y - 51)],
                           nil];
     CCSequence *baseSeq = [CCSequence actions:
                            [CCDelayTime actionWithDuration: delay + 1.3f],
@@ -878,21 +888,43 @@
     [clippingNode runAction:clippingSeq];
     [scoreTime runAction:scoreSeq];
     [pauseMenu runAction:pauseSeq];
+    
+    smokeSystem1 = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"smoke2.plist"];
+    smokeSystem1.autoRemoveOnFinish = YES;
+    smokeSystem1.position = ccp(70, smokeSystem1.position.y);
+    [self addChild:smokeSystem1 z:6];
+    
+    smokeSystem2 = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"smoke2.plist"];
+    smokeSystem2.autoRemoveOnFinish = YES;
+    smokeSystem2.position = ccp(250, smokeSystem2.position.y);
+    [self addChild:smokeSystem2 z:6];
+    
+    [self schedule:@selector(deleteParticle) interval:2.00];
+}
+
+- (void) deleteParticle {
+    [smokeSystem1 stopSystem];
+    [smokeSystem2 stopSystem];
+    [self unschedule:@selector(deleteParticle)];
 }
 
 - (void) openLockEnded {
+    float delayStep1 = 2.50;
+    float delayStep2 = 8.00;
+
     CGSize screenSize = [CCDirector sharedDirector].winSize;
-    CCLayerColor *blackout = [Blackout node];
+    blackout = [Blackout node];
     [blackout setOpacity:0];
     id fadeIn = [CCFadeTo actionWithDuration:0.3 opacity:128];
+    id fadeSeq = [CCSequence actions:[CCDelayTime actionWithDuration: delayStep1], fadeIn, nil];
     [self addChild:blackout z:12];
         
     CCSequence *endButtonSeq = [CCSequence actions:
-                            [CCDelayTime actionWithDuration: 0.0f],
-                            [CCMoveTo actionWithDuration:.3 position:CGPointMake(endGameMenu.position.x, endGameMenu.position.y - 60)],
-                            nil];
+                               [CCDelayTime actionWithDuration: delayStep1],
+                               [CCMoveTo actionWithDuration:.3 position:CGPointMake(endGameMenu.position.x, endGameMenu.position.y - 60)],
+                               nil];
     
-    [blackout runAction:fadeIn];
+    [blackout runAction:fadeSeq];
     [endGameMenu runAction:endButtonSeq];
     
     if (isWinner) {
@@ -907,15 +939,16 @@
         CCMoveTo *spMoveIn = [CCMoveTo actionWithDuration:.5 position:ccp(100.00, 225.00)];
         CCScaleTo *spScaleInX = [CCScaleTo actionWithDuration:.5 scaleX:1.0 scaleY:1.0];
         CCRotateTo *spRotationIn = [CCRotateTo actionWithDuration:.5 angle:-2];
-        CCSpawn *moveSpSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.0f], spMoveIn, spScaleInX, spRotationIn, nil];
-        CCSequence *spSeqIn = [CCSequence actions:moveSpSeq, [CCCallFunc actionWithTarget:self selector:@selector(spInCallback)], nil];
+        CCSpawn *moveSpSeq = [CCSpawn actions:spMoveIn, spScaleInX, spRotationIn, nil];
+        CCSequence *spSeqIn = [CCSequence actions:[CCDelayTime actionWithDuration: delayStep2], moveSpSeq, [CCCallFunc actionWithTarget:self selector:@selector(spInCallback)], nil];
         
         CCSequence *scoreTimeSeq = [CCSequence actions:
-                                    [CCDelayTime actionWithDuration: 0.0f],
+                                    [CCDelayTime actionWithDuration: delayStep2],
                                     [CCMoveTo actionWithDuration:.3 position:CGPointMake(scoreTime.position.x, scoreTime.position.y - 30)],
                                     nil];
         
         CCLabelBMFont *movesLabelBig = [CCLabelBMFont labelWithString:@"MOVES:" fntFile:@"Gloucester_levelBig.fnt"];
+        movesLabelBig.scale = isRetina ? 1 : 0.5;
         movesLabelBig.opacity = 0;
         movesLabelBig.rotation = -2;
         movesLabelBig.position = ccp(screenSize.width/2 - 15, screenSize.height/2 + 40);
@@ -930,6 +963,7 @@
                                     nil];
         
         CCLabelBMFont *timeLabelBig = [CCLabelBMFont labelWithString:@"TIME BONUS:" fntFile:@"Gloucester_levelBig.fnt"];
+        timeLabelBig.scale = isRetina ? 1 : 0.5;
         timeLabelBig.opacity = 0;
         timeLabelBig.rotation = -2;
         timeLabelBig.position = ccp(screenSize.width/2 - 15, screenSize.height/2 + 40);
@@ -944,6 +978,7 @@
                                        nil];
         if (score < maxScore) {
             wdBig = [CCLabelBMFont labelWithString:@"WELL DONE!" fntFile:@"Gloucester_levelBig.fnt"];
+            wdBig.scale = isRetina ? 1 : 0.5;
             wdBig.opacity = 0;
             wdBig.rotation = -2;
             wdBig.position = ccp(screenSize.width/2 - 15, screenSize.height/2 + 40);
@@ -955,12 +990,14 @@
             [wdBig runAction:wdSeq];
         } else {
             superBig = [CCLabelBMFont labelWithString:@"EXCELLENT!" fntFile:@"Gloucester_levelBig.fnt"];
+            superBig.scale = isRetina ? 1 : 0.5;
             superBig.opacity = 0;
             superBig.rotation = -2;
             superBig.position = ccp(screenSize.width/2 - 15, screenSize.height/2 + 65);
             [self addChild:superBig z:21];
             
             superSmall = [CCLabelBMFont labelWithString:@"NEW HIGH SCORE" fntFile:@"Gloucester_levelSmall.fnt"];
+            superSmall.scale = isRetina ? 1 : 0.5;
             superSmall.opacity = 0;
             superSmall.rotation = -2;
             superSmall.position = ccp(screenSize.width/2 - 15, screenSize.height/2 + 40);
@@ -985,16 +1022,18 @@
         [movesLabelBig runAction:movesTimeOutSeq];
         [timeLabelBig runAction:movesTime2Seq];
         [timeLabelBig runAction:movesTimeOut2Seq];
-        [self moves:0.8];
-        [self timeBonus:2.5];
+        //[self moves:0.8];
+        //[self timeBonus:2.5];
     } else {
         failLabelSmall = [CCLabelBMFont labelWithString:@"THIS CODE WAS TOUGH" fntFile:@"Gloucester_levelSmall.fnt"];
+        failLabelSmall.scale = isRetina ? 1 : 0.5;
         failLabelSmall.opacity = 0;
         failLabelSmall.rotation = -2;
         failLabelSmall.position = ccp(screenSize.width/2 - 15, screenSize.height/2);
         [self addChild:failLabelSmall z:30];
         
         failLabelBig = [CCLabelBMFont labelWithString:@"TRY IT AGAIN!" fntFile:@"Gloucester_levelBig.fnt"];
+        failLabelBig.scale = isRetina ? 1 : 0.5;
         failLabelBig.opacity = 0;
         failLabelBig.rotation = -2;
         failLabelBig.position = ccp(screenSize.width/2 - 15, screenSize.height/2 - 25);
@@ -1009,33 +1048,33 @@
     
 }
 
-- (void) moves:(float)delay {
-    CGSize screenSize = [CCDirector sharedDirector].winSize;
-    [self drawScoreToLabel:score andArray:finalScoreArray];
-    int i = 0;
-    for (CCSprite *scoreSprite in movingScore) {
-        id moveSeq = [CCSpawn actions:
-                        //[CCDelayTime actionWithDuration: delay + i*0.1f],
-                        [CCMoveTo actionWithDuration:.2 position:ccp(screenSize.width /2 + 50 , screenSize.height/2 - 100)],
-                        [CCFadeOut actionWithDuration:.2], nil];
-        id delaySeq = [CCSequence actions:[CCDelayTime actionWithDuration: delay + i*0.1f], moveSeq, nil];
-        [scoreSprite runAction:delaySeq];
-        i++;
-    }
-}
-
-- (void) timeBonus:(float)delay {
-    CGSize screenSize = [CCDirector sharedDirector].winSize;
-    int i = 0;
-    for (CCSprite *timeSprite in movingTime) {
-        id moveSeq = [CCSpawn actions:
-                      [CCMoveTo actionWithDuration:.2 position:ccp(screenSize.width /2 - 50 , screenSize.height/2 - 100)],
-                      [CCFadeOut actionWithDuration:.2], nil];
-        id delaySeq = [CCSequence actions:[CCDelayTime actionWithDuration: delay + i*0.1f], moveSeq, nil];
-        [timeSprite runAction:delaySeq];
-        i++;
-    }
-}
+//- (void) moves:(float)delay {
+//    CGSize screenSize = [CCDirector sharedDirector].winSize;
+//    [self drawScoreToLabel:score andArray:finalScoreArray];
+//    int i = 0;
+//    for (CCSprite *scoreSprite in movingScore) {
+//        id moveSeq = [CCSpawn actions:
+//                        //[CCDelayTime actionWithDuration: delay + i*0.1f],
+//                        [CCMoveTo actionWithDuration:.2 position:ccp(screenSize.width /2 + 50 , screenSize.height/2 - 100)],
+//                        [CCFadeOut actionWithDuration:.2], nil];
+//        id delaySeq = [CCSequence actions:[CCDelayTime actionWithDuration: delay + i*0.1f], moveSeq, nil];
+//        [scoreSprite runAction:delaySeq];
+//        i++;
+//    }
+//}
+//
+//- (void) timeBonus:(float)delay {
+//    CGSize screenSize = [CCDirector sharedDirector].winSize;
+//    int i = 0;
+//    for (CCSprite *timeSprite in movingTime) {
+//        id moveSeq = [CCSpawn actions:
+//                      [CCMoveTo actionWithDuration:.2 position:ccp(screenSize.width /2 - 50 , screenSize.height/2 - 100)],
+//                      [CCFadeOut actionWithDuration:.2], nil];
+//        id delaySeq = [CCSequence actions:[CCDelayTime actionWithDuration: delay + i*0.1f], moveSeq, nil];
+//        [timeSprite runAction:delaySeq];
+//        i++;
+//    }
+//}
 
 - (void) spInCallback {
     finalScoreLabel.visible = YES;
@@ -1086,7 +1125,7 @@
     [[[GameManager sharedGameManager] gameData] insertRow:row];
     
     
-    [self showResult];
+    //[self showResult];
     [self calculateScore];
     if (places == currentDifficulty || activeRow == 9) {
         [self endGame];
@@ -1095,30 +1134,42 @@
     }
 }
 
-- (void) showResult {
-    CCSprite *greenLight = [greenLights objectAtIndex:activeRow];
+- (void) showResult:(int)row {
+    float delay = 0.0f;
+    CCSprite *greenLight = [greenLights objectAtIndex:row];
     if (places > 0) {
+        delay = 1.0f;
         id fadeToGreen = [CCFadeTo actionWithDuration:0.5f opacity:255];
-        [greenLight runAction:fadeToGreen]; 
+        [greenLight runAction:fadeToGreen];
+        PLAYSOUNDEFFECT(SHOW_RESULT_GREEN);
     }   
-    RowStaticScore *place = [placeNumbers objectAtIndex:activeRow];
+    RowStaticScore *place = [placeNumbers objectAtIndex:row];
     [place showNumber:places];
-    Mask *holderPlace = [Mask maskWithRect:CGRectMake(greenLight.position.x - 3, greenLight.position.y + 8, 9, 18)];
-    [clippingNode addChild:holderPlace z:21 + activeRow];
+    Mask *holderPlace = [Mask maskWithRect:CGRectMake(greenLight.position.x - 3, greenLight.position.y + trans + 8, 9, 18)];
+    [self addChild:holderPlace z:100 + row];
     RowScore *rs = [[RowScore alloc] init];
     [holderPlace addChild:rs z:1];
     [rs moveToPosition:places andMask:holderPlace];
-    
-    
-    CCSprite *orangeLight = [orangeLights objectAtIndex:activeRow];
+        
+    CCSprite *orangeLight = [orangeLights objectAtIndex:row];
     if (colors > 0) {
-        id fadeToOrange = [CCFadeTo actionWithDuration:0.5f opacity:255];
+        id spawnOrange = [CCSpawn actions:[CCFadeTo actionWithDuration:0.5f opacity:255], [CCCallFuncND actionWithTarget:self selector:@selector(showColors:data:) data:[NSNumber numberWithInt:row]], nil];
+        id fadeToOrange = [CCSequence actions:[CCDelayTime actionWithDuration: delay], spawnOrange, nil];
         [orangeLight runAction:fadeToOrange];
-    }    
-    RowStaticScore *color = [colorNumbers objectAtIndex:activeRow];
+    } else {
+        [self showColors:nil data:[NSNumber numberWithInt:row]];
+    }
+}
+
+- (void) showColors:(id)sender data:(NSNumber *)rowObj {
+    if (colors > 0)
+        PLAYSOUNDEFFECT(SHOW_RESULT_YELLOW);
+    int row = [rowObj intValue];
+    CCSprite *orangeLight = [orangeLights objectAtIndex:row];
+    RowStaticScore *color = [colorNumbers objectAtIndex:row];
     [color showNumber:colors];
-    Mask *holderColors = [Mask maskWithRect:CGRectMake(orangeLight.position.x - 5, orangeLight.position.y + 8, 9, 18)];
-    [clippingNode addChild:holderColors z:21 + activeRow];
+    Mask *holderColors = [Mask maskWithRect:CGRectMake(orangeLight.position.x - 5, orangeLight.position.y + trans + 8, 9, 18)];
+    [self addChild:holderColors z:100 + row];
     RowScore *rc = [[RowScore alloc] init];
     [holderColors addChild:rc z:1];
     [rc moveToPosition:colors andMask:holderColors];
@@ -1163,20 +1214,22 @@
     }
 }
 
-- (void) swipeEnd {
-//    [movableNode setPosition:ccp(movableNode.position.x, -90)];
-//    [clippingNode setPosition:ccp(clippingNode.position.x, -90)];
-}
-
 - (void) nextRow {
     [userCode removeAllObjects];
+    
+    id actionDelay = [CCDelayTime actionWithDuration:0.2];
+	[self runAction:[CCSequence actions:actionDelay, [CCCallFuncND actionWithTarget:self selector:@selector(results:data:) data:[NSNumber numberWithInt:activeRow]], nil]];
+    
     activeRow ++;
     [self constructRowWithIndex:activeRow];
     [self jumpGamePlay];
 }
 
+- (void) results:(id)sender data:(NSNumber *)row {
+    [self showResult:[row intValue]];
+}
+
 - (void) jumpGamePlay {
-    CCLOG(@"jump %i", activeRow);
     if (activeRow >= LEVEL_SWIPE_AFTER_ROW) {
         isMovable = YES;
     }
@@ -1189,8 +1242,8 @@
     }
     
     if (activeRow == 7 || activeRow >= 8) {
-        id move = [CCMoveTo actionWithDuration:.3 position:CGPointMake(movableNode.position.x, jump)];
-        id move1 = [CCMoveTo actionWithDuration:.3 position:CGPointMake(clippingNode.position.x, jump)];
+        id move = [CCMoveTo actionWithDuration:.2 position:CGPointMake(movableNode.position.x, jump)];
+        id move1 = [CCMoveTo actionWithDuration:.2 position:CGPointMake(clippingNode.position.x, jump)];
         [movableNode runAction:move];
         [clippingNode runAction:move1];
         
@@ -1248,7 +1301,8 @@
 
 #pragma mark -
 #pragma mark END FIGURE MOVE
-- (void) figureMoveEnded:(id)sender data:(Figure *)sprite {    
+- (void) figureMoveEnded:(id)sender data:(Figure *)sprite {
+    PLAYSOUNDEFFECT(FIGURE_MOVE);
     highlightSprite.visible = NO;
     
     //new figure to base
@@ -1352,12 +1406,12 @@
             if (selSprite.isOnActiveRow) {
                 [self swapFigure:selSprite];
                 moveSeq = [CCSequence actions:
-                           [CCMoveTo actionWithDuration:.03*activeRow position:CGPointMake(targetSprite.position.x + 0.5, targetSprite.position.y + 6 + trans)],
+                           [CCMoveTo actionWithDuration:.03*activeRow position:CGPointMake(targetSprite.position.x + 2.5, targetSprite.position.y + 5 + trans)],
                            [CCCallFuncND actionWithTarget:self selector:@selector(figureSetCorrectPosition:data:) data:selSprite],
                            nil];
             } else {
                 moveSeq = [CCSequence actions:
-                           [CCMoveTo actionWithDuration:0.03*activeRow position:CGPointMake(targetSprite.position.x + 0.5, targetSprite.position.y + 6 + trans)],
+                           [CCMoveTo actionWithDuration:0.03*activeRow position:CGPointMake(targetSprite.position.x + 2.5, targetSprite.position.y + 5 + trans)],
                            [CCCallFuncND actionWithTarget:self selector:@selector(figureMoveEnded:data:) data:selSprite],
                            nil];
             }
@@ -1406,6 +1460,7 @@
         translation = ccp(translation.x, -translation.y);
         if (abs(translation.x) > 30 && !selSprite) {
             if (isEndRow) {
+                PLAYSOUNDEFFECT(ROW_SWIPE);
                 isEndRow = NO;
                 [self generateDeadRow];
                 [self endOfRow];
@@ -1419,6 +1474,7 @@
                 touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
                 touchLocation = [self convertToNodeSpace:touchLocation];
                 if (isMovable && translation.y > 0 && touchLocation.y > MIN_DISTANCE_SWIPE_Y) {
+                    longPress.enabled = NO;
                     [movableNode setPosition:[self boundMovePos:translation withPosition:ccp(0, 0) andNode:movableNode]];
                     [clippingNode setPosition:[self boundMovePos:translation withPosition:ccp(0, 0) andNode:clippingNode]];
                     for (Figure *figure in movableFigures) {
@@ -1435,6 +1491,7 @@
 
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
         if (isMovable && [movableNode numberOfRunningActions] == 0 && movableNode.position.y > jump) {
+            longPress.enabled = YES;
             id move = [CCMoveTo actionWithDuration:.1 position:CGPointMake(movableNode.position.x, jump)];
             id move1 = [CCMoveTo actionWithDuration:.1 position:CGPointMake(clippingNode.position.x, jump)];
             [movableNode runAction:move];

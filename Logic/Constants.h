@@ -7,14 +7,11 @@
 //
 
 #define MIN_DISTANCE_SWIPE_X 200
-#define MIN_DISTANCE_SWIPE_Y 80
+#define MIN_DISTANCE_SWIPE_Y 120
 #define LEVEL_SWIPE_AFTER_ROW 7
 #define LEVEL_DEAD_FIGURES_MASK_HEIGHT 5
 #define LEVEL_DISLOCATION 40
 #define LEVEL_FIGURE_MAX_Y_MOVE 400
-
-#define AUDIO_MAX_WAITTIME 150
-#define BACKGROUND_TRACK_MAIN @"main_theme.mp3"
 
 #define LEFT_BUTTON_TOP_X 33.00
 #define LEFT_BUTTON_TOP_Y 481.00
@@ -107,6 +104,12 @@ typedef enum {
     kFigureZoom
 } ActionTypes;
 
+//MUSIC, SOUNDS
+#define AUDIO_MAX_WAITTIME 150
+#define BACKGROUND_TRACK_MAIN @"main_theme.mp3"
+//#define BACKGROUND_TRACK_LEVEL @"Logic-level-ambient.mp3"
+#define BACKGROUND_TRACK_LEVEL @"krtz_loop.mp3"
+
 typedef enum {
     kAudioManagerUninitialized = 0,
     kAudioManagerFailed = 1,
@@ -116,3 +119,18 @@ typedef enum {
     kAudioManagerReady = 300
     
 } GameManagerSoundState;
+
+#define SFX_NOTLOADED NO
+#define SFX_LOADED YES
+
+#define PLAYSOUNDEFFECT(...) [[GameManager sharedGameManager] playSoundEffect:@#__VA_ARGS__]
+#define STOPSOUNDEFFECT(...) [[GameManager sharedGameManager] stopSoundEffect:@#__VA_ARGS__]
+
+
+
+
+
+
+
+
+

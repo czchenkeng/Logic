@@ -41,7 +41,7 @@ FMResultSet *rs;
 - (NSMutableArray *) getRows;
 
 //write career
-- (void) insertCareerData:(int)city;
+- (void) insertCareerData:(int)city xPos:(float)xPos yPos:(float)yPos;
 - (void) updateCareerData:(BOOL)flag;
 
 //read career

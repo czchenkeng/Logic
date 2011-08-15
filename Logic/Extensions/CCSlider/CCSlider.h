@@ -35,7 +35,8 @@
 static const NSInteger kCCSliderPriority = kCCMenuTouchPriority - 2;
 
 @protocol CCSliderControlDelegate  
-- (void) valueChanged: (float) value tag: (int) tag;  
+- (void) valueChanged: (float) value tag: (int) tag;
+- (void) valueEnded: (float) value tag: (int) tag;
 @end  
 
 @interface CCSlider : CCLayer 

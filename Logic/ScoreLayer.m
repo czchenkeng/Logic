@@ -24,7 +24,8 @@
 }
 
 
-- (void) buttonTapped:(CCMenuItem *)sender { 
+- (void) buttonTapped:(CCMenuItem *)sender {
+    PLAYSOUNDEFFECT(BUTTON_SCORE_CLICK);
     switch (sender.tag) {
         case kButtonBack:
             tableWrapper.visible = NO;
@@ -38,6 +39,7 @@
 }
 
 - (void) diffTapped:(CCMenuItem *)sender {
+    PLAYSOUNDEFFECT(JOYSTICK_SCORE_CLICK);
     int flag;
     switch (sender.tag) {
         case kEasy: 

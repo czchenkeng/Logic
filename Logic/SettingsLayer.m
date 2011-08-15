@@ -18,6 +18,7 @@ enum soundTags
 @implementation SettingsLayer
 
 - (void) buttonTapped:(CCMenuItem *)sender { 
+    PLAYSOUNDEFFECT(BUTTON_SETTINGS_CLICK);
     switch (sender.tag) {
         case kButtonScore: 
             CCLOG(@"TAP ON SCORE");
@@ -38,6 +39,7 @@ enum soundTags
 }
 
 - (void) diffTapped:(CCMenuItem *)sender {
+    PLAYSOUNDEFFECT(JOYSTICK_SETTINGS_CLICK);
     int flag;
     switch (sender.tag) {
         case kEasy: 
@@ -101,6 +103,7 @@ enum soundTags
 - (id) init {
     self = [super init];
     if (self != nil) {
+        CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
         difficulty = [[CCArray alloc] init];
         joysticks = [[CCArray alloc] init];
         
@@ -285,7 +288,6 @@ enum soundTags
 - (void) valueChanged:(float)value tag:(int)tag {
     value = MIN(value, 1.0f);
     value = MAX(value, 0.0f);
-
     switch (tag) {
         case kMusicSliderTag:
             [GameManager sharedGameManager].musicVolume = value;
@@ -298,6 +300,11 @@ enum soundTags
     }
 }
 
+- (void) valueEnded:(float)value tag:(int)tag{
+    if (tag == kSoundSliderTag) 
+        PLAYSOUNDEFFECT(BUTTON_SETTINGS_CLICK);    
+    [[GameManager sharedGameManager] updateSettings];
+}
 
 - (void) selectJoystick:(CGPoint)touchLocation {
     CCSprite *newSprite = nil;

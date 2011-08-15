@@ -19,22 +19,22 @@
     
     CCArray *citiesArray;
     CCArray *wiresArray;
-    City *selSprite;
-    CCSprite *background;
+    CCArray *percentLabelArray;
     
     CCSprite *infoPanel;
+    CCSprite *background;
+    City *selSprite;
+    CCSprite *progressBar;
     
-    int buttonWidth;
-    int buttonHeight;
+    int buttonWidth;//zatim nefachci - mrknout se
+    int buttonHeight;//zatim nefachci - mrknout se
     
     CCMenuItem *infoOff;
     CCMenuItem *infoOn;
-    
-    CCSprite *progressBar;
+        
     int prog;
-    float total;
-    int percent;
-    CCArray *percentLabelArray;
+    float total;//progress bar width
+    int percent;    
     BOOL panelActive;
     
     int diff;//default diff
@@ -46,3 +46,11 @@
 }
 
 @end
+
+/*
+Nova kariera - existuje rozehrana s 0? Pokud ano a tapnu na mesto, tak vymazat z dbase a nahodit s novym mestem (muze byt stejne, checkovat to nebudu)
+reset (new) game z pauzy, reload game (tady asi ne, k tomuto buttonu se dostanu az po dokonceni levelu) - vymazat hrani kariery?
+ game - code fail - vymazat karieru? asi ano, opet posledni radek pokud je is_done 0
+ u klasicky rozehrane hry kariera zustava
+ 
+ */

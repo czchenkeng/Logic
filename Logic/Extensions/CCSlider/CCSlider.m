@@ -117,10 +117,10 @@
 - (void) setValue:(float) newValue
 {
 	// set new value with sentinel
-    if (newValue < 0) 
+    if (newValue < 0.05) 
 		newValue = 0;
 	
-    if (newValue > 1.0) 
+    if (newValue > 0.95) 
 		newValue = 1.0;
 	
     value = newValue;
@@ -191,11 +191,12 @@
     CGPoint pos = thumb.position;
     pos.x = location.x;
     thumb.position = pos;
-    //self.value = (thumb.position.x - minX) / (maxX - minX);
+    self.value = (thumb.position.x - minX) / (maxX - minX);
 }
 
 -(void) ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
+    [delegate valueEnded:value tag:self.tag];
     CCSprite *thumb = (CCSprite *)[[self children] objectAtIndex:1];
     [_thumb unselected];
     self.value = (thumb.position.x - minX) / (maxX - minX);

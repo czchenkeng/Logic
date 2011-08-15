@@ -50,6 +50,24 @@
 		A315E0AF1393931300331118 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = A315E0AE1393931200331118 /* Utils.m */; };
 		A317982D13DFDADD00FB51D7 /* 2x2.png in Resources */ = {isa = PBXBuildFile; fileRef = A317982C13DFDADD00FB51D7 /* 2x2.png */; };
 		A317983113DFEF3800FB51D7 /* PercentNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = A317983013DFEF3800FB51D7 /* PercentNumber.m */; };
+		A317D26A13F6EBBA0013311D /* SoundEffects2.plist in Resources */ = {isa = PBXBuildFile; fileRef = A317D26913F6EBBA0013311D /* SoundEffects2.plist */; };
+		A317D27F13F71EDA0013311D /* main_theme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D27613F71EDA0013311D /* main_theme.mp3 */; };
+		A317D28013F71EDA0013311D /* Logic-intro&main-dest.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D27913F71EDA0013311D /* Logic-intro&main-dest.mp3 */; };
+		A317D28113F71EDA0013311D /* Logic-main-button_click.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D27A13F71EDA0013311D /* Logic-main-button_click.mp3 */; };
+		A317D28213F71EDA0013311D /* Logic-main-vrzani_lampy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D27B13F71EDA0013311D /* Logic-main-vrzani_lampy.mp3 */; };
+		A317D28313F71EDA0013311D /* Logic-options-paka.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D27D13F71EDA0013311D /* Logic-options-paka.mp3 */; };
+		A317D28413F71EDA0013311D /* Logic-settings-button_click.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D27E13F71EDA0013311D /* Logic-settings-button_click.mp3 */; };
+		A317D28813F727900013311D /* Logic-score-button_click.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D28613F727900013311D /* Logic-score-button_click.mp3 */; };
+		A317D28913F727900013311D /* Logic-score-paka.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D28713F727900013311D /* Logic-score-paka.mp3 */; };
+		A317D2C713F7B7890013311D /* Logic-level-ambient.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D2C613F7B7890013311D /* Logic-level-ambient.mp3 */; };
+		A317D2CA13F7B8C70013311D /* Logic-level-pincl_usazeni.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D2C913F7B8C70013311D /* Logic-level-pincl_usazeni.mp3 */; };
+		A317D2CC13F7BF2D0013311D /* Logic-level-swipe.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D2CB13F7BF2D0013311D /* Logic-level-swipe.mp3 */; };
+		A317D2CE13F7F0380013311D /* bliknuti_zarovka.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A317D2CD13F7F0380013311D /* bliknuti_zarovka.m4v */; };
+		A317D2D013F7F62E0013311D /* ClockTickTock.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D2CF13F7F62E0013311D /* ClockTickTock.mp3 */; };
+		A317D2D213F845B40013311D /* Logic-valve.m4a in Resources */ = {isa = PBXBuildFile; fileRef = A317D2D113F845B40013311D /* Logic-valve.m4a */; };
+		A317D2D513F8474D0013311D /* BellChimeGreen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D2D313F8474D0013311D /* BellChimeGreen.mp3 */; };
+		A317D2D613F8474D0013311D /* BellChimeYellow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D2D413F8474D0013311D /* BellChimeYellow.mp3 */; };
+		A317D2D813F880350013311D /* krtz_loop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D2D713F880350013311D /* krtz_loop.mp3 */; };
 		A31B614713958F5100FE697F /* Main_rain.plist in Resources */ = {isa = PBXBuildFile; fileRef = A31B614613958F5100FE697F /* Main_rain.plist */; };
 		A31B61491395911B00FE697F /* particleTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = A31B61481395911B00FE697F /* particleTexture.png */; };
 		A31B614B1395914900FE697F /* Main_rain-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A31B614A1395914900FE697F /* Main_rain-hd.plist */; };
@@ -196,6 +214,8 @@
 		A32DA85413CA0A9B00F40754 /* dust1-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A32DA85013CA0A9B00F40754 /* dust1-hd.plist */; };
 		A32DA85713CA0E2D00F40754 /* smokeTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = A32DA85513CA0E2C00F40754 /* smokeTexture.png */; };
 		A32DA85813CA0E2D00F40754 /* smoke.plist in Resources */ = {isa = PBXBuildFile; fileRef = A32DA85613CA0E2D00F40754 /* smoke.plist */; };
+		A32E1D1E13F43FA500856D97 /* smoke2.plist in Resources */ = {isa = PBXBuildFile; fileRef = A32E1D1D13F43FA500856D97 /* smoke2.plist */; };
+		A32E1D2013F4427F00856D97 /* smoke2-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A32E1D1F13F4427F00856D97 /* smoke2-hd.plist */; };
 		A3301BFA13B2476B0059A40B /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A3301BF913B2476B0059A40B /* libsqlite3.0.dylib */; };
 		A332471613E9591A007D0A25 /* Gloucester_levelSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = A332471413E9591A007D0A25 /* Gloucester_levelSmall.png */; };
 		A332471713E9591A007D0A25 /* Gloucester_levelSmall.fnt in Resources */ = {isa = PBXBuildFile; fileRef = A332471513E9591A007D0A25 /* Gloucester_levelSmall.fnt */; };
@@ -222,8 +242,8 @@
 		A35D80181395472800B07F39 /* Hq-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A35D80151395472800B07F39 /* Hq-hd.plist */; };
 		A35D80191395472800B07F39 /* Hq.plist in Resources */ = {isa = PBXBuildFile; fileRef = A35D80161395472800B07F39 /* Hq.plist */; };
 		A35D801A1395472800B07F39 /* Hq.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = A35D80171395472800B07F39 /* Hq.pvr.ccz */; };
-		A35D801D1395675F00B07F39 /* main_theme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A35D801C1395675F00B07F39 /* main_theme.mp3 */; };
 		A35F3EF51387CC7700F5D71A /* GameplayLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A35F3EF41387CC7700F5D71A /* GameplayLayer.m */; };
+		A367C63313F3E1DE00F0209E /* SoundEffects.plist in Resources */ = {isa = PBXBuildFile; fileRef = A367C63213F3E1DE00F0209E /* SoundEffects.plist */; };
 		A375153313DB5D5300CE2077 /* Cities.json in Resources */ = {isa = PBXBuildFile; fileRef = A375153213DB5D5300CE2077 /* Cities.json */; };
 		A37949A51376F663002E53FD /* GameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A37949A41376F663002E53FD /* GameManager.m */; };
 		A37C371613C8669700F54EB4 /* HowToLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A37C371513C8669700F54EB4 /* HowToLayer.m */; };
@@ -341,6 +361,24 @@
 		A317982C13DFDADD00FB51D7 /* 2x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2x2.png; sourceTree = "<group>"; };
 		A317982F13DFEF3800FB51D7 /* PercentNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PercentNumber.h; sourceTree = "<group>"; };
 		A317983013DFEF3800FB51D7 /* PercentNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PercentNumber.m; sourceTree = "<group>"; };
+		A317D26913F6EBBA0013311D /* SoundEffects2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SoundEffects2.plist; sourceTree = "<group>"; };
+		A317D27613F71EDA0013311D /* main_theme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = main_theme.mp3; sourceTree = "<group>"; };
+		A317D27913F71EDA0013311D /* Logic-intro&main-dest.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-intro&main-dest.mp3"; sourceTree = "<group>"; };
+		A317D27A13F71EDA0013311D /* Logic-main-button_click.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-main-button_click.mp3"; sourceTree = "<group>"; };
+		A317D27B13F71EDA0013311D /* Logic-main-vrzani_lampy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-main-vrzani_lampy.mp3"; sourceTree = "<group>"; };
+		A317D27D13F71EDA0013311D /* Logic-options-paka.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-options-paka.mp3"; sourceTree = "<group>"; };
+		A317D27E13F71EDA0013311D /* Logic-settings-button_click.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-settings-button_click.mp3"; sourceTree = "<group>"; };
+		A317D28613F727900013311D /* Logic-score-button_click.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-score-button_click.mp3"; sourceTree = "<group>"; };
+		A317D28713F727900013311D /* Logic-score-paka.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-score-paka.mp3"; sourceTree = "<group>"; };
+		A317D2C613F7B7890013311D /* Logic-level-ambient.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-level-ambient.mp3"; sourceTree = "<group>"; };
+		A317D2C913F7B8C70013311D /* Logic-level-pincl_usazeni.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-level-pincl_usazeni.mp3"; sourceTree = "<group>"; };
+		A317D2CB13F7BF2D0013311D /* Logic-level-swipe.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-level-swipe.mp3"; sourceTree = "<group>"; };
+		A317D2CD13F7F0380013311D /* bliknuti_zarovka.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = bliknuti_zarovka.m4v; sourceTree = "<group>"; };
+		A317D2CF13F7F62E0013311D /* ClockTickTock.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ClockTickTock.mp3; sourceTree = "<group>"; };
+		A317D2D113F845B40013311D /* Logic-valve.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Logic-valve.m4a"; sourceTree = "<group>"; };
+		A317D2D313F8474D0013311D /* BellChimeGreen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = BellChimeGreen.mp3; sourceTree = "<group>"; };
+		A317D2D413F8474D0013311D /* BellChimeYellow.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = BellChimeYellow.mp3; sourceTree = "<group>"; };
+		A317D2D713F880350013311D /* krtz_loop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = krtz_loop.mp3; sourceTree = "<group>"; };
 		A31B614613958F5100FE697F /* Main_rain.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Main_rain.plist; sourceTree = "<group>"; };
 		A31B61481395911B00FE697F /* particleTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = particleTexture.png; sourceTree = "<group>"; };
 		A31B614A1395914900FE697F /* Main_rain-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Main_rain-hd.plist"; sourceTree = "<group>"; };
@@ -624,6 +662,8 @@
 		A32DA85013CA0A9B00F40754 /* dust1-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "dust1-hd.plist"; sourceTree = "<group>"; };
 		A32DA85513CA0E2C00F40754 /* smokeTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smokeTexture.png; sourceTree = "<group>"; };
 		A32DA85613CA0E2D00F40754 /* smoke.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = smoke.plist; sourceTree = "<group>"; };
+		A32E1D1D13F43FA500856D97 /* smoke2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = smoke2.plist; sourceTree = "<group>"; };
+		A32E1D1F13F4427F00856D97 /* smoke2-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "smoke2-hd.plist"; sourceTree = "<group>"; };
 		A3301BF913B2476B0059A40B /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		A332471413E9591A007D0A25 /* Gloucester_levelSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Gloucester_levelSmall.png; sourceTree = "<group>"; };
 		A332471513E9591A007D0A25 /* Gloucester_levelSmall.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Gloucester_levelSmall.fnt; sourceTree = "<group>"; };
@@ -656,9 +696,9 @@
 		A35D80151395472800B07F39 /* Hq-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Hq-hd.plist"; sourceTree = "<group>"; };
 		A35D80161395472800B07F39 /* Hq.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Hq.plist; sourceTree = "<group>"; };
 		A35D80171395472800B07F39 /* Hq.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = Hq.pvr.ccz; sourceTree = "<group>"; };
-		A35D801C1395675F00B07F39 /* main_theme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = main_theme.mp3; sourceTree = "<group>"; };
 		A35F3EF31387CC7600F5D71A /* GameplayLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameplayLayer.h; sourceTree = "<group>"; };
 		A35F3EF41387CC7700F5D71A /* GameplayLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameplayLayer.m; sourceTree = "<group>"; };
+		A367C63213F3E1DE00F0209E /* SoundEffects.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SoundEffects.plist; sourceTree = "<group>"; };
 		A375153213DB5D5300CE2077 /* Cities.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cities.json; sourceTree = "<group>"; };
 		A37949A21376F485002E53FD /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		A37949A31376F663002E53FD /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
@@ -821,9 +861,90 @@
 			name = Settings;
 			sourceTree = "<group>";
 		};
+		A317D27413F71EDA0013311D /* background */ = {
+			isa = PBXGroup;
+			children = (
+				A317D2C513F7B7890013311D /* level */,
+				A317D27513F71EDA0013311D /* main */,
+			);
+			path = background;
+			sourceTree = "<group>";
+		};
+		A317D27513F71EDA0013311D /* main */ = {
+			isa = PBXGroup;
+			children = (
+				A317D27613F71EDA0013311D /* main_theme.mp3 */,
+			);
+			path = main;
+			sourceTree = "<group>";
+		};
+		A317D27713F71EDA0013311D /* sfx */ = {
+			isa = PBXGroup;
+			children = (
+				A317D2C813F7B8C70013311D /* level */,
+				A317D28513F727900013311D /* score */,
+				A317D27813F71EDA0013311D /* main */,
+				A317D27C13F71EDA0013311D /* settings */,
+			);
+			path = sfx;
+			sourceTree = "<group>";
+		};
+		A317D27813F71EDA0013311D /* main */ = {
+			isa = PBXGroup;
+			children = (
+				A317D2CD13F7F0380013311D /* bliknuti_zarovka.m4v */,
+				A317D27913F71EDA0013311D /* Logic-intro&main-dest.mp3 */,
+				A317D27A13F71EDA0013311D /* Logic-main-button_click.mp3 */,
+				A317D27B13F71EDA0013311D /* Logic-main-vrzani_lampy.mp3 */,
+			);
+			path = main;
+			sourceTree = "<group>";
+		};
+		A317D27C13F71EDA0013311D /* settings */ = {
+			isa = PBXGroup;
+			children = (
+				A317D27D13F71EDA0013311D /* Logic-options-paka.mp3 */,
+				A317D27E13F71EDA0013311D /* Logic-settings-button_click.mp3 */,
+			);
+			path = settings;
+			sourceTree = "<group>";
+		};
+		A317D28513F727900013311D /* score */ = {
+			isa = PBXGroup;
+			children = (
+				A317D28613F727900013311D /* Logic-score-button_click.mp3 */,
+				A317D28713F727900013311D /* Logic-score-paka.mp3 */,
+			);
+			path = score;
+			sourceTree = "<group>";
+		};
+		A317D2C513F7B7890013311D /* level */ = {
+			isa = PBXGroup;
+			children = (
+				A317D2D713F880350013311D /* krtz_loop.mp3 */,
+				A317D2C613F7B7890013311D /* Logic-level-ambient.mp3 */,
+			);
+			path = level;
+			sourceTree = "<group>";
+		};
+		A317D2C813F7B8C70013311D /* level */ = {
+			isa = PBXGroup;
+			children = (
+				A317D2D313F8474D0013311D /* BellChimeGreen.mp3 */,
+				A317D2D413F8474D0013311D /* BellChimeYellow.mp3 */,
+				A317D2D113F845B40013311D /* Logic-valve.m4a */,
+				A317D2CF13F7F62E0013311D /* ClockTickTock.mp3 */,
+				A317D2CB13F7BF2D0013311D /* Logic-level-swipe.mp3 */,
+				A317D2C913F7B8C70013311D /* Logic-level-pincl_usazeni.mp3 */,
+			);
+			path = level;
+			sourceTree = "<group>";
+		};
 		A31B614213958C0700FE697F /* particles */ = {
 			isa = PBXGroup;
 			children = (
+				A32E1D1F13F4427F00856D97 /* smoke2-hd.plist */,
+				A32E1D1D13F43FA500856D97 /* smoke2.plist */,
 				A32DA85513CA0E2C00F40754 /* smokeTexture.png */,
 				A32DA85613CA0E2D00F40754 /* smoke.plist */,
 				A32DA84D13CA0A9B00F40754 /* dust2.plist */,
@@ -1325,7 +1446,8 @@
 		A35D801B1395675F00B07F39 /* sounds */ = {
 			isa = PBXGroup;
 			children = (
-				A35D801C1395675F00B07F39 /* main_theme.mp3 */,
+				A317D27413F71EDA0013311D /* background */,
+				A317D27713F71EDA0013311D /* sfx */,
 			);
 			path = sounds;
 			sourceTree = "<group>";
@@ -1631,6 +1753,8 @@
 		A3F681B413DAF181003D1193 /* Plists */ = {
 			isa = PBXGroup;
 			children = (
+				A317D26913F6EBBA0013311D /* SoundEffects2.plist */,
+				A367C63213F3E1DE00F0209E /* SoundEffects.plist */,
 				A3F681B613DAF1DA003D1193 /* Cities.plist */,
 				A375153213DB5D5300CE2077 /* Cities.json */,
 				A384ACD513DC9A3A00BE8B06 /* Wires.json */,
@@ -1697,7 +1821,6 @@
 				A35D80181395472800B07F39 /* Hq-hd.plist in Resources */,
 				A35D80191395472800B07F39 /* Hq.plist in Resources */,
 				A35D801A1395472800B07F39 /* Hq.pvr.ccz in Resources */,
-				A35D801D1395675F00B07F39 /* main_theme.mp3 in Resources */,
 				A31B614713958F5100FE697F /* Main_rain.plist in Resources */,
 				A31B61491395911B00FE697F /* particleTexture.png in Resources */,
 				A31B614B1395914900FE697F /* Main_rain-hd.plist in Resources */,
@@ -1792,6 +1915,27 @@
 				A332472213E95D1F007D0A25 /* Gloucester_levelBig.fnt in Resources */,
 				A332472313E95D1F007D0A25 /* Gloucester_levelBig-hd.png in Resources */,
 				A332472413E95D1F007D0A25 /* Gloucester_levelBig-hd.fnt in Resources */,
+				A367C63313F3E1DE00F0209E /* SoundEffects.plist in Resources */,
+				A32E1D1E13F43FA500856D97 /* smoke2.plist in Resources */,
+				A32E1D2013F4427F00856D97 /* smoke2-hd.plist in Resources */,
+				A317D26A13F6EBBA0013311D /* SoundEffects2.plist in Resources */,
+				A317D27F13F71EDA0013311D /* main_theme.mp3 in Resources */,
+				A317D28013F71EDA0013311D /* Logic-intro&main-dest.mp3 in Resources */,
+				A317D28113F71EDA0013311D /* Logic-main-button_click.mp3 in Resources */,
+				A317D28213F71EDA0013311D /* Logic-main-vrzani_lampy.mp3 in Resources */,
+				A317D28313F71EDA0013311D /* Logic-options-paka.mp3 in Resources */,
+				A317D28413F71EDA0013311D /* Logic-settings-button_click.mp3 in Resources */,
+				A317D28813F727900013311D /* Logic-score-button_click.mp3 in Resources */,
+				A317D28913F727900013311D /* Logic-score-paka.mp3 in Resources */,
+				A317D2C713F7B7890013311D /* Logic-level-ambient.mp3 in Resources */,
+				A317D2CA13F7B8C70013311D /* Logic-level-pincl_usazeni.mp3 in Resources */,
+				A317D2CC13F7BF2D0013311D /* Logic-level-swipe.mp3 in Resources */,
+				A317D2CE13F7F0380013311D /* bliknuti_zarovka.m4v in Resources */,
+				A317D2D013F7F62E0013311D /* ClockTickTock.mp3 in Resources */,
+				A317D2D213F845B40013311D /* Logic-valve.m4a in Resources */,
+				A317D2D513F8474D0013311D /* BellChimeGreen.mp3 in Resources */,
+				A317D2D613F8474D0013311D /* BellChimeYellow.mp3 in Resources */,
+				A317D2D813F880350013311D /* krtz_loop.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

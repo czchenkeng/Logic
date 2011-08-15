@@ -17,11 +17,13 @@
 #import "CCTransition.h"
 
 @interface GameManager : NSObject {
-    BOOL isMusicON;
-    BOOL isSoundEffectsON;
     BOOL hasAudioBeenInitialized;
-    SimpleAudioEngine *soundEngine;
     GameManagerSoundState managerSoundState;
+    SimpleAudioEngine *soundEngine;
+    NSMutableDictionary *listOfSoundEffectFiles; 
+    NSMutableDictionary *soundEffectsState;
+    NSMutableArray *loopingSfx;
+    
     GameDifficulty currentDifficulty;
     SceneTypes currentScene;
     float musicVolume;
@@ -32,21 +34,26 @@
     BOOL isCareer;
 }
 
-@property (readwrite) BOOL isMusicON;
-@property (readwrite) BOOL isSoundEffectsON;
 @property (readwrite) GameDifficulty currentDifficulty;
-@property (readwrite) GameManagerSoundState managerSoundState;
-@property (readwrite) float musicVolume;
-@property (readwrite) float soundVolume;
 @property (nonatomic, retain) GameData *gameData;
 @property (nonatomic, retain) FacebookViewController *controller;
 @property (readwrite) BOOL gameInProgress;
 
+@property (readwrite) GameManagerSoundState managerSoundState; 
+@property (nonatomic, retain) NSMutableDictionary *listOfSoundEffectFiles; 
+@property (nonatomic, retain) NSMutableDictionary *soundEffectsState;
+@property (readwrite) float musicVolume;
+@property (readwrite) float soundVolume;
+
 + (GameManager*) sharedGameManager;
 - (void) runSceneWithID:(SceneTypes)sceneID andTransition:(TransitionTypes)transitionID;
-- (void) setupAudioEngine;
-- (void) playBackgroundTrack:(NSString*)trackFileName;
 - (FacebookViewController *) facebookController:(CGRect)rect;
-//- (void) setGameDifficulty:(GameDifficulty)difficultyID;
+
+- (void) setupAudioEngine; 
+- (ALuint) playSoundEffect:(NSString*)soundEffectKey; 
+- (void)stopSoundEffect:(ALuint)soundEffectID; 
+- (void)playBackgroundTrack:(NSString*)trackFileName;
+
+- (void) updateSettings;
 
 @end

@@ -118,11 +118,10 @@
     //[[GameManager sharedGameManager] runSceneWithID:kPreloaderScene andTransition:kNoTransition];
     
     if ([[GameManager sharedGameManager] gameInProgress]) {
-        CCLOG(@"co je?");
-        [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kSlideInR];
+        [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kNoTransition];
     } else {
-        //[[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kSlideInR];
-        [[GameManager sharedGameManager] runSceneWithID:kCareerScene andTransition:kNoTransition];
+        [[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kSlideInR];
+        //[[GameManager sharedGameManager] runSceneWithID:kCareerScene andTransition:kNoTransition];
         //[[GameManager sharedGameManager] runSceneWithID:kScoreScene andTransition:kNoTransition];
     }
     //[[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kNoTransition];

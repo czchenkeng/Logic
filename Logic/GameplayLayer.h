@@ -40,6 +40,7 @@
     float jump;
     
     BOOL isCareer;
+    BOOL isRetina;
     
     Figure *selSprite;//vybrany sprite
     CCSprite *targetSprite;//je zamereny target? (umistit nebo zpet na zakladnu)
@@ -58,6 +59,7 @@
     CCLayer *clippingNode;
     CCLayer *scoreTime;
     CCLayer *scoreLayer;
+    CCLayerColor *blackout;
     
     CCSprite *rotorLeftLayer;
     CCSprite *rotorRightLayer;
@@ -114,7 +116,8 @@
     
     //particles
     CCParticleSystem *dustSystem;
-    CCParticleSystem *smokeSystem;
+    CCParticleSystem *smokeSystem1;
+    CCParticleSystem *smokeSystem2;
     
     //end game - moving labels
     CCLayer *finalTimeLayer;

@@ -92,14 +92,15 @@
     [self buttonsOut];
 }
 
-- (void) buttonTapped:(CCMenuItem *)sender { 
+- (void) buttonTapped:(CCMenuItem *)sender {
+    PLAYSOUNDEFFECT(BUTTON_MAIN_CLICK);
     switch (sender.tag) {
-        case kButtonInfo: 
+        case kButtonInfo:
             [self howTo];
             break;
-        case kButtonSettings: 
+        case kButtonSettings:            
             [[GameManager sharedGameManager] runSceneWithID:kSettingsScene andTransition:kSlideInR];
-            nextScene = kSettingsScene;
+            //nextScene = kSettingsScene;
             break;
         case kButtonSinglePlay:
             [self logicTransition];
@@ -316,6 +317,7 @@
         }
         
         [[GameManager sharedGameManager] playBackgroundTrack:BACKGROUND_TRACK_MAIN];
+        
         [self runParticle];
         [self scheduleUpdate];
         [self animationIn];
@@ -330,6 +332,7 @@
         counter = 0;
         if (flag2 == 7) {
             //CCLOG(@"LONG INTERVAL");
+            PLAYSOUNDEFFECT(LAMP_BLINK);
             flag2 = 0;
             flag = [Utils randomNumberBetween:140 andMax:240];
             lightOff.visible = NO;
