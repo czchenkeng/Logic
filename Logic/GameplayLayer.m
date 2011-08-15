@@ -62,7 +62,7 @@
 
 #pragma mark Enter&exit scene
 - (void)onEnter {
-    
+    CCLOG(@"ON ENTER");
     panRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)] autorelease];
     
     longPress = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handlePress:)] autorelease];
@@ -89,27 +89,6 @@
 - (BOOL) gestureRecognizer:longPress shouldRecognizeSimultaneouslyWithGestureRecognizer:panRecognizer {
     return YES;
 }
-
-//- (BOOL) canBePreventedByGestureRecognizer:swipeRightRecognizer {
-//    CCLOG(@"podminka");
-//    return YES;
-//}
-
-//- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-//    //CCLOG(@"podminka");
-//    if(gestureRecognizer.state == UIGestureRecognizerStateBegan ||
-//       gestureRecognizer.state == UIGestureRecognizerStateChanged) 
-//    {
-//        //CCLOG(@"podminka NO");
-//        return NO;
-//    }
-//    else
-//    {
-//        //CCLOG(@"podminka YES");
-//        return YES;
-//    }
-//}
-
 
 #pragma mark -
 #pragma mark INITIALIZATION OF LEVEL
@@ -615,14 +594,16 @@
 #pragma mark Pause button
 - (void) pauseTapped:(CCMenuItem *)sender { 
     CCLOG(@"pause tapped");
-    [self endGame];
-    //[[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kSlideInR];
+    //[self endGame];
+    [[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kSlideInR];
 }
 
 #pragma mark Final menu buttons
 - (void) menuTapped:(CCMenuItem *)sender {
     switch (sender.tag) {
-        case kButtonReplay: 
+        case kButtonReplay:
+            [[[GameManager sharedGameManager] gameData] gameDataCleanup];
+            [GameManager sharedGameManager].gameInProgress = NO;
             [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kNoTransition];
             break;
         case kButtonGameMenu:
@@ -910,7 +891,8 @@
 
 - (void) openLockEnded {
     float delayStep1 = 2.50;
-    float delayStep2 = 8.00;
+    float delayStep2 = 3.00;
+    float delayStep3 = delayStep2 + 1.00;
 
     CGSize screenSize = [CCDirector sharedDirector].winSize;
     blackout = [Blackout node];
@@ -954,12 +936,13 @@
         movesLabelBig.position = ccp(screenSize.width/2 - 15, screenSize.height/2 + 40);
         [self addChild:movesLabelBig z:21];
         CCSequence *movesTimeSeq = [CCSequence actions:
-                                    [CCDelayTime actionWithDuration: 0.5f],
+                                    [CCDelayTime actionWithDuration: delayStep2],
                                     [CCFadeIn actionWithDuration:.3],
                                     nil];
         CCSequence *movesTimeOutSeq = [CCSequence actions:
-                                    [CCDelayTime actionWithDuration: 1.8f],
+                                    [CCDelayTime actionWithDuration: delayStep2 + 1.0f],
                                     [CCFadeOut actionWithDuration:.2],
+                                    [CCCallFunc actionWithTarget:self selector:@selector(timeBonusCallback)],   
                                     nil];
         
         CCLabelBMFont *timeLabelBig = [CCLabelBMFont labelWithString:@"TIME BONUS:" fntFile:@"Gloucester_levelBig.fnt"];
@@ -969,11 +952,11 @@
         timeLabelBig.position = ccp(screenSize.width/2 - 15, screenSize.height/2 + 40);
         [self addChild:timeLabelBig z:21];
         CCSequence *movesTime2Seq = [CCSequence actions:
-                                    [CCDelayTime actionWithDuration: 2.3f],
-                                    [CCFadeIn actionWithDuration:.3],[CCCallFunc actionWithTarget:self selector:@selector(timeBonusCallback)],
+                                    [CCDelayTime actionWithDuration: delayStep3 + 2.0f],
+                                    [CCFadeIn actionWithDuration:.3],
                                     nil];
         CCSequence *movesTimeOut2Seq = [CCSequence actions:
-                                       [CCDelayTime actionWithDuration: 3.2f],
+                                       [CCDelayTime actionWithDuration: delayStep3 + 3.0f],
                                        [CCFadeOut actionWithDuration:.2],
                                        nil];
         if (score < maxScore) {
@@ -984,7 +967,7 @@
             wdBig.position = ccp(screenSize.width/2 - 15, screenSize.height/2 + 40);
             [self addChild:wdBig z:21];
             CCSequence *wdSeq = [CCSequence actions:
-                                         [CCDelayTime actionWithDuration: 3.5f],
+                                         [CCDelayTime actionWithDuration: delayStep3 + 4.0f],
                                          [CCFadeIn actionWithDuration:.3],
                                          nil];
             [wdBig runAction:wdSeq];
@@ -1004,11 +987,11 @@
             [self addChild:superSmall z:21];
             
             CCSequence *super1Seq = [CCSequence actions:
-                                 [CCDelayTime actionWithDuration: 3.5f],
+                                 [CCDelayTime actionWithDuration: delayStep3 + 4.0f],
                                  [CCFadeIn actionWithDuration:.3],
                                  nil];
             CCSequence *super2Seq = [CCSequence actions:
-                                     [CCDelayTime actionWithDuration: 3.5f],
+                                     [CCDelayTime actionWithDuration: delayStep3 + 4.0f],
                                      [CCFadeIn actionWithDuration:.3],
                                      nil];
             [superBig runAction:super1Seq];
@@ -1022,8 +1005,6 @@
         [movesLabelBig runAction:movesTimeOutSeq];
         [timeLabelBig runAction:movesTime2Seq];
         [timeLabelBig runAction:movesTimeOut2Seq];
-        //[self moves:0.8];
-        //[self timeBonus:2.5];
     } else {
         failLabelSmall = [CCLabelBMFont labelWithString:@"THIS CODE WAS TOUGH" fntFile:@"Gloucester_levelSmall.fnt"];
         failLabelSmall.scale = isRetina ? 1 : 0.5;
@@ -1048,36 +1029,9 @@
     
 }
 
-//- (void) moves:(float)delay {
-//    CGSize screenSize = [CCDirector sharedDirector].winSize;
-//    [self drawScoreToLabel:score andArray:finalScoreArray];
-//    int i = 0;
-//    for (CCSprite *scoreSprite in movingScore) {
-//        id moveSeq = [CCSpawn actions:
-//                        //[CCDelayTime actionWithDuration: delay + i*0.1f],
-//                        [CCMoveTo actionWithDuration:.2 position:ccp(screenSize.width /2 + 50 , screenSize.height/2 - 100)],
-//                        [CCFadeOut actionWithDuration:.2], nil];
-//        id delaySeq = [CCSequence actions:[CCDelayTime actionWithDuration: delay + i*0.1f], moveSeq, nil];
-//        [scoreSprite runAction:delaySeq];
-//        i++;
-//    }
-//}
-//
-//- (void) timeBonus:(float)delay {
-//    CGSize screenSize = [CCDirector sharedDirector].winSize;
-//    int i = 0;
-//    for (CCSprite *timeSprite in movingTime) {
-//        id moveSeq = [CCSpawn actions:
-//                      [CCMoveTo actionWithDuration:.2 position:ccp(screenSize.width /2 - 50 , screenSize.height/2 - 100)],
-//                      [CCFadeOut actionWithDuration:.2], nil];
-//        id delaySeq = [CCSequence actions:[CCDelayTime actionWithDuration: delay + i*0.1f], moveSeq, nil];
-//        [timeSprite runAction:delaySeq];
-//        i++;
-//    }
-//}
-
 - (void) spInCallback {
     finalScoreLabel.visible = YES;
+    [self drawScoreToLabel:score andArray:finalScoreArray];
 }
 
 - (void) timeBonusCallback {

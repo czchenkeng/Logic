@@ -107,8 +107,8 @@ typedef enum {
 //MUSIC, SOUNDS
 #define AUDIO_MAX_WAITTIME 150
 #define BACKGROUND_TRACK_MAIN @"main_theme.mp3"
-//#define BACKGROUND_TRACK_LEVEL @"Logic-level-ambient.mp3"
-#define BACKGROUND_TRACK_LEVEL @"krtz_loop.mp3"
+#define BACKGROUND_TRACK_LEVEL @"Logic-level-ambient.mp3"
+//#define BACKGROUND_TRACK_LEVEL @"krtz_loop.mp3"
 
 typedef enum {
     kAudioManagerUninitialized = 0,

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>kCareerScene</key>
+	<dict/>
+	<key>kGameScene</key>
+	<dict>
+		<key>SHOW_RESULT_GREEN</key>
+		<string>BellChimeGreen.mp3</string>
+		<key>SHOW_RESULT_YELLOW</key>
+		<string>BellChimeYellow.mp3</string>
+		<key>OPEN_LOCK</key>
+		<string>Logic-valve.m4a</string>
+		<key>FIGURE_MOVE</key>
+		<string>Logic-level-pincl_usazeni.mp3</string>
+		<key>ROW_SWIPE</key>
+		<string>Logic-level-swipe.mp3</string>
+		<key>LOOP_SECONDS</key>
+		<string>ClockTickTock.mp3</string>
+	</dict>
+	<key>kMainScene</key>
+	<dict>
+		<key>LAMP_BLINK</key>
+		<string>bliknuti_zarovka.m4v</string>
+		<key>LOOP_LAMP</key>
+		<string>Logic-main-vrzani_lampy.mp3</string>
+		<key>BUTTON_MAIN_CLICK</key>
+		<string>Logic-main-button_click.mp3</string>
+		<key>LOOP_RAIN</key>
+		<string>Logic-intro&amp;main-dest.mp3</string>
+	</dict>
+	<key>kNoSceneUninitialized</key>
+	<dict/>
+	<key>kPreloaderScene</key>
+	<dict/>
+	<key>kScoreScene</key>
+	<dict>
+		<key>JOYSTICK_SCORE_CLICK</key>
+		<string>Logic-score-paka.mp3</string>
+		<key>BUTTON_SCORE_CLICK</key>
+		<string>Logic-score-button_click.mp3</string>
+	</dict>
+	<key>kSettingsScene</key>
+	<dict>
+		<key>JOYSTICK_SETTINGS_CLICK</key>
+		<string>Logic-options-paka.mp3</string>
+		<key>BUTTON_SETTINGS_CLICK</key>
+		<string>Logic-settings-button_click.mp3</string>
+	</dict>
+</dict>
+</plist>
