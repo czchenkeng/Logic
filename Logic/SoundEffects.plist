@@ -23,7 +23,7 @@
 	<dict>
 		<key>LAMP_BLINK</key>
 		<string>bliknuti_zarovka.m4v</string>
-		<key>LOOP_LAMP</key>
+		<key>LAMP</key>
 		<string>Logic-main-vrzani_lampy.mp3</string>
 		<key>BUTTON_MAIN_CLICK</key>
 		<string>Logic-main-button_click.mp3</string>

@@ -68,6 +68,7 @@
 		A317D2D513F8474D0013311D /* BellChimeGreen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D2D313F8474D0013311D /* BellChimeGreen.mp3 */; };
 		A317D2D613F8474D0013311D /* BellChimeYellow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D2D413F8474D0013311D /* BellChimeYellow.mp3 */; };
 		A317D2D813F880350013311D /* krtz_loop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D2D713F880350013311D /* krtz_loop.mp3 */; };
+		A31B088713FEDA0600E8F344 /* ScoreCalc.m in Sources */ = {isa = PBXBuildFile; fileRef = A31B088613FEDA0600E8F344 /* ScoreCalc.m */; };
 		A31B614713958F5100FE697F /* Main_rain.plist in Resources */ = {isa = PBXBuildFile; fileRef = A31B614613958F5100FE697F /* Main_rain.plist */; };
 		A31B61491395911B00FE697F /* particleTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = A31B61481395911B00FE697F /* particleTexture.png */; };
 		A31B614B1395914900FE697F /* Main_rain-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A31B614A1395914900FE697F /* Main_rain-hd.plist */; };
@@ -379,6 +380,8 @@
 		A317D2D313F8474D0013311D /* BellChimeGreen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = BellChimeGreen.mp3; sourceTree = "<group>"; };
 		A317D2D413F8474D0013311D /* BellChimeYellow.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = BellChimeYellow.mp3; sourceTree = "<group>"; };
 		A317D2D713F880350013311D /* krtz_loop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = krtz_loop.mp3; sourceTree = "<group>"; };
+		A31B088513FEDA0600E8F344 /* ScoreCalc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreCalc.h; sourceTree = "<group>"; };
+		A31B088613FEDA0600E8F344 /* ScoreCalc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreCalc.m; sourceTree = "<group>"; };
 		A31B614613958F5100FE697F /* Main_rain.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Main_rain.plist; sourceTree = "<group>"; };
 		A31B61481395911B00FE697F /* particleTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = particleTexture.png; sourceTree = "<group>"; };
 		A31B614A1395914900FE697F /* Main_rain-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Main_rain-hd.plist"; sourceTree = "<group>"; };
@@ -938,6 +941,15 @@
 				A317D2C913F7B8C70013311D /* Logic-level-pincl_usazeni.mp3 */,
 			);
 			path = level;
+			sourceTree = "<group>";
+		};
+		A31B088413FED58600E8F344 /* Score */ = {
+			isa = PBXGroup;
+			children = (
+				A31B088513FEDA0600E8F344 /* ScoreCalc.h */,
+				A31B088613FEDA0600E8F344 /* ScoreCalc.m */,
+			);
+			name = Score;
 			sourceTree = "<group>";
 		};
 		A31B614213958C0700FE697F /* particles */ = {
@@ -1526,6 +1538,7 @@
 		A379499E1376A11E002E53FD /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				A31B088413FED58600E8F344 /* Score */,
 				A3E1275713EE8AA90071914F /* Preloader */,
 				A37C371213C8666B00F54EB4 /* HowTo */,
 				A308F44813C0F252000C98D8 /* Facebook */,
@@ -2104,6 +2117,7 @@
 				A33FF5B213E5B81D00313CA1 /* Blackout.m in Sources */,
 				A3E1276313EE8CF70071914F /* PreloaderLayer.m in Sources */,
 				A3E1276613EE96B70071914F /* PreloaderScene.m in Sources */,
+				A31B088713FEDA0600E8F344 /* ScoreCalc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2128,11 +2142,10 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				New_Setting = "";
-				PROVISIONING_PROFILE = "BB7E7E7E-3850-4AD8-9EFB-B6DD8EC4526D";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BB7E7E7E-3850-4AD8-9EFB-B6DD8EC4526D";
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -2149,12 +2162,11 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				New_Setting = "";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "BB7E7E7E-3850-4AD8-9EFB-B6DD8EC4526D";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BB7E7E7E-3850-4AD8-9EFB-B6DD8EC4526D";
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -2172,10 +2184,9 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = Logic/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "BB7E7E7E-3850-4AD8-9EFB-B6DD8EC4526D";
 				SDKROOT = iphoneos4.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
@@ -2195,10 +2206,9 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = Logic/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "BB7E7E7E-3850-4AD8-9EFB-B6DD8EC4526D";
 				SDKROOT = iphoneos4.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2210,8 +2220,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Flow Studio";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Flow Studio";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Petr Fodor (4KW5296M8J)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Petr Fodor (4KW5296M8J)";
 				"CODE_SIGN_RESOURCE_RULES_PATH[sdk=*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
@@ -2219,12 +2229,13 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				New_Setting = "";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "453F434D-27DF-4BAE-BEEE-66E21F85885F";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "453F434D-27DF-4BAE-BEEE-66E21F85885F";
+				PROVISIONING_PROFILE = "EEC51990-D1AC-4301-8B4D-8013E9520911";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EEC51990-D1AC-4301-8B4D-8013E9520911";
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = AdHoc;
 		};
@@ -2241,10 +2252,9 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = Logic/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "BB7E7E7E-3850-4AD8-9EFB-B6DD8EC4526D";
 				SDKROOT = iphoneos4.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

@@ -36,6 +36,13 @@ typedef struct {
 } deadFigure;
 
 typedef struct {
+    int fid;
+    int color;
+    int place;
+    CGPoint position;
+} activeFigure;
+
+typedef struct {
     int row;
     int places;
     int colors;
@@ -45,6 +52,7 @@ typedef struct {
     int difficulty;
     int activeRow;
     int career;
+    int score;
 } gameInfo;
 
 typedef enum {

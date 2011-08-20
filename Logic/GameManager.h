@@ -37,7 +37,7 @@
 @property (readwrite) GameDifficulty currentDifficulty;
 @property (nonatomic, retain) GameData *gameData;
 @property (nonatomic, retain) FacebookViewController *controller;
-@property (readwrite) BOOL gameInProgress;
+@property (readonly) BOOL gameInProgress;
 
 @property (readwrite) GameManagerSoundState managerSoundState; 
 @property (nonatomic, retain) NSMutableDictionary *listOfSoundEffectFiles; 
@@ -51,8 +51,9 @@
 
 - (void) setupAudioEngine; 
 - (ALuint) playSoundEffect:(NSString*)soundEffectKey; 
-- (void)stopSoundEffect:(ALuint)soundEffectID; 
-- (void)playBackgroundTrack:(NSString*)trackFileName;
+- (void) stopSoundEffect:(ALuint)soundEffectID; 
+- (void) playBackgroundTrack:(NSString*)trackFileName;
+- (void) stopLoopSounds;
 
 - (void) updateSettings;
 

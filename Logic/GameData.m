@@ -70,10 +70,11 @@
 - (void) gameDataCleanup {
     [db beginTransaction];
     [db executeUpdate:@"DELETE FROM game_dead_figures"];
+    [db executeUpdate:@"DELETE FROM game_active_figures"];
     [db executeUpdate:@"DELETE FROM game_data"];
     [db executeUpdate:@"DELETE FROM game_rows"];
+    [db executeUpdate:@"DELETE FROM game_code"];
     [db commit];
-    [GameManager sharedGameManager].gameInProgress = NO;
 }
 
 - (void) updateSettingsWithDifficulty:(int)diff andMusicLevel:(float)music andSoundLevel:(float)sound {
@@ -95,7 +96,8 @@
 
 - (void) insertGameData:(gameInfo)data {
     [db beginTransaction];
-    [db executeUpdate:@"INSERT INTO game_data (difficulty, active_row, career) values (?, ?, ?)", [NSNumber numberWithInt:data.difficulty], [NSNumber numberWithInt:data.activeRow], [NSNumber numberWithInt:data.career]];
+    [db executeUpdate:@"INSERT INTO game_data (difficulty, active_row, career, score) values (?, ?, ?, ?)", 
+     [NSNumber numberWithInt:data.difficulty], [NSNumber numberWithInt:data.activeRow], [NSNumber numberWithInt:data.career], [NSNumber numberWithInt:data.score]];
     [db commit];
 }
 
@@ -106,9 +108,62 @@
         retVal.difficulty = [rs intForColumn:@"difficulty"];
         retVal.activeRow = [rs intForColumn:@"active_row"];
         retVal.career = [rs intForColumn:@"career"];
+        retVal.score = [rs intForColumn:@"score"];
     }
     
     return retVal;
+}
+
+- (void) insertActiveFigure:(activeFigure)figure {
+    [db beginTransaction];
+    [db executeUpdate:@"INSERT INTO game_active_figures (fid, color, posX, posY, place) values (?, ?, ?, ?, ?)", 
+     [NSNumber numberWithInt:figure.fid], [NSNumber numberWithInt:figure.color], [NSNumber numberWithFloat:figure.position.x], [NSNumber numberWithFloat:figure.position.y], [NSNumber numberWithFloat:figure.place]];
+    [db commit];
+}
+
+- (NSMutableArray *) getActiveFigures {
+    rs = [db executeQuery:@"SELECT * FROM game_active_figures"];
+    NSMutableArray *retVal = [[NSMutableArray alloc] init];//release?
+    while ([rs next]) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+        [dict setObject:[NSNumber numberWithInt:[rs intForColumn:@"fid"]] forKey:@"fid"]; 
+        [dict setObject:[NSNumber numberWithInt:[rs intForColumn:@"color"]] forKey:@"color"];
+        [dict setObject:[NSNumber numberWithInt:[rs doubleForColumn:@"posX"]] forKey:@"posX"];
+        [dict setObject:[NSNumber numberWithInt:[rs doubleForColumn:@"posY"]] forKey:@"posY"];
+        [dict setObject:[NSNumber numberWithInt:[rs doubleForColumn:@"place"]] forKey:@"place"];
+        [retVal addObject:dict];
+    }
+    return retVal;
+}
+
+- (void) deleteActiveFigure:(int)place {
+    [db beginTransaction];
+    [db executeUpdate:[NSString stringWithFormat:@"DELETE FROM game_active_figures WHERE place = %i", place]];
+    [db commit];
+}
+
+- (void) deleteActiveFigures {
+    [db beginTransaction];
+    [db executeUpdate:@"DELETE FROM game_active_figures"];
+    [db commit];
+}
+
+//- (void) updateActiveFigure:(int)oldPlace withPlace:(int)newPlace andPosition:(CGPoint)pos {
+//    [db beginTransaction];
+//    [db executeUpdate:[NSString stringWithFormat:@"UPDATE game_active_figures SET place = %i, posX = %f, posY = %f WHERE place=%i", newPlace, pos.x, pos.y, oldPlace]];
+//    [db commit];
+//}
+
+- (void) updateActiveFigure:(int)fid withPlace:(int)newPlace andPosition:(CGPoint)pos {
+    [db beginTransaction];
+    [db executeUpdate:[NSString stringWithFormat:@"UPDATE game_active_figures SET place = %i, posX = %f, posY = %f WHERE fid=%i", newPlace, pos.x, pos.y, fid]];
+    [db commit];
+}
+
+- (void) updateActiveFigurePosition:(int)place andPosition:(CGPoint)pos {
+    [db beginTransaction];
+    [db executeUpdate:[NSString stringWithFormat:@"UPDATE game_active_figures SET posX = %f, posY = %f WHERE fid=%i", pos.x, pos.y, place]];
+    [db commit];
 }
 
 - (void) insertDeadFigure:(deadFigure)figure {
@@ -147,6 +202,23 @@
     return retVal;
 }
 
+- (void) insertCode:(int)code {
+    [db beginTransaction];
+    [db executeUpdate:@"INSERT INTO game_code (color) values (?)", [NSNumber numberWithInt:code]];
+    [db commit];
+}
+
+- (NSMutableArray *) getCode {
+    NSMutableArray *retVal = [[NSMutableArray alloc] init];   
+    rs = [db executeQuery:@"SELECT * FROM game_code"];
+    while ([rs next]) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+        [dict setObject:[NSNumber numberWithInt:[rs intForColumn:@"color"]] forKey:@"color"];
+        [retVal addObject:dict];
+    }
+    return retVal;
+}
+
 - (void) writeScore:(int)score andDifficulty:(int)diff {
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"d/M/yy"];
@@ -175,7 +247,6 @@
 
 - (void) updateCareerData:(BOOL)flag {
     if (flag) {//career success
-        CCLOG(@"update career");
         [db beginTransaction];
         [db executeUpdate:@"UPDATE career SET is_done = 1 WHERE is_done=0"];
         [db commit];

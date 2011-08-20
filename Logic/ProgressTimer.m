@@ -77,9 +77,17 @@
 
 - (void) moveClock:(CCArray *)arr {
     for (CCSprite *sprite in arr) {
-        id secondsMove = [CCMoveTo actionWithDuration:1.00 position:ccp(0, sprite.position.y + 18)];
-        CCSequence *secondsSeq = [CCSequence actions:secondsMove, nil];
+        [self stopAllActions];
+        CCMoveTo *secondsMove = [CCMoveTo actionWithDuration:0.90 position:ccp(0, sprite.position.y + 18)];
+        CCSequence *secondsSeq = [CCSequence actions:secondsMove, [CCCallFuncND actionWithTarget:self selector:@selector(timeMoveEnded:data:) data:sprite], nil];
+        //CCSequence *secondsSeq = [CCSequence actions:secondsMove, nil];
         [sprite runAction:secondsSeq];
+    }
+}
+
+- (void) timeMoveEnded:(id)sender data:(CCSprite *)sprite {
+    if (sprite.position.y > 1.00f) {
+        sprite.position = ccp(0, 9*-18);
     }
 }
 
@@ -100,12 +108,12 @@
         [self prepareAssets];
         first = 0;
         tenSec = 0;
-        
         myTime = 0;
+        totalTime = 0;
         
         [self moveClock:secondsArray];
         
-        [self schedule:@selector(update:) interval:0.50];
+        [self schedule:@selector(update:) interval:1.00];
         //[self schedule:@selector(update:)];
     }
     return self;
@@ -125,7 +133,6 @@
 	if (myTime < currentTime)
 	{
 		myTime = currentTime;
-		//[timeLabel setString:[NSString stringWithFormat:@"%i", myTime]];
         //CCLOG(@"game timer %@",  [NSString stringWithFormat:@"%02d:%02d", myTime/60, myTime%60]);
         //CCLOG(@"my time %i",  myTime);
         sec = myTime % 10;
@@ -133,23 +140,23 @@
         //CCLOG(@"timer %i",  seconds < 10 ? seconds : abs(10 - seconds));
         //CCLOG(@"SECONDS %i",  sec);
         //CCLOG(@"mins %i",  myTime % 60);
-        [self endAnimation:secondsArray stop:9 flag:sec];
+        //[self endAnimation:secondsArray stop:9 flag:sec];
         [self moveClock:secondsArray];
         
-        if (sec == 9) {
-            tenSec ++;
-            if (tenSec == 6) {
-                tenSec = 0;
-            }
-            //if (first > 60)
-                [self endAnimation:tenSecondsArray stop:5 flag:tenSec]; 
-            [self moveClock:tenSecondsArray];
-        }
-        
-        if (min == 59) {
-           //[self endAnimation:minutesArray stop:9 flag:sec]; 
-           [self moveClock:minutesArray]; 
-        }
+//        if (sec == 9) {
+//            tenSec ++;
+//            if (tenSec == 6) {
+//                tenSec = 0;
+//            }
+//            //if (first > 60)
+//            [self endAnimation:tenSecondsArray stop:5 flag:tenSec]; 
+//            [self moveClock:tenSecondsArray];
+//        }
+//        
+//        if (min == 59) {
+//           [self endAnimation:minutesArray stop:9 flag:sec]; 
+//           [self moveClock:minutesArray]; 
+//        }
         
         first ++;
     }

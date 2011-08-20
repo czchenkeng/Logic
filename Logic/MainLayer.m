@@ -11,6 +11,9 @@
 @interface MainLayer (PrivateMethods)
 - (void) runParticle;
 - (void) animationIn;
+- (void) addHowTo;
+- (void) logicTransition;
+- (void) buttonsOut;
 @end
 
 
@@ -33,7 +36,7 @@
         doors = [CCSprite spriteWithSpriteFrameName:@"doors.png"];
         [doors setPosition:ccp(screenSize.width/2 + 5, screenSize.height/2 - 51)];
         
-        CCSprite *background = [CCSprite spriteWithSpriteFrameName:@"background.png"];
+        background = [CCSprite spriteWithSpriteFrameName:@"background.png"];
         background.anchorPoint = ccp(0,0);
         
         CCSprite *logoShadow = [CCSprite spriteWithSpriteFrameName:@"logo_shadow.png"];
@@ -128,7 +131,7 @@
         CCRotateTo *rotLeft = [CCRotateBy actionWithDuration:1.1 angle:8.0];
         CCEaseInOut *easeRight = [CCEaseInOut actionWithAction:rotRight rate:3];
         CCEaseInOut *easeLeft = [CCEaseInOut actionWithAction:rotLeft rate:3];
-        CCSequence *rotSeq = [CCSequence actions:easeLeft, easeRight, nil];
+        CCSequence *rotSeq = [CCSequence actions:easeLeft, [CCCallFunc actionWithTarget:self selector:@selector(moveLampCallback)], easeRight, [CCCallFunc actionWithTarget:self selector:@selector(moveLampCallback)], nil];
         
         CCRotateTo *rotRight1 = [CCRotateBy actionWithDuration:1.1 angle:-8.0];
         CCRotateTo *rotLeft1 = [CCRotateBy actionWithDuration:1.1 angle:8.0];        
@@ -148,11 +151,11 @@
         [self addChild:logo z:4];
         [self addChild:grass z:5];
         [self addChild:rightGib z:10];
-        [rightGib addChild:singleMenu z:1];
-        [rightGib addChild:continueMenu z:2];
+            [rightGib addChild:singleMenu z:1];
+            [rightGib addChild:continueMenu z:2];
         [self addChild:leftGib z:11];
-        [leftGib addChild:careerMenu z:1];
-        [leftGib addChild:newGameMenu z:2];
+            [leftGib addChild:careerMenu z:1];
+            [leftGib addChild:newGameMenu z:2];
         [self addChild:lightOff z:12];
         [self addChild:light z:11];
         [self addChild:topMenu z:30];
@@ -181,12 +184,12 @@
 #pragma mark -
 #pragma mark ENTER & EXIT
 - (void) onEnter {
-	[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+	//[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
 	[super onEnter];
 }
 
 - (void) onExit {
-	[[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
+	//[[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
 	[super onExit];
 }
 
@@ -238,50 +241,10 @@
     [leftGib runAction:moveLeftGibSeq];
 }
 
+#pragma mark Animations out callback
 - (void) endAnimation {
     leftGib.visible = NO;
     rightGib.visible = NO;
-}
-
-
-
-- (void) buttonsOut {
-    id buttonsOut = [CCMoveTo actionWithDuration:.4 position:ccp(topMenu.position.x, topMenu.position.y + 60)];
-    id seq = [CCSequence actions: buttonsOut, [CCCallFunc actionWithTarget:self selector:@selector(startTransition)], nil];
-    [topMenu runAction:seq];
-}
-
-- (void) doorsOut {
-    CCMoveTo *doorsOut = [CCMoveTo actionWithDuration:0.4 position:ccp(doors.position.x - 195, doors.position.y)];
-    CCSequence *moveDoorsOutSeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.2f], doorsOut, nil];
-    
-    [doors runAction:moveDoorsOutSeq];
-}
-
-- (void) startTransition {
-    [self doorsOut];
-    [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kLogicTrans];
-}
-
-
-
-- (void) addHowTo {
-    howToLayer = [HowToLayer node];
-    [self addChild:howToLayer z:0];
-}
-
-- (void) howTo {
-    [self addHowTo];
-    [self animationOut];
-    //[self doorsOut];
-//    [self unscheduleUpdate];
-//    lightOff.visible = YES;
-//    light.visible = NO;
-}
-
-- (void) logicTransition {
-    [self animationOut];
-    [self buttonsOut];
 }
 
 #pragma mark -
@@ -290,24 +253,26 @@
     PLAYSOUNDEFFECT(BUTTON_MAIN_CLICK);
     switch (sender.tag) {
         case kButtonInfo:
-            [self howTo];
+            [self addHowTo];
             break;
-        case kButtonSettings:            
+        case kButtonSettings:
             [[GameManager sharedGameManager] runSceneWithID:kSettingsScene andTransition:kSlideInR];
             break;
         case kButtonSinglePlay:
             [self logicTransition];
             break;
         case kButtonCareerPlay:
-            CCLOG(@"TAP ON CAREER");
+            [[GameManager sharedGameManager] runSceneWithID:kCareerScene andTransition:kSlideInR];
             break;
         case kButtonContinuePlay:
-            [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kLogicTrans];
+            [self logicTransition];
+            //[[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kLogicTrans];
             break;
         case kButtonNewGame:
             [[[GameManager sharedGameManager] gameData] gameDataCleanup];
-            [GameManager sharedGameManager].gameInProgress = NO;
-            [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kLogicTrans];
+            //[GameManager sharedGameManager].gameInProgress = NO;
+            [self logicTransition];
+            //[[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kLogicTrans];
             break;
         default:
             CCLOG(@"Logic debug: Unknown ID, cannot tap button");
@@ -317,7 +282,44 @@
 }
 
 #pragma mark -
-#pragma mark UPDATE CALLBACK / LAMP BLINKING
+#pragma mark GAMEPLAY CUSTOM TRANSITION
+- (void) logicTransition {
+    [self animationOut];
+    [self buttonsOut];
+}
+
+#pragma mark Top menu buttons out
+- (void) buttonsOut {
+    id buttonsOut = [CCMoveTo actionWithDuration:.4 position:ccp(topMenu.position.x, topMenu.position.y + 60)];
+    id seq = [CCSequence actions: buttonsOut, [CCCallFunc actionWithTarget:self selector:@selector(startTransition)], nil];
+    [topMenu runAction:seq];
+}
+
+#pragma mark Doors out
+- (void) doorsOut {
+    CCMoveTo *doorsOut = [CCMoveTo actionWithDuration:0.4 position:ccp(doors.position.x - 195, doors.position.y)];
+    CCSequence *moveDoorsOutSeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.2f], doorsOut, nil];
+    
+    [doors runAction:moveDoorsOutSeq];
+}
+
+#pragma mark Game transition
+- (void) startTransition {
+    [self doorsOut];
+    [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kLogicTrans];
+}
+
+
+#pragma mark -
+#pragma mark ADD HOW TO LAYER
+- (void) addHowTo {
+    howToLayer = [HowToLayer node];
+    [self addChild:howToLayer z:0];
+    [self animationOut];
+}
+
+#pragma mark -
+#pragma mark UPDATE & LAMP MOVE CALLBACKS / LAMP BLINKING
 - (void) update:(ccTime)deltaTime {
     counter++;
     if (counter == flag) {
@@ -328,14 +330,27 @@
             flag = [Utils randomNumberBetween:140 andMax:240];
             lightOff.visible = NO;
             light.visible = YES;
+            background.opacity = 255;
         }else{
             flag = [Utils randomNumberBetween:1 andMax:4];
             lightOff.visible = lightOn;
             light.visible = !lightOn;
+            if (lightOn) {
+                background.opacity = 200;
+                doors.opacity = 230;
+            } else {
+                background.opacity = 255;
+                doors.opacity = 255;
+            }
             lightOn = !lightOn;
         }
         flag2++;
     }
+}
+
+#pragma mark Lamp move callback
+- (void) moveLampCallback {
+    PLAYSOUNDEFFECT(LAMP);
 }
 
 //- (BOOL) ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {    

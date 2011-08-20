@@ -17,6 +17,7 @@
     CGPoint movePosition;
     int place;
     int oldPlace;
+    int fid;
     BOOL isActive;//vyhodit? uz se umistene neposouvaji
     BOOL isCalculated;
     BOOL isOnActiveRow;
@@ -31,6 +32,7 @@
 @property CGPoint tempPosition;
 @property CGPoint movePosition;
 @property int place;
+@property int fid;
 @property int oldPlace;
 @property BOOL isActive;
 @property BOOL isCalculated;

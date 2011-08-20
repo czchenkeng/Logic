@@ -23,8 +23,8 @@
 - (void) openLock;
 - (void) calculateScore;
 - (void) constructScoreLabelWithLayer:(CCLayer *)layer andArray:(CCArray *)array andRotation:(float)rotation andXpos:(float)xPos andYPos:(float)yPos;
-- (void) drawScoreToLabel:(int)value andArray:(CCArray *)array;
-- (void) constructEndLabels:(int)time;
+- (void) drawScoreToLabel:(int)value andArray:(CCArray *)array andStyle:(BOOL)animated andZero:(BOOL)toZero;
+- (void) constructEndLabels:(int)time andZero:(BOOL)toZero;
 - (void) moves:(float)delay;
 - (void) timeBonus:(float)delay;
 @end
@@ -48,6 +48,7 @@
         trans = 0;
         isWinner = NO;
         isCareer = NO;
+        fid = 0;
         CGSize screenSize = [CCDirector sharedDirector].winSizeInPixels;
         isRetina = screenSize.height == 960.0f ? YES : NO;
         maxScore = [[[GameManager sharedGameManager] gameData] getMaxScore:currentDifficulty];
@@ -62,7 +63,6 @@
 
 #pragma mark Enter&exit scene
 - (void)onEnter {
-    CCLOG(@"ON ENTER");
     panRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)] autorelease];
     
     longPress = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handlePress:)] autorelease];
@@ -78,6 +78,8 @@
 }
 
 - (void)onExit {
+    longPress.cancelsTouchesInView = YES;
+    longPress.delegate = nil;
     [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:panRecognizer];
     [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:longPress];
     [super onExit];
@@ -100,15 +102,14 @@
         infoData = [[[GameManager sharedGameManager] gameData] getGameData];
         currentDifficulty = infoData.difficulty;
         activeRow = infoData.activeRow;
-        CCLOG(@"co je v career? %i", infoData.career);
         isCareer = infoData.career == 0 ? NO : YES;
-        CCLOG(@"pokus nacist data %i %i %i", infoData.activeRow, infoData.difficulty, infoData.career);
+        score = infoData.score;
     } else {
         infoData.difficulty = currentDifficulty;
         infoData.activeRow = 0;
         infoData.career = 0;
+        infoData.score = 0;
         [[[GameManager sharedGameManager] gameData] insertGameData:infoData];
-        //[GameManager sharedGameManager].gameInProgress = YES;//prenest do game data classy?
     }
     
     [self buildLevel];
@@ -131,6 +132,7 @@
 //    [self addChild:blackout z:100];
     //[blackout runAction:fadeSeq];
     
+    //POZOR!!! VOLA SE VZDY!!! OSETRIT!!!!!
     if ([[GameManager sharedGameManager] gameInProgress]) {
         NSMutableArray *deadFigures = [[[GameManager sharedGameManager] gameData] getDeadFigures];
         if ([deadFigures count] > 0) {
@@ -146,9 +148,6 @@
             int dataPlaces;
             int dataColors;
             for (NSMutableDictionary *dict in rows) {
-                CCLOG(@"row is %i", [[dict objectForKey:@"row"] intValue]);
-                CCLOG(@"places are %i", [[dict objectForKey:@"places"] intValue]);
-                CCLOG(@"colors are %i", [[dict objectForKey:@"colors"] intValue]);
                 dataRow = [[dict objectForKey:@"row"] intValue];
                 dataPlaces = [[dict objectForKey:@"places"] intValue];
                 dataColors = [[dict objectForKey:@"colors"] intValue];
@@ -182,8 +181,32 @@
                 [rc moveToPosition:dataColors andMask:holderColors];
             }
         }
-        [GameManager sharedGameManager].gameInProgress = YES;
         [self jumpGamePlay];
+        
+        NSMutableArray *activeFigures = [[[GameManager sharedGameManager] gameData] getActiveFigures];
+        if ([activeFigures count] > 0) {
+            for (NSMutableDictionary *dict in activeFigures) {
+                Figure *figure = [[Figure alloc] initWithFigureType:[[dict objectForKey:@"color"] intValue]];
+                figure.position = ccp([[dict objectForKey:@"posX"] floatValue], [[dict objectForKey:@"posY"] floatValue]);
+                fid = [[dict objectForKey:@"fid"] intValue];
+                figure.fid = [[dict objectForKey:@"fid"] intValue];
+                figure.place = [[dict objectForKey:@"place"] intValue];
+                figure.oldPlace = [[dict objectForKey:@"place"] intValue];
+                figure.isOnActiveRow = YES;
+                figure.tempPosition = ccp(figure.position.x, figure.position.y);
+                figure.movePosition = ccp(figure.position.x, figure.position.y - jump);
+                [figuresNode addChild:figure z:5000];//z - index§
+                [movableFigures addObject:figure];
+                [userCode addObject:figure];
+            }
+            if (activeFigures.count == currentDifficulty) {
+                isEndRow = YES;
+            }
+        }
+        
+        if (score > 0) {
+            [self drawScoreToLabel:score andArray:scoreLabelArray andStyle:YES andZero:NO];
+        }
         
         [deadFigures release];
         deadFigures = nil;
@@ -311,6 +334,7 @@
     
     scoreLayer = [CCLayer node];
     finalScoreLayer = [CCLayer node];
+    final2ScoreLayer = [CCLayer node];
     
     
     //green & orange lights, places & colors status
@@ -365,19 +389,12 @@
     scorePanel.scaleY = 22;
     scorePanel.visible = NO;
     [scorePanel setPosition:ccp(-700.00, 0.00)];
-    
-    
+        
     replayPanel = [CCSprite spriteWithSpriteFrameName:@"rameno_right.png"];
     replayPanel.scaleX = 5;
     replayPanel.scaleY = 22;
     replayPanel.visible = NO;
     [replayPanel setPosition:ccp(1000.00, 367.00)];
-    
-    gameMenuLeftPanel = [CCSprite spriteWithSpriteFrameName:@"rameno_left.png"];
-    gameMenuLeftPanel.scaleX = 5;
-    gameMenuLeftPanel.scaleY = 22;
-    gameMenuLeftPanel.visible = NO;
-    [gameMenuLeftPanel setPosition:ccp(-700.00, 0.00)];
     
     //panels buttons/menus
     CCSprite *buttonReplayOff = [CCSprite spriteWithSpriteFrameName:@"logik_replay1.png"];
@@ -386,20 +403,61 @@
     CCSprite *buttonGameMenuOff = [CCSprite spriteWithSpriteFrameName:@"logik_gmenu1.png"];
     CCSprite *buttonGameMenuOn = [CCSprite spriteWithSpriteFrameName:@"logik_gmenu2.png"];
     
-    //CCSprite *buttonContinueOff = [CCSprite spriteWithSpriteFrameName:@"logik_continue1.png"];
-    //CCSprite *buttonContinueOn = [CCSprite spriteWithSpriteFrameName:@"logik_continue2.png"];
-    
     CCMenuItem *replayItem = [CCMenuItemSprite itemFromNormalSprite:buttonReplayOff selectedSprite:buttonReplayOn target:self selector:@selector(menuTapped:)];
     replayItem.tag = kButtonReplay;
     CCMenu *replayMenu = [CCMenu menuWithItems:replayItem, nil];
     replayMenu.position = ccp(66.00, 31.50);;
     [replayPanel addChild:replayMenu z:1];
     
-    CCMenuItem *gameMenuItemLeft = [CCMenuItemSprite itemFromNormalSprite:buttonGameMenuOff selectedSprite:buttonGameMenuOn target:self selector:@selector(menuTapped:)];
-    gameMenuItemLeft.tag = kButtonGameMenu;
-    CCMenu *gameMenuLeft = [CCMenu menuWithItems:gameMenuItemLeft, nil];
-    gameMenuLeft.position = ccp(195.50, 35.50);
-    [gameMenuLeftPanel addChild:gameMenuLeft z:2];
+    if (isCareer) {
+        gameMenuRightPanel = [CCSprite spriteWithSpriteFrameName:@"rameno_right.png"];
+        gameMenuRightPanel.scaleX = 5;
+        gameMenuRightPanel.scaleY = 22;
+        gameMenuRightPanel.visible = NO;
+        [gameMenuRightPanel setPosition:ccp(1000.00, 367.00)];
+        
+        continuePanel = [CCSprite spriteWithSpriteFrameName:@"rameno_left.png"];
+        continuePanel.scaleX = 5;
+        continuePanel.scaleY = 22;
+        continuePanel.visible = NO;
+        [continuePanel setPosition:ccp(-700.00, 0.00)];
+        
+        CCSprite *buttonContinueOff = [CCSprite spriteWithSpriteFrameName:@"logik_continue1.png"];
+        CCSprite *buttonContinueOn = [CCSprite spriteWithSpriteFrameName:@"logik_continue2.png"];
+        
+        CCMenuItem *gameMenuItemRight = [CCMenuItemSprite itemFromNormalSprite:buttonGameMenuOff selectedSprite:buttonGameMenuOn target:self selector:@selector(menuTapped:)];
+        gameMenuItemRight.tag = kButtonGameMenu;
+        CCMenu *gameMenuRight = [CCMenu menuWithItems:gameMenuItemRight, nil];
+        gameMenuRight.position = ccp(66.00, 31.50);
+        [gameMenuRightPanel addChild:gameMenuRight z:1];
+        
+        CCMenuItem *continueItem = [CCMenuItemSprite itemFromNormalSprite:buttonContinueOff selectedSprite:buttonContinueOn target:self selector:@selector(menuTapped:)];
+        continueItem.tag = kButtonContinue;
+        CCMenu *continueMenu = [CCMenu menuWithItems:continueItem, nil];
+        continueMenu.position = ccp(195.50, 35.50);
+        [continuePanel addChild:continueMenu z:1];
+        
+        [self addChild:gameMenuRightPanel z:32];
+        [self addChild:continuePanel z:33];
+
+    } else {
+        gameMenuLeftPanel = [CCSprite spriteWithSpriteFrameName:@"rameno_left.png"];
+        gameMenuLeftPanel.scaleX = 5;
+        gameMenuLeftPanel.scaleY = 22;
+        gameMenuLeftPanel.visible = NO;
+        [gameMenuLeftPanel setPosition:ccp(-700.00, 0.00)];
+        
+        CCMenuItem *gameMenuItemLeft = [CCMenuItemSprite itemFromNormalSprite:buttonGameMenuOff selectedSprite:buttonGameMenuOn target:self selector:@selector(menuTapped:)];
+        gameMenuItemLeft.tag = kButtonGameMenu;
+        CCMenu *gameMenuLeft = [CCMenu menuWithItems:gameMenuItemLeft, nil];
+        gameMenuLeft.position = ccp(195.50, 35.50);
+        [gameMenuLeftPanel addChild:gameMenuLeft z:2];
+        
+        [self addChild:gameMenuLeftPanel z:32];
+    }
+    
+
+    
     
     CCSprite *shadowBase = [CCSprite spriteWithSpriteFrameName:@"shadowBase.png"];
     shadowBase.anchorPoint = ccp(0,1);
@@ -434,18 +492,19 @@
         [scoreTime addChild:scoreLayer z:3];
         [scoreTime addChild:timerMask z:4];
             [timerMask addChild:timer z:1];
+        //[scoreTime addChild:timer z:4];//testing timeru - pak vyhodit
+    //timer.position = ccp(150, 200);
         [scoreTime addChild:finalTimeLayer z:5];
         [scoreTime addChild:finalScoreLayer z:6];
         [scoreTime addChild:scoreTimeSprite z:7];
+        [scoreTime addChild:final2ScoreLayer z:8];
     [self addChild:pauseMenu z:20];
     [self addChild:endGameMenu z:21];
     [self addChild:scorePanel z:22];
     [self addChild:replayPanel z:31];
-    [self addChild:gameMenuLeftPanel z:32];
-
     
-    //dustSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"dust1.plist"];
-    //[self addChild:dustSystem z:1000];
+    dustSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"dust1.plist"];
+    [self addChild:dustSystem z:1000];
 }
 
 #pragma mark 8 figures to base 
@@ -465,73 +524,36 @@
 
 #pragma mark Generate game code 
 - (void) generateCode {
-    CCLOG(@"**************************************************************");
-    CCLOG(@"***********************CODE***********************************");
     currentCode = [[NSMutableArray alloc] init];
+    NSMutableArray *code;
+    if ([[GameManager sharedGameManager] gameInProgress]) {
+        code = [[[GameManager sharedGameManager] gameData] getCode];
+    }
     for (int i = 0; i < currentDifficulty; ++i) {
-        int cheatCode = [Utils randomNumberBetween:0 andMax:8];
-        NSString *debugCode = @"";
-        switch (cheatCode) {
-            case kYellow: 
-                CCLOG(@"YELLOW");
-                debugCode = @"YELLOW";
-                break;
-            case kOrange:
-                CCLOG(@"ORANGE");
-                debugCode = @"ORANGE";
-                break;
-            case kPink:
-                CCLOG(@"PINK");
-                debugCode = @"PINK";
-                break;
-            case kRed:
-                CCLOG(@"RED");
-                debugCode = @"RED";
-                break;
-            case kPurple:
-                CCLOG(@"PURPLE");
-                debugCode = @"PURPLE";
-                break;
-            case kBlue:
-                CCLOG(@"BLUE");
-                debugCode = @"BLUE";
-                break;
-            case kGreen:
-                CCLOG(@"GREEN");
-                debugCode = @"GREEN";
-                break;
-            case kWhite:
-                CCLOG(@"WHITE");
-                debugCode = @"WHITE";
-                break;
-            default:
-                CCLOG(@"Unknown ID, cannot print code");
-                break;
-        }
-        
+        int gameCode;
+        if ([[GameManager sharedGameManager] gameInProgress] && code.count == currentDifficulty) {
+            gameCode = [[[code objectAtIndex:i] objectForKey:@"color"] intValue];
+        } else {
+            gameCode = [Utils randomNumberBetween:0 andMax:8];
+            [[[GameManager sharedGameManager] gameData] insertCode:gameCode];
+        }        
         //Figure *figure = [[Figure alloc] initWithFigureType:[Utils randomNumberBetween:0 andMax:8]];
-        Figure *figure = [[Figure alloc] initWithFigureType:cheatCode];
+        Figure *figure = [[Figure alloc] initWithFigureType:gameCode];
         figure.place = i;
         figure.anchorPoint = CGPointMake(0, 0);
         figure.position = ccp(6 + difficultyPadding*i, 5.0f);
         
-        Figure *cheatFigure = [[Figure alloc] initWithFigureType:cheatCode];
+        Figure *cheatFigure = [[Figure alloc] initWithFigureType:gameCode];
         cheatFigure.anchorPoint = CGPointMake(0, 0);
         cheatFigure.position = ccp(100 + 20*i, 460);
         cheatFigure.scale = 0.5;
         cheatFigure.opacity = 255;
         
         [codeBase addChild:figure z:i];
-        //[cheat addChild:cheatFigure z:i];
         [currentCode addObject:figure];
         
-//        CCLabelBMFont *debugText = [CCLabelBMFont labelWithString:debugCode fntFile:@"BellGothicBoldHt.fnt"];
-//        debugText.anchorPoint = ccp(0, 0.5);
-//        [debugText setPosition:ccp(10 + i*60, 470)];
         [self addChild:cheatFigure z:3000 + i];
     }
-    CCLOG(@"***********************END CODE*******************************");
-    CCLOG(@"**************************************************************");
 }
 
 #pragma mark Construct score Label
@@ -593,7 +615,6 @@
 
 #pragma mark Pause button
 - (void) pauseTapped:(CCMenuItem *)sender { 
-    CCLOG(@"pause tapped");
     //[self endGame];
     [[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kSlideInR];
 }
@@ -602,12 +623,13 @@
 - (void) menuTapped:(CCMenuItem *)sender {
     switch (sender.tag) {
         case kButtonReplay:
-            [[[GameManager sharedGameManager] gameData] gameDataCleanup];
-            [GameManager sharedGameManager].gameInProgress = NO;
             [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kNoTransition];
             break;
         case kButtonGameMenu:
             [[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kSlideInL];
+            break;
+        case kButtonContinue:
+            [[GameManager sharedGameManager] runSceneWithID:kCareerScene andTransition:kSlideInL];
             break;
         default:
             CCLOG(@"Logic debug: Unknown ID, cannot tap button");
@@ -620,20 +642,9 @@
 
 #pragma mark End game button
 - (void) endGameTapped:(CCMenuItem *)sender { 
-    CCLOG(@"end game tapped");
     float delay;
     if (isWinner) {
         finalScoreLabel.visible = NO;
-        CCMoveTo *leftGibMoveIn = [CCMoveTo actionWithDuration:0.4 position:ccp(-700.00, 0.00)];
-        CCScaleTo *leftGibScaleInX = [CCScaleTo actionWithDuration:0.4 scaleX:5 scaleY:22];
-        CCRotateTo *leftGibRotationIn = [CCRotateTo actionWithDuration:1.0 angle:0];
-        CCSpawn *moveLeftGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.5f], leftGibMoveIn, leftGibScaleInX, leftGibRotationIn, nil];
-        
-        CCSequence *scoreTimeSeq = [CCSequence actions:
-                                    [CCDelayTime actionWithDuration: 0.0f],
-                                    [CCMoveTo actionWithDuration:.3 position:CGPointMake(scoreTime.position.x, scoreTime.position.y + 30)],
-                                    [CCCallFunc actionWithTarget:self selector:@selector(labelsOutCallback)],
-                                    nil];
         
         if (score < maxScore) {
             id wdBigOut = [CCFadeOut actionWithDuration:.2];
@@ -645,6 +656,18 @@
             [superSmall runAction:superSmallOut];
         }
         
+        CCMoveTo *scoreMoveOut = [CCMoveTo actionWithDuration:0.4 position:ccp(-700.00, 0.00)];
+        CCScaleTo *scoreScaleOutX = [CCScaleTo actionWithDuration:0.4 scaleX:5 scaleY:22];
+        CCRotateTo *scoreRotationOut = [CCRotateTo actionWithDuration:1.0 angle:0];
+        CCSpawn *moveLeftGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.5f], scoreMoveOut, scoreScaleOutX, scoreRotationOut, nil];
+        
+        CCSequence *scoreTimeSeq = [CCSequence actions:
+                                    [CCDelayTime actionWithDuration: 0.0f],
+                                    [CCMoveTo actionWithDuration:.3 position:CGPointMake(scoreTime.position.x, scoreTime.position.y + 30)],
+                                    [CCCallFunc actionWithTarget:self selector:@selector(labelsOutCallback)],
+                                    nil];
+        [final2ScoreLayer removeFromParentAndCleanup:YES];
+        [self constructEndLabels:[timer stopTimer] andZero:YES];
         [scoreTime runAction:scoreTimeSeq];
         [scorePanel runAction:moveLeftGibSeq];
         delay = 0.4;
@@ -662,39 +685,70 @@
                             [CCMoveTo actionWithDuration:.4 position:CGPointMake(endGameMenu.position.x, endGameMenu.position.y + 60)],
                             nil];
     
-    CCMoveTo *replayMoveIn = [CCMoveTo actionWithDuration:0.6 position:ccp(225.50, 235.00)];
-    CCScaleTo *replayScaleInX = [CCScaleTo actionWithDuration:0.6 scaleX:1.0 scaleY:1.0];
-    CCRotateTo *replayRotationIn = [CCRotateTo actionWithDuration:0.6 angle:1];        
-    CCSpawn *replaySeq = [CCSpawn actions:[CCDelayTime actionWithDuration: delay], replayMoveIn, replayScaleInX, replayRotationIn, nil];
+    if (isCareer) {
+        CCMoveTo *replayMoveIn = [CCMoveTo actionWithDuration:0.6 position:ccp(225.50, 285.00)];
+        CCScaleTo *replayScaleInX = [CCScaleTo actionWithDuration:0.6 scaleX:1.0 scaleY:1.0];
+        CCRotateTo *replayRotationIn = [CCRotateTo actionWithDuration:0.6 angle:1];        
+        CCSpawn *replaySeq = [CCSpawn actions:[CCDelayTime actionWithDuration: delay], replayMoveIn, replayScaleInX, replayRotationIn, nil];
+        
+        CCMoveTo *continueMoveIn = [CCMoveTo actionWithDuration:.6 position:ccp(100.00, 220.00)];
+        CCScaleTo *continueScaleInX = [CCScaleTo actionWithDuration:.6 scaleX:1.0 scaleY:1.0];
+        CCRotateTo *continueRotationIn = [CCRotateTo actionWithDuration:.6 angle:-2];
+        CCSpawn *continueSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: delay], continueMoveIn, continueScaleInX, continueRotationIn, nil];
+        
+        CCMoveTo *gmRightMoveIn = [CCMoveTo actionWithDuration:0.6 position:ccp(230.50, 170.00)];
+        CCScaleTo *gmRightScaleInX = [CCScaleTo actionWithDuration:0.6 scaleX:1.0 scaleY:1.0];
+        CCRotateTo *gmRightRotationIn = [CCRotateTo actionWithDuration:0.6 angle:1];        
+        CCSpawn *gmRightSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: delay], gmRightMoveIn, gmRightScaleInX, gmRightRotationIn, nil];        
+        
+        replayPanel.visible = YES;
+        continuePanel.visible = YES;
+        gameMenuRightPanel.visible = YES;
+        
+        [replayPanel runAction:replaySeq];
+        [continuePanel runAction:continueSeq];
+        [gameMenuRightPanel runAction:gmRightSeq];
+    } else {
+        CCMoveTo *replayMoveIn = [CCMoveTo actionWithDuration:0.6 position:ccp(225.50, 235.00)];
+        CCScaleTo *replayScaleInX = [CCScaleTo actionWithDuration:0.6 scaleX:1.0 scaleY:1.0];
+        CCRotateTo *replayRotationIn = [CCRotateTo actionWithDuration:0.6 angle:1];        
+        CCSpawn *replaySeq = [CCSpawn actions:[CCDelayTime actionWithDuration: delay], replayMoveIn, replayScaleInX, replayRotationIn, nil];
+        
+        CCMoveTo *gmLeftMoveIn = [CCMoveTo actionWithDuration:.6 position:ccp(100.00, 161.00)];
+        CCScaleTo *gmLeftScaleInX = [CCScaleTo actionWithDuration:.6 scaleX:1.0 scaleY:1.0];
+        CCRotateTo *gmLeftRotationIn = [CCRotateTo actionWithDuration:.6 angle:-2];
+        CCSpawn *moveGmLeftSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: delay], gmLeftMoveIn, gmLeftScaleInX, gmLeftRotationIn, nil];
+        
+        replayPanel.visible = YES;
+        gameMenuLeftPanel.visible = YES;
+        
+        [replayPanel runAction:replaySeq];
+        [gameMenuLeftPanel runAction:moveGmLeftSeq];
+        [endGameMenu runAction:endGameMenuSeq]; 
+    }
     
-    CCMoveTo *gmLeftMoveIn = [CCMoveTo actionWithDuration:.6 position:ccp(100.00, 161.00)];
-    CCScaleTo *gmLeftScaleInX = [CCScaleTo actionWithDuration:.6 scaleX:1.0 scaleY:1.0];
-    CCRotateTo *gmLeftRotationIn = [CCRotateTo actionWithDuration:.6 angle:-2];
-    CCSpawn *moveGmLeftSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: delay], gmLeftMoveIn, gmLeftScaleInX, gmLeftRotationIn, nil];
+    CCSprite *buttonFb = [CCSprite spriteWithSpriteFrameName:@"logik_iconfcb.png"];
+    CCSprite *buttonMail = [CCSprite spriteWithSpriteFrameName:@"logik_iconmail.png"];
+    buttonFb.opacity = 0;
+    buttonMail.opacity = 0;
     
-    replayPanel.visible = YES;
-    gameMenuLeftPanel.visible = YES;
-    
-    [replayPanel runAction:replaySeq];
-    [gameMenuLeftPanel runAction:moveGmLeftSeq];
-    [endGameMenu runAction:endGameMenuSeq];
-    
-    CCSprite *buttonFbOff = [CCSprite spriteWithSpriteFrameName:@"logik_iconfcb1.png"];
-    CCSprite *buttonFbOn = [CCSprite spriteWithSpriteFrameName:@"logik_iconfcb2.png"];
-    CCSprite *buttonMailOff = [CCSprite spriteWithSpriteFrameName:@"logik_iconmail1.png"];
-    CCSprite *buttonMailOn = [CCSprite spriteWithSpriteFrameName:@"logik_iconmail2.png"];
-    
-    CCMenuItem *fbItem = [CCMenuItemSprite itemFromNormalSprite:buttonFbOff selectedSprite:buttonFbOn target:self selector:@selector(fbMailTapped)];
+    CCMenuItem *fbItem = [CCMenuItemSprite itemFromNormalSprite:buttonFb selectedSprite:nil target:self selector:@selector(fbMailTapped)];
     fbItem.tag = kButtonFb;
-    fbItem.position = ccp(70.00, 30.00);
+    fbItem.position = ccp(70.00, 80.00);
     
-    CCMenuItem *mailItem = [CCMenuItemSprite itemFromNormalSprite:buttonMailOff selectedSprite:buttonMailOn target:self selector:@selector(fbMailTapped)];
+    CCMenuItem *mailItem = [CCMenuItemSprite itemFromNormalSprite:buttonMail selectedSprite:nil target:self selector:@selector(fbMailTapped)];
     mailItem.tag = kButtonMail;
-    mailItem.position = ccp(260.00, 30.00);
+    mailItem.position = ccp(260.00, 80.00);
     
     CCMenu *finalMenu = [CCMenu menuWithItems:fbItem, mailItem, nil];
     finalMenu.position = CGPointZero;
     [self addChild:finalMenu z:60];
+    
+    id fbFadeIn = [CCSequence actions:[CCDelayTime actionWithDuration: delay + 0.7], [CCFadeIn actionWithDuration:0.5], nil];
+    id mailFadeIn = [CCSequence actions:[CCDelayTime actionWithDuration: delay + 0.9], [CCFadeIn actionWithDuration:0.5], nil];
+    
+    [buttonFb runAction:fbFadeIn];
+    [buttonMail runAction:mailFadeIn];
 }
 
 - (void) fbMailTapped {
@@ -712,62 +766,68 @@
 #pragma mark END GAME
 #pragma mark Composite method
 - (void) endGame {
-    CCLOG(@"Logic debug: END GAME");
-    //if (activeRow == 9) {
-        id actionDelay = [CCDelayTime actionWithDuration:0.2];
-        [self runAction:[CCSequence actions:actionDelay, [CCCallFuncND actionWithTarget:self selector:@selector(results:data:) data:[NSNumber numberWithInt:activeRow]], nil]];
-    //}
-    [[[GameManager sharedGameManager] gameData] writeScore:[Utils randomNumberBetween:1000 andMax:99999999] andDifficulty:currentDifficulty];
+    id actionDelay = [CCDelayTime actionWithDuration:0.2];
+    [self runAction:[CCSequence actions:actionDelay, [CCCallFuncND actionWithTarget:self selector:@selector(results:data:) data:[NSNumber numberWithInt:activeRow]], nil]];
+    if (isCareer) {
+        
+    } else {
+        [[[GameManager sharedGameManager] gameData] writeScore:[Utils randomNumberBetween:1000 andMax:99999999] andDifficulty:currentDifficulty];
+    }    
     [[[GameManager sharedGameManager] gameData] gameDataCleanup];
     isMovable = NO;
     longPress.enabled = NO;
     isWinner = currentDifficulty == places ? YES : NO;
     [[[GameManager sharedGameManager] gameData] updateCareerData:isWinner];
-    [self constructEndLabels:[timer stopTimer]];
+    [self constructEndLabels:[timer stopTimer] andZero:NO];
+    [[GameManager sharedGameManager] stopLoopSounds];
     [self openLock];
 }
 
 
-- (void) constructEndLabels:(int)time {
-    movingTime = [[CCArray alloc] init];
-    movingScore = [[CCArray alloc] init];
+- (void) constructEndLabels:(int)time andZero:(BOOL)toZero {
+    //movingTime = [[CCArray alloc] init];
+    //movingScore = [[CCArray alloc] init];
     //time label
-    [timerMask removeFromParentAndCleanup:YES];
-    NSString *finalTime = [NSString stringWithFormat:@"%02d%02d", time/60, time%60];
-    CCSprite *timePiece;
-    int colonFlag = 0;
-    for (int i = 0; i < finalTime.length; i++) {
-        if (i == 2) {
-            colonFlag = 4;
-            CCSprite *colon = [CCSprite spriteWithSpriteFrameName:@"colon.png"];
-            colon.anchorPoint = ccp(0,0);
-            colon.position = ccp(279 + i*9, 456);
-            [finalTimeLayer addChild:colon z:i];
-            [movingTime addObject:colon];
+    if (!toZero) {
+        [timerMask removeFromParentAndCleanup:YES];
+        NSString *finalTime = [NSString stringWithFormat:@"%02d%02d", time/60, time%60];
+        CCSprite *timePiece;
+        int colonFlag = 0;
+        for (int i = 0; i < finalTime.length; i++) {
+            if (i == 2) {
+                colonFlag = 4;
+                CCSprite *colon = [CCSprite spriteWithSpriteFrameName:@"colon.png"];
+                colon.anchorPoint = ccp(0,0);
+                colon.position = ccp(279 + i*9, 456);
+                [finalTimeLayer addChild:colon z:i];
+                [movingTime addObject:colon];
+            }
+            int piece = [[NSString stringWithFormat:@"%c", [finalTime characterAtIndex:i]] intValue];
+            timePiece = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%i.png", piece]];
+            timePiece.anchorPoint = ccp(0,0);
+            timePiece.position = ccp(279 + i*9 + colonFlag, 456);
+            [finalTimeLayer addChild:timePiece z:i];
+            //[movingTime addObject:timePiece];
         }
-        int piece = [[NSString stringWithFormat:@"%c", [finalTime characterAtIndex:i]] intValue];
-        timePiece = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%i.png", piece]];
-        timePiece.anchorPoint = ccp(0,0);
-        timePiece.position = ccp(279 + i*9 + colonFlag, 456);
-        [finalTimeLayer addChild:timePiece z:i];
-        [movingTime addObject:timePiece];
     }
-    
     //score label
     NSString *finalScore = [NSString stringWithFormat:@"%i", score];
     CCSprite *labelPiece;
+    int piece;
     for (int i = 0; i < 8; i++) {
         if (i < 8 - finalScore.length) {
             labelPiece = [CCSprite spriteWithSpriteFrameName:@"empty.png"];
         } else {
-            CCLOG(@"kolik je i %i", i);
-            int piece = [[NSString stringWithFormat:@"%c", [finalScore characterAtIndex:i - (8 - finalScore.length)]] intValue];
+            if (toZero)
+                piece = 0;
+            else
+                piece = [[NSString stringWithFormat:@"%c", [finalScore characterAtIndex:i - (8 - finalScore.length)]] intValue];
             labelPiece = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%i.png", piece]];
         }
         labelPiece.anchorPoint = ccp(0,0);
         labelPiece.position = ccp(9*i, 456.00);
         [finalScoreLayer addChild:labelPiece z:i];
-        [movingScore addObject:labelPiece];        
+        //[movingScore addObject:labelPiece];        
     }
 }
 
@@ -927,6 +987,7 @@
         CCSequence *scoreTimeSeq = [CCSequence actions:
                                     [CCDelayTime actionWithDuration: delayStep2],
                                     [CCMoveTo actionWithDuration:.3 position:CGPointMake(scoreTime.position.x, scoreTime.position.y - 30)],
+                                    [CCCallFunc actionWithTarget:self selector:@selector(scoreTimeCallback)],
                                     nil];
         
         CCLabelBMFont *movesLabelBig = [CCLabelBMFont labelWithString:@"MOVES:" fntFile:@"Gloucester_levelBig.fnt"];
@@ -936,11 +997,11 @@
         movesLabelBig.position = ccp(screenSize.width/2 - 15, screenSize.height/2 + 40);
         [self addChild:movesLabelBig z:21];
         CCSequence *movesTimeSeq = [CCSequence actions:
-                                    [CCDelayTime actionWithDuration: delayStep2],
+                                    [CCDelayTime actionWithDuration: delayStep3 - 0.5f],
                                     [CCFadeIn actionWithDuration:.3],
                                     nil];
         CCSequence *movesTimeOutSeq = [CCSequence actions:
-                                    [CCDelayTime actionWithDuration: delayStep2 + 1.0f],
+                                    [CCDelayTime actionWithDuration: delayStep3 + 1.5f],
                                     [CCFadeOut actionWithDuration:.2],
                                     [CCCallFunc actionWithTarget:self selector:@selector(timeBonusCallback)],   
                                     nil];
@@ -959,7 +1020,7 @@
                                        [CCDelayTime actionWithDuration: delayStep3 + 3.0f],
                                        [CCFadeOut actionWithDuration:.2],
                                        nil];
-        if (score < maxScore) {
+        if (score <= maxScore) {
             wdBig = [CCLabelBMFont labelWithString:@"WELL DONE!" fntFile:@"Gloucester_levelBig.fnt"];
             wdBig.scale = isRetina ? 1 : 0.5;
             wdBig.opacity = 0;
@@ -1029,14 +1090,20 @@
     
 }
 
+- (void) scoreTimeCallback {
+    [self constructScoreLabelWithLayer:final2ScoreLayer andArray:scoreLabelArray andRotation:0 andXpos:0 andYPos:456.50];
+    [self drawScoreToLabel:score andArray:scoreLabelArray andStyle:NO andZero:NO];
+}
+
 - (void) spInCallback {
     finalScoreLabel.visible = YES;
-    [self drawScoreToLabel:score andArray:finalScoreArray];
+    [self drawScoreToLabel:score andArray:finalScoreArray andStyle:YES andZero:NO];
+    [self drawScoreToLabel:score andArray:scoreLabelArray andStyle:YES andZero:YES];
 }
 
 - (void) timeBonusCallback {
     int fuckUp = 98654871;
-    [self drawScoreToLabel:fuckUp andArray:finalScoreArray]; 
+    [self drawScoreToLabel:fuckUp andArray:finalScoreArray andStyle:YES andZero:NO]; 
 }
 
 #pragma mark -
@@ -1149,22 +1216,28 @@
     }
     sc /= diffCoef;
     score += (int)sc;
-    
-    CCLOG(@"AND SCORE IS %i", score);
-    [self drawScoreToLabel:score andArray:scoreLabelArray];    
+    [self drawScoreToLabel:score andArray:scoreLabelArray andStyle:YES andZero:NO];    
 }
 
-- (void) drawScoreToLabel:(int)value andArray:(CCArray *)array {
+- (void) drawScoreToLabel:(int)value andArray:(CCArray *)array andStyle:(BOOL)animated andZero:(BOOL)toZero {
     NSString *scoreString = [NSString stringWithFormat:@"%i", value];
     NSMutableArray *characters = [[NSMutableArray alloc] initWithCapacity:[scoreString length]];
     for (int i=0; i < [scoreString length]; i++) {
-        NSString *ichar  = [NSString stringWithFormat:@"%c", [scoreString characterAtIndex:i]];
+        NSString *ichar;
+        if (toZero)
+            ichar  = [NSString stringWithFormat:@"%i", 0];
+        else
+            ichar  = [NSString stringWithFormat:@"%c", [scoreString characterAtIndex:i]];
         [characters addObject:ichar];
     }
     ScoreNumber *tempScoreNumber;
     for (int i=0; i < [characters count]; i++) {
         tempScoreNumber = [array objectAtIndex:i];
-        [tempScoreNumber moveToPosition:[[[[characters reverseObjectEnumerator] allObjects] objectAtIndex:i] intValue]];
+        int pos = [[[[characters reverseObjectEnumerator] allObjects] objectAtIndex:i] intValue];
+        if (animated)
+            [tempScoreNumber moveToPosition:pos];
+        else
+            [tempScoreNumber jumpToPosition:pos];
     }
 }
 
@@ -1175,6 +1248,16 @@
 	[self runAction:[CCSequence actions:actionDelay, [CCCallFuncND actionWithTarget:self selector:@selector(results:data:) data:[NSNumber numberWithInt:activeRow]], nil]];
     
     activeRow ++;
+    
+    gameInfo infoData;
+    infoData.difficulty = currentDifficulty;
+    infoData.activeRow = activeRow;
+    infoData.career = isCareer ? 1 : 0;
+    infoData.score = score;
+    [[[GameManager sharedGameManager] gameData] insertGameData:infoData];
+    
+    [[[GameManager sharedGameManager] gameData] deleteActiveFigures];
+    
     [self constructRowWithIndex:activeRow];
     [self jumpGamePlay];
 }
@@ -1220,12 +1303,6 @@
         [movableFigures removeObject:userSprite];
         [userSprite destroy];        
     }
-    
-    gameInfo infoData;
-    infoData.difficulty = currentDifficulty;
-    infoData.activeRow = activeRow + 1;//posledni radek? data length v dbase a tak... zatim srat
-    infoData.career = isCareer ? 1 : 0;
-    [[[GameManager sharedGameManager] gameData] insertGameData:infoData];
 }
 
 #pragma mark -
@@ -1269,12 +1346,13 @@
     CCMoveTo *moveToBase = [CCMoveTo actionWithDuration:.2 position:CGPointMake(figure.position.x, figure.originalPosition.y)];
     [figure runAction:moveToBase];
     
+    fid = fid + 1;
     sprite.isOnActiveRow = YES;
+    sprite.fid = fid;
     sprite.oldPlace = sprite.place;
     sprite.tempPosition = ccp(sprite.position.x, sprite.position.y);
-    spriteEndPosition = sprite.position.y;//mozna vyhodime
+    spriteEndPosition = sprite.position.y;
     sprite.movePosition = ccp(sprite.position.x, sprite.position.y - trans);
-    CCLOG(@"JAKY JE Y? %f", sprite.position.y);
     
     Figure *tempSprite = nil;
     for (Figure *userSprite in userCode) {
@@ -1286,11 +1364,21 @@
         [userCode removeObject:tempSprite];
         [movableFigures removeObject:tempSprite];
         [tempSprite destroy];
+        
+        [[[GameManager sharedGameManager] gameData] deleteActiveFigure:sprite.place];
     }
     
     [userCode addObject:sprite];
     
     [figuresNode reorderChild:selSprite z:sprite.zOrder - 100];
+    
+    activeFigure dbFigure;
+    dbFigure.fid = fid;
+    dbFigure.color = sprite.currentFigure;
+    dbFigure.position = sprite.position;
+    dbFigure.place = sprite.place;
+    //CCLOG(@"FID JE %i", fid);
+    [[[GameManager sharedGameManager] gameData] insertActiveFigure:dbFigure];
     
     if (userCode.count == currentDifficulty) {
         isEndRow = YES;
@@ -1307,16 +1395,27 @@
             existSprite = userSprite;
         }
     }
+   // prvni old, druhy new 
     if (existSprite) {
+        //CCLOG(@"OLD PLACE %i NEW PLACE %i", existSprite.place, sprite.oldPlace);
+        //CCLOG(@"POSITION %@", NSStringFromCGPoint(sprite.tempPosition));
+        //[[[GameManager sharedGameManager] gameData] updateActiveFigure:existSprite.place withPlace:sprite.oldPlace andPosition:sprite.tempPosition];
+        [[[GameManager sharedGameManager] gameData] updateActiveFigure:existSprite.fid withPlace:sprite.oldPlace andPosition:sprite.tempPosition];
         existSprite.place = sprite.oldPlace;
         existSprite.oldPlace = sprite.oldPlace;
         existSprite.position = sprite.tempPosition;
         existSprite.tempPosition = ccp(sprite.tempPosition.x, sprite.tempPosition.y);
     }
+    //CCLOG(@"OLD PLACE %i NEW PLACE %i", sprite.oldPlace, sprite.place);
+    //[[[GameManager sharedGameManager] gameData] updateActiveFigure:sprite.oldPlace withPlace:sprite.place andPosition:sprite.position];
+    [[[GameManager sharedGameManager] gameData] updateActiveFigure:sprite.fid withPlace:sprite.place andPosition:sprite.position];
     sprite.oldPlace = sprite.place;
 }
 
 - (void) figureSetCorrectPosition:(id)sender data:(Figure *)sprite {
+    PLAYSOUNDEFFECT(FIGURE_MOVE);
+    //[[[GameManager sharedGameManager] gameData] updateActiveFigurePosition:sprite.place andPosition:sprite.position];
+    [[[GameManager sharedGameManager] gameData] updateActiveFigurePosition:sprite.fid andPosition:sprite.position];
     sprite.tempPosition = ccp(sprite.position.x, sprite.position.y);
     [figuresNode reorderChild:selSprite z:sprite.zOrder - 100];
     selSprite = nil;
@@ -1337,7 +1436,6 @@
     scale.tag = kFigureZoom;
     [newSprite runAction:scale];          
     selSprite = newSprite;
-    CCLOG(@"sel sprite %@", selSprite);
     if (selSprite) {
         [figuresNode reorderChild:selSprite z:selSprite.zOrder + 100];
     }   

@@ -14,5 +14,6 @@
 }
 
 - (void) moveToPosition:(int)position;
+- (void) jumpToPosition:(int)position;
 
 @end

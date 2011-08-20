@@ -11,7 +11,7 @@
 
 @implementation Figure
 
-@synthesize currentFigure, originalPosition, tempPosition, movePosition, place, oldPlace, isActive, isCalculated, isOnActiveRow, startTime, endTime;
+@synthesize currentFigure, originalPosition, tempPosition, movePosition, place, oldPlace, fid, isActive, isCalculated, isOnActiveRow, startTime, endTime;
 
 - (Figure *) initWithFigureType:(FigureTypes)figureID {
     
@@ -55,8 +55,7 @@
     }
     
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Level.plist"];
-    
-    
+        
     self = [super initWithSpriteFrameName:imageFile];
     [imageFile release];
     

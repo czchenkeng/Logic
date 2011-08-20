@@ -18,7 +18,8 @@
     CCSprite *light;
     CCSprite *lightOff;
     CCSprite *leftGib;
-    CCSprite *rightGib;    
+    CCSprite *rightGib;
+    CCSprite *background;
     CCSprite *doors;
     
     int nextScene;

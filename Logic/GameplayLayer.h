@@ -38,6 +38,7 @@
     BOOL isWinner;//level success?
     int maxScore;//present max score for final animations - level end 
     float jump;
+    int fid;
     
     BOOL isCareer;
     BOOL isRetina;
@@ -122,6 +123,7 @@
     //end game - moving labels
     CCLayer *finalTimeLayer;
     CCLayer *finalScoreLayer;
+    CCLayer *final2ScoreLayer;
     CCLayer *finalScoreLabel;
     CCArray *finalScoreArray;
     

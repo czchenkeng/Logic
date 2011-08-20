@@ -25,8 +25,10 @@
 
 static const float MIN_SCALE = 0.8;
 static const float MAX_SCALE = 1.667;
-static const float POS_X = 260;
-static const float POS_Y = -40;
+//static const float POS_X = 260;
+//static const float POS_Y = -40;
+static const float POS_X = 0;
+static const float POS_Y = 0;
 
 @implementation CareerLayer
 
@@ -57,6 +59,8 @@ static const float POS_Y = -40;
         background = [CCSprite spriteWithSpriteFrameName:@"logik_levels.png"];
         background.anchorPoint = ccp(0, 0);
         background.position = ccp(-POS_X, POS_Y);
+        //background.position = ccp(-POS_X, POS_Y + background.contentSize.height*(1-MIN_SCALE));
+        //background.scale = MIN_SCALE;
         [zoomBase addChild:background z:1];
         
         //Main bulbon, shadow
@@ -485,7 +489,6 @@ static const float POS_Y = -40;
     infoData.activeRow = 0;
     infoData.career = 1;
     [[[GameManager sharedGameManager] gameData] insertGameData:infoData];
-    [GameManager sharedGameManager].gameInProgress = YES;//prenest do GameData?
     [[[GameManager sharedGameManager] gameData] insertCareerData:selSprite.idCity xPos:zbLastPos.x yPos:zbLastPos.y];
     [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kSlideInR];    
 }
@@ -496,9 +499,12 @@ static const float POS_Y = -40;
 - (CGPoint) boundLayerPos:(CGPoint)newPos {
     CGSize winSize = [CCDirector sharedDirector].winSize;
     CGPoint retval = newPos;
+    CCLOG(@"CO JE TARGET POS %@", NSStringFromCGPoint(retval));
     retval.x = MIN(retval.x, POS_X);
+    CCLOG(@"CO JE MIN X %f", retval.x);
     retval.x = MAX(retval.x, -background.contentSize.width + POS_X + winSize.width);
     retval.y = MIN(retval.y, -POS_Y);
+    //retval.y = MAX(retval.y, -background.contentSize.height*0.8 - POS_Y + winSize.height);
     retval.y = MAX(retval.y, -background.contentSize.height - POS_Y + winSize.height);
     return retval;
 }
@@ -517,7 +523,9 @@ static const float POS_Y = -40;
 #pragma mark Moving layer - pan callback
 - (void) moveBoard:(CGPoint)translation from:(CGPoint)lastLocation {
 	CGPoint target_position = ccpAdd(translation, lastLocation);
+    //CCLOG(@"CO JE TARGET POS %@", NSStringFromCGPoint(target_position));
     zoomBase.position = [self boundLayerPos:target_position];
+    //CCLOG(@"CO JE POSITION %@", NSStringFromCGPoint(zoomBase.position));
 }
 
 #pragma mark Single tap callback

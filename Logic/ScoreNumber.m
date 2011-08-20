@@ -38,6 +38,10 @@
     [numbers runAction:moveNumbers];
 }
 
+- (void) jumpToPosition:(int)position {
+    [numbers setPosition:ccp(numbers.position.x, 18*(position+2))];
+}
+
 
 - (void) dealloc {
     CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
