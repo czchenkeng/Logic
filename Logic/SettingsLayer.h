@@ -33,6 +33,9 @@
     
     float previousMusic;
     float previousSound;
+    
+    BOOL blink;
+    CCSprite *redLight;
 }
 
 @end

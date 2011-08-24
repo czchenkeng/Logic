@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "CCLabelBMFontMultiline.h"
 
 @interface HowToLayer : CCLayer {
     CCLayer *howTo;

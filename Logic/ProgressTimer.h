@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-
 @interface ProgressTimer : CCSprite {
 	ccTime totalTime;
 	int myTime;
 	int currentTime;
+    float secTime;
     int gameTime;
     
     CCLayer *seconds;
@@ -31,6 +31,9 @@
     
     CCLayer *hours;
     CCArray *hoursArray;
+    int tenMins;
+    
+    CCArray *clockArray;
     
     int first;
     
@@ -39,5 +42,6 @@
 @property (readonly) int gameTime;
 
 - (int) stopTimer;
+- (void) setupClock:(int)time;
 
 @end

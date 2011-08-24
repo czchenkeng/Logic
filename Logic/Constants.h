@@ -9,7 +9,8 @@
 #define MIN_DISTANCE_SWIPE_X 200
 #define MIN_DISTANCE_SWIPE_Y 120
 #define LEVEL_SWIPE_AFTER_ROW 7
-#define LEVEL_DEAD_FIGURES_MASK_HEIGHT 5
+//#define LEVEL_DEAD_FIGURES_MASK_HEIGHT 5
+#define LEVEL_DEAD_FIGURES_MASK_HEIGHT 0
 #define LEVEL_DISLOCATION 40
 #define LEVEL_FIGURE_MAX_Y_MOVE 400
 
@@ -53,7 +54,13 @@ typedef struct {
     int activeRow;
     int career;
     int score;
+    int gameTime;
 } gameInfo;
+
+typedef struct {
+    int idCity;
+    CGPoint position;
+} city;
 
 typedef enum {
     kButtonInfo,
@@ -116,7 +123,7 @@ typedef enum {
 #define AUDIO_MAX_WAITTIME 150
 #define BACKGROUND_TRACK_MAIN @"main_theme.mp3"
 #define BACKGROUND_TRACK_LEVEL @"Logic-level-ambient.mp3"
-//#define BACKGROUND_TRACK_LEVEL @"krtz_loop.mp3"
+#define BACKGROUND_TRACK_PAUSE @"main_theme_pause.m4v"
 
 typedef enum {
     kAudioManagerUninitialized = 0,

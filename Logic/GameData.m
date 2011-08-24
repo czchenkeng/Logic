@@ -96,8 +96,9 @@
 
 - (void) insertGameData:(gameInfo)data {
     [db beginTransaction];
-    [db executeUpdate:@"INSERT INTO game_data (difficulty, active_row, career, score) values (?, ?, ?, ?)", 
-     [NSNumber numberWithInt:data.difficulty], [NSNumber numberWithInt:data.activeRow], [NSNumber numberWithInt:data.career], [NSNumber numberWithInt:data.score]];
+    [db executeUpdate:@"INSERT INTO game_data (difficulty, active_row, career, score, game_time) values (?, ?, ?, ?, ?)", 
+     [NSNumber numberWithInt:data.difficulty], [NSNumber numberWithInt:data.activeRow], [NSNumber numberWithInt:data.career], 
+     [NSNumber numberWithInt:data.score], [NSNumber numberWithInt:data.gameTime]];
     [db commit];
 }
 
@@ -109,6 +110,7 @@
         retVal.activeRow = [rs intForColumn:@"active_row"];
         retVal.career = [rs intForColumn:@"career"];
         retVal.score = [rs intForColumn:@"score"];
+        retVal.gameTime = [rs intForColumn:@"game_time"];
     }
     
     return retVal;
@@ -241,14 +243,15 @@
 
 - (void) insertCareerData:(int)city xPos:(float)xPos yPos:(float)yPos {
     [db beginTransaction];
-    [db executeUpdate:@"INSERT INTO career (city, is_done, lastPosX, lastPosY) values (?, ?, ?, ?)", [NSNumber numberWithInt:city], [NSNumber numberWithInt:0], [NSNumber numberWithFloat:xPos], [NSNumber numberWithFloat:yPos]];
+    [db executeUpdate:@"INSERT INTO career (city, is_done, lastPosX, lastPosY, last_city, score) values (?, ?, ?, ?)", [NSNumber numberWithInt:city], [NSNumber numberWithInt:0], [NSNumber numberWithFloat:xPos], [NSNumber numberWithFloat:yPos], [NSNumber numberWithInt:0], [NSNumber numberWithInt:0]];
     [db commit];
 }
 
-- (void) updateCareerData:(BOOL)flag {
+- (void) updateCareerData:(BOOL)flag andScore:(int)score{
     if (flag) {//career success
         [db beginTransaction];
-        [db executeUpdate:@"UPDATE career SET is_done = 1 WHERE is_done=0"];
+        //[db executeUpdate:@"UPDATE career SET is_done = 1, score =  WHERE is_done=0"];
+        [db executeUpdate:[NSString stringWithFormat:@"UPDATE career SET is_done = 1, score = %i WHERE is_done=0", score]];
         [db commit];
     } else {
         [db beginTransaction];
@@ -257,13 +260,20 @@
     }
 }
 
+- (void) updateCarrerLastCity {
+    [db beginTransaction];
+    [db executeUpdate:@"UPDATE career SET last_city = 1 WHERE last_city=0"];
+    [db commit];
+}
+
 - (NSMutableArray *) getCareerData {
-    rs = [db executeQuery:@"SELECT COUNT(*) FROM career"];
-    if ([rs next]) {
-        CCLOG(@"total count career is %i", [rs intForColumnIndex:0]);
-    }
+//    rs = [db executeQuery:@"SELECT COUNT(*) FROM career"];
+//    if ([rs next]) {
+//        CCLOG(@"total count career is %i", [rs intForColumnIndex:0]);
+//    }
     
-    rs = [db executeQuery:@"SELECT * FROM career WHERE is_done=1 ORDER BY id ASC"];
+    //rs = [db executeQuery:@"SELECT * FROM career WHERE is_done=1 ORDER BY id ASC"];
+    rs = [db executeQuery:@"SELECT * FROM career WHERE last_city=1 ORDER BY id ASC"];
     NSMutableArray *retVal = [[NSMutableArray alloc] init];//release?
     while ([rs next]) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
@@ -271,6 +281,29 @@
         [dict setObject:[NSNumber numberWithFloat:[rs doubleForColumn:@"lastPosX"]] forKey:@"posX"];
         [dict setObject:[NSNumber numberWithFloat:[rs doubleForColumn:@"lastPosY"]] forKey:@"posY"];
         [retVal addObject:dict];
+    }
+    return retVal;
+}
+
+- (city) getCityInProgress {
+    city retVal;
+    retVal.idCity = 0;
+    rs = [db executeQuery:@"SELECT * FROM career WHERE is_done=0"];
+    if ([rs next]) {
+        //retVal.idCity = [[NSNumber numberWithInt:[rs intForColumn:@"city"]] intValue];
+        retVal.idCity = [rs intForColumn:@"city"];
+        retVal.position = ccp([rs doubleForColumn:@"lastPosX"], [rs doubleForColumn:@"lastPosY"]);
+    }
+    return retVal;
+}
+
+- (city) getLastCity {
+    city retVal;
+    retVal.idCity = 0;
+    rs = [db executeQuery:@"SELECT * FROM career WHERE is_done=1 AND last_city = 0"];
+    if ([rs next]) {
+        retVal.idCity = [rs intForColumn:@"city"];
+        retVal.position = ccp([rs doubleForColumn:@"lastPosX"], [rs doubleForColumn:@"lastPosY"]);
     }
     return retVal;
 }

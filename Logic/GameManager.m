@@ -12,7 +12,7 @@
 
 @interface GameManager (PrivateMethods)
 - (NSDictionary *) getSoundEffectsListForSceneWithID:(SceneTypes)sceneID;
-- (void) playLoopSounds:(NSNumber *)sceneIDNumber;
+- (void) loadLoopSounds:(NSNumber *)sceneIDNumber;
 @end
 
 @implementation GameManager
@@ -207,7 +207,7 @@ static GameManager* _sharedGameManager = nil;
     }
     
     [self performSelectorInBackground:@selector(loadAudioForSceneWithID:) withObject:[NSNumber numberWithInt:sceneID]];
-    [self playLoopSounds:[NSNumber numberWithInt:sceneID]];
+    [self loadLoopSounds:[NSNumber numberWithInt:sceneID]];
     
     if ([[CCDirector sharedDirector] runningScene] == nil) {
         [[CCDirector sharedDirector] runWithScene:sceneToRun];
@@ -351,7 +351,7 @@ static GameManager* _sharedGameManager = nil;
     }
 }
 
-- (void) playLoopSounds:(NSNumber *)sceneIDNumber {
+- (void) loadLoopSounds:(NSNumber *)sceneIDNumber {
     [self stopLoopSounds];
     
     SceneTypes sceneID = (SceneTypes)[sceneIDNumber intValue];
@@ -366,8 +366,14 @@ static GameManager* _sharedGameManager = nil;
             [loopingSfx addObject:sound];
             sound.looping = YES;
             //sound.gain = 0.1f;
-            [sound play];
+            //[sound play];
         }
+    }
+}
+
+- (void) playLoopSounds {
+    for (CDSoundSource *s in loopingSfx) {
+        [s play];
     }
 }
 

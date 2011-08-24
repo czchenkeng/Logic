@@ -8,14 +8,58 @@
 
 #import "ProgressTimer.h"
 
+@interface ProgressTimer (PrivateMethods)
+- (void) buildTimer;
+- (void) moveClock:(CCArray *)arr;
+- (void) formatClock:(int)value where:(int)where;
+@end
 
 @implementation ProgressTimer
 @synthesize gameTime;
 
+- (id) init {
+    self = [super init];
+    if (self != nil) {
+        CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
+        clockArray = [[CCArray alloc] init];
+        [self buildTimer];
+    }
+    return self;
+}
 
-- (void) prepareAssets {
+- (void) setupClock:(int)time {
+    first = 0;
+    tenSec = 0;
+    tenMins = 0;
+    myTime = 0;
+    totalTime = time;
+    secTime = 1.00/18;
+    
+    if (time > 0) {
+        NSString *startTime = [NSString stringWithFormat:@"%02d%02d",(int)totalTime/60, (int)totalTime%60];
+        for (int i = 0; i < startTime.length; i++) {
+            [self formatClock:[[NSString stringWithFormat:@"%c", [startTime characterAtIndex:i]] intValue] where:i];
+        }
+    }
+    [self schedule:@selector(update:) interval:0];
+}
+
+- (void) formatClock:(int)value where:(int)where {
+    int i = 0;
+    int coef = [[clockArray objectAtIndex:where] count] - value;
+    for (CCSprite *sprite in [clockArray objectAtIndex:where]){
+        if (i < value) {
+            sprite.position = ccp(sprite.position.x, (coef + i)*ADJUST_2(-18));
+        } else {
+            sprite.position = ccp(sprite.position.x, (value - i)*ADJUST_2(18)); 
+        }
+        i++;
+    }
+}
+
+- (void) buildTimer {
     seconds = [CCLayer node];
-    seconds.position = ccp(30.50, 0);
+    seconds.position = ccp(ADJUST_2(30.50), 0);
     [self addChild:seconds];
     
     secondsArray = [[CCArray alloc] init];    
@@ -23,33 +67,33 @@
     for (int i=0; i < 10; i++) {
         secs = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%i.png", i]];
         secs.anchorPoint = ccp(0,0);
-        secs.position = ccp(0, i*-18);
+        secs.position = ccp(0, i*ADJUST_2(-18));
         [seconds addChild:secs];
         [secondsArray addObject:secs];
     }
     
     tenSeconds = [CCLayer node];
-    tenSeconds.position = ccp(21.50, 0);
+    tenSeconds.position = ccp(ADJUST_2(21.50), 0);
     [self addChild:tenSeconds];
     tenSecondsArray = [[CCArray alloc] init];    
     CCSprite *tenSecs;
     for (int i=0; i < 6; i++) {
         tenSecs = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%i.png", i]];
         tenSecs.anchorPoint = ccp(0,0);
-        tenSecs.position = ccp(0, i*-18);
+        tenSecs.position = ccp(0, i*ADJUST_2(-18));
         [tenSeconds addChild:tenSecs];
         [tenSecondsArray addObject:tenSecs];
     }
     
     minutes = [CCLayer node];
-    minutes.position = ccp(9, 0);
+    minutes.position = ccp(ADJUST_2(9), 0);
     [self addChild:minutes];
     minutesArray = [[CCArray alloc] init];
     CCSprite *minute;
     for (int i=0; i < 10; i++) {
         minute = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%i.png", i]];
         minute.anchorPoint = ccp(0,0);
-        minute.position = ccp(0, i*-18);
+        minute.position = ccp(0, i*ADJUST_2(-18));
         [minutes addChild:minute];
         [minutesArray addObject:minute];
     }
@@ -62,61 +106,50 @@
     for (int i=0; i < 6; i++) {
         hour = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%i.png", i]];
         hour.anchorPoint = ccp(0,0);
-        hour.position = ccp(0, i*-18);
+        hour.position = ccp(0, i*ADJUST_2(-18));
         [hours addChild:hour];
         [hoursArray addObject:hour];
     }
     
     CCSprite *colon = [CCSprite spriteWithSpriteFrameName:@"colon.png"];
     colon.anchorPoint = ccp(0,0);
-    colon.position = ccp(18, 0);
+    colon.position = ccp(ADJUST_2(18), 0);
     [self addChild:colon];
     
+    [clockArray addObject:hoursArray];
+    [clockArray addObject:minutesArray];
+    [clockArray addObject:tenSecondsArray];
+    [clockArray addObject:secondsArray];
 }
-
 
 - (void) moveClock:(CCArray *)arr {
+    first ++;
+    //CCLOG(@"kolikrat %i", first);
     for (CCSprite *sprite in arr) {
-        [self stopAllActions];
-        CCMoveTo *secondsMove = [CCMoveTo actionWithDuration:0.90 position:ccp(0, sprite.position.y + 18)];
-        CCSequence *secondsSeq = [CCSequence actions:secondsMove, [CCCallFuncND actionWithTarget:self selector:@selector(timeMoveEnded:data:) data:sprite], nil];
-        //CCSequence *secondsSeq = [CCSequence actions:secondsMove, nil];
-        [sprite runAction:secondsSeq];
+        sprite.position = ccp(sprite.position.x, sprite.position.y + ADJUST_2(1));
+        if (sprite.position.y > ADJUST_2(18.00)) {
+            sprite.position = ccp(0, 9 * ADJUST_2(-18.00));
+        }
     }
 }
 
-- (void) timeMoveEnded:(id)sender data:(CCSprite *)sprite {
-    if (sprite.position.y > 1.00f) {
-        sprite.position = ccp(0, 9*-18);
+- (void) moveTime:(CCArray *)arr {
+    for (CCSprite *sprite in arr) {
+        CCMoveTo *timeMove = [CCMoveTo actionWithDuration:1.00 position:ccp(0, sprite.position.y + ADJUST_2(18))];
+        CCArray *param = [[CCArray alloc] initWithCapacity:2];
+        [param addObject:sprite];
+        [param addObject:[NSNumber numberWithInt:arr.count]];
+        CCSequence *timeSeq = [CCSequence actions:timeMove, [CCCallFuncND actionWithTarget:self selector:@selector(timeMoveEnded:data:) data:param], nil];
+        [sprite runAction:timeSeq];
     }
 }
 
-- (void) endAnimation:(CCArray *)arr stop:(int)st flag:(int)fl {
-    int indx;
-    if (fl == 0) {
-        indx = st;
-    } else {
-        indx = fl - 1;
+- (void) timeMoveEnded:(id)sender data:(CCArray *)param {
+    CCSprite *sprite = [param objectAtIndex:0];
+    int jump = [[param objectAtIndex:1] intValue];
+    if (sprite.position.y > 18.00f) {
+        sprite.position = ccp(0, (jump - 2)*ADJUST_2(-18));
     }
-    CCSprite *spriteToMove = [arr objectAtIndex:indx];
-    [spriteToMove setPosition:ccp(0, -st*18)];
-}
-
-- (id) init {
-    self = [super init];
-    if (self != nil) {
-        [self prepareAssets];
-        first = 0;
-        tenSec = 0;
-        myTime = 0;
-        totalTime = 0;
-        
-        [self moveClock:secondsArray];
-        
-        [self schedule:@selector(update:) interval:1.00];
-        //[self schedule:@selector(update:)];
-    }
-    return self;
 }
 
 - (int) stopTimer {
@@ -125,42 +158,57 @@
 }
 
 
-- (void) update:(ccTime)dt{
-    
+- (void) update:(ccTime)dt {
     totalTime += dt;
     currentTime = (int)totalTime;
     gameTime = (int)totalTime;
+    if (totalTime - currentTime > secTime) {
+        secTime += 1.00/18;
+        [self moveClock:secondsArray];
+    }
 	if (myTime < currentTime)
 	{
-		myTime = currentTime;
-        //CCLOG(@"game timer %@",  [NSString stringWithFormat:@"%02d:%02d", myTime/60, myTime%60]);
-        //CCLOG(@"my time %i",  myTime);
+        secTime = 1.00/18;
+        first = 0;
+        myTime = currentTime;
         sec = myTime % 10;
         min = myTime % 60;
-        //CCLOG(@"timer %i",  seconds < 10 ? seconds : abs(10 - seconds));
-        //CCLOG(@"SECONDS %i",  sec);
-        //CCLOG(@"mins %i",  myTime % 60);
-        //[self endAnimation:secondsArray stop:9 flag:sec];
+        
+        //CCLOG(@"game timer %@",  [NSString stringWithFormat:@"%02d:%02d", myTime/60, myTime%60]);
         [self moveClock:secondsArray];
+                
+        if (sec == 9) {
+            tenSec ++;
+            if (tenSec == 6) {
+                tenSec = 0;
+            } 
+            [self moveTime:tenSecondsArray];
+        }
         
-//        if (sec == 9) {
-//            tenSec ++;
-//            if (tenSec == 6) {
-//                tenSec = 0;
-//            }
-//            //if (first > 60)
-//            [self endAnimation:tenSecondsArray stop:5 flag:tenSec]; 
-//            [self moveClock:tenSecondsArray];
-//        }
-//        
-//        if (min == 59) {
-//           [self endAnimation:minutesArray stop:9 flag:sec]; 
-//           [self moveClock:minutesArray]; 
+//        if (min == 0) {
+//            PLAYSOUNDEFFECT(GONG);
 //        }
         
-        first ++;
+        if (min == 59) {
+            PLAYSOUNDEFFECT(GONG);
+            [self moveTime:minutesArray]; 
+        }
     }
-    
+}
+
+- (void) dealloc {
+    //CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
+    [secondsArray release];
+    [tenSecondsArray release];
+    [minutesArray release];
+    [hoursArray release];
+    [clockArray release];
+    secondsArray = nil;
+    tenSecondsArray = nil;
+    minutesArray = nil;
+    hoursArray = nil;
+    clockArray = nil;
+    [super dealloc];
 }
 
 @end

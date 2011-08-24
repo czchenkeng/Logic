@@ -7,12 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Guess.h"
 
 @interface ScoreCalc : NSObject {
-
+    int colorsCount;
+    int pinsCount;
+    int totalTurns;
+    int points;
+    
+    CCArray *hiddenPattern;
+    CCArray *patterns;
 }
 
-@property (readwrite) int colorsCount;
-@property (readwrite) int pinsCount;
+@property (nonatomic, copy) CCArray *hiddenPattern;
+
++ (id) scoreWithColors:(int)c pins:(int)p;
+
+- (int) calculateScoreWithRow:(int)row andTurn:(CCArray *)turn;
 
 @end

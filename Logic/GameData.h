@@ -54,10 +54,13 @@ FMResultSet *rs;
 
 //write career
 - (void) insertCareerData:(int)city xPos:(float)xPos yPos:(float)yPos;
-- (void) updateCareerData:(BOOL)flag;
+- (void) updateCareerData:(BOOL)flag andScore:(int)score;
 
 //read career
 - (NSMutableArray *) getCareerData;
+- (city) getCityInProgress;
+- (city) getLastCity;
+- (void) updateCarrerLastCity;
 
 //delete career
 - (void) resetCareer;

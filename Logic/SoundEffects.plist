@@ -6,6 +6,10 @@
 	<dict/>
 	<key>kGameScene</key>
 	<dict>
+		<key>BUTTON_LEVEL_CLICK</key>
+		<string>Logic-main-button_click.mp3</string>
+		<key>GONG</key>
+		<string>Logic-level-gong.mp3</string>
 		<key>SHOW_RESULT_GREEN</key>
 		<string>BellChimeGreen.mp3</string>
 		<key>SHOW_RESULT_YELLOW</key>

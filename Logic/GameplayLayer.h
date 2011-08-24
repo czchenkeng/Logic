@@ -18,11 +18,13 @@
 #import "FacebookViewController.h"
 #import "ScoreNumber.h"
 #import "Blackout.h"
+#import "ScoreCalc.h"
 
 
 @interface GameplayLayer : CCLayerColor <UIGestureRecognizerDelegate> {    
     UIPanGestureRecognizer *panRecognizer;
     UILongPressGestureRecognizer *longPress;
+    UITapGestureRecognizer *singleTap;
     
     GameDifficulty currentDifficulty;//obtiznost hry
     float difficultyPadding;//rozestup figur podle obtiznosti
@@ -32,6 +34,7 @@
     int colors;//spravne barvy
     int score;//skore
     int lastTime;//time between rows
+    int gameTime;
     BOOL isMovable;//after predefined row
     float trans;
     float spriteEndPosition;
@@ -39,6 +42,8 @@
     int maxScore;//present max score for final animations - level end 
     float jump;
     int fid;
+    
+    ScoreCalc *scoreCalc;
     
     BOOL isCareer;
     BOOL isRetina;
@@ -114,6 +119,8 @@
     CCLabelBMFont *wdBig;
     CCLabelBMFont *superBig;
     CCLabelBMFont *superSmall;
+    CCLabelBMFont *movesLabelBig;
+    CCLabelBMFont *timeLabelBig;
     
     //particles
     CCParticleSystem *dustSystem;
@@ -124,8 +131,12 @@
     CCLayer *finalTimeLayer;
     CCLayer *finalScoreLayer;
     CCLayer *final2ScoreLayer;
+    CCLayer *final2TimeLayer;
+    CCLayer *final3TimeLayer;
     CCLayer *finalScoreLabel;
     CCArray *finalScoreArray;
+    CCArray *final1TimeArray;
+    CCArray *final2TimeArray;
     
     CCArray *movingTime;
     CCArray *movingScore;

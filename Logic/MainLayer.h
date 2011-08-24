@@ -27,6 +27,8 @@
     HowToLayer *howToLayer;
     
     CCMenu *topMenu;
+    
+    CCParticleSystem *system;
 }
 
 @end

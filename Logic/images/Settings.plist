@@ -7,7 +7,7 @@
             <key>back_off.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{65,530},{50,61}}</string>
+                <string>{{126,530},{50,61}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -277,6 +277,19 @@
                 <key>sourceSize</key>
                 <string>{64,98}</string>
             </dict>
+            <key>red_light.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{65,530},{61,55}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{61,55}}</string>
+                <key>sourceSize</key>
+                <string>{61,55}</string>
+            </dict>
             <key>score-off.png</key>
             <dict>
                 <key>frame</key>
@@ -319,7 +332,7 @@
             <key>thumb.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{126,530},{33,36}}</string>
+                <string>{{0,580},{33,36}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -334,8 +347,12 @@
         <dict>
             <key>format</key>
             <integer>2</integer>
+            <key>realTextureFileName</key>
+            <string>Settings.pvr.ccz</string>
             <key>size</key>
             <string>{512,1024}</string>
+            <key>smartupdate</key>
+            <string>$TexturePacker:SmartUpdate:f256cebc6434702ec1b595cf6101b752$</string>
             <key>textureFileName</key>
             <string>Settings.pvr.ccz</string>
         </dict>

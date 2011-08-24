@@ -54,7 +54,7 @@
             break;
     }
     
-    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Level.plist"];
+    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kLevelLevelTexture];
         
     self = [super initWithSpriteFrameName:imageFile];
     [imageFile release];

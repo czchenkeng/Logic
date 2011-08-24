@@ -19,16 +19,17 @@ enum soundTags
 
 - (void) buttonTapped:(CCMenuItem *)sender { 
     PLAYSOUNDEFFECT(BUTTON_SETTINGS_CLICK);
+    CCLOG(@"BUTTON_SETTINGS_CLICK");
     switch (sender.tag) {
         case kButtonScore: 
-            CCLOG(@"TAP ON SCORE");
             [[GameManager sharedGameManager] runSceneWithID:kScoreScene andTransition:kSlideInR];
             break;
         case kButtonBack:
-            CCLOG(@"TAP ON BACK");
             [[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kSlideInL];
             break;
         case kButtonCareerPlay:
+            [self unschedule:@selector(update:)];
+            redLight.visible = NO;
             [[GameManager sharedGameManager] runSceneWithID:kCareerScene andTransition:kSlideInR];
             break;
         default:
@@ -40,21 +41,22 @@ enum soundTags
 
 - (void) diffTapped:(CCMenuItem *)sender {
     PLAYSOUNDEFFECT(JOYSTICK_SETTINGS_CLICK);
+    CCLOG(@"JOYSTICK_SETTINGS_CLICK");
     int flag;
     switch (sender.tag) {
         case kEasy: 
             CCLOG(@"TAP ON EASY");
-            joyStick.position = ccp(92.00, 135.00);
+            joyStick.position = ADJUST_CCP(ccp(92.00, 135.00));
             flag = 0;
             break;
         case kMedium:
             CCLOG(@"TAP ON MEDIUM");
-            joyStick.position = ccp(92.00, 92.00);
+            joyStick.position = ADJUST_CCP(ccp(92.00, 92.00));
             flag = 1;
             break;
         case kHard:
             CCLOG(@"TAP ON HARD");
-            joyStick.position = ccp(92.00, 49.00);
+            joyStick.position = ADJUST_CCP(ccp(92.00, 49.00));
             flag = 2;
             break;
         default:
@@ -110,7 +112,7 @@ enum soundTags
         previousMusic = SETTINGS_MUSIC_VOLUME;
         previousSound = SETTINGS_SOUND_VOLUME;
         
-        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Settings.plist"];
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kSettingsTexture];
         
         CCSprite *background = [CCSprite spriteWithSpriteFrameName:@"background.png"];
         background.anchorPoint = ccp(0,0);
@@ -125,21 +127,30 @@ enum soundTags
         
         CCMenuItem *backItem = [CCMenuItemSprite itemFromNormalSprite:buttonBackOff selectedSprite:buttonBackOn target:self selector:@selector(buttonTapped:)];
         backItem.tag = kButtonBack;
-        backItem.position = ccp(29.50, 453.50);
+        backItem.anchorPoint = CGPointMake(0.5, 1);
+        backItem.position = kLeftNavigationButtonPosition;
         
         CCMenuItem *scoreItem = [CCMenuItemSprite itemFromNormalSprite:buttonScoreOff selectedSprite:buttonScoreOn target:self selector:@selector(buttonTapped:)];
         scoreItem.tag = kButtonScore;
         scoreItem.anchorPoint = ccp(0.00, 0.50);
-        scoreItem.position = ccp(56.50, 377.50);
+        //scoreItem.position = ccp(56.50, 377.50);
+        scoreItem.position = kSettingsScoreItemPosition;
         
         CCMenuItem *careerItem = [CCMenuItemSprite itemFromNormalSprite:buttonCareerOff selectedSprite:buttonCareerOn target:self selector:@selector(buttonTapped:)];
         careerItem.tag = kButtonCareerPlay;
-        careerItem.position = ccp(56.50, 323.50);
         careerItem.anchorPoint = ccp(0.00, 0.50);
+        //careerItem.position = ccp(56.50, 323.50);
+        careerItem.position = kSettingsCareerItemPosition;
         
         CCMenu *topMenu = [CCMenu menuWithItems:scoreItem, backItem, careerItem, nil];
         topMenu.position = CGPointZero;
         [self addChild:topMenu z:2];
+        
+        redLight = [CCSprite spriteWithSpriteFrameName:@"red_light.png"];
+        redLight.position = kSettingsRedLightPosition;
+        redLight.anchorPoint = ccp(0.00, 0.50);
+        [self addChild:redLight z:100];
+        redLight.visible = NO;
         
         CCSprite *thumbMusicButtonOff = [CCSprite spriteWithSpriteFrameName:@"thumb.png"];
         CCSprite *thumbMusicButtonOn = [CCSprite spriteWithSpriteFrameName:@"thumb.png"];
@@ -151,14 +162,14 @@ enum soundTags
         CCMenuItemSprite *soundMusic = [CCMenuItemSprite itemFromNormalSprite:thumbSoundButtonOff selectedSprite:thumbSoundButtonOn];
         
         musicSlider = [CCSlider sliderWithBackgroundSprite: [CCSprite spriteWithSpriteFrameName:@"slider1Bg.png"] thumbMenuItem: thumbMusic];
-        musicSlider.position = ccp(180, 252);
+        musicSlider.position = kSettingsMusicSliderPosition;
         musicSlider.tag = kMusicSliderTag;
         musicSlider.value = [[GameManager sharedGameManager] musicVolume];
         [self addChild:musicSlider z:3];
 		musicSlider.delegate = self;
         
         soundSlider = [CCSlider sliderWithBackgroundSprite: [CCSprite spriteWithSpriteFrameName:@"slider1Bg.png"] thumbMenuItem: soundMusic];
-        soundSlider.position = ccp(180, 213);
+        soundSlider.position = kSettingsSoundSliderPosition;
         soundSlider.tag = kSoundSliderTag;
         soundSlider.value = [[GameManager sharedGameManager] soundVolume];;
         [self addChild:soundSlider z:4];
@@ -182,15 +193,15 @@ enum soundTags
         CCSprite *sprite;
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"logik_easy1.png"];
-        sprite.position = ccp(210.50, 138.50);
+        sprite.position = ADJUST_CCP(ccp(210.50, 138.50));
         [self addChild:sprite z:6 tag:6];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"logik_hard1.png"];
-        sprite.position = ccp(210.50, 52.00);
+        sprite.position = ADJUST_CCP(ccp(210.50, 52.00));
         [self addChild:sprite z:7 tag:7];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"logik_normal1.png"];
-        sprite.position = ccp(210.50, 95.00);
+        sprite.position = ADJUST_CCP(ccp(210.50, 95.00));
         [self addChild:sprite z:8 tag:8];
         
         easy = [[[CCSprite alloc] init] autorelease];
@@ -207,45 +218,45 @@ enum soundTags
         [difficulty addObject:hard];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"logik_easy2.png"];
-        sprite.position = ccp(210.50, 138.50);
+        sprite.position = ADJUST_CCP(ccp(210.50, 138.50));
         [easy addChild:sprite z:1];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"dioda.png"];
-        sprite.position = ccp(166.00, 141.00);
+        sprite.position = ADJUST_CCP(ccp(166.00, 141.00));
         [easy addChild:sprite z:2];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"logik_normal2.png"];
-        sprite.position = ccp(210.50, 95.00);
+        sprite.position = ADJUST_CCP(ccp(210.50, 95.00));
         [normal addChild:sprite z:1];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"dioda.png"];
-        sprite.position = ccp(166.00, 97.50);
+        sprite.position = ADJUST_CCP(ccp(166.00, 97.50));
         [normal addChild:sprite z:2];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"logik_hard2.png"];
-        sprite.position = ccp(210.50, 52.00);
+        sprite.position = ADJUST_CCP(ccp(210.50, 52.00));
         [hard addChild:sprite z:1];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"dioda.png"];
-        sprite.position = ccp(165.50, 53.50);
+        sprite.position = ADJUST_CCP(ccp(165.50, 53.50));
         [hard addChild:sprite z:2];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"pin_lezi3.png"];
-        sprite.position = ccp(289, 362.00);
+        sprite.position = ADJUST_CCP_RIGHT(ccp(289, 362.00));
         [self addChild:sprite z:100];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"pin_lezi2.png"];
-        sprite.position = ccp(281.00, 31.50);
+        sprite.position = ADJUST_CCP_RIGHT(ccp(281.00, 31.50));
         [self addChild:sprite z:101];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"pin_lezi1.png"];
-        sprite.position = ccp(287, 406.00);
+        sprite.position = ADJUST_CCP_RIGHT(ccp(287, 406.00));
         [self addChild:sprite z:102];
         
         CCSprite *muteOff = [CCSprite spriteWithSpriteFrameName:@"mute.png"];
         
         CCMenuItem *mute = [CCMenuItemSprite itemFromNormalSprite:muteOff selectedSprite:nil target:self selector:@selector(muteTapped:)];
-        mute.position = ccp(74.50, 233.00);
+        mute.position = ADJUST_CCP(ccp(74.50, 233.00));
         
         CCSprite *buttonEasyOff = [CCSprite spriteWithSpriteFrameName:@"difficultyButton.png"];
         CCSprite *buttonEasyOn = [CCSprite spriteWithSpriteFrameName:@"difficultyButton.png"];
@@ -256,15 +267,15 @@ enum soundTags
         
         easyItem = [CCMenuItemSprite itemFromNormalSprite:buttonEasyOff selectedSprite:buttonEasyOn target:self selector:@selector(diffTapped:)];
         easyItem.tag = kEasy;
-        easyItem.position = ccp(205.00, 139.00);
+        easyItem.position = ADJUST_CCP(ccp(205.00, 139.00));
         
         normalItem = [CCMenuItemSprite itemFromNormalSprite:buttonNormalOff selectedSprite:buttonNormalOn target:self selector:@selector(diffTapped:)];
         normalItem.tag = kMedium;
-        normalItem.position = ccp(205.00, 95.50);
+        normalItem.position = ADJUST_CCP(ccp(205.00, 95.50));
         
         hardItem = [CCMenuItemSprite itemFromNormalSprite:buttonHardOff selectedSprite:buttonHardOn target:self selector:@selector(diffTapped:)];
         hardItem.tag = kHard;
-        hardItem.position = ccp(205.00, 53.00);
+        hardItem.position = ADJUST_CCP(ccp(205.00, 53.00));
         
         PressMenu *difficultyMenu = [PressMenu menuWithItems:easyItem, normalItem, hardItem, mute, nil];
         difficultyMenu.position = CGPointZero;
@@ -281,8 +292,22 @@ enum soundTags
                 [hardItem activate];
                 break; 
         }
+        
+        if ([[GameManager sharedGameManager] gameInProgress]) {
+            CCLOG(@"IN PRGRESS");
+            gameInfo infoData = [[[GameManager sharedGameManager] gameData] getGameData];
+            if (infoData.career == 1) {
+                CCLOG(@"CAREER ON");
+                [self schedule:@selector(update:) interval:0.3];
+            }
+        }
     }
     return self;
+}
+
+- (void) update:(ccTime)dt {
+    redLight.visible = blink;
+    blink = !blink;
 }
 
 - (void) valueChanged:(float)value tag:(int)tag {
@@ -300,7 +325,7 @@ enum soundTags
     }
 }
 
-- (void) valueEnded:(float)value tag:(int)tag{
+- (void) valueEnded:(float)value tag:(int)tag {    
     if (tag == kSoundSliderTag) 
         PLAYSOUNDEFFECT(BUTTON_SETTINGS_CLICK);    
     [[GameManager sharedGameManager] updateSettings];

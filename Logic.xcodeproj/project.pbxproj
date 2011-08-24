@@ -7,6 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18352A1E1402B5B1001DC435 /* Guess.m in Sources */ = {isa = PBXBuildFile; fileRef = 18352A1D1402B5B1001DC435 /* Guess.m */; };
+		18426FD714002C5A00EA970E /* Logic-level-gong.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 18426FD614002C5A00EA970E /* Logic-level-gong.mp3 */; };
+		18426FD9140149CA00EA970E /* main_theme_pause.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 18426FD8140149CA00EA970E /* main_theme_pause.m4v */; };
+		187CBEED1405788C005CD9F1 /* BellGothicBoldHt-sd.fnt in Resources */ = {isa = PBXBuildFile; fileRef = 187CBEEB1405788C005CD9F1 /* BellGothicBoldHt-sd.fnt */; };
+		187CBEEE1405788C005CD9F1 /* BellGothicBoldHt-sd.png in Resources */ = {isa = PBXBuildFile; fileRef = 187CBEEC1405788C005CD9F1 /* BellGothicBoldHt-sd.png */; };
+		187E7A161403F6490099AAF7 /* CCLabelBMFontMultiline.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E7A151403F6490099AAF7 /* CCLabelBMFontMultiline.m */; };
+		187F931B14045B040099AA01 /* dest_test2-ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = 187F931A14045B040099AA01 /* dest_test2-ipad.plist */; };
+		187F931F1404D89A0099AA01 /* Settings-ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = 187F931D1404D89A0099AA01 /* Settings-ipad.plist */; };
+		187F93201404D89A0099AA01 /* Settings-ipad.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = 187F931E1404D89A0099AA01 /* Settings-ipad.pvr.ccz */; };
+		18835C8E14039FC100FE96E6 /* Main-ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18835C8C14039FC100FE96E6 /* Main-ipad.plist */; };
+		18835C8F14039FC100FE96E6 /* Main-ipad.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = 18835C8D14039FC100FE96E6 /* Main-ipad.pvr.ccz */; };
+		18835C921403A4A800FE96E6 /* Hq-ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18835C901403A4A800FE96E6 /* Hq-ipad.plist */; };
+		18835C931403A4A800FE96E6 /* Hq-ipad.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = 18835C911403A4A800FE96E6 /* Hq-ipad.pvr.ccz */; };
+		1883F1BE1404324B002C11AB /* LevelBg-ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1883F1BC1404324B002C11AB /* LevelBg-ipad.plist */; };
+		1883F1BF1404324B002C11AB /* LevelBg-ipad.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = 1883F1BD1404324B002C11AB /* LevelBg-ipad.pvr.ccz */; };
+		1883F1C514043C08002C11AB /* Animations-ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1883F1C114043C08002C11AB /* Animations-ipad.plist */; };
+		1883F1C614043C08002C11AB /* Animations-ipad.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = 1883F1C214043C08002C11AB /* Animations-ipad.pvr.ccz */; };
+		1883F1C714043C08002C11AB /* Level-ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1883F1C314043C08002C11AB /* Level-ipad.plist */; };
+		1883F1C814043C08002C11AB /* Level-ipad.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = 1883F1C414043C08002C11AB /* Level-ipad.pvr.ccz */; };
 		A308E0BF13C474C8007697A6 /* dest_orig-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A308E0B913C474C8007697A6 /* dest_orig-hd.plist */; };
 		A308E0C013C474C8007697A6 /* dest_orig.plist in Resources */ = {isa = PBXBuildFile; fileRef = A308E0BA13C474C8007697A6 /* dest_orig.plist */; };
 		A308E0C113C474C8007697A6 /* Dest1-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A308E0BB13C474C8007697A6 /* Dest1-hd.plist */; };
@@ -258,8 +277,6 @@
 		A37C372613C8F35900F54EB4 /* GloucesterHt-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = A37C372413C8F35900F54EB4 /* GloucesterHt-hd.png */; };
 		A37C372B13C9058E00F54EB4 /* BellGothicBoldHt.png in Resources */ = {isa = PBXBuildFile; fileRef = A37C372713C9058D00F54EB4 /* BellGothicBoldHt.png */; };
 		A37C372C13C9058E00F54EB4 /* BellGothicBoldHt.fnt in Resources */ = {isa = PBXBuildFile; fileRef = A37C372813C9058D00F54EB4 /* BellGothicBoldHt.fnt */; };
-		A37C372D13C9058E00F54EB4 /* BellGothicBoldHt-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = A37C372913C9058D00F54EB4 /* BellGothicBoldHt-hd.png */; };
-		A37C372E13C9058E00F54EB4 /* BellGothicBoldHt-hd.fnt in Resources */ = {isa = PBXBuildFile; fileRef = A37C372A13C9058D00F54EB4 /* BellGothicBoldHt-hd.fnt */; };
 		A37D867213A68F7500B880BA /* RowScore.m in Sources */ = {isa = PBXBuildFile; fileRef = A37D867113A68F7500B880BA /* RowScore.m */; };
 		A37D867E13A6D55D00B880BA /* ProgressTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = A37D867D13A6D55C00B880BA /* ProgressTimer.m */; };
 		A37D868113A79D9500B880BA /* Mask.m in Sources */ = {isa = PBXBuildFile; fileRef = A37D868013A79D9500B880BA /* Mask.m */; };
@@ -307,6 +324,28 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		18352A1C1402B5B1001DC435 /* Guess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Guess.h; sourceTree = "<group>"; };
+		18352A1D1402B5B1001DC435 /* Guess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Guess.m; sourceTree = "<group>"; };
+		18426FD614002C5A00EA970E /* Logic-level-gong.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-level-gong.mp3"; sourceTree = "<group>"; };
+		18426FD8140149CA00EA970E /* main_theme_pause.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = main_theme_pause.m4v; sourceTree = "<group>"; };
+		187CBEEB1405788C005CD9F1 /* BellGothicBoldHt-sd.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "BellGothicBoldHt-sd.fnt"; sourceTree = "<group>"; };
+		187CBEEC1405788C005CD9F1 /* BellGothicBoldHt-sd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BellGothicBoldHt-sd.png"; sourceTree = "<group>"; };
+		187E7A141403F6490099AAF7 /* CCLabelBMFontMultiline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCLabelBMFontMultiline.h; sourceTree = "<group>"; };
+		187E7A151403F6490099AAF7 /* CCLabelBMFontMultiline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCLabelBMFontMultiline.m; sourceTree = "<group>"; };
+		187F931A14045B040099AA01 /* dest_test2-ipad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "dest_test2-ipad.plist"; sourceTree = "<group>"; };
+		187F931D1404D89A0099AA01 /* Settings-ipad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Settings-ipad.plist"; sourceTree = "<group>"; };
+		187F931E1404D89A0099AA01 /* Settings-ipad.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Settings-ipad.pvr.ccz"; sourceTree = "<group>"; };
+		18835C891403859000FE96E6 /* DeviceSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceSettings.h; sourceTree = "<group>"; };
+		18835C8C14039FC100FE96E6 /* Main-ipad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Main-ipad.plist"; sourceTree = "<group>"; };
+		18835C8D14039FC100FE96E6 /* Main-ipad.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Main-ipad.pvr.ccz"; sourceTree = "<group>"; };
+		18835C901403A4A800FE96E6 /* Hq-ipad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Hq-ipad.plist"; sourceTree = "<group>"; };
+		18835C911403A4A800FE96E6 /* Hq-ipad.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hq-ipad.pvr.ccz"; sourceTree = "<group>"; };
+		1883F1BC1404324B002C11AB /* LevelBg-ipad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LevelBg-ipad.plist"; sourceTree = "<group>"; };
+		1883F1BD1404324B002C11AB /* LevelBg-ipad.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LevelBg-ipad.pvr.ccz"; sourceTree = "<group>"; };
+		1883F1C114043C08002C11AB /* Animations-ipad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Animations-ipad.plist"; sourceTree = "<group>"; };
+		1883F1C214043C08002C11AB /* Animations-ipad.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Animations-ipad.pvr.ccz"; sourceTree = "<group>"; };
+		1883F1C314043C08002C11AB /* Level-ipad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Level-ipad.plist"; sourceTree = "<group>"; };
+		1883F1C414043C08002C11AB /* Level-ipad.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Level-ipad.pvr.ccz"; sourceTree = "<group>"; };
 		A308E0B913C474C8007697A6 /* dest_orig-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "dest_orig-hd.plist"; sourceTree = "<group>"; };
 		A308E0BA13C474C8007697A6 /* dest_orig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dest_orig.plist; sourceTree = "<group>"; };
 		A308E0BB13C474C8007697A6 /* Dest1-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Dest1-hd.plist"; sourceTree = "<group>"; };
@@ -718,8 +757,6 @@
 		A37C372413C8F35900F54EB4 /* GloucesterHt-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GloucesterHt-hd.png"; sourceTree = "<group>"; };
 		A37C372713C9058D00F54EB4 /* BellGothicBoldHt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BellGothicBoldHt.png; sourceTree = "<group>"; };
 		A37C372813C9058D00F54EB4 /* BellGothicBoldHt.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = BellGothicBoldHt.fnt; sourceTree = "<group>"; };
-		A37C372913C9058D00F54EB4 /* BellGothicBoldHt-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BellGothicBoldHt-hd.png"; sourceTree = "<group>"; };
-		A37C372A13C9058D00F54EB4 /* BellGothicBoldHt-hd.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "BellGothicBoldHt-hd.fnt"; sourceTree = "<group>"; };
 		A37D867013A68F7500B880BA /* RowScore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RowScore.h; sourceTree = "<group>"; };
 		A37D867113A68F7500B880BA /* RowScore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RowScore.m; sourceTree = "<group>"; };
 		A37D867C13A6D55C00B880BA /* ProgressTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressTimer.h; sourceTree = "<group>"; };
@@ -821,6 +858,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		187E7A131403F6490099AAF7 /* CCLabelBMFontMultiline */ = {
+			isa = PBXGroup;
+			children = (
+				187E7A141403F6490099AAF7 /* CCLabelBMFontMultiline.h */,
+				187E7A151403F6490099AAF7 /* CCLabelBMFontMultiline.m */,
+			);
+			path = CCLabelBMFontMultiline;
+			sourceTree = "<group>";
+		};
 		A308F44813C0F252000C98D8 /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
@@ -876,6 +922,7 @@
 		A317D27513F71EDA0013311D /* main */ = {
 			isa = PBXGroup;
 			children = (
+				18426FD8140149CA00EA970E /* main_theme_pause.m4v */,
 				A317D27613F71EDA0013311D /* main_theme.mp3 */,
 			);
 			path = main;
@@ -933,6 +980,7 @@
 		A317D2C813F7B8C70013311D /* level */ = {
 			isa = PBXGroup;
 			children = (
+				18426FD614002C5A00EA970E /* Logic-level-gong.mp3 */,
 				A317D2D313F8474D0013311D /* BellChimeGreen.mp3 */,
 				A317D2D413F8474D0013311D /* BellChimeYellow.mp3 */,
 				A317D2D113F845B40013311D /* Logic-valve.m4a */,
@@ -948,6 +996,8 @@
 			children = (
 				A31B088513FEDA0600E8F344 /* ScoreCalc.h */,
 				A31B088613FEDA0600E8F344 /* ScoreCalc.m */,
+				18352A1C1402B5B1001DC435 /* Guess.h */,
+				18352A1D1402B5B1001DC435 /* Guess.m */,
 			);
 			name = Score;
 			sourceTree = "<group>";
@@ -955,6 +1005,7 @@
 		A31B614213958C0700FE697F /* particles */ = {
 			isa = PBXGroup;
 			children = (
+				187F931A14045B040099AA01 /* dest_test2-ipad.plist */,
 				A32E1D1F13F4427F00856D97 /* smoke2-hd.plist */,
 				A32E1D1D13F43FA500856D97 /* smoke2.plist */,
 				A32DA85513CA0E2C00F40754 /* smokeTexture.png */,
@@ -1467,6 +1518,20 @@
 		A35F3F0713893F6300F5D71A /* images */ = {
 			isa = PBXGroup;
 			children = (
+				187CBEEB1405788C005CD9F1 /* BellGothicBoldHt-sd.fnt */,
+				187CBEEC1405788C005CD9F1 /* BellGothicBoldHt-sd.png */,
+				187F931D1404D89A0099AA01 /* Settings-ipad.plist */,
+				187F931E1404D89A0099AA01 /* Settings-ipad.pvr.ccz */,
+				1883F1C114043C08002C11AB /* Animations-ipad.plist */,
+				1883F1C214043C08002C11AB /* Animations-ipad.pvr.ccz */,
+				1883F1C314043C08002C11AB /* Level-ipad.plist */,
+				1883F1C414043C08002C11AB /* Level-ipad.pvr.ccz */,
+				1883F1BC1404324B002C11AB /* LevelBg-ipad.plist */,
+				1883F1BD1404324B002C11AB /* LevelBg-ipad.pvr.ccz */,
+				18835C901403A4A800FE96E6 /* Hq-ipad.plist */,
+				18835C911403A4A800FE96E6 /* Hq-ipad.pvr.ccz */,
+				18835C8C14039FC100FE96E6 /* Main-ipad.plist */,
+				18835C8D14039FC100FE96E6 /* Main-ipad.pvr.ccz */,
 				A332471D13E95D1F007D0A25 /* Gloucester_levelBig.png */,
 				A332471E13E95D1F007D0A25 /* Gloucester_levelBig.fnt */,
 				A332471F13E95D1F007D0A25 /* Gloucester_levelBig-hd.png */,
@@ -1482,8 +1547,6 @@
 				A384ACCF13DC0C1700BE8B06 /* CareerHq.pvr.ccz */,
 				A37C372713C9058D00F54EB4 /* BellGothicBoldHt.png */,
 				A37C372813C9058D00F54EB4 /* BellGothicBoldHt.fnt */,
-				A37C372913C9058D00F54EB4 /* BellGothicBoldHt-hd.png */,
-				A37C372A13C9058D00F54EB4 /* BellGothicBoldHt-hd.fnt */,
 				A37C372313C8F35900F54EB4 /* GloucesterHt-hd.fnt */,
 				A37C372413C8F35900F54EB4 /* GloucesterHt-hd.png */,
 				A37C371F13C8EF6200F54EB4 /* GloucesterHt.fnt */,
@@ -1576,6 +1639,7 @@
 			isa = PBXGroup;
 			children = (
 				A37949A21376F485002E53FD /* Constants.h */,
+				18835C891403859000FE96E6 /* DeviceSettings.h */,
 			);
 			name = Constants;
 			sourceTree = "<group>";
@@ -1592,6 +1656,7 @@
 		A38596B813AF58BE008CF9C5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				187E7A131403F6490099AAF7 /* CCLabelBMFontMultiline */,
 				A3217DD213B74C7500CEB9FE /* CCUIViewWrapper */,
 				A38596B913AF58BE008CF9C5 /* CCBigImage */,
 				A38596BF13AF58BE008CF9C5 /* CCMenuAdvanced */,
@@ -1800,6 +1865,9 @@
 /* Begin PBXProject section */
 		A3213BF0137310F5006F18FB /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = A3213BF3137310F5006F18FB /* Build configuration list for PBXProject "Logic" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -1900,8 +1968,6 @@
 				A37C372613C8F35900F54EB4 /* GloucesterHt-hd.png in Resources */,
 				A37C372B13C9058E00F54EB4 /* BellGothicBoldHt.png in Resources */,
 				A37C372C13C9058E00F54EB4 /* BellGothicBoldHt.fnt in Resources */,
-				A37C372D13C9058E00F54EB4 /* BellGothicBoldHt-hd.png in Resources */,
-				A37C372E13C9058E00F54EB4 /* BellGothicBoldHt-hd.fnt in Resources */,
 				A32DA84913CA072B00F40754 /* dest_test2.plist in Resources */,
 				A32DA84A13CA072B00F40754 /* dest_test2-hd.plist in Resources */,
 				A32DA84B13CA072B00F40754 /* dest-test1.plist in Resources */,
@@ -1949,6 +2015,23 @@
 				A317D2D513F8474D0013311D /* BellChimeGreen.mp3 in Resources */,
 				A317D2D613F8474D0013311D /* BellChimeYellow.mp3 in Resources */,
 				A317D2D813F880350013311D /* krtz_loop.mp3 in Resources */,
+				18426FD714002C5A00EA970E /* Logic-level-gong.mp3 in Resources */,
+				18426FD9140149CA00EA970E /* main_theme_pause.m4v in Resources */,
+				18835C8E14039FC100FE96E6 /* Main-ipad.plist in Resources */,
+				18835C8F14039FC100FE96E6 /* Main-ipad.pvr.ccz in Resources */,
+				18835C921403A4A800FE96E6 /* Hq-ipad.plist in Resources */,
+				18835C931403A4A800FE96E6 /* Hq-ipad.pvr.ccz in Resources */,
+				1883F1BE1404324B002C11AB /* LevelBg-ipad.plist in Resources */,
+				1883F1BF1404324B002C11AB /* LevelBg-ipad.pvr.ccz in Resources */,
+				1883F1C514043C08002C11AB /* Animations-ipad.plist in Resources */,
+				1883F1C614043C08002C11AB /* Animations-ipad.pvr.ccz in Resources */,
+				1883F1C714043C08002C11AB /* Level-ipad.plist in Resources */,
+				1883F1C814043C08002C11AB /* Level-ipad.pvr.ccz in Resources */,
+				187F931B14045B040099AA01 /* dest_test2-ipad.plist in Resources */,
+				187F931F1404D89A0099AA01 /* Settings-ipad.plist in Resources */,
+				187F93201404D89A0099AA01 /* Settings-ipad.pvr.ccz in Resources */,
+				187CBEED1405788C005CD9F1 /* BellGothicBoldHt-sd.fnt in Resources */,
+				187CBEEE1405788C005CD9F1 /* BellGothicBoldHt-sd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2118,6 +2201,8 @@
 				A3E1276313EE8CF70071914F /* PreloaderLayer.m in Sources */,
 				A3E1276613EE96B70071914F /* PreloaderScene.m in Sources */,
 				A31B088713FEDA0600E8F344 /* ScoreCalc.m in Sources */,
+				18352A1E1402B5B1001DC435 /* Guess.m in Sources */,
+				187E7A161403F6490099AAF7 /* CCLabelBMFontMultiline.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2142,8 +2227,9 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				New_Setting = "";
+				PROVISIONING_PROFILE = "EEC51990-D1AC-4301-8B4D-8013E9520911";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2162,9 +2248,10 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				New_Setting = "";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "EEC51990-D1AC-4301-8B4D-8013E9520911";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2184,10 +2271,12 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = Logic/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos4.3;
+				PROVISIONING_PROFILE = "EEC51990-D1AC-4301-8B4D-8013E9520911";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EEC51990-D1AC-4301-8B4D-8013E9520911";
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2206,10 +2295,12 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = Logic/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos4.3;
+				PROVISIONING_PROFILE = "EEC51990-D1AC-4301-8B4D-8013E9520911";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EEC51990-D1AC-4301-8B4D-8013E9520911";
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
@@ -2229,11 +2320,11 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				New_Setting = "";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "EEC51990-D1AC-4301-8B4D-8013E9520911";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EEC51990-D1AC-4301-8B4D-8013E9520911";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "372307B1-5B64-4824-968E-D4369252CE95";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2252,10 +2343,12 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = Logic/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos4.3;
+				PROVISIONING_PROFILE = "EEC51990-D1AC-4301-8B4D-8013E9520911";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EEC51990-D1AC-4301-8B4D-8013E9520911";
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;

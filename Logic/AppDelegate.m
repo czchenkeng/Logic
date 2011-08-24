@@ -91,7 +91,7 @@
 //#endif
 	
 	[director setAnimationInterval:1.0/60];
-	[director setDisplayFPS:YES];
+	[director setDisplayFPS:NO];
 	
 	
 	// make the OpenGLView a child of the view controller
@@ -123,6 +123,7 @@
         //[[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kSlideInR];
         [[GameManager sharedGameManager] runSceneWithID:kCareerScene andTransition:kNoTransition];
         //[[GameManager sharedGameManager] runSceneWithID:kScoreScene andTransition:kNoTransition];
+        //[[GameManager sharedGameManager] runSceneWithID:kSettingsScene andTransition:kNoTransition];
     }
     //[[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kNoTransition];
     //[[GameManager sharedGameManager] runSceneWithID:kCareerScene andTransition:kNoTransition];

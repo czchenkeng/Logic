@@ -54,6 +54,7 @@
 - (void) stopSoundEffect:(ALuint)soundEffectID; 
 - (void) playBackgroundTrack:(NSString*)trackFileName;
 - (void) stopLoopSounds;
+- (void) playLoopSounds;
 
 - (void) updateSettings;
 

@@ -13,6 +13,7 @@
 - (void) buildCities;
 - (void) buildWires;
 - (void) buildCareer;
+- (void) showCityInProgress;
 - (void) activateWires:(BOOL)animation;
 - (void) setProgress;
 - (void) eraseCareer;
@@ -25,9 +26,7 @@
 
 static const float MIN_SCALE = 0.8;
 static const float MAX_SCALE = 1.667;
-//static const float POS_X = 260;
-//static const float POS_Y = -40;
-static const float POS_X = 0;
+static const float POS_X = 175;
 static const float POS_Y = 0;
 
 @implementation CareerLayer
@@ -47,20 +46,25 @@ static const float POS_Y = 0;
         wiresArray = [[CCArray alloc] init];
         percentLabelArray = [[CCArray alloc] init];
         
+        currentCity = nil;
+        lastCity = nil;
+        
+        blink = NO;
+        
+        score = 0;
+        
         prog = 0;
         percent = 0;
         panelActive = NO;
         
         zoomBase = [CCLayerColor layerWithColor:ccc4(0,0,0,0)];
 		zoomBase.position = ccp(0, 0);
-        //zoomBase.scale = MIN_SCALE;//pokud je zakazane pinchovani
 		[self addChild:zoomBase z:1];
         
         background = [CCSprite spriteWithSpriteFrameName:@"logik_levels.png"];
         background.anchorPoint = ccp(0, 0);
         background.position = ccp(-POS_X, POS_Y);
-        //background.position = ccp(-POS_X, POS_Y + background.contentSize.height*(1-MIN_SCALE));
-        //background.scale = MIN_SCALE;
+        background.scale = MIN_SCALE;
         [zoomBase addChild:background z:1];
         
         //Main bulbon, shadow
@@ -130,6 +134,7 @@ static const float POS_Y = 0;
         [self buildCities];
         [self buildWires];
         [self buildCareer];
+        [self showCityInProgress];
     }
     return self;
 }
@@ -138,7 +143,7 @@ static const float POS_Y = 0;
 #pragma mark ENTER & EXIT
 - (void) onEnter {
     panGestureRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanFrom:)] autorelease];
-    pinchGestureRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)] autorelease];
+    //pinchGestureRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)] autorelease];
     
     singleTapGestureRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTapFrom:)] autorelease];
     singleTapGestureRecognizer.numberOfTapsRequired = 1;
@@ -340,33 +345,71 @@ static const float POS_Y = 0;
 
 #pragma mark Build career from data
 - (void) buildCareer {
-    int i = 1;
     NSMutableArray *citiesDone = [[[GameManager sharedGameManager] gameData] getCareerData];
-    zoomBase.position = ccp([[[citiesDone lastObject] objectForKey:@"posX"] floatValue], [[[citiesDone lastObject] objectForKey:@"posY"] floatValue]);
-    zbLastPos = zoomBase.position;
     for (NSMutableDictionary *dict in citiesDone) {
-        for (City *city in citiesArray) {
-            //CCLOG(@"city from database %@", city);
-            if (city.idCity == [[dict objectForKey:@"city"] intValue]) {
-                city.visible = YES;
-                prog += 1;
-                if (city.idCity == 7 || city.idCity == 12)
-                    percent += 6;
-                else
-                    percent += 4;
-                if (i < citiesDone.count) {
-                    city.isActive = YES;
-                } else {
-                    city.opacity = 0;
-                    id lastCitySeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.1f], 
-                                      [CCCallFuncND actionWithTarget:self selector:@selector(lastCity:data:) data:city], nil];
-                    [self runAction:lastCitySeq];
-                }
-            }
+       for (City *city in citiesArray) {
+           if (city.idCity == [[dict objectForKey:@"city"] intValue]) {
+               city.visible = YES;
+               prog += 1;
+               if (city.idCity == 7 || city.idCity == 12)
+                   percent += 6;
+               else
+                   percent += 4;
+           }
         }
-        i++;
     }
     [self activateWires:NO];
+}    
+//    int i = 1;
+//    NSMutableArray *citiesDone = [[[GameManager sharedGameManager] gameData] getCareerData];
+//    zoomBase.position = ccp([[[citiesDone lastObject] objectForKey:@"posX"] floatValue], [[[citiesDone lastObject] objectForKey:@"posY"] floatValue]);
+//    zbLastPos = zoomBase.position;
+//    for (NSMutableDictionary *dict in citiesDone) {
+//        for (City *city in citiesArray) {
+//            if (city.idCity == [[dict objectForKey:@"city"] intValue]) {
+//                city.visible = YES;
+//                prog += 1;
+//                if (city.idCity == 7 || city.idCity == 12)
+//                    percent += 6;
+//                else
+//                    percent += 4;
+//                if (i < citiesDone.count) {
+//                    city.isActive = YES;
+//                } else {
+//                    city.opacity = 0;
+//                    id lastCitySeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.1f], 
+//                                      [CCCallFuncND actionWithTarget:self selector:@selector(lastCity:data:) data:city], nil];
+//                    [self runAction:lastCitySeq];
+//                }
+//            }
+//        }
+//        i++;
+//    }
+//    [self activateWires:NO];
+
+
+#pragma mark Show city currently in progress
+- (void) showCityInProgress {
+    city city = [[[GameManager sharedGameManager] gameData] getCityInProgress];
+    if (city.idCity > 0) {
+        zoomBase.position = ccp(city.position.x, city.position.y);
+        zbLastPos = zoomBase.position;
+        for (City *c in citiesArray) {
+            if (c.idCity == city.idCity) {
+                currentCity = c;
+            }
+        }
+        [self schedule:@selector(currentCityUpdate:) interval:0.3];
+    }
+}
+
+- (void) showLastCity {
+    
+}
+
+- (void) currentCityUpdate:(ccTime)dt {
+    currentCity.visible = blink;
+    blink = !blink;
 }
 
 #pragma mark Last city callback
@@ -457,6 +500,10 @@ static const float POS_Y = 0;
         }
     }
     if (active) {
+        if (currentCity) {
+            [self unschedule:@selector(currentCityUpdate:)];
+            currentCity = nil;
+        }
         [self blinkCity:selSprite];
         singleTapGestureRecognizer.enabled = NO;
         //TESTING
@@ -474,20 +521,22 @@ static const float POS_Y = 0;
 
 #pragma mark Blink city
 - (void) blinkCity:(City *)city {
-    id blink = [CCBlink actionWithDuration:0.3 blinks:3];
-    id seq = [CCSequence actions:blink, [CCCallFunc actionWithTarget:self selector:@selector(runGame)], nil];
+    id blinkk = [CCBlink actionWithDuration:0.3 blinks:3];
+    id seq = [CCSequence actions:blinkk, [CCCallFunc actionWithTarget:self selector:@selector(runGame)], nil];
     [city runAction: seq];
 }
 
 #pragma mark Run career game
 - (void) runGame {
     //delete career game eventually in progress
-    [[[GameManager sharedGameManager] gameData] updateCareerData:NO];
+    [[[GameManager sharedGameManager] gameData] updateCareerData:NO andScore:0];
     [[[GameManager sharedGameManager] gameData] gameDataCleanup];
     gameInfo infoData;
     infoData.difficulty = diff;
     infoData.activeRow = 0;
     infoData.career = 1;
+    infoData.score = 0;
+    infoData.gameTime = 0;
     [[[GameManager sharedGameManager] gameData] insertGameData:infoData];
     [[[GameManager sharedGameManager] gameData] insertCareerData:selSprite.idCity xPos:zbLastPos.x yPos:zbLastPos.y];
     [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kSlideInR];    
@@ -499,13 +548,10 @@ static const float POS_Y = 0;
 - (CGPoint) boundLayerPos:(CGPoint)newPos {
     CGSize winSize = [CCDirector sharedDirector].winSize;
     CGPoint retval = newPos;
-    CCLOG(@"CO JE TARGET POS %@", NSStringFromCGPoint(retval));
     retval.x = MIN(retval.x, POS_X);
-    CCLOG(@"CO JE MIN X %f", retval.x);
-    retval.x = MAX(retval.x, -background.contentSize.width + POS_X + winSize.width);
+    retval.x = MAX(retval.x, -background.contentSize.width*0.8 + POS_X + winSize.width);
     retval.y = MIN(retval.y, -POS_Y);
-    //retval.y = MAX(retval.y, -background.contentSize.height*0.8 - POS_Y + winSize.height);
-    retval.y = MAX(retval.y, -background.contentSize.height - POS_Y + winSize.height);
+    retval.y = MAX(retval.y, -background.contentSize.height*0.8 - POS_Y + winSize.height);
     return retval;
 }
 
@@ -523,9 +569,7 @@ static const float POS_Y = 0;
 #pragma mark Moving layer - pan callback
 - (void) moveBoard:(CGPoint)translation from:(CGPoint)lastLocation {
 	CGPoint target_position = ccpAdd(translation, lastLocation);
-    //CCLOG(@"CO JE TARGET POS %@", NSStringFromCGPoint(target_position));
     zoomBase.position = [self boundLayerPos:target_position];
-    //CCLOG(@"CO JE POSITION %@", NSStringFromCGPoint(zoomBase.position));
 }
 
 #pragma mark Single tap callback

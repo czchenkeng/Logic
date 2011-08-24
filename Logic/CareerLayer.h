@@ -24,6 +24,8 @@
     CCSprite *infoPanel;
     CCSprite *background;
     City *selSprite;
+    City *currentCity;
+    City *lastCity;
     CCSprite *progressBar;
     
     int buttonWidth;//zatim nefachci - mrknout se
@@ -37,7 +39,11 @@
     int percent;    
     BOOL panelActive;
     
+    int score;
+    
     int diff;//default diff
+    
+    BOOL blink;
     
     UIPanGestureRecognizer *panGestureRecognizer;
     UIPinchGestureRecognizer *pinchGestureRecognizer;    
@@ -46,11 +52,3 @@
 }
 
 @end
-
-/*
-Nova kariera - existuje rozehrana s 0? Pokud ano a tapnu na mesto, tak vymazat z dbase a nahodit s novym mestem (muze byt stejne, checkovat to nebudu)
-reset (new) game z pauzy, reload game (tady asi ne, k tomuto buttonu se dostanu az po dokonceni levelu) - vymazat hrani kariery?
- game - code fail - vymazat karieru? asi ano, opet posledni radek pokud je is_done 0
- u klasicky rozehrane hry kariera zustava
- 
- */

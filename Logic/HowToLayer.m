@@ -11,6 +11,20 @@
 
 @implementation HowToLayer
 
+- (NSString *) getFontName:(NSString *)input{
+    NSString *retVal;
+    CGSize screenSize = [CCDirector sharedDirector].winSizeInPixels;
+    BOOL isRetina = screenSize.height == 960.0f ? YES : NO;
+    
+    if (isRetina) {
+        retVal = input;
+    } else {
+        retVal = [input stringByReplacingOccurrencesOfString:@".fnt" withString:@"-sd.fnt"];
+    }
+    
+    return retVal;
+}
+
 - (id) init {
     self = [super init];
     if (self != nil) {
@@ -19,6 +33,11 @@
         CGSize screenSize = [CCDirector sharedDirector].winSize;
         
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Howto.plist"];
+        
+        CCLOG(@"tak jaky vrati font name? %@", [self getFontName:@"GloucesterHt.fnt"]);
+        
+        CGSize screenSizePixels = [CCDirector sharedDirector].winSizeInPixels;
+        float retina = screenSizePixels.height == 960.0f ? 1.00 : 0.50;
         
         float leftAlign = -80;
         CCSprite *sprite;
@@ -35,12 +54,24 @@
         [howTo setPosition:ccp(screenSize.width/2, screenSize.height/2 + 40)];
         [self addChild:howTo z:3];
         
+        //CCLayer *howToCopy = [CCLayer node];
+        //CCLayer *howToSprites  = [CCLayer node];
+        
+//        howToCopy.scale = retina;
+//        
+//        [howTo addChild:howToCopy z:1];
+        
         CCLabelBMFont *goalLabel = [CCLabelBMFont labelWithString:@"GOAL" fntFile:@"GloucesterHt.fnt"];
         [howTo addChild:goalLabel];
         
-        CCLabelBMFont *goalText = [CCLabelBMFont labelWithString:@"Break the secret code! \nRemember the colors may occur \nmore than once." fntFile:@"BellGothicBoldHt.fnt"];
+        CCLabelBMFont *goalText = [CCLabelBMFont labelWithString:@"Break the secret code! \nRemember the colors may \noccur more than once." fntFile:@"BellGothicBoldHt.fnt"];
+//        CCLabelBMFontMultiline *goalText = [CCLabelBMFontMultiline labelWithString:@"Break the secret code! Remember the colors may occur more than once." 
+//                                                                           fntFile:[self getFontName:@"BellGothicBoldHt.fnt"]
+//                                                                             width:170
+//                                                                         alignment:LeftAlignment];
         goalText.anchorPoint = ccp(0, 0.5);
-        [goalText setPosition:ccp(leftAlign, -40)];
+        [goalText setPosition:ccp(leftAlign, 0)];
+        goalText.scale = retina;
         [howTo addChild:goalText];
         
         CCSprite *screen = [CCSprite spriteWithSpriteFrameName:@"screen.png"];

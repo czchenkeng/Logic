@@ -14,5 +14,6 @@
 #import "cocos2d.h"
 #import "GameManager.h"
 #import "Constants.h"
+#import "DeviceSettings.h"
 #import "Utils.h"
 #endif
