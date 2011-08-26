@@ -20,12 +20,12 @@
     CCArray *citiesArray;
     CCArray *wiresArray;
     CCArray *percentLabelArray;
+    CCArray *scoreLabelArray;
     
     CCSprite *infoPanel;
     CCSprite *background;
     City *selSprite;
     City *currentCity;
-    City *lastCity;
     CCSprite *progressBar;
     
     int buttonWidth;//zatim nefachci - mrknout se

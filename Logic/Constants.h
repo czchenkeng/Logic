@@ -9,6 +9,7 @@
 #define MIN_DISTANCE_SWIPE_X 200
 #define MIN_DISTANCE_SWIPE_Y 120
 #define LEVEL_SWIPE_AFTER_ROW 7
+#define LEVEL_SWIPE 30
 //#define LEVEL_DEAD_FIGURES_MASK_HEIGHT 5
 #define LEVEL_DEAD_FIGURES_MASK_HEIGHT 0
 #define LEVEL_DISLOCATION 40
@@ -29,6 +30,7 @@ typedef struct {
     int gameDifficulty;
     float musicLevel;
     float soundLevel;
+    int tutor;
 } settings;
 
 typedef struct {
@@ -59,6 +61,7 @@ typedef struct {
 
 typedef struct {
     int idCity;
+    int score;
     CGPoint position;
 } city;
 
@@ -78,7 +81,9 @@ typedef enum {
     kButtonEndGame,
     kButtonReplay,
     kButtonContinue,
-    kButtonGameMenu
+    kButtonGameMenu,
+    kButtonSkipTutor,
+    kButtonNeverShow
 } buttonTypes;
 
 typedef enum {
@@ -90,6 +95,12 @@ typedef enum {
     kScoreScene = 5,
     kPreloaderScene = 6
 } SceneTypes;
+
+typedef enum {
+    kTutorFirst = 0,
+    kTutorSecond = 1,
+    kTutorThird = 2
+} TutorSteps;
 
 typedef enum {
     kNoTransition = 0,
@@ -121,9 +132,10 @@ typedef enum {
 
 //MUSIC, SOUNDS
 #define AUDIO_MAX_WAITTIME 150
-#define BACKGROUND_TRACK_MAIN @"main_theme.mp3"
+#define BACKGROUND_TRACK_MAIN @"Logic-main-theme.mp3"
 #define BACKGROUND_TRACK_LEVEL @"Logic-level-ambient.mp3"
-#define BACKGROUND_TRACK_PAUSE @"main_theme_pause.m4v"
+#define BACKGROUND_TRACK_PAUSE @"Logic-main-pauzatheme.mp3"
+#define BACKGROUND_TRACK_WINNER @"Logic-level-scoretheme.mp3"
 
 typedef enum {
     kAudioManagerUninitialized = 0,

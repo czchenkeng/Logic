@@ -7,6 +7,9 @@
 #define SD_TEXTURE      @".plist"
 #define HD_TEXTURE      @"-ipad.plist"
 
+#define SD      @".plist"
+#define HD      @"-hd.plist"
+
 #define SD_PVR      @".pvr.ccz"
 #define HD_PVR      @"-ipad.pvr.ccz"
 
@@ -30,11 +33,10 @@
 #define ADJUST_CCP_ABOVE(__p__) (IS_IPAD() == YES ? ccp( ( __p__.x * 2 ) + kXoffsetiPad, ( __p__.y * 2 ) + kYoffsetiPad*2 ) : __p__)
 #define ADJUST_CCP_RIGHT(__p__) (IS_IPAD() == YES ? ccp( ( __p__.x * 2 ) + kXoffsetiPad*2, ( __p__.y * 2 ) + kYoffsetiPad ) : __p__)
 
-//#define ADJUST_CCP_HARD_POSITION(__p__) (IS_IPAD() == YES ? ccp( ( __p__.x * 2 ) + kXoffsetiPad - kScreenCenterX, ( __p__.y * 2 ) + kYoffsetiPad - kScreenCenterY) \
-//: ccp( __p__.x - kScreenCenterX, __p__.y - kScreenCenterY ))
-
 #define ADJUST_CCP_MAIN_SCENE(__p__) (IS_IPAD() == YES ? ccp( ( __p__.x * 2 ) + kXoffsetiPad, ( __p__.y * 2 ) ) : __p__)
 #define ADJUST_CCP_MAIN_SCENE_GRASS(__p__) (IS_IPAD() == YES ? ccp( ( __p__.x * 2 ) + kXoffsetiPad, ( __p__.y * 2 ) + 31 ) : __p__)
+
+#define REVERSE_CCP(__p__) (IS_IPAD() == NO ? ccp( ( __p__.x - kXoffsetiPad ) / 2, ( __p__.y - kYoffsetiPad ) / 2 ) : __p__)
 
 //CUSTOM ADJUSTS
 #define ADJUST_CCP_LEVEL_BASE(__p__) (IS_IPAD() == YES ? ccp( ( __p__.x * 2 ) + 24, ( __p__.y * 2 ) ) : __p__)
@@ -46,6 +48,7 @@
 
 //FILES HANDLING
 #define SD_OR_HD(__filename__) (IS_IPAD() == YES ? [__filename__ stringByReplacingOccurrencesOfString:SD_TEXTURE withString:HD_TEXTURE] : __filename__)
+#define SD1_OR_HD1(__filename__) (IS_IPAD() == YES ? [__filename__ stringByReplacingOccurrencesOfString:SD withString:HD] : __filename__)
 #define SDPVR_OR_HDPVR(__filename__) (IS_IPAD() == YES ? [__filename__ stringByReplacingOccurrencesOfString:SD_PVR withString:HD_PVR] : __filename__)
 
 
@@ -54,6 +57,14 @@
 #define kLeftNavigationButtonPosition       ADJUST_CCP_ABOVE( ccp(33.00, 481.00) )
 #define kRightNavigationButtonPosition      ADJUST_CCP_ABOVE( ccp(287.00, 481.00) )
 
+//Loader
+#define kLoaderFactoryPosition            REVERSE_CCP( ccp(0, 0) )
+#define kLoaderZakladMrakyPosition        REVERSE_CCP( ccp(0, 0) )
+#define kLoaderBlesk1Position             REVERSE_CCP( ccp(143, 782) )
+#define kLoaderBlesk2Position             REVERSE_CCP( ccp(76, 807) )
+#define kLoaderBlesk3Position             REVERSE_CCP( ccp(51, 961) )
+#define kLoaderBlesk4Position             REVERSE_CCP( ccp(4, 551) )
+#define kLoaderHranyPosition              REVERSE_CCP( ccp(0, 7) )
 //Main scene
 #define kMainDoorsPosition          ADJUST_CCP_MAIN_SCENE( ccp(kScreenCenterX + 5, kScreenCenterY - 51) )
 #define kMainLogoPosition           ADJUST_CCP_MAIN_SCENE( ccp(kScreenCenterX, kScreenCenterY + 164) )
@@ -97,6 +108,8 @@
 #define kLevelLevelPvr SDPVR_OR_HDPVR(@"Animations.pvr.ccz")
 //Settings
 #define kSettingsTexture   SD_OR_HD(@"Settings.plist")
+//Loader
+#define kLoaderTexture   SD1_OR_HD1(@"Loader.plist")
 
 /* PARTICLES */
 #define kMainRainParticle SD_OR_HD(@"dest_test2.plist")

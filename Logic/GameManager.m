@@ -17,7 +17,7 @@
 
 @implementation GameManager
 
-@synthesize managerSoundState, gameData, controller, listOfSoundEffectFiles, soundEffectsState;
+@synthesize managerSoundState, gameData, controller, listOfSoundEffectFiles, soundEffectsState, isTutor;
 
 static GameManager* _sharedGameManager = nil;
 
@@ -61,6 +61,7 @@ static GameManager* _sharedGameManager = nil;
         musicVolume = startSettings.musicLevel;
         soundVolume = startSettings.soundLevel;
         currentDifficulty = startSettings.gameDifficulty;
+        isTutor = startSettings.tutor == 0 ? NO : YES;
         [self setMusicVolume:musicVolume];
     }
     return self;

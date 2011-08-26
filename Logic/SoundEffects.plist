@@ -3,34 +3,53 @@
 <plist version="1.0">
 <dict>
 	<key>kCareerScene</key>
-	<dict/>
+	<dict>
+		<key>GIP</key>
+		<string>Logic-main-packy.mp3</string>
+	</dict>
 	<key>kGameScene</key>
 	<dict>
+		<key>GIP</key>
+		<string>Logic-main-packy.mp3</string>
+		<key>WINNER</key>
+		<string>Logic-level-scoretheme.mp3</string>
+		<key>TUTOR5</key>
+		<string>Logic-howto-score.mp3</string>
+		<key>TUTOR4</key>
+		<string>Logic-howto-orange.mp3</string>
+		<key>TUTOR3</key>
+		<string>Logic-howto-green.mp3</string>
+		<key>TUTOR2</key>
+		<string>Logic-howto-swipe.mp3</string>
+		<key>TUTOR1</key>
+		<string>Logic-howto-startthegame.mp3</string>
 		<key>BUTTON_LEVEL_CLICK</key>
-		<string>Logic-main-button_click.mp3</string>
+		<string>Logic-main-button_click_bip.mp3</string>
 		<key>GONG</key>
-		<string>Logic-level-gong.mp3</string>
+		<string>Logic-level-gong_bip.mp3</string>
 		<key>SHOW_RESULT_GREEN</key>
-		<string>BellChimeGreen.mp3</string>
+		<string>Logic-level-greenbulb_bip.mp3</string>
 		<key>SHOW_RESULT_YELLOW</key>
-		<string>BellChimeYellow.mp3</string>
+		<string>Logic-level-yellowbulb_bip.mp3</string>
 		<key>OPEN_LOCK</key>
-		<string>Logic-valve.m4a</string>
+		<string>Logic-level-engine.mp3</string>
 		<key>FIGURE_MOVE</key>
-		<string>Logic-level-pincl_usazeni.mp3</string>
+		<string>Logic-level-pincl_usazeni_bip.mp3</string>
 		<key>ROW_SWIPE</key>
 		<string>Logic-level-swipe.mp3</string>
 		<key>LOOP_SECONDS</key>
-		<string>ClockTickTock.mp3</string>
+		<string>Logic-level-tikani_bip.mp3</string>
 	</dict>
 	<key>kMainScene</key>
 	<dict>
+		<key>GIP</key>
+		<string>Logic-main-packy.mp3</string>
 		<key>LAMP_BLINK</key>
-		<string>bliknuti_zarovka.m4v</string>
+		<string>Logic-main-zarovka_bip.mp3</string>
 		<key>LAMP</key>
-		<string>Logic-main-vrzani_lampy.mp3</string>
+		<string>Logic-main-vrzani_lampy_bip.mp3</string>
 		<key>BUTTON_MAIN_CLICK</key>
-		<string>Logic-main-button_click.mp3</string>
+		<string>Logic-main-button_click_bip.mp3</string>
 		<key>LOOP_RAIN</key>
 		<string>Logic-intro&amp;main-dest.mp3</string>
 	</dict>

@@ -14,10 +14,12 @@
 - (void) buildWires;
 - (void) buildCareer;
 - (void) showCityInProgress;
+- (void) showLastCity;
 - (void) activateWires:(BOOL)animation;
 - (void) setProgress;
 - (void) eraseCareer;
 - (void) constructPercentLabel;
+- (void) constructScoreLabel;
 - (void) drawPercentToLabel;
 - (void) blinkCity:(City *)city;
 - (NSString *) jsonFromFile:(NSString *)file;
@@ -45,9 +47,9 @@ static const float POS_Y = 0;
         citiesArray = [[CCArray alloc] init];
         wiresArray = [[CCArray alloc] init];
         percentLabelArray = [[CCArray alloc] init];
+        scoreLabelArray = [[CCArray alloc] init];
         
         currentCity = nil;
-        lastCity = nil;
         
         blink = NO;
         
@@ -131,10 +133,12 @@ static const float POS_Y = 0;
         [infoPanel addChild:eraseMenu z:2];
         
         [self constructPercentLabel];
+        [self constructScoreLabel];
         [self buildCities];
         [self buildWires];
         [self buildCareer];
         [self showCityInProgress];
+        [self showLastCity];
     }
     return self;
 }
@@ -178,6 +182,7 @@ static const float POS_Y = 0;
 #pragma mark INFO PANEL
 #pragma mark Panel in
 - (void) infoPanelIn {
+    PLAYSOUNDEFFECT(GIP);
     //singleTapGestureRecognizer.enabled = NO;
     
     float debugSlow = -0.40;
@@ -193,9 +198,14 @@ static const float POS_Y = 0;
 #pragma mark Panel in callback
 - (void) endAnimation {
     PercentNumber *tempPercentNumber;
+    PercentNumber *tempScoreNumber;
     for (int i=0; i < 3; i++) {
         tempPercentNumber = [percentLabelArray objectAtIndex:i];
         tempPercentNumber.visible = panelActive;
+    }
+    for (int i=0; i < 8; i++) {
+        tempScoreNumber = [scoreLabelArray objectAtIndex:i];
+        tempScoreNumber.visible = panelActive;
     }
     if (panelActive) {
         [self setProgress];
@@ -204,6 +214,7 @@ static const float POS_Y = 0;
 
 #pragma mark Panel out
 - (void) infoPanelOut {
+    PLAYSOUNDEFFECT(GIP);
     singleTapGestureRecognizer.enabled = YES;
     
     float debugSlow = -0.60;
@@ -275,6 +286,18 @@ static const float POS_Y = 0;
     [percentLabelArray reverseObjects];
 }
 
+- (void) constructScoreLabel {
+    for (int i = 0; i<8; i++) {
+        Mask *percentMask = [Mask maskWithRect:CGRectMake(170 + 9*i, 90, 9, 18)];
+        [self addChild:percentMask z:200+i];
+        PercentNumber *percentNumber = [[PercentNumber alloc] init];
+        [percentMask addChild:percentNumber];
+        [scoreLabelArray addObject:percentNumber];
+        percentNumber.visible = NO;
+    }
+    [scoreLabelArray reverseObjects];
+}
+
 #pragma mark Draw to label
 - (void) drawPercentToLabel {
     NSString *percentString = [NSString stringWithFormat:@"%i", percent];
@@ -286,6 +309,20 @@ static const float POS_Y = 0;
     PercentNumber *tempPercentNumber;
     for (int i=0; i < [characters count]; i++) {
         tempPercentNumber = [percentLabelArray objectAtIndex:i];
+        [tempPercentNumber moveToPosition:[[[[characters reverseObjectEnumerator] allObjects] objectAtIndex:i] intValue]];
+    }
+}
+
+- (void) drawScoreToLabel {
+    NSString *percentString = [NSString stringWithFormat:@"%i", score];
+    NSMutableArray *characters = [[NSMutableArray alloc] initWithCapacity:[percentString length]];
+    for (int i=0; i < [percentString length]; i++) {
+        NSString *ichar  = [NSString stringWithFormat:@"%c", [percentString characterAtIndex:i]];
+        [characters addObject:ichar];
+    }
+    PercentNumber *tempPercentNumber;
+    for (int i=0; i < [characters count]; i++) {
+        tempPercentNumber = [scoreLabelArray objectAtIndex:i];
         [tempPercentNumber moveToPosition:[[[[characters reverseObjectEnumerator] allObjects] objectAtIndex:i] intValue]];
     }
 }
@@ -350,6 +387,8 @@ static const float POS_Y = 0;
        for (City *city in citiesArray) {
            if (city.idCity == [[dict objectForKey:@"city"] intValue]) {
                city.visible = YES;
+               city.isActive = YES;
+               score += [[dict objectForKey:@"score"] intValue];
                prog += 1;
                if (city.idCity == 7 || city.idCity == 12)
                    percent += 6;
@@ -359,34 +398,7 @@ static const float POS_Y = 0;
         }
     }
     [self activateWires:NO];
-}    
-//    int i = 1;
-//    NSMutableArray *citiesDone = [[[GameManager sharedGameManager] gameData] getCareerData];
-//    zoomBase.position = ccp([[[citiesDone lastObject] objectForKey:@"posX"] floatValue], [[[citiesDone lastObject] objectForKey:@"posY"] floatValue]);
-//    zbLastPos = zoomBase.position;
-//    for (NSMutableDictionary *dict in citiesDone) {
-//        for (City *city in citiesArray) {
-//            if (city.idCity == [[dict objectForKey:@"city"] intValue]) {
-//                city.visible = YES;
-//                prog += 1;
-//                if (city.idCity == 7 || city.idCity == 12)
-//                    percent += 6;
-//                else
-//                    percent += 4;
-//                if (i < citiesDone.count) {
-//                    city.isActive = YES;
-//                } else {
-//                    city.opacity = 0;
-//                    id lastCitySeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.1f], 
-//                                      [CCCallFuncND actionWithTarget:self selector:@selector(lastCity:data:) data:city], nil];
-//                    [self runAction:lastCitySeq];
-//                }
-//            }
-//        }
-//        i++;
-//    }
-//    [self activateWires:NO];
-
+}
 
 #pragma mark Show city currently in progress
 - (void) showCityInProgress {
@@ -404,7 +416,27 @@ static const float POS_Y = 0;
 }
 
 - (void) showLastCity {
-    
+    city lcity = [[[GameManager sharedGameManager] gameData] getLastCity];
+    if (lcity.idCity > 0) {
+        zoomBase.position = ccp(lcity.position.x, lcity.position.y);
+        zbLastPos = zoomBase.position;
+        score = lcity.score;
+        prog += 1;
+        if (lcity.idCity == 7 || lcity.idCity == 12)
+            percent += 6;
+        else
+            percent += 4;
+        for (City *c in citiesArray) {
+            if (c.idCity == lcity.idCity) {
+                c.visible = YES;
+                c.opacity = 0;
+                id lastCitySeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.1f], 
+                                  [CCCallFuncND actionWithTarget:self selector:@selector(lastCity:data:) data:c], nil];
+                [self runAction:lastCitySeq];
+            }
+        }
+        [[[GameManager sharedGameManager] gameData] updateCarrerLastCity];
+    }
 }
 
 - (void) currentCityUpdate:(ccTime)dt {
@@ -456,7 +488,13 @@ static const float POS_Y = 0;
     for (Wire *wire in wiresArray) {
         wire.visible = NO;
     }
+    if (currentCity) {
+        [self unschedule:@selector(currentCityUpdate:)];
+        currentCity.visible = NO;
+        currentCity = nil;
+    }
     percent = 0;
+    score = 0;
     prog = 0;
     [self setProgress];
     PercentNumber *tempPercentNumber;
@@ -464,7 +502,12 @@ static const float POS_Y = 0;
         tempPercentNumber = [percentLabelArray objectAtIndex:i];
         [tempPercentNumber moveToPosition:-1];
     }
+    for (int i=1; i < 8; i++) {
+        tempPercentNumber = [scoreLabelArray objectAtIndex:i];
+        [tempPercentNumber moveToPosition:-1];
+    }
     [self drawPercentToLabel];
+    [self drawScoreToLabel];
 }
 
 #pragma mark Show progress on panel
@@ -474,6 +517,7 @@ static const float POS_Y = 0;
         barRect.size.width = total / 24 * prog;
         [progressBar setTextureRect: barRect];
         [self drawPercentToLabel];
+        [self drawScoreToLabel];
     }
 }
 
@@ -502,6 +546,7 @@ static const float POS_Y = 0;
     if (active) {
         if (currentCity) {
             [self unschedule:@selector(currentCityUpdate:)];
+            currentCity.visible = NO;
             currentCity = nil;
         }
         [self blinkCity:selSprite];
@@ -528,6 +573,7 @@ static const float POS_Y = 0;
 
 #pragma mark Run career game
 - (void) runGame {
+    CCLOG(@"RUN GAME");
     //delete career game eventually in progress
     [[[GameManager sharedGameManager] gameData] updateCareerData:NO andScore:0];
     [[[GameManager sharedGameManager] gameData] gameDataCleanup];
@@ -649,6 +695,8 @@ static const float POS_Y = 0;
     wiresArray = nil;
     [percentLabelArray release];
     percentLabelArray = nil;
+    [scoreLabelArray release];
+    scoreLabelArray = nil;
     [super dealloc];
 }
 

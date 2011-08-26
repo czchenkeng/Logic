@@ -32,6 +32,7 @@
     FacebookViewController *controller;
     BOOL gameInProgress;
     BOOL isCareer;
+    BOOL isTutor;
 }
 
 @property (readwrite) GameDifficulty currentDifficulty;
@@ -44,6 +45,7 @@
 @property (nonatomic, retain) NSMutableDictionary *soundEffectsState;
 @property (readwrite) float musicVolume;
 @property (readwrite) float soundVolume;
+@property (readwrite) BOOL isTutor;
 
 + (GameManager*) sharedGameManager;
 - (void) runSceneWithID:(SceneTypes)sceneID andTransition:(TransitionTypes)transitionID;

@@ -9,8 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 
-@interface PreloaderLayer : CCLayer {
-    
+@interface PreloaderLayer : CCLayerColor {
+    CCSprite *factory;
+    CCSprite *zaklad_mraky;
+    CCSprite *blesk1;
+    CCSprite *blesk2;
+    CCSprite *blesk3;
+    CCSprite *blesk4;
+    CCSprite *hrany;
 }
 
 @end

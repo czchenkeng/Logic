@@ -43,6 +43,8 @@
     float jump;
     int fid;
     
+    int tutorStep;
+    
     ScoreCalc *scoreCalc;
     
     BOOL isCareer;
@@ -66,6 +68,10 @@
     CCLayer *scoreTime;
     CCLayer *scoreLayer;
     CCLayerColor *blackout;
+    CCLayer *tutorLayer;
+    CCLayerColor *tutorBlackout;
+    CCSprite *tutorFinger;
+    CCLabelBMFont *tutorTxt;
     
     CCSprite *rotorLeftLayer;
     CCSprite *rotorRightLayer;
@@ -96,6 +102,8 @@
     
     CCMenu *pauseMenu;
     CCMenu *endGameMenu;
+    
+    CCMenu *finalMenu;
     
     CCSprite *mantle;//krytka pod rotorem
     CCSprite *sphereLight;//svetlo pod kouli

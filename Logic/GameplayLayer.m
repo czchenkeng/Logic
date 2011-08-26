@@ -11,6 +11,8 @@
 @interface GameplayLayer (PrivateMethods)
 - (void) createGame;
 - (void) buildLevel;
+- (void) setupTutor;
+- (void) tutorDisable;
 - (void) addFigures;
 - (void) generateCode;
 - (void) generateTargets;
@@ -50,6 +52,7 @@
         isWinner = NO;
         isCareer = NO;
         fid = 0;
+        tutorStep = 0;
         CGSize screenSize = [CCDirector sharedDirector].winSizeInPixels;
         isRetina = screenSize.height == 960.0f ? YES : NO;
         maxScore = [[[GameManager sharedGameManager] gameData] getMaxScore:currentDifficulty];
@@ -57,8 +60,8 @@
         placeNumbers = [[CCArray alloc] init];
         colorNumbers = [[CCArray alloc] init];
         scoreLabelArray = [[CCArray alloc] init];
-        scoreCalc = [ScoreCalc scoreWithColors:8 pins:currentDifficulty];
-        [scoreCalc retain];
+        //scoreCalc = [ScoreCalc scoreWithColors:8 pins:currentDifficulty];
+        //[scoreCalc retain];
         [self createGame];
     }
     return self;
@@ -88,6 +91,14 @@
     [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:longPress];
     [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:singleTap];
     
+    blackout = [Blackout node];
+    [blackout setOpacity:230];
+    id fadeOut = [CCFadeTo actionWithDuration:.7 opacity:0];
+    CCEaseIn *easeFadeOut = [CCEaseIn actionWithAction:fadeOut rate:5];
+    id fadeSeq = [CCSequence actions:easeFadeOut,[CCCallFunc actionWithTarget:self selector:@selector(blackoutCallback)], nil];
+    [self addChild:blackout z:5000];
+    [blackout runAction:fadeSeq];
+    
     [super onEnter];
 }
 
@@ -98,6 +109,10 @@
     [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:longPress];
     [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:singleTap];
     [super onExit];
+}
+
+- (void) blackoutCallback {
+    [blackout removeFromParentAndCleanup:YES];
 }
 
 #pragma mark -
@@ -142,13 +157,6 @@
     } else {
         CCLOG(@"**************************************************\nno career**************************************************\n");
     }
-    
-//    blackout = [Blackout node];
-//    [blackout setOpacity:0.9f];
-//    id fadeOut = [CCFadeTo actionWithDuration:.7 opacity:0.8];
-//    id fadeSeq = [CCSequence actions:fadeOut,[CCCallFunc actionWithTarget:self selector:@selector(blackoutCallback)], nil];
-//    [self addChild:blackout z:100];
-    //[blackout runAction:fadeSeq];
     
     //POZOR!!! VOLA SE VZDY!!! OSETRIT!!!!!
     if ([[GameManager sharedGameManager] gameInProgress]) {
@@ -234,10 +242,137 @@
         [rows release];
         rows = nil;
     }
+    
+    if ([GameManager sharedGameManager].isTutor) {
+        [self setupTutor];
+    }
 }
 
-- (void) blackoutCallback {
-    //[blackout removeFromParentAndCleanup:YES];
+- (void) skipTutorTapped:(CCMenuItem *)sender {
+    [self tutorDisable];
+    switch (sender.tag) {
+        case kButtonSkipTutor:
+            CCLOG(@"skip - play game");
+            break;
+        case kButtonNeverShow:
+            CCLOG(@"never show");
+            break;
+        default:
+            CCLOG(@"Logic debug: Unknown ID, cannot tap button");
+            return;
+            break;
+    }
+}
+
+- (void) setupTutor {
+    tutorLayer.position = ccp(tutorLayer.position.x, tutorLayer.position.y + 480);
+    tutorBlackout = [Blackout node];    
+    tutorBlackout.position = ccp(tutorBlackout.position.x, tutorBlackout.position.y + 240);
+    [tutorLayer addChild:tutorBlackout z:1];
+    
+    CCSprite *buttonSkipOff = [CCSprite spriteWithSpriteFrameName:@"end_off.png"];
+    CCSprite *buttonSkipOn = [CCSprite spriteWithSpriteFrameName:@"end_on.png"];    
+    CCMenuItem *skipItem = [CCMenuItemSprite itemFromNormalSprite:buttonSkipOff selectedSprite:buttonSkipOn target:self selector:@selector(skipTutorTapped:)];
+    
+    CCSprite *buttonTutorOff = [CCSprite spriteWithSpriteFrameName:@"end_off.png"];
+    CCSprite *buttonTutorOn = [CCSprite spriteWithSpriteFrameName:@"end_on.png"];    
+    CCMenuItem *tutorItem = [CCMenuItemSprite itemFromNormalSprite:buttonTutorOff selectedSprite:buttonTutorOn target:self selector:@selector(skipTutorTapped:)];
+    
+    skipItem.tag = kButtonSkipTutor;
+    skipItem.position = ccp(33, 481.00 - skipItem.contentSize.height/2);        
+    tutorItem.tag = kButtonNeverShow;
+    tutorItem.position = ccp(287.00, 481.00 - tutorItem.contentSize.height/2);
+    
+    CCMenu *tutorMenu = [CCMenu menuWithItems:skipItem, tutorItem, nil];
+    tutorMenu.position = CGPointZero;
+    
+    [tutorLayer addChild:tutorMenu z:2];
+    
+    CCLabelBMFont *skipTxt = [CCLabelBMFont labelWithString:@"skip" fntFile:@"Gloucester_levelBig.fnt"];
+    skipTxt.scale = isRetina ? 1 : 0.5;
+    skipTxt.position = ccp(240, skipItem.position.y);
+    [tutorLayer addChild:skipTxt z:3];
+    
+    CCLabelBMFont *neverTxt = [CCLabelBMFont labelWithString:@"never show" fntFile:@"Gloucester_levelBig.fnt"];
+    neverTxt.scale = isRetina ? 1 : 0.5;
+    neverTxt.position = ccp(108, tutorItem.position.y);
+    [tutorLayer addChild:neverTxt z:4];
+    
+    tutorTxt =  [CCLabelBMFont labelWithString:@"" fntFile:@"Gloucester_levelTutor.fnt"];
+    tutorTxt.rotation = -1;
+    tutorTxt.scale = isRetina ? 1 : 0.5;
+    tutorTxt.position = ccp(150, 345);
+    [tutorLayer addChild:tutorTxt z:5];
+    
+    tutorFinger = [CCSprite spriteWithSpriteFrameName:@"prst.png"];
+    [tutorLayer addChild:tutorFinger z:6];
+    tutorFinger.visible = NO;
+    
+    [self schedule:@selector(tutorEnable) interval:1];
+}
+
+- (void) tutorEnable {
+    //CCLOG(@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTUTOR UPDATE\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+    [tutorBlackout setOpacity:128];
+
+    id tutorIn = [CCMoveTo actionWithDuration:3 position:ccp(tutorLayer.position.x, tutorLayer.position.y - 480)];
+    CCEaseIn *easeTutorIn = [CCEaseIn actionWithAction:tutorIn rate:5];
+    id tutorInSeq = [CCSequence actions:easeTutorIn,[CCCallFunc actionWithTarget:self selector:@selector(tutorInCallback)], nil];
+    
+    [tutorLayer runAction:tutorInSeq];
+    
+    switch (tutorStep) {
+        case kTutorFirst:
+            CCLOG(@"TUTOR 1");
+            [tutorTxt setString:@"Drag the pin \ninto the place"];
+            
+            break;
+        case kTutorSecond:
+            CCLOG(@"TUTOR 2");
+            break;
+        default:
+            CCLOG(@"Logic debug: Unknown tutor ID, cannot run tutor");
+            return;
+            break;
+    }
+    [self unschedule:@selector(tutorEnable)];
+    
+    [self schedule:@selector(tutorDisable) interval:8];
+}
+
+- (void) tutorInCallback {
+    PLAYSOUNDEFFECT(TUTOR1);
+    tutorFinger.visible = YES;
+    tutorFinger.position = ccp(120, -50);
+    id moveFinger1 = [CCSequence actions:[CCMoveTo actionWithDuration:0.6 position:ccp(tutorFinger.position.x, 20)], nil];
+    [tutorFinger runAction:moveFinger1];
+    
+}
+
+- (void) tutorDisable {
+    id tutorOut = [CCMoveTo actionWithDuration:1 position:ccp(tutorLayer.position.x, tutorLayer.position.y + 480)];
+    //CCEaseOut *easeTutorOut = [CCEaseOut actionWithAction:tutorOut rate:5];
+    //id sequence TODO -> callback [tutorBlackout setOpacity:255];
+    
+    [tutorLayer runAction:tutorOut];
+    
+    switch (tutorStep) {
+        case kTutorFirst:
+            CCLOG(@"TUTOR 1 OUT");
+            tutorFinger.visible = NO;
+            break;
+        case kTutorSecond:
+            CCLOG(@"TUTOR 2 OUT");
+            break;
+        default:
+            CCLOG(@"Logic debug: Unknown tutor ID, cannot disable tutor");
+            return;
+            break;
+    }
+    
+    tutorStep += 1;
+    
+    [self unschedule:@selector(tutorDisable)];
 }
 
 #pragma mark Build level
@@ -251,6 +386,7 @@
     figuresNode = [CCLayer node];
     clippingNode = [CCLayer node];
     deadFiguresNode = [CCLayer node];
+    tutorLayer = [CCLayer node];
     //Mask *deadFiguresNodeMask = [Mask maskWithRect:CGRectMake(0, LEVEL_DEAD_FIGURES_MASK_HEIGHT, ADJUST_2(320), ADJUST_2(480 - LEVEL_DEAD_FIGURES_MASK_HEIGHT))];
     
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kLevelBgTexture];
@@ -525,6 +661,7 @@
     [self addChild:endGameMenu z:21];
     [self addChild:scorePanel z:22];
     [self addChild:replayPanel z:31];
+    [self addChild:tutorLayer z:5000];
     
     dustSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"dust1.plist"];
     [self addChild:dustSystem z:1000];
@@ -675,6 +812,9 @@
 
 #pragma mark End game button
 - (void) endGameTapped {
+    [[GameManager sharedGameManager] playBackgroundTrack:BACKGROUND_TRACK_LEVEL];
+    PLAYSOUNDEFFECT(GIP);
+    finalMenu.visible = NO;
     float delay;
     if (isWinner) {
         finalScoreLabel.visible = NO;
@@ -761,29 +901,6 @@
         [gameMenuLeftPanel runAction:moveGmLeftSeq];
         [endGameMenu runAction:endGameMenuSeq]; 
     }
-    
-    CCSprite *buttonFb = [CCSprite spriteWithSpriteFrameName:@"logik_iconfcb.png"];
-    CCSprite *buttonMail = [CCSprite spriteWithSpriteFrameName:@"logik_iconmail.png"];
-    buttonFb.opacity = 0;
-    buttonMail.opacity = 0;
-    
-    CCMenuItem *fbItem = [CCMenuItemSprite itemFromNormalSprite:buttonFb selectedSprite:nil target:self selector:@selector(fbMailTapped)];
-    fbItem.tag = kButtonFb;
-    fbItem.position = ccp(70.00, 80.00);
-    
-    CCMenuItem *mailItem = [CCMenuItemSprite itemFromNormalSprite:buttonMail selectedSprite:nil target:self selector:@selector(fbMailTapped)];
-    mailItem.tag = kButtonMail;
-    mailItem.position = ccp(260.00, 80.00);
-    
-    CCMenu *finalMenu = [CCMenu menuWithItems:fbItem, mailItem, nil];
-    finalMenu.position = CGPointZero;
-    [self addChild:finalMenu z:60];
-    
-    id fbFadeIn = [CCSequence actions:[CCDelayTime actionWithDuration: delay + 0.7], [CCFadeIn actionWithDuration:0.5], nil];
-    id mailFadeIn = [CCSequence actions:[CCDelayTime actionWithDuration: delay + 0.9], [CCFadeIn actionWithDuration:0.5], nil];
-    
-    [buttonFb runAction:fbFadeIn];
-    [buttonMail runAction:mailFadeIn];
 }
 
 - (void) fbMailTapped {
@@ -884,7 +1001,6 @@
 - (void) openLock {
     PLAYSOUNDEFFECT(OPEN_LOCK);
     float delay = 0.00;
-    
     //faze 1
     CCMoveTo *rightRotorOut = [CCMoveTo actionWithDuration:delay + 0.1 position:ccp(rotorRightLayer.position.x + 15, rotorRightLayer.position.y)];
     CCMoveTo *leftRotorOut = [CCMoveTo actionWithDuration:delay + 0.1 position:ccp(rotorLeftLayer.position.x - 15, rotorLeftLayer.position.y)];
@@ -1030,7 +1146,7 @@
         [self constructScoreLabelWithLayer:finalScoreLabel andArray:finalScoreArray andLength:8 andRotation:-2 andXpos:155 andYPos:226];
         //score Panel
         scorePanel.visible = YES;
-        CCMoveTo *spMoveIn = [CCMoveTo actionWithDuration:.5 position:ccp(100.00, 225.00)];
+        CCMoveTo *spMoveIn = [CCMoveTo actionWithDuration:.5 position:ccp(102.00, 220.00)];
         CCScaleTo *spScaleInX = [CCScaleTo actionWithDuration:.5 scaleX:1.0 scaleY:1.0];
         CCRotateTo *spRotationIn = [CCRotateTo actionWithDuration:.5 angle:-2];
         CCSpawn *moveSpSeq = [CCSpawn actions:spMoveIn, spScaleInX, spRotationIn, nil];
@@ -1082,6 +1198,7 @@
             CCSequence *wdSeq = [CCSequence actions:
                                          [CCDelayTime actionWithDuration: delayStep3 + 4.0f],
                                          [CCFadeIn actionWithDuration:.3],
+                                            [CCCallFunc actionWithTarget:self selector:@selector(sharingCallback)],
                                          nil];
             [wdBig runAction:wdSeq];
         } else {
@@ -1106,6 +1223,7 @@
             CCSequence *super2Seq = [CCSequence actions:
                                      [CCDelayTime actionWithDuration: delayStep3 + 4.0f],
                                      [CCFadeIn actionWithDuration:.3],
+                                     [CCCallFunc actionWithTarget:self selector:@selector(sharingCallback)],
                                      nil];
             [superBig runAction:super1Seq];
             [superSmall runAction:super2Seq];
@@ -1121,7 +1239,7 @@
     } else {
         singleTap.enabled = YES;
         failLabelSmall = [CCLabelBMFont labelWithString:@"THIS CODE WAS TOUGH" fntFile:@"Gloucester_levelSmall.fnt"];
-        failLabelSmall.scale = isRetina ? 0.9 : 0.4;
+        failLabelSmall.scale = isRetina ? 0.9 : 0.45;
         failLabelSmall.opacity = 0;
         failLabelSmall.rotation = -2;
         failLabelSmall.position = ccp(screenSize.width/2 - 15, screenSize.height/2);
@@ -1143,6 +1261,31 @@
     
 }
 
+- (void) sharingCallback {
+    CCSprite *buttonFb = [CCSprite spriteWithSpriteFrameName:@"logik_iconfcb.png"];
+    CCSprite *buttonMail = [CCSprite spriteWithSpriteFrameName:@"logik_iconmail.png"];
+    buttonFb.opacity = 0;
+    buttonMail.opacity = 0;
+    
+    CCMenuItem *fbItem = [CCMenuItemSprite itemFromNormalSprite:buttonFb selectedSprite:nil target:self selector:@selector(fbMailTapped)];
+    fbItem.tag = kButtonFb;
+    fbItem.position = ccp(70.00, 80.00);
+    
+    CCMenuItem *mailItem = [CCMenuItemSprite itemFromNormalSprite:buttonMail selectedSprite:nil target:self selector:@selector(fbMailTapped)];
+    mailItem.tag = kButtonMail;
+    mailItem.position = ccp(260.00, 80.00);
+    
+    finalMenu = [CCMenu menuWithItems:fbItem, mailItem, nil];
+    finalMenu.position = CGPointZero;
+    [self addChild:finalMenu z:60];
+    
+    id fbFadeIn = [CCSequence actions:[CCDelayTime actionWithDuration: 0.7], [CCFadeIn actionWithDuration:0.5], nil];
+    id mailFadeIn = [CCSequence actions:[CCDelayTime actionWithDuration: 0.9], [CCFadeIn actionWithDuration:0.5], nil];
+    
+    [buttonFb runAction:fbFadeIn];
+    [buttonMail runAction:mailFadeIn];
+}
+
 - (void) scoreTimeCallback {
     [self constructScoreLabelWithLayer:final2ScoreLayer andArray:scoreLabelArray andLength:8 andRotation:0 andXpos:0 andYPos:456.50];
     [self drawScoreToLabel:score andArray:scoreLabelArray andStyle:NO andZero:NO];
@@ -1152,9 +1295,13 @@
 
     [self constructScoreLabelWithLayer:final3TimeLayer andArray:final2TimeArray andLength:2 andRotation:0 andXpos:300.50 andYPos:456.00];
     [self drawTimeToLabel:(int)timer.gameTime%60 andArray:final2TimeArray andStyle:NO andZero:NO];
+     PLAYSOUNDEFFECT(GIP);
 }
 
 - (void) spInCallback {
+    [[GameManager sharedGameManager] playBackgroundTrack:BACKGROUND_TRACK_WINNER];
+    
+    //PLAYSOUNDEFFECT(WINNER);
     finalScoreLabel.visible = YES;
     singleTap.enabled = YES;
     [self drawScoreToLabel:score andArray:finalScoreArray andStyle:YES andZero:NO];
@@ -1280,7 +1427,8 @@
             }
         }
     }
-    score = [scoreCalc calculateScoreWithRow:activeRow andTurn:turn];
+    //score = [scoreCalc calculateScoreWithRow:activeRow andTurn:turn];
+    score = [Utils randomNumberBetween:1000 andMax:2000];
     [self drawScoreToLabel:score andArray:scoreLabelArray andStyle:YES andZero:NO];    
 }
 
@@ -1594,7 +1742,7 @@
     } else if (recognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [recognizer translationInView:recognizer.view];
         translation = ccp(translation.x, -translation.y);
-        if (abs(translation.x) > 30 && !selSprite) {
+        if (abs(translation.x) > LEVEL_SWIPE && !selSprite) {
             if (isEndRow) {
                 PLAYSOUNDEFFECT(ROW_SWIPE);
                 isEndRow = NO;

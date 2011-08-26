@@ -90,6 +90,7 @@
         retVal.gameDifficulty = [rs intForColumn:@"difficulty"];
         retVal.musicLevel = [rs doubleForColumn:@"music_level"];
         retVal.soundLevel = [rs doubleForColumn:@"sound_level"];
+        retVal.tutor = [rs intForColumn:@"tutor"];
     }
     return retVal;
 }
@@ -243,7 +244,7 @@
 
 - (void) insertCareerData:(int)city xPos:(float)xPos yPos:(float)yPos {
     [db beginTransaction];
-    [db executeUpdate:@"INSERT INTO career (city, is_done, lastPosX, lastPosY, last_city, score) values (?, ?, ?, ?)", [NSNumber numberWithInt:city], [NSNumber numberWithInt:0], [NSNumber numberWithFloat:xPos], [NSNumber numberWithFloat:yPos], [NSNumber numberWithInt:0], [NSNumber numberWithInt:0]];
+    [db executeUpdate:@"INSERT INTO career (city, is_done, lastPosX, lastPosY, last_city, score) values (?, ?, ?, ?, ?, ?)", [NSNumber numberWithInt:city], [NSNumber numberWithInt:0], [NSNumber numberWithFloat:xPos], [NSNumber numberWithFloat:yPos], [NSNumber numberWithInt:0], [NSNumber numberWithInt:0]];
     [db commit];
 }
 
@@ -267,10 +268,10 @@
 }
 
 - (NSMutableArray *) getCareerData {
-//    rs = [db executeQuery:@"SELECT COUNT(*) FROM career"];
-//    if ([rs next]) {
-//        CCLOG(@"total count career is %i", [rs intForColumnIndex:0]);
-//    }
+    rs = [db executeQuery:@"SELECT COUNT(*) FROM career"];
+    if ([rs next]) {
+        CCLOG(@"total count career is %i", [rs intForColumnIndex:0]);
+    }
     
     //rs = [db executeQuery:@"SELECT * FROM career WHERE is_done=1 ORDER BY id ASC"];
     rs = [db executeQuery:@"SELECT * FROM career WHERE last_city=1 ORDER BY id ASC"];
@@ -278,6 +279,7 @@
     while ([rs next]) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
         [dict setObject:[NSNumber numberWithInt:[rs intForColumn:@"city"]] forKey:@"city"];
+        [dict setObject:[NSNumber numberWithInt:[rs intForColumn:@"score"]] forKey:@"score"];
         [dict setObject:[NSNumber numberWithFloat:[rs doubleForColumn:@"lastPosX"]] forKey:@"posX"];
         [dict setObject:[NSNumber numberWithFloat:[rs doubleForColumn:@"lastPosY"]] forKey:@"posY"];
         [retVal addObject:dict];
@@ -303,6 +305,7 @@
     rs = [db executeQuery:@"SELECT * FROM career WHERE is_done=1 AND last_city = 0"];
     if ([rs next]) {
         retVal.idCity = [rs intForColumn:@"city"];
+        retVal.score = [rs intForColumn:@"score"];
         retVal.position = ccp([rs doubleForColumn:@"lastPosX"], [rs doubleForColumn:@"lastPosY"]);
     }
     return retVal;

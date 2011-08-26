@@ -14,6 +14,7 @@
 - (void) addHowTo;
 - (void) logicTransition;
 - (void) buttonsOut;
+- (void) lampOut;
 @end
 
 
@@ -134,7 +135,8 @@
         CCRotateTo *rotLeft = [CCRotateBy actionWithDuration:1.1 angle:8.0];
         CCEaseInOut *easeRight = [CCEaseInOut actionWithAction:rotRight rate:3];
         CCEaseInOut *easeLeft = [CCEaseInOut actionWithAction:rotLeft rate:3];
-        CCSequence *rotSeq = [CCSequence actions:easeLeft, [CCCallFunc actionWithTarget:self selector:@selector(moveLampCallback)], easeRight, [CCCallFunc actionWithTarget:self selector:@selector(moveLampCallback)], nil];
+        CCSequence *rotSeq = [CCSequence actions:easeLeft, easeRight, [CCCallFunc actionWithTarget:self selector:@selector(moveLampCallback)], nil];
+        //rotSeq.tag = 
         
         CCRotateTo *rotRight1 = [CCRotateBy actionWithDuration:1.1 angle:-8.0];
         CCRotateTo *rotLeft1 = [CCRotateBy actionWithDuration:1.1 angle:8.0];        
@@ -192,6 +194,7 @@
         [[GameManager sharedGameManager] playBackgroundTrack:BACKGROUND_TRACK_MAIN];
     }
     [[GameManager sharedGameManager] playLoopSounds];
+    PLAYSOUNDEFFECT(GIP);
 	[super onEnter];
 }
 
@@ -215,7 +218,7 @@
 #pragma mark Animations in
 - (void) animationIn {
     float debugSlow = -0.40;
-    
+    PLAYSOUNDEFFECT(GIP);
     CCMoveTo *rightGibMoveIn = [CCMoveTo actionWithDuration:debugSlow + 1.0 position:kMainRightGibInPosition];
     CCScaleTo *rightGibScaleInX = [CCScaleTo actionWithDuration:debugSlow + 1.0 scaleX:1.0 scaleY:1.0];
     CCRotateTo *rightGibRotationIn = [CCRotateTo actionWithDuration:debugSlow + 1.0 angle:1];        
@@ -233,7 +236,7 @@
 #pragma mark Animations out
 - (void) animationOut {
     float debugSlow = -0.60;
-    
+    PLAYSOUNDEFFECT(GIP);
     CCMoveTo *rightGibMoveIn = [CCMoveTo actionWithDuration:debugSlow + 1.0 position:kMainRightGibOutPosition];
     CCScaleTo *rightGibScaleInX = [CCScaleTo actionWithDuration:debugSlow + 1.0 scaleX:5 scaleY:22];
     CCRotateTo *rightGibRotationIn = [CCRotateTo actionWithDuration:debugSlow + 1.0 angle:0];        
@@ -270,6 +273,7 @@
             [self logicTransition];
             break;
         case kButtonCareerPlay:
+            //[self lampOut];
             [[GameManager sharedGameManager] runSceneWithID:kCareerScene andTransition:kSlideInR];
             break;
         case kButtonContinuePlay:
@@ -311,9 +315,20 @@
     [doors runAction:moveDoorsOutSeq];
 }
 
+- (void) lampOut {
+    [self unscheduleUpdate];
+    [lightOff stopAllActions];
+    [light stopAllActions];
+    //CCMoveTo *lightOut = [CCMoveTo actionWithDuration:0.4 position:ccp(light.position.x, light.position.y + 100)];
+    id lightOut = [CCFadeOut actionWithDuration:0.4];
+    [light runAction:lightOut];
+    [lightOff runAction:lightOut];
+}
+
 #pragma mark Game transition
 - (void) startTransition {
     [self doorsOut];
+    [self lampOut];
     [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kLogicTrans];
 }
 
@@ -359,6 +374,12 @@
 
 #pragma mark Lamp move callback
 - (void) moveLampCallback {
+    id lampSound = [CCSequence actions:[CCDelayTime actionWithDuration: 0.1f], [CCCallFunc actionWithTarget:self selector:@selector(lampCallback)], nil];
+    [self runAction:lampSound];
+
+}
+
+- (void) lampCallback {
     PLAYSOUNDEFFECT(LAMP);
 }
 
