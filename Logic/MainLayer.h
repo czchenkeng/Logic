@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "Utils.h"
 #import "HowToLayer.h"
+#import "GameManager.h"
+#import "Lightning.h"
+#import "Utils.h"
 
 @interface MainLayer : CCLayerColor {
     int counter;
@@ -19,10 +22,25 @@
     CCSprite *lightOff;
     CCSprite *leftGib;
     CCSprite *rightGib;
+    CCSprite *rightSingleGib;
     CCSprite *background;
     CCSprite *doors;
     
-    int nextScene;
+    CCMenu *gameMenu;
+    CCMenu *newGameMenu;
+    CCMenu *quitMenu;
+    CCMenu *continueMenu;
+    CCMenu *careerMenu;
+    CCMenu *singleMenu;
+    CCMenu *toggleMenu;
+    
+    CCMenuItem *infoOff;
+    CCMenuItem *infoOn;
+    CCMenuItemToggle *toggleItem;
+    
+    BOOL isThree;
+    
+    //int nextScene;
     
     HowToLayer *howToLayer;
     

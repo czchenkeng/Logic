@@ -11,6 +11,7 @@
 #import "CareerScene.h"
 #import "ScoreScene.h"
 #import "PreloaderScene.h"
+#import "LogoScene.h"
 #import "SimpleAudioEngine.h"
 #import "GameData.h"
 #import "FacebookViewController.h"
@@ -26,6 +27,7 @@
     
     GameDifficulty currentDifficulty;
     SceneTypes currentScene;
+    SceneTypes oldScene;
     float musicVolume;
     float soundVolume;
     GameData *gameData;
@@ -33,12 +35,14 @@
     BOOL gameInProgress;
     BOOL isCareer;
     BOOL isTutor;
+    BOOL mainTutor;
 }
 
 @property (readwrite) GameDifficulty currentDifficulty;
 @property (nonatomic, retain) GameData *gameData;
 @property (nonatomic, retain) FacebookViewController *controller;
 @property (readonly) BOOL gameInProgress;
+@property (readonly) SceneTypes oldScene;
 
 @property (readwrite) GameManagerSoundState managerSoundState; 
 @property (nonatomic, retain) NSMutableDictionary *listOfSoundEffectFiles; 
@@ -46,6 +50,7 @@
 @property (readwrite) float musicVolume;
 @property (readwrite) float soundVolume;
 @property (readwrite) BOOL isTutor;
+@property (readwrite) BOOL mainTutor;
 
 + (GameManager*) sharedGameManager;
 - (void) runSceneWithID:(SceneTypes)sceneID andTransition:(TransitionTypes)transitionID;
@@ -56,8 +61,11 @@
 - (void) stopSoundEffect:(ALuint)soundEffectID; 
 - (void) playBackgroundTrack:(NSString*)trackFileName;
 - (void) stopLoopSounds;
+- (void) pauseLoopSounds;
 - (void) playLoopSounds;
 
 - (void) updateSettings;
+
+- (void) duckling:(float)soundLevel;
 
 @end

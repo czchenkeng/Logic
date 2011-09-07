@@ -9,8 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "CCLabelBMFontMultiline.h"
 
-@interface HowToLayer : CCLayer {
+@interface HowToLayer : CCLayer <UIGestureRecognizerDelegate> {
+    UIPanGestureRecognizer *panGestureRecognizer;
+    CGPoint zbLastPos;
     CCLayer *howTo;
+    
+    BOOL anim3;
+    BOOL anim4;
 }
 
 @end

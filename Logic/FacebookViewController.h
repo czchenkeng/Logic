@@ -17,6 +17,9 @@
     
     Facebook *_facebook;
     NSArray *_permissions;
+    
+    UILabel *label;
+    UITextView *textField;
 }
 
 @property (nonatomic, retain) UIView *loginView;

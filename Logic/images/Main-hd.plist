@@ -33,11 +33,11 @@
             <key>grass.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{928,1155},{642,95}}</string>
+                <string>{{0,1113},{642,95}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{642,95}}</string>
                 <key>sourceSize</key>
@@ -46,7 +46,7 @@
             <key>i_off.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{813,1185},{98,115}}</string>
+                <string>{{637,1238},{98,115}}</string>
                 <key>offset</key>
                 <string>{0,2}</string>
                 <key>rotated</key>
@@ -54,12 +54,12 @@
                 <key>sourceColorRect</key>
                 <string>{{0,0},{98,115}}</string>
                 <key>sourceSize</key>
-                <string>{98,117}</string>
+                <string>{98,119}</string>
             </dict>
             <key>i_on.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{694,1088},{98,119}}</string>
+                <string>{{642,1140},{98,119}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -85,7 +85,7 @@
             <key>logik_career1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{694,951},{175,39}}</string>
+                <string>{{694,1029},{175,39}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -98,50 +98,76 @@
             <key>logik_career2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{869,912},{175,39}}</string>
+                <string>{{694,990},{175,39}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{175,39}}</string>
                 <key>sourceSize</key>
                 <string>{175,39}</string>
             </dict>
-            <key>logik_cont1.png</key>
+            <key>logik_continue1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{962,468},{156,41}}</string>
+                <string>{{694,1068},{171,34}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{-1,-1}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{156,41}}</string>
+                <string>{{13,9},{171,34}}</string>
                 <key>sourceSize</key>
-                <string>{156,41}</string>
+                <string>{199,50}</string>
             </dict>
-            <key>logik_cont2.png</key>
+            <key>logik_continue2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{962,312},{156,41}}</string>
+                <string>{{962,370},{181,44}}</string>
+                <key>offset</key>
+                <string>{-1,-1}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{8,4},{181,44}}</string>
+                <key>sourceSize</key>
+                <string>{199,50}</string>
+            </dict>
+            <key>logik_gmenu1.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{962,551},{185,42}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{156,41}}</string>
+                <string>{{7,4},{185,42}}</string>
                 <key>sourceSize</key>
-                <string>{156,41}</string>
+                <string>{199,50}</string>
+            </dict>
+            <key>logik_gmenu2.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{962,0},{195,50}}</string>
+                <key>offset</key>
+                <string>{-1,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{1,0},{195,50}}</string>
+                <key>sourceSize</key>
+                <string>{199,50}</string>
             </dict>
             <key>logik_new1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{962,156},{156,41}}</string>
+                <string>{{865,1092},{156,41}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{156,41}}</string>
                 <key>sourceSize</key>
@@ -150,7 +176,7 @@
             <key>logik_new2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{962,0},{156,41}}</string>
+                <string>{{869,912},{156,41}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -160,10 +186,36 @@
                 <key>sourceSize</key>
                 <string>{156,41}</string>
             </dict>
+            <key>logik_quit1.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{694,1102},{165,38}}</string>
+                <key>offset</key>
+                <string>{0,-4}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{17,10},{165,38}}</string>
+                <key>sourceSize</key>
+                <string>{199,50}</string>
+            </dict>
+            <key>logik_quit2.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{962,195},{175,46}}</string>
+                <key>offset</key>
+                <string>{0,-2}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{12,4},{175,46}}</string>
+                <key>sourceSize</key>
+                <string>{199,50}</string>
+            </dict>
             <key>logik_single1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{694,912},{175,39}}</string>
+                <string>{{694,951},{175,39}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -176,11 +228,11 @@
             <key>logik_single2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{962,624},{175,39}}</string>
+                <string>{{694,912},{175,39}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{175,39}}</string>
                 <key>sourceSize</key>
@@ -189,7 +241,7 @@
             <key>logo.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{928,799},{356,96}}</string>
+                <string>{{928,736},{356,96}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -202,11 +254,11 @@
             <key>logo_shadow.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,1797},{366,117}}</string>
+                <string>{{859,1231},{366,117}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{366,117}}</string>
                 <key>sourceSize</key>
@@ -215,7 +267,7 @@
             <key>rameno_left.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,1914},{528,109}}</string>
+                <string>{{0,1208},{528,109}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -228,7 +280,7 @@
             <key>rameno_right.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,1283},{513,109}}</string>
+                <string>{{528,1208},{513,109}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -241,20 +293,20 @@
             <key>settings_off.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{813,1087},{98,115}}</string>
+                <string>{{761,1140},{98,115}}</string>
                 <key>offset</key>
                 <string>{0,2}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{98,115}}</string>
                 <key>sourceSize</key>
-                <string>{98,117}</string>
+                <string>{98,119}</string>
             </dict>
             <key>settings_on.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{694,990},{98,119}}</string>
+                <string>{{859,1133},{98,119}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -269,8 +321,12 @@
         <dict>
             <key>format</key>
             <integer>2</integer>
+            <key>realTextureFileName</key>
+            <string>Main-hd.pvr.ccz</string>
             <key>size</key>
             <string>{1024,2048}</string>
+            <key>smartupdate</key>
+            <string>$TexturePacker:SmartUpdate:8ccd42c081ad59731656b80e8d046f1e$</string>
             <key>textureFileName</key>
             <string>Main-hd.pvr.ccz</string>
         </dict>

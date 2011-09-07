@@ -4,15 +4,29 @@
 <dict>
 	<key>kCareerScene</key>
 	<dict>
-		<key>GIP</key>
-		<string>Logic-main-packy.mp3</string>
+		<key>CAREER_SCORE</key>
+		<string>Logic-career-ciselnik.mp3</string>
+		<key>BULB_BLINK</key>
+		<string>Logic-career-zarovka_bip.mp3</string>
+		<key>FANFARE</key>
+		<string>Logic-career-fanfara.mp3</string>
+		<key>BUTTON_CAREER_CLICK</key>
+		<string>Logic-career-button_click_bip.mp3</string>
+		<key>TUTOR7</key>
+		<string>Logic-howto-tapthebulb.mp3</string>
+		<key>NAV_CAREER</key>
+		<string>Logic-career-packy.mp3</string>
 	</dict>
 	<key>kGameScene</key>
 	<dict>
-		<key>GIP</key>
-		<string>Logic-main-packy.mp3</string>
-		<key>WINNER</key>
-		<string>Logic-level-scoretheme.mp3</string>
+		<key>FLASH2</key>
+		<string>Logic-level-vyboj2_bip.mp3</string>
+		<key>FLASH1</key>
+		<string>Logic-level-vyboj1_bip.mp3</string>
+		<key>SCORE</key>
+		<string>Logic-score-ciselnik.mp3</string>
+		<key>NAV_LEVEL</key>
+		<string>Logic-level-packy.mp3</string>
 		<key>TUTOR5</key>
 		<string>Logic-howto-score.mp3</string>
 		<key>TUTOR4</key>
@@ -22,9 +36,9 @@
 		<key>TUTOR2</key>
 		<string>Logic-howto-swipe.mp3</string>
 		<key>TUTOR1</key>
-		<string>Logic-howto-startthegame.mp3</string>
+		<string>Logic-howto-dragthepin.mp3</string>
 		<key>BUTTON_LEVEL_CLICK</key>
-		<string>Logic-main-button_click_bip.mp3</string>
+		<string>Logic-level-button_click_bip.mp3</string>
 		<key>GONG</key>
 		<string>Logic-level-gong_bip.mp3</string>
 		<key>SHOW_RESULT_GREEN</key>
@@ -42,7 +56,7 @@
 	</dict>
 	<key>kMainScene</key>
 	<dict>
-		<key>GIP</key>
+		<key>NAV_MAIN</key>
 		<string>Logic-main-packy.mp3</string>
 		<key>LAMP_BLINK</key>
 		<string>Logic-main-zarovka_bip.mp3</string>
@@ -56,20 +70,25 @@
 	<key>kNoSceneUninitialized</key>
 	<dict/>
 	<key>kPreloaderScene</key>
-	<dict/>
+	<dict>
+		<key>ANIMATION</key>
+		<string>Logic-intro-destblesk.mp3</string>
+	</dict>
 	<key>kScoreScene</key>
 	<dict>
 		<key>JOYSTICK_SCORE_CLICK</key>
-		<string>Logic-score-paka.mp3</string>
+		<string>Logic-score-paka_bip.mp3</string>
 		<key>BUTTON_SCORE_CLICK</key>
-		<string>Logic-score-button_click.mp3</string>
+		<string>Logic-score-button_click_bip.mp3</string>
 	</dict>
 	<key>kSettingsScene</key>
 	<dict>
 		<key>JOYSTICK_SETTINGS_CLICK</key>
-		<string>Logic-options-paka.mp3</string>
+		<string>Logic-options-paka_bip.mp3</string>
 		<key>BUTTON_SETTINGS_CLICK</key>
-		<string>Logic-settings-button_click.mp3</string>
+		<string>Logic-options-button_click_bip.mp3</string>
 	</dict>
+	<key>kLogoScene</key>
+	<dict/>
 </dict>
 </plist>

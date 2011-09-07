@@ -10,6 +10,8 @@
 #import "CJSONDeserializer.h"
 
 @interface CareerLayer (PrivateMethods)
+- (void) setupTutor;
+- (void) disableTutor;
 - (void) buildCities;
 - (void) buildWires;
 - (void) buildCareer;
@@ -58,6 +60,9 @@ static const float POS_Y = 0;
         prog = 0;
         percent = 0;
         panelActive = NO;
+        
+        CGSize screenSize = [CCDirector sharedDirector].winSizeInPixels;
+        isRetina = screenSize.height == 960.0f ? YES : NO;
         
         zoomBase = [CCLayerColor layerWithColor:ccc4(0,0,0,0)];
 		zoomBase.position = ccp(0, 0);
@@ -161,10 +166,17 @@ static const float POS_Y = 0;
     
     pinchGestureRecognizer.delegate = self;
     
+    settings startSettings = [[[GameManager sharedGameManager] gameData] getSettings];
+    
+    if ([GameManager sharedGameManager].isTutor && startSettings.careerTutor == 1) {
+        [self setupTutor];
+    }
+    
     [super onEnter];
 }
 
 - (void) onExit {
+    [[GameManager sharedGameManager] duckling:[GameManager sharedGameManager].musicVolume];
     [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:singleTapGestureRecognizer];
     [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:panGestureRecognizer];
     //[[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:pinchGestureRecognizer];
@@ -179,10 +191,123 @@ static const float POS_Y = 0;
 }
 
 #pragma mark -
+#pragma mark TUTORIAL
+- (void) fingerOutCallback {
+    City *city = [citiesArray objectAtIndex:2];
+    if (!city.isActive) {
+        city.visible = NO;
+    }
+}
+
+- (void) skipTutorTapped:(CCMenuItem *)sender {
+    PLAYSOUNDEFFECT(BUTTON_CAREER_CLICK);
+    STOPSOUNDEFFECT(tutorSound);
+    [self fingerOutCallback];
+    [[GameManager sharedGameManager] duckling:[GameManager sharedGameManager].musicVolume];
+    [self disableTutor];
+    switch (sender.tag) {
+        case kButtonSkipTutor:
+            CCLOG(@"skip - play game");
+            break;
+        case kButtonNeverShow:
+            CCLOG(@"never show");
+            [GameManager sharedGameManager].isTutor = NO;
+            break;
+        default:
+            CCLOG(@"Logic debug: Unknown ID, cannot tap button");
+            return;
+            break;
+    }
+}
+
+- (void) disableTutor {
+    [[GameManager sharedGameManager] duckling:[GameManager sharedGameManager].musicVolume];
+    [self unschedule:@selector(disableTutor)];
+    id tutorOut = [CCMoveTo actionWithDuration:1 position:ccp(tutorLayer.position.x, tutorLayer.position.y + 480)];    
+    [tutorLayer runAction:tutorOut];
+    tutorFinger.visible = NO;
+}
+
+- (void) setupTutor {
+    tutorLayer = [CCLayer node];
+    [self addChild:tutorLayer z:1000];
+    tutorLayer.position = ccp(tutorLayer.position.x, tutorLayer.position.y + 480);
+    tutorBlackout = [Blackout node];
+    [tutorBlackout setOpacity:128];
+    tutorBlackout.position = ccp(tutorBlackout.position.x, tutorBlackout.position.y + 270);
+    [tutorLayer addChild:tutorBlackout z:1];
+    
+    CCSprite *buttonSkipOff = [CCSprite spriteWithSpriteFrameName:@"end_off.png"];
+    CCSprite *buttonSkipOn = [CCSprite spriteWithSpriteFrameName:@"end_on.png"];    
+    CCMenuItem *skipItem = [CCMenuItemSprite itemFromNormalSprite:buttonSkipOff selectedSprite:buttonSkipOn target:self selector:@selector(skipTutorTapped:)];
+    
+    CCSprite *buttonTutorOff = [CCSprite spriteWithSpriteFrameName:@"logik_x_01.png"];
+    CCSprite *buttonTutorOn = [CCSprite spriteWithSpriteFrameName:@"logik_x_02.png"];    
+    CCMenuItem *tutorItem = [CCMenuItemSprite itemFromNormalSprite:buttonTutorOff selectedSprite:buttonTutorOn target:self selector:@selector(skipTutorTapped:)];
+    
+    skipItem.tag = kButtonSkipTutor;
+    skipItem.position = ccp(287.00, 481.00 - tutorItem.contentSize.height/2);        
+    tutorItem.tag = kButtonNeverShow;
+    tutorItem.position = ccp(33, 481.00 - skipItem.contentSize.height/2);
+    
+    CCMenu *tutorMenu = [CCMenu menuWithItems:skipItem, tutorItem, nil];
+    tutorMenu.position = CGPointZero;
+    
+    [tutorLayer addChild:tutorMenu z:2];
+    
+    CCLabelBMFont *skipTxt = [CCLabelBMFont labelWithString:@"skip" fntFile:@"Gloucester_levelBig.fnt"];
+    skipTxt.scale = isRetina ? 1 : 0.5;
+    skipTxt.position = ccp(240, skipItem.position.y);
+    [tutorLayer addChild:skipTxt z:3];
+    
+    CCLabelBMFont *neverTxt = [CCLabelBMFont labelWithString:@"never show" fntFile:@"Gloucester_levelBig.fnt"];
+    neverTxt.scale = isRetina ? 1 : 0.5;
+    neverTxt.position = ccp(108, tutorItem.position.y);
+    [tutorLayer addChild:neverTxt z:4];
+    
+    tutorTxt =  [CCLabelBMFont labelWithString:@"" fntFile:@"Gloucester_levelTutor.fnt"];
+    tutorTxt.rotation = -1;
+    tutorTxt.scale = isRetina ? 1 : 0.5;
+    tutorTxt.position = ccp(150, 345);
+    [tutorLayer addChild:tutorTxt z:5];
+    [tutorTxt setString:@"Tap the bulb to light\nup next city"];
+    
+    tutorFinger = [CCSprite spriteWithSpriteFrameName:@"prst.png"];
+    [tutorLayer addChild:tutorFinger z:6];
+    tutorFinger.position = ccp(310, 150);
+    tutorFinger.rotation = -20;
+    tutorFinger.visible = YES;
+    tutorFinger.opacity = 0;
+    
+    id moveFinger = [CCSequence actions:[CCDelayTime actionWithDuration:1], [CCFadeIn actionWithDuration:0.1], [CCMoveTo actionWithDuration:1 position:ccp(290, 190)],[CCCallFunc actionWithTarget:self selector:@selector(fingerCallback)] ,nil];
+    [tutorFinger runAction:moveFinger];
+    [self schedule:@selector(disableTutor) interval:6];
+    //tutorSound = PLAYSOUNDEFFECT(TUTOR7);
+    
+    id tutorIn = [CCMoveTo actionWithDuration:1 position:ccp(tutorLayer.position.x, tutorLayer.position.y - 480)];
+    id tutorInSeq = [CCSequence actions:tutorIn,[CCCallFunc actionWithTarget:self selector:@selector(tutorInCallback)], nil];
+    
+    [tutorLayer runAction:tutorInSeq];
+}
+
+- (void) tutorInCallback {
+    [[GameManager sharedGameManager] duckling:0.2];
+    tutorSound =  PLAYSOUNDEFFECT(TUTOR7);
+}
+
+- (void) fingerCallback {
+    City *city = [citiesArray objectAtIndex:2];
+    city.visible = YES;
+    PLAYSOUNDEFFECT(BUTTON_CAREER_CLICK);
+    id outFinger = [CCSequence actions:[CCDelayTime actionWithDuration:1],[CCFadeOut actionWithDuration:0.5],[CCDelayTime actionWithDuration:2],[CCCallFunc actionWithTarget:self selector:@selector(fingerOutCallback)] ,nil];
+    [tutorFinger runAction:outFinger];    
+}
+
+#pragma mark -
 #pragma mark INFO PANEL
 #pragma mark Panel in
 - (void) infoPanelIn {
-    PLAYSOUNDEFFECT(GIP);
+    PLAYSOUNDEFFECT(NAV_CAREER);
     //singleTapGestureRecognizer.enabled = NO;
     
     float debugSlow = -0.40;
@@ -214,7 +339,7 @@ static const float POS_Y = 0;
 
 #pragma mark Panel out
 - (void) infoPanelOut {
-    PLAYSOUNDEFFECT(GIP);
+    PLAYSOUNDEFFECT(NAV_CAREER);
     singleTapGestureRecognizer.enabled = YES;
     
     float debugSlow = -0.60;
@@ -229,14 +354,18 @@ static const float POS_Y = 0;
 #pragma mark -
 #pragma mark BUTTONS CALLBACK METHODS
 #pragma mark Button back & erase career
-- (void) buttonTapped:(CCMenuItem *)sender { 
+- (void) buttonTapped:(CCMenuItem *)sender {
+    PLAYSOUNDEFFECT(BUTTON_CAREER_CLICK);
     switch (sender.tag) {
         case kButtonBack:
-            //BACK JEN NA SETTINGS SCENE?
-            [[GameManager sharedGameManager] runSceneWithID:kSettingsScene andTransition:kSlideInL];
+            if ([GameManager sharedGameManager].oldScene == kMainScene || [GameManager sharedGameManager].oldScene == kGameScene) {
+                [[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kFadeTrans];
+            } else if ([GameManager sharedGameManager].oldScene == kSettingsScene) {
+                [[GameManager sharedGameManager] runSceneWithID:kSettingsScene andTransition:kSlideInL];
+            }
             break;
         case kButtonEraseCareer:
-            CCLOG(@"bug UIAlertView");
+            CCLOG(@"UIAlertView");
             UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"ERASE CAREER" message:@"Do you really want to erase your career?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil] autorelease];
             [alert addButtonWithTitle:@"Yes"];
             [alert setTag:1];
@@ -404,6 +533,7 @@ static const float POS_Y = 0;
 - (void) showCityInProgress {
     city city = [[[GameManager sharedGameManager] gameData] getCityInProgress];
     if (city.idCity > 0) {
+        PLAYSOUNDEFFECT(BULB_BLINK);
         zoomBase.position = ccp(city.position.x, city.position.y);
         zbLastPos = zoomBase.position;
         for (City *c in citiesArray) {
@@ -446,6 +576,7 @@ static const float POS_Y = 0;
 
 #pragma mark Last city callback
 - (void) lastCity:(id)sender data:(City *)city {
+    PLAYSOUNDEFFECT(BULB_BLINK);
     city.isActive = YES;
     [self activateWires:YES];
     id fadeCitySeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.4f], [CCFadeIn actionWithDuration:0.3f], nil];
@@ -481,6 +612,7 @@ static const float POS_Y = 0;
 #pragma mark Erase career
 - (void) eraseCareer {
     [[[GameManager sharedGameManager] gameData] resetCareer];
+    [[[GameManager sharedGameManager] gameData] gameDataCleanup];
     for (City *city in citiesArray) {
         city.visible = NO;
         city.isActive = NO;
@@ -506,6 +638,8 @@ static const float POS_Y = 0;
         tempPercentNumber = [scoreLabelArray objectAtIndex:i];
         [tempPercentNumber moveToPosition:-1];
     }
+    scoreSoundErase = PLAYSOUNDEFFECT(CAREER_SCORE);
+    [self schedule:@selector(stopSoundEraseCallback) interval:1.0];
     [self drawPercentToLabel];
     [self drawScoreToLabel];
 }
@@ -518,7 +652,19 @@ static const float POS_Y = 0;
         [progressBar setTextureRect: barRect];
         [self drawPercentToLabel];
         [self drawScoreToLabel];
+        scoreSound = PLAYSOUNDEFFECT(CAREER_SCORE);
+        [self schedule:@selector(stopSoundCallback) interval:1.0];
     }
+}
+
+- (void) stopSoundCallback {
+    STOPSOUNDEFFECT(scoreSound);
+    [self unschedule:@selector(stopSoundCallback)];
+}
+
+- (void) stopSoundEraseCallback {
+    STOPSOUNDEFFECT(scoreSoundErase);
+    [self unschedule:@selector(stopSoundEraseCallback)];
 }
 
 #pragma mark -
@@ -550,6 +696,7 @@ static const float POS_Y = 0;
             currentCity = nil;
         }
         [self blinkCity:selSprite];
+        PLAYSOUNDEFFECT(BULB_BLINK);
         singleTapGestureRecognizer.enabled = NO;
         //TESTING
 //        selSprite.visible = YES;
@@ -577,15 +724,17 @@ static const float POS_Y = 0;
     //delete career game eventually in progress
     [[[GameManager sharedGameManager] gameData] updateCareerData:NO andScore:0];
     [[[GameManager sharedGameManager] gameData] gameDataCleanup];
+    [[[GameManager sharedGameManager] gameData] writeCareerTutor];
     gameInfo infoData;
     infoData.difficulty = diff;
     infoData.activeRow = 0;
     infoData.career = 1;
     infoData.score = 0;
     infoData.gameTime = 0;
+    infoData.tutor = 0;
     [[[GameManager sharedGameManager] gameData] insertGameData:infoData];
     [[[GameManager sharedGameManager] gameData] insertCareerData:selSprite.idCity xPos:zbLastPos.x yPos:zbLastPos.y];
-    [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kSlideInR];    
+    [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kFadeTrans];    
 }
 
 #pragma mark -

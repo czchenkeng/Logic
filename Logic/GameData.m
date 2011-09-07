@@ -30,6 +30,22 @@
     }
 }
 
+- (void) generatePatterns:(NSMutableArray *)pattern colors:(int)colorsCount pins:(int)pinsCount {
+    pattern = [[NSMutableArray alloc] init];
+    int patternCount = (int)pow(colorsCount, pinsCount);
+    int c = 0;
+    for (int i = 0; i < patternCount; i++) {
+        NSMutableArray *newPattern = [[NSMutableArray alloc] initWithCapacity:pinsCount];
+        [newPattern addObject:[NSNumber numberWithInt:i%colorsCount]]; 
+        for (int pin = 1; pin < pinsCount; pin++) {
+            [newPattern addObject:[NSNumber numberWithInt:i % (int)pow(colorsCount, pin + 1) / (int)pow(colorsCount, pin)]];
+        }
+        c++;
+        [pattern addObject:newPattern];
+    }
+    CCLOG(@"****\n****\n****\n****\n****\n****\nKOLIK TOHO JE? %i pri %i****\n****\n****\n****\n****\n****\n", c, pinsCount);
+}
+
 - (id) init {
     self = [super init];
     if (self != nil) {
@@ -49,9 +65,26 @@
             CCLOG(@"Could not open db.");
         } else {
             CCLOG(@"Db is here!");
-            [db setLogsErrors:TRUE];
-            [db setTraceExecution:TRUE];
+            //[db setLogsErrors:TRUE];
+            //[db setTraceExecution:TRUE];
         }
+        
+        [self generatePatterns:patterns4 colors:8 pins:4];
+        [self generatePatterns:patterns5 colors:8 pins:5];
+        [self generatePatterns:patterns6 colors:8 pins:6];
+        
+        ////////////////SCORE DATA
+        if ([paths count] > 0)
+        {
+            // Path to save array data
+            //NSString  *arrayPath = [[paths objectAtIndex:0] 
+            //                        stringByAppendingPathComponent:@"array4_.out"];
+            
+            // Write array
+            //[[self generatePatterns] writeToFile:arrayPath atomically:NO];
+        }
+        
+        //////////////////
         
     }
     return self;
@@ -83,6 +116,12 @@
     [db commit];
 }
 
+- (void) updateSettingsWithTutor {
+    [db beginTransaction];
+    [db executeUpdate:@"UPDATE game_settings SET tutor = 0 WHERE id=1"];
+    [db commit];
+}
+
 - (settings) getSettings {
     rs = [db executeQuery:@"SELECT * FROM game_settings WHERE id = 1"];
     settings retVal;
@@ -91,15 +130,16 @@
         retVal.musicLevel = [rs doubleForColumn:@"music_level"];
         retVal.soundLevel = [rs doubleForColumn:@"sound_level"];
         retVal.tutor = [rs intForColumn:@"tutor"];
+        retVal.careerTutor = [rs intForColumn:@"career_tutor"];
     }
     return retVal;
 }
 
 - (void) insertGameData:(gameInfo)data {
     [db beginTransaction];
-    [db executeUpdate:@"INSERT INTO game_data (difficulty, active_row, career, score, game_time) values (?, ?, ?, ?, ?)", 
+    [db executeUpdate:@"INSERT INTO game_data (difficulty, active_row, career, score, game_time, tutor) values (?, ?, ?, ?, ?, ?)", 
      [NSNumber numberWithInt:data.difficulty], [NSNumber numberWithInt:data.activeRow], [NSNumber numberWithInt:data.career], 
-     [NSNumber numberWithInt:data.score], [NSNumber numberWithInt:data.gameTime]];
+     [NSNumber numberWithInt:data.score], [NSNumber numberWithInt:data.gameTime], [NSNumber numberWithInt:data.tutor]];
     [db commit];
 }
 
@@ -112,6 +152,7 @@
         retVal.career = [rs intForColumn:@"career"];
         retVal.score = [rs intForColumn:@"score"];
         retVal.gameTime = [rs intForColumn:@"game_time"];
+        retVal.tutor = [rs intForColumn:@"tutor"];
     }
     
     return retVal;
@@ -240,6 +281,12 @@
     [dateFormat release];
     [timeFormat release];
     [now release];
+}
+
+- (void) writeCareerTutor {
+    [db beginTransaction];
+    [db executeUpdate:@"UPDATE game_settings SET career_tutor = 0 WHERE id=1"];
+    [db commit];
 }
 
 - (void) insertCareerData:(int)city xPos:(float)xPos yPos:(float)yPos {

@@ -17,7 +17,7 @@
 
 @implementation GameManager
 
-@synthesize managerSoundState, gameData, controller, listOfSoundEffectFiles, soundEffectsState, isTutor;
+@synthesize managerSoundState, gameData, controller, listOfSoundEffectFiles, soundEffectsState, oldScene, mainTutor;
 
 static GameManager* _sharedGameManager = nil;
 
@@ -46,6 +46,7 @@ static GameManager* _sharedGameManager = nil;
     self = [super init];
     if (self != nil) {
         CCLOG(@"Logic debug: Game Manager Singleton, init");
+        mainTutor = NO;
         loopingSfx = [[NSMutableArray alloc] init];
         [SimpleAudioEngine sharedEngine].backgroundMusicVolume = musicVolume;
         hasAudioBeenInitialized = NO;
@@ -61,7 +62,6 @@ static GameManager* _sharedGameManager = nil;
         musicVolume = startSettings.musicLevel;
         soundVolume = startSettings.soundLevel;
         currentDifficulty = startSettings.gameDifficulty;
-        isTutor = startSettings.tutor == 0 ? NO : YES;
         [self setMusicVolume:musicVolume];
     }
     return self;
@@ -93,10 +93,23 @@ static GameManager* _sharedGameManager = nil;
     return soundVolume;
 }
 
+- (void) duckling:(float)soundLevel {
+    [SimpleAudioEngine sharedEngine].backgroundMusicVolume = soundLevel;
+}
+
 - (void) setSoundVolume:(float)soundValue{
     soundVolume = soundValue;
     [SimpleAudioEngine sharedEngine].effectsVolume = soundValue;
     
+}
+
+- (BOOL) isTutor {
+    settings gameSettings = [gameData getSettings];
+    return gameSettings.tutor == 0 ? NO : YES;
+}
+
+- (void) setIsTutor:(BOOL)isTutor {
+    [gameData updateSettingsWithTutor];
 }
 
 - (GameDifficulty) currentDifficulty {
@@ -135,7 +148,7 @@ static GameManager* _sharedGameManager = nil;
     }
 
     for( NSString *keyString in soundEffectsToLoad ) {
-        CCLOG(@"\nLoading Audio Key:%@ File:%@", keyString,[soundEffectsToLoad objectForKey:keyString]);
+        CCLOG(@"Audio key:%@ File:%@ -> loaded OK", keyString,[soundEffectsToLoad objectForKey:keyString]);
         [soundEngine preloadEffect:[soundEffectsToLoad objectForKey:keyString]];
         [soundEffectsState setObject:[NSNumber numberWithBool:SFX_LOADED] forKey:keyString];
         
@@ -170,7 +183,7 @@ static GameManager* _sharedGameManager = nil;
 }
 
 - (void) runSceneWithID:(SceneTypes)sceneID andTransition:(TransitionTypes)transitionID {
-    SceneTypes oldScene = currentScene;
+    oldScene = currentScene;
     currentScene = sceneID;
     
     id transition;
@@ -194,7 +207,10 @@ static GameManager* _sharedGameManager = nil;
             break;
         case kScoreScene: 
             sceneToRun = [ScoreScene node];
-            break;            
+            break;
+        case kLogoScene: 
+            sceneToRun = [LogoScene node];
+            break;
         default:
             CCLOG(@"Logic debug: Unknown ID, cannot switch scenes");
             return;
@@ -203,11 +219,14 @@ static GameManager* _sharedGameManager = nil;
     
     if (sceneToRun == nil) {
         // Revert back, since no new scene was found
+        CCLOG(@"je tady?");
         currentScene = oldScene;
         return;
     }
     
-    [self performSelectorInBackground:@selector(loadAudioForSceneWithID:) withObject:[NSNumber numberWithInt:sceneID]];
+    if (currentScene != oldScene) {//because of replace with same scene
+        [self performSelectorInBackground:@selector(loadAudioForSceneWithID:) withObject:[NSNumber numberWithInt:sceneID]];
+    }
     [self loadLoopSounds:[NSNumber numberWithInt:sceneID]];
     
     if ([[CCDirector sharedDirector] runningScene] == nil) {
@@ -227,7 +246,13 @@ static GameManager* _sharedGameManager = nil;
                 transition = [CCTransitionLogic transitionWithDuration:0.7 scene:sceneToRun];
                 break;
             case kNoTransition:
-                transition = [CCTransitionSlideInR transitionWithDuration:0.0 scene:sceneToRun];
+                transition = [CCTransitionFade transitionWithDuration:timeTransition scene:sceneToRun];
+                break;
+            case kFadeTrans:
+                transition = [CCTransitionFade transitionWithDuration:0.2 scene:sceneToRun];
+                break;
+            case kLogicTransRev:
+                transition = [CCTransitionLogicRev transitionWithDuration:0.7 scene:sceneToRun];
                 break;
             default:
                 CCLOG(@"Logic debug: Unknown ID, default transition");
@@ -235,11 +260,15 @@ static GameManager* _sharedGameManager = nil;
                 break;
         }
         
-        //[transition sceneOrder];
-        [[CCDirector sharedDirector] replaceScene:transition];
+//        if (transitionID == kLogoScene) {
+//            [[CCDirector sharedDirector] replaceScene:sceneToRun];
+//        } else {
+            [[CCDirector sharedDirector] replaceScene:transition];
+        //}
     }
-    [self performSelectorInBackground:@selector(unloadAudioForSceneWithID:) withObject:[NSNumber numberWithInt:oldScene]];
-
+    if (currentScene != oldScene) {
+        [self performSelectorInBackground:@selector(unloadAudioForSceneWithID:) withObject:[NSNumber numberWithInt:oldScene]];
+    }
 }
 
 - (NSString*) formatSceneTypeToString:(SceneTypes)sceneID {
@@ -265,6 +294,9 @@ static GameManager* _sharedGameManager = nil;
             break;
         case kScoreScene:
             result = @"kScoreScene";
+            break;
+        case kLogoScene:
+            result = @"kLogoScene";
             break;
         default:
             [NSException raise:NSGenericException format:@"Unexpected SceneType."];
@@ -364,6 +396,7 @@ static GameManager* _sharedGameManager = nil;
         if (match.length > 0) {
             //CDSoundSource *sound = [[soundEngine soundSourceForFile:keyString] retain];
             CDSoundSource *sound = [soundEngine soundSourceForFile:[listOfSoundEffectFiles objectForKey:keyString]];
+            CCLOG(@"Loop sound: %@ for key: %@ -> ready", sound, keyString);
             [loopingSfx addObject:sound];
             sound.looping = YES;
             //sound.gain = 0.1f;
@@ -375,6 +408,12 @@ static GameManager* _sharedGameManager = nil;
 - (void) playLoopSounds {
     for (CDSoundSource *s in loopingSfx) {
         [s play];
+    }
+}
+
+- (void) pauseLoopSounds {
+    for (CDSoundSource *s in loopingSfx) {
+        [s stop];
     }
 }
 

@@ -16,7 +16,13 @@
 FMDatabase *db;
 FMResultSet *rs;
     
+NSMutableArray *patterns4;
+NSMutableArray *patterns5;
+NSMutableArray *patterns6;
+    
 }
+//score calc
+
 //score
 - (void) writeScore:(int)score andDifficulty:(int)diff;
 - (NSMutableArray *) getScores:(int)diff;
@@ -24,6 +30,7 @@ FMResultSet *rs;
 
 //game settings
 - (void) updateSettingsWithDifficulty:(int)diff andMusicLevel:(float)music andSoundLevel:(float)sound;
+- (void) updateSettingsWithTutor;
 - (settings) getSettings;
 
 //truncate game data tables
@@ -55,6 +62,7 @@ FMResultSet *rs;
 //write career
 - (void) insertCareerData:(int)city xPos:(float)xPos yPos:(float)yPos;
 - (void) updateCareerData:(BOOL)flag andScore:(int)score;
+- (void) writeCareerTutor;
 
 //read career
 - (NSMutableArray *) getCareerData;

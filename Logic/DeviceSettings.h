@@ -75,6 +75,8 @@
 #define kMainRightGibInPosition     ADJUST_CCP_MAIN_SCENE( ccp(225.50, 235.00) )
 #define kMainLeftGibOutPosition     ADJUST_CCP_MAIN_SCENE( ccp(-700.00, 0.00) )
 #define kMainLeftGibInPosition      ADJUST_CCP_MAIN_SCENE( ccp(100.00, 161.00) )
+#define kMainLeftSingleGibInPosition  ADJUST_CCP_MAIN_SCENE( ccp(100.00, 176.00) )//3
+#define kMainRightSingleGibInPosition ADJUST_CCP_MAIN_SCENE( ccp(225.50, 127.00) )//3
 #define kMainRightGibButtonPosition ADJUST_CCP_OFFSET( ccp(66.00, 31.50) )
 #define kMainLeftGibButtonPosition  ADJUST_CCP_OFFSET2( ccp(195.50, 35.50) )
 //Level scene

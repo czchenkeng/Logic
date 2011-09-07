@@ -528,7 +528,7 @@
         }
         
         if (traceExecution) {
-            NSLog(@"obj: %@", obj);
+            //NSLog(@"obj: %@", obj);
         }
         
         idx++;
@@ -684,7 +684,7 @@
         
         
         if (traceExecution) {
-            NSLog(@"obj: %@", obj);
+            //NSLog(@"obj: %@", obj);
         }
         
         idx++;

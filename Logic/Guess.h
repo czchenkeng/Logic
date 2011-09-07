@@ -11,12 +11,12 @@
 @interface Guess : NSObject {
     int resultInPosition;
     int resultOutOfPosition;
-    CCArray *pattern;
+    NSArray *pattern;
 }
 
 @property int resultInPosition;
 @property int resultOutOfPosition;
-@property (nonatomic, retain) CCArray *pattern;
+@property (nonatomic, retain) NSArray *pattern;
 
 - (BOOL) compareResult:(Guess *)guess;
 

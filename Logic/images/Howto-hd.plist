@@ -4,10 +4,36 @@
     <dict>
         <key>frames</key>
         <dict>
+            <key>copy.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{0,0},{358,1752}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{358,1752}}</string>
+                <key>sourceSize</key>
+                <string>{358,1752}</string>
+            </dict>
+            <key>credits.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{368,694},{357,1200}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{357,1200}}</string>
+                <key>sourceSize</key>
+                <string>{357,1200}</string>
+            </dict>
             <key>green.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{439,287},{83,53}}</string>
+                <string>{{487,322},{83,53}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -20,11 +46,11 @@
             <key>howto.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{439,0},{204,60}}</string>
+                <string>{{368,1894},{204,60}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{204,60}}</string>
                 <key>sourceSize</key>
@@ -33,7 +59,7 @@
             <key>howto_bg.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,0},{439,694}}</string>
+                <string>{{543,0},{439,694}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -43,10 +69,23 @@
                 <key>sourceSize</key>
                 <string>{439,694}</string>
             </dict>
+            <key>logik_credits.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{339,1983},{204,60}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{204,60}}</string>
+                <key>sourceSize</key>
+                <string>{204,60}</string>
+            </dict>
             <key>pincl_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{247,694},{182,121}}</string>
+                <string>{{358,0},{182,121}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -59,20 +98,33 @@
             <key>pincl_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{247,815},{182,118}}</string>
+                <string>{{358,121},{182,118}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{182,118}}</string>
                 <key>sourceSize</key>
                 <string>{182,118}</string>
             </dict>
+            <key>prst.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{368,239},{119,208}}</string>
+                <key>offset</key>
+                <string>{-6,2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{119,208}}</string>
+                <key>sourceSize</key>
+                <string>{131,212}</string>
+            </dict>
             <key>red.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{439,204},{83,53}}</string>
+                <string>{{487,239},{83,53}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -85,7 +137,7 @@
             <key>score=.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{439,370},{231,44}}</string>
+                <string>{{324,1752},{231,44}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -98,23 +150,53 @@
             <key>screen.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,694},{324,247}}</string>
+                <string>{{0,1752},{324,247}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{324,247}}</string>
+                <key>sourceSize</key>
+                <string>{324,247}</string>
+            </dict>
+            <key>screen_finger.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{725,694},{339,199}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{324,247}}</string>
+                <string>{{0,0},{339,199}}</string>
                 <key>sourceSize</key>
-                <string>{324,247}</string>
+                <string>{339,199}</string>
+            </dict>
+            <key>test.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{0,1999},{339,46}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{339,46}}</string>
+                <key>sourceSize</key>
+                <string>{339,46}</string>
             </dict>
         </dict>
         <key>metadata</key>
         <dict>
             <key>format</key>
             <integer>2</integer>
+            <key>realTextureFileName</key>
+            <string>Howto-hd.pvr.ccz</string>
             <key>size</key>
-            <string>{512,1024}</string>
+            <string>{1024,2048}</string>
+            <key>smartupdate</key>
+            <string>$TexturePacker:SmartUpdate:0586d1411e6440adfc4e49e6d2059db9$</string>
             <key>textureFileName</key>
             <string>Howto-hd.pvr.ccz</string>
         </dict>

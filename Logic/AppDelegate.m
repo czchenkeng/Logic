@@ -91,7 +91,7 @@
 //#endif
 	
 	[director setAnimationInterval:1.0/60];
-	[director setDisplayFPS:NO];
+	[director setDisplayFPS:YES];
 	
 	
 	// make the OpenGLView a child of the view controller
@@ -120,21 +120,19 @@
     if ([[GameManager sharedGameManager] gameInProgress]) {
         [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kNoTransition];
     } else {
+        [[GameManager sharedGameManager] runSceneWithID:kLogoScene andTransition:kNoTransition];
         //[[GameManager sharedGameManager] runSceneWithID:kPreloaderScene andTransition:kNoTransition];
-        [[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kSlideInR];
+        //[[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kSlideInR];
         //[[GameManager sharedGameManager] runSceneWithID:kCareerScene andTransition:kNoTransition];
         //[[GameManager sharedGameManager] runSceneWithID:kScoreScene andTransition:kNoTransition];
         //[[GameManager sharedGameManager] runSceneWithID:kSettingsScene andTransition:kNoTransition];
     }
-    //[[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kNoTransition];
-    //[[GameManager sharedGameManager] runSceneWithID:kCareerScene andTransition:kNoTransition];
-    //[[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kNoTransition];
-    //[[GameManager sharedGameManager] runSceneWithID:kScoreScene];
     
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    CCLOG(@"HANDLE OPEN URL");
     return [[[[GameManager sharedGameManager] controller] facebook] handleOpenURL:url];
 }
 

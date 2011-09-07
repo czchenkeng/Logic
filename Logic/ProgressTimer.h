@@ -42,6 +42,7 @@
 @property (readonly) int gameTime;
 
 - (int) stopTimer;
+- (void) resumeTimer;
 - (void) setupClock:(int)time;
 
 @end

@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Guess.h"
+#import <dispatch/dispatch.h>
+
 
 @interface ScoreCalc : NSObject {
     int colorsCount;
@@ -15,14 +16,16 @@
     int totalTurns;
     int points;
     
-    CCArray *hiddenPattern;
-    CCArray *patterns;
+    NSArray *hiddenPattern;
+    NSMutableArray *patterns;
+    
+    dispatch_queue_t backgroundQueue;
 }
 
-@property (nonatomic, copy) CCArray *hiddenPattern;
+@property (nonatomic, copy) NSArray *hiddenPattern;
 
 + (id) scoreWithColors:(int)c pins:(int)p;
 
-- (int) calculateScoreWithRow:(int)row andTurn:(CCArray *)turn;
+- (int) calculateScoreWithRow:(int)row andTurn:(NSArray *)turn;
 
 @end

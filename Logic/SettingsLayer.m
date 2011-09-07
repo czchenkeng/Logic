@@ -25,7 +25,7 @@ enum soundTags
             [[GameManager sharedGameManager] runSceneWithID:kScoreScene andTransition:kSlideInR];
             break;
         case kButtonBack:
-            [[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kSlideInL];
+            [[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kFadeTrans];
             break;
         case kButtonCareerPlay:
             [self unschedule:@selector(update:)];
@@ -40,43 +40,62 @@ enum soundTags
 }
 
 - (void) diffTapped:(CCMenuItem *)sender {
-    PLAYSOUNDEFFECT(JOYSTICK_SETTINGS_CLICK);
-    CCLOG(@"JOYSTICK_SETTINGS_CLICK");
-    int flag;
-    switch (sender.tag) {
-        case kEasy: 
-            CCLOG(@"TAP ON EASY");
-            joyStick.position = ADJUST_CCP(ccp(92.00, 135.00));
-            flag = 0;
-            break;
-        case kMedium:
-            CCLOG(@"TAP ON MEDIUM");
-            joyStick.position = ADJUST_CCP(ccp(92.00, 92.00));
-            flag = 1;
-            break;
-        case kHard:
-            CCLOG(@"TAP ON HARD");
-            joyStick.position = ADJUST_CCP(ccp(92.00, 49.00));
-            flag = 2;
-            break;
-        default:
-            CCLOG(@"Logic debug: Unknown ID, cannot tap button");
-            return;
-            break;
+    if (isSingleGame) {
+        isSingleGame = NO;
+        lastSender = sender;
+        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"ERASE GAME" message:@"Do you really want to change settings and delete your current game?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil] autorelease];
+        [alert addButtonWithTitle:@"Yes"];
+        [alert setTag:1];
+        [alert show];
+    } else {
+        PLAYSOUNDEFFECT(JOYSTICK_SETTINGS_CLICK);
+        int flag;
+        switch (sender.tag) {
+            case kEasy: 
+                CCLOG(@"TAP ON EASY");
+                joyStick.position = ADJUST_CCP(ccp(92.00, 135.00));
+                flag = 0;
+                break;
+            case kMedium:
+                CCLOG(@"TAP ON MEDIUM");
+                joyStick.position = ADJUST_CCP(ccp(92.00, 92.00));
+                flag = 1;
+                break;
+            case kHard:
+                CCLOG(@"TAP ON HARD");
+                joyStick.position = ADJUST_CCP(ccp(92.00, 49.00));
+                flag = 2;
+                break;
+            default:
+                CCLOG(@"Logic debug: Unknown ID, cannot tap button");
+                return;
+                break;
+        }
+        for (CCSprite *diffButton in difficulty) {
+            diffButton.visible = NO; 
+        }
+        CCSprite *currentButton = [difficulty objectAtIndex:flag];
+        currentButton.visible = YES;
+        
+        for (CCSprite *joy in joysticks) {
+            joy.visible = NO; 
+        }
+        CCSprite *currentJoy = [joysticks objectAtIndex:flag];
+        currentJoy.visible = YES;
+        
+        [GameManager sharedGameManager].currentDifficulty = sender.tag;
     }
-    for (CCSprite *diffButton in difficulty) {
-        diffButton.visible = NO; 
+}
+
+- (void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if ([alertView tag] == 1) {
+        if (buttonIndex == 1) {
+            [[[GameManager sharedGameManager] gameData] gameDataCleanup];
+            [self diffTapped:lastSender];
+        } else {
+            isSingleGame = YES;
+        }
     }
-    CCSprite *currentButton = [difficulty objectAtIndex:flag];
-    currentButton.visible = YES;
-    
-    for (CCSprite *joy in joysticks) {
-        joy.visible = NO; 
-    }
-    CCSprite *currentJoy = [joysticks objectAtIndex:flag];
-    currentJoy.visible = YES;
-    
-    [GameManager sharedGameManager].currentDifficulty = sender.tag;
 }
 
 - (void) muteTapped:(CCMenuItem *)sender {
@@ -111,6 +130,9 @@ enum soundTags
         
         previousMusic = SETTINGS_MUSIC_VOLUME;
         previousSound = SETTINGS_SOUND_VOLUME;
+        
+        isSingleGame = NO;
+        lastSender = nil;
         
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kSettingsTexture];
         
@@ -294,11 +316,11 @@ enum soundTags
         }
         
         if ([[GameManager sharedGameManager] gameInProgress]) {
-            CCLOG(@"IN PRGRESS");
             gameInfo infoData = [[[GameManager sharedGameManager] gameData] getGameData];
             if (infoData.career == 1) {
-                CCLOG(@"CAREER ON");
                 [self schedule:@selector(update:) interval:0.3];
+            } else {
+                isSingleGame = YES;
             }
         }
     }

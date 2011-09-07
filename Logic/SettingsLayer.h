@@ -36,6 +36,9 @@
     
     BOOL blink;
     CCSprite *redLight;
+    
+    BOOL isSingleGame;
+    CCMenuItem *lastSender;
 }
 
 @end

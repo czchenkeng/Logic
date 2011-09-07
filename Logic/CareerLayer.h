@@ -11,11 +11,24 @@
 #import "City.h"
 #import "Wire.h"
 #import "PercentNumber.h"
-#import "GameManager.h"
+//#import "GameManager.h"
+#import "Blackout.h"
+#import "SimpleAudioEngine.h"
+
+@class GameManager;
 
 @interface CareerLayer : CCLayer <UIAlertViewDelegate, UIGestureRecognizerDelegate>{
+    ALuint tutorSound;
+    ALuint scoreSound;
+    ALuint scoreSoundErase;
+    
     CCLayerColor *zoomBase;
     CGPoint zbLastPos;
+    
+    CCLayer *tutorLayer;
+    CCLayerColor *tutorBlackout;
+    CCLabelBMFont *tutorTxt;
+    CCSprite *tutorFinger;
     
     CCArray *citiesArray;
     CCArray *wiresArray;
@@ -44,10 +57,13 @@
     int diff;//default diff
     
     BOOL blink;
+    BOOL isRetina;
     
     UIPanGestureRecognizer *panGestureRecognizer;
     UIPinchGestureRecognizer *pinchGestureRecognizer;    
     UITapGestureRecognizer *singleTapGestureRecognizer;
+    
+
 
 }
 

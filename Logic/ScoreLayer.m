@@ -39,7 +39,10 @@
 }
 
 - (void) diffTapped:(CCMenuItem *)sender {
-    PLAYSOUNDEFFECT(JOYSTICK_SCORE_CLICK);
+    if (firstClick) {
+        PLAYSOUNDEFFECT(JOYSTICK_SCORE_CLICK);
+    }
+    firstClick = YES;
     int flag;
     switch (sender.tag) {
         case kEasy: 
@@ -110,6 +113,7 @@
 - (id) init {
     self = [super init];
     if (self != nil) {
+        firstClick = NO;
         scores = [[[NSMutableArray alloc] init] retain];
         
         CGRect frame = CGRectMake(30, 100, 260, 180);

@@ -37,6 +37,8 @@
     
     CCUIViewWrapper *tableWrapper;
     
+    BOOL firstClick;
+    
 }
 
 @property (nonatomic, retain, readwrite) NSMutableArray *scores;

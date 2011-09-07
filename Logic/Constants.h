@@ -31,6 +31,7 @@ typedef struct {
     float musicLevel;
     float soundLevel;
     int tutor;
+    int careerTutor;
 } settings;
 
 typedef struct {
@@ -57,6 +58,7 @@ typedef struct {
     int career;
     int score;
     int gameTime;
+    int tutor;
 } gameInfo;
 
 typedef struct {
@@ -83,7 +85,8 @@ typedef enum {
     kButtonContinue,
     kButtonGameMenu,
     kButtonSkipTutor,
-    kButtonNeverShow
+    kButtonNeverShow,
+    kButtonQuitCareer
 } buttonTypes;
 
 typedef enum {
@@ -93,20 +96,26 @@ typedef enum {
     kSettingsScene = 3,
     kCareerScene = 4,
     kScoreScene = 5,
-    kPreloaderScene = 6
+    kPreloaderScene = 6,
+    kLogoScene = 7
 } SceneTypes;
 
 typedef enum {
     kTutorFirst = 0,
     kTutorSecond = 1,
-    kTutorThird = 2
+    kTutorThird = 2,
+    kTutorFourth = 3,
+    kTutorFifth = 4,
+    kTutorSixth = 5
 } TutorSteps;
 
 typedef enum {
     kNoTransition = 0,
     kSlideInR = 1,
     kSlideInL = 2,
-    kLogicTrans = 3
+    kLogicTrans = 3,
+    kFadeTrans = 4,
+    kLogicTransRev = 5
 } TransitionTypes;
 
 typedef enum {
@@ -151,7 +160,7 @@ typedef enum {
 #define SFX_LOADED YES
 
 #define PLAYSOUNDEFFECT(...) [[GameManager sharedGameManager] playSoundEffect:@#__VA_ARGS__]
-#define STOPSOUNDEFFECT(...) [[GameManager sharedGameManager] stopSoundEffect:@#__VA_ARGS__]
+#define STOPSOUNDEFFECT(...) [[GameManager sharedGameManager] stopSoundEffect:__VA_ARGS__]
 
 
 

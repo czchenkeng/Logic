@@ -7,13 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		180AC03D1412372C00F0B110 /* LogoScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 180AC03C1412372C00F0B110 /* LogoScene.m */; };
+		180AC0411412376C00F0B110 /* LogoLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 180AC0401412376C00F0B110 /* LogoLayer.m */; };
+		180AC0431412408700F0B110 /* dt_logo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 180AC0421412408700F0B110 /* dt_logo.mp4 */; };
+		180AC0481412561000F0B110 /* Sparkle.plist in Resources */ = {isa = PBXBuildFile; fileRef = 180AC0451412561000F0B110 /* Sparkle.plist */; };
+		180AC0491412561000F0B110 /* sparkleTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 180AC0461412561000F0B110 /* sparkleTexture.png */; };
+		181E73A61413866E00442111 /* Logic-howto-dragthepin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 181E73A51413866E00442111 /* Logic-howto-dragthepin.mp3 */; };
+		181E73A914138E5D00442111 /* Flow1280x1920_VO_ver3.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 181E73A814138E5D00442111 /* Flow1280x1920_VO_ver3.mp4 */; };
+		181E73AB1413C8EA00442111 /* Logic-career-zarovka_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 181E73AA1413C8EA00442111 /* Logic-career-zarovka_bip.mp3 */; };
+		181E73AD1413D18300442111 /* Logic-career-ciselnik.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 181E73AC1413D18300442111 /* Logic-career-ciselnik.mp3 */; };
+		181E73B41413F45300442111 /* Confirm.plist in Resources */ = {isa = PBXBuildFile; fileRef = 181E73B21413F45300442111 /* Confirm.plist */; };
 		18352A1E1402B5B1001DC435 /* Guess.m in Sources */ = {isa = PBXBuildFile; fileRef = 18352A1D1402B5B1001DC435 /* Guess.m */; };
+		1845E9E8140B982600C1AED6 /* Logic-level-scoretheme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1845E9E7140B982600C1AED6 /* Logic-level-scoretheme.mp3 */; };
+		1845E9EB140B9BA600C1AED6 /* Logic-level-button_click_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1845E9E9140B9BA600C1AED6 /* Logic-level-button_click_bip.mp3 */; };
+		1845E9EC140B9BA600C1AED6 /* Logic-score-ciselnik.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1845E9EA140B9BA600C1AED6 /* Logic-score-ciselnik.mp3 */; };
+		1845E9F0140B9BC600C1AED6 /* Logic-career-button_click_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1845E9ED140B9BC600C1AED6 /* Logic-career-button_click_bip.mp3 */; };
+		1845E9F1140B9BC600C1AED6 /* Logic-career-fanfara.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1845E9EE140B9BC600C1AED6 /* Logic-career-fanfara.mp3 */; };
+		1845E9F2140B9BC600C1AED6 /* Logic-career-packy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1845E9EF140B9BC600C1AED6 /* Logic-career-packy.mp3 */; };
+		1845E9F9140B9BDF00C1AED6 /* Logic-score-button_click_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1845E9F4140B9BDF00C1AED6 /* Logic-score-button_click_bip.mp3 */; };
+		1845E9FA140B9BDF00C1AED6 /* Logic-score-paka_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1845E9F5140B9BDF00C1AED6 /* Logic-score-paka_bip.mp3 */; };
+		1845E9FB140B9BDF00C1AED6 /* Logic-options-button_click_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1845E9F7140B9BDF00C1AED6 /* Logic-options-button_click_bip.mp3 */; };
+		1845E9FC140B9BDF00C1AED6 /* Logic-options-paka_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1845E9F8140B9BDF00C1AED6 /* Logic-options-paka_bip.mp3 */; };
 		185E53C81406A75E00F7CB19 /* Logic-main-packy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 185E53C71406A75E00F7CB19 /* Logic-main-packy.mp3 */; };
-		185E53CB1406A76800F7CB19 /* Logic-main-packy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 185E53CA1406A76800F7CB19 /* Logic-main-packy.mp3 */; };
 		186B63DB1407B036009AE711 /* Loader-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = 186B63D71407B036009AE711 /* Loader-hd.plist */; };
 		186B63DC1407B036009AE711 /* Loader-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = 186B63D81407B036009AE711 /* Loader-hd.pvr.ccz */; };
 		186B63DD1407B036009AE711 /* Loader.plist in Resources */ = {isa = PBXBuildFile; fileRef = 186B63D91407B036009AE711 /* Loader.plist */; };
 		186B63DE1407B036009AE711 /* Loader.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = 186B63DA1407B036009AE711 /* Loader.pvr.ccz */; };
+		1874F45A14163C400090B829 /* Swipe.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1874F45814163C400090B829 /* Swipe.plist */; };
+		1874F45B14163C400090B829 /* SwipeTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 1874F45914163C400090B829 /* SwipeTexture.png */; };
 		187CBEED1405788C005CD9F1 /* BellGothicBoldHt-sd.fnt in Resources */ = {isa = PBXBuildFile; fileRef = 187CBEEB1405788C005CD9F1 /* BellGothicBoldHt-sd.fnt */; };
 		187CBEEE1405788C005CD9F1 /* BellGothicBoldHt-sd.png in Resources */ = {isa = PBXBuildFile; fileRef = 187CBEEC1405788C005CD9F1 /* BellGothicBoldHt-sd.png */; };
 		187CBEF1140673C9005CD9F1 /* Gloucester_levelTutor.fnt in Resources */ = {isa = PBXBuildFile; fileRef = 187CBEEF140673C9005CD9F1 /* Gloucester_levelTutor.fnt */; };
@@ -25,23 +46,17 @@
 		187CBF0914068B10005CD9F1 /* Logic-level-gong_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBEFA14068B10005CD9F1 /* Logic-level-gong_bip.mp3 */; };
 		187CBF0A14068B10005CD9F1 /* Logic-level-greenbulb_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBEFB14068B10005CD9F1 /* Logic-level-greenbulb_bip.mp3 */; };
 		187CBF0B14068B10005CD9F1 /* Logic-level-pincl_usazeni_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBEFC14068B10005CD9F1 /* Logic-level-pincl_usazeni_bip.mp3 */; };
-		187CBF0C14068B10005CD9F1 /* Logic-level-scoretheme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBEFD14068B10005CD9F1 /* Logic-level-scoretheme.mp3 */; };
 		187CBF0E14068B10005CD9F1 /* Logic-level-tikani_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBEFF14068B10005CD9F1 /* Logic-level-tikani_bip.mp3 */; };
 		187CBF0F14068B10005CD9F1 /* Logic-level-vyboj1_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBF0014068B10005CD9F1 /* Logic-level-vyboj1_bip.mp3 */; };
 		187CBF1014068B10005CD9F1 /* Logic-level-vyboj2_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBF0114068B10005CD9F1 /* Logic-level-vyboj2_bip.mp3 */; };
 		187CBF1114068B10005CD9F1 /* Logic-level-yellowbulb_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBF0214068B10005CD9F1 /* Logic-level-yellowbulb_bip.mp3 */; };
-		187CBF1214068B10005CD9F1 /* Logic-main-packy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBF0314068B10005CD9F1 /* Logic-main-packy.mp3 */; };
-		187CBF1514068B53005CD9F1 /* Logic-howto-startthegame.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBF1314068B53005CD9F1 /* Logic-howto-startthegame.mp3 */; };
 		187CBF1614068B53005CD9F1 /* Logic-level-swipe.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBF1414068B53005CD9F1 /* Logic-level-swipe.mp3 */; };
 		187CBF1B1406935B005CD9F1 /* Logic-main-button_click_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBF181406935B005CD9F1 /* Logic-main-button_click_bip.mp3 */; };
 		187CBF1C1406935B005CD9F1 /* Logic-main-vrzani_lampy_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBF191406935B005CD9F1 /* Logic-main-vrzani_lampy_bip.mp3 */; };
 		187CBF1F140693B0005CD9F1 /* Logic-main-pauzatheme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBF1D140693B0005CD9F1 /* Logic-main-pauzatheme.mp3 */; };
 		187CBF20140693B0005CD9F1 /* Logic-main-theme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBF1E140693B0005CD9F1 /* Logic-main-theme.mp3 */; };
 		187CBF22140696B5005CD9F1 /* Logic-main-zarovka_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBF21140696B5005CD9F1 /* Logic-main-zarovka_bip.mp3 */; };
-		187CBF2414069933005CD9F1 /* krtz_loop_cisty.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBF2314069933005CD9F1 /* krtz_loop_cisty.mp3 */; };
 		187CBF2614069C8A005CD9F1 /* Logic-level-engine.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBF2514069C8A005CD9F1 /* Logic-level-engine.mp3 */; };
-		187CBF281406A1E5005CD9F1 /* Logic-options-paka_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBF271406A1E5005CD9F1 /* Logic-options-paka_bip.mp3 */; };
-		187CBF2A1406A309005CD9F1 /* Logic-settings-button_click.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 187CBF291406A309005CD9F1 /* Logic-settings-button_click.mp3 */; };
 		187E7A161403F6490099AAF7 /* CCLabelBMFontMultiline.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E7A151403F6490099AAF7 /* CCLabelBMFontMultiline.m */; };
 		187F931B14045B040099AA01 /* dest_test2-ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = 187F931A14045B040099AA01 /* dest_test2-ipad.plist */; };
 		187F931F1404D89A0099AA01 /* Settings-ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = 187F931D1404D89A0099AA01 /* Settings-ipad.plist */; };
@@ -56,6 +71,11 @@
 		1883F1C614043C08002C11AB /* Animations-ipad.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = 1883F1C214043C08002C11AB /* Animations-ipad.pvr.ccz */; };
 		1883F1C714043C08002C11AB /* Level-ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1883F1C314043C08002C11AB /* Level-ipad.plist */; };
 		1883F1C814043C08002C11AB /* Level-ipad.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = 1883F1C414043C08002C11AB /* Level-ipad.pvr.ccz */; };
+		18D3BF6D140BD3A100AD0CD9 /* Lightning.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D3BF6C140BD3A100AD0CD9 /* Lightning.m */; };
+		18DE5BB9140A3386004878E0 /* Logic-howto-tapthebulb.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 18DE5BB8140A3386004878E0 /* Logic-howto-tapthebulb.mp3 */; };
+		18DE5BBD140A4F68004878E0 /* Logic-intro-destblesk.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 18DE5BBC140A4F68004878E0 /* Logic-intro-destblesk.mp3 */; };
+		18DE5BBF140A6639004878E0 /* Flow1280x1920_VO.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 18DE5BBE140A6639004878E0 /* Flow1280x1920_VO.mp4 */; };
+		18DE5BC1140B7DAD004878E0 /* Logic-level-packy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 18DE5BC0140B7DAD004878E0 /* Logic-level-packy.mp3 */; };
 		A308E0BF13C474C8007697A6 /* dest_orig-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A308E0B913C474C8007697A6 /* dest_orig-hd.plist */; };
 		A308E0C013C474C8007697A6 /* dest_orig.plist in Resources */ = {isa = PBXBuildFile; fileRef = A308E0BA13C474C8007697A6 /* dest_orig.plist */; };
 		A308E0C113C474C8007697A6 /* Dest1-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = A308E0BB13C474C8007697A6 /* Dest1-hd.plist */; };
@@ -102,7 +122,6 @@
 		A317D26A13F6EBBA0013311D /* SoundEffects2.plist in Resources */ = {isa = PBXBuildFile; fileRef = A317D26913F6EBBA0013311D /* SoundEffects2.plist */; };
 		A317D28013F71EDA0013311D /* Logic-intro&main-dest.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D27913F71EDA0013311D /* Logic-intro&main-dest.mp3 */; };
 		A317D2C713F7B7890013311D /* Logic-level-ambient.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D2C613F7B7890013311D /* Logic-level-ambient.mp3 */; };
-		A317D2D813F880350013311D /* krtz_loop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A317D2D713F880350013311D /* krtz_loop.mp3 */; };
 		A31B088713FEDA0600E8F344 /* ScoreCalc.m in Sources */ = {isa = PBXBuildFile; fileRef = A31B088613FEDA0600E8F344 /* ScoreCalc.m */; };
 		A31B614713958F5100FE697F /* Main_rain.plist in Resources */ = {isa = PBXBuildFile; fileRef = A31B614613958F5100FE697F /* Main_rain.plist */; };
 		A31B61491395911B00FE697F /* particleTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = A31B61481395911B00FE697F /* particleTexture.png */; };
@@ -340,14 +359,37 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		180AC03B1412372C00F0B110 /* LogoScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogoScene.h; sourceTree = "<group>"; };
+		180AC03C1412372C00F0B110 /* LogoScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogoScene.m; sourceTree = "<group>"; };
+		180AC03F1412376C00F0B110 /* LogoLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogoLayer.h; sourceTree = "<group>"; };
+		180AC0401412376C00F0B110 /* LogoLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogoLayer.m; sourceTree = "<group>"; };
+		180AC0421412408700F0B110 /* dt_logo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = dt_logo.mp4; path = Resources/dt_logo.mp4; sourceTree = "<group>"; };
+		180AC0451412561000F0B110 /* Sparkle.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Sparkle.plist; sourceTree = "<group>"; };
+		180AC0461412561000F0B110 /* sparkleTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sparkleTexture.png; sourceTree = "<group>"; };
+		181E73A51413866E00442111 /* Logic-howto-dragthepin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-howto-dragthepin.mp3"; sourceTree = "<group>"; };
+		181E73A814138E5D00442111 /* Flow1280x1920_VO_ver3.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = Flow1280x1920_VO_ver3.mp4; path = Resources/Flow1280x1920_VO_ver3.mp4; sourceTree = "<group>"; };
+		181E73AA1413C8EA00442111 /* Logic-career-zarovka_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-career-zarovka_bip.mp3"; sourceTree = "<group>"; };
+		181E73AC1413D18300442111 /* Logic-career-ciselnik.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-career-ciselnik.mp3"; sourceTree = "<group>"; };
+		181E73B21413F45300442111 /* Confirm.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Confirm.plist; sourceTree = "<group>"; };
 		18352A1C1402B5B1001DC435 /* Guess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Guess.h; sourceTree = "<group>"; };
 		18352A1D1402B5B1001DC435 /* Guess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Guess.m; sourceTree = "<group>"; };
+		1845E9E7140B982600C1AED6 /* Logic-level-scoretheme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-level-scoretheme.mp3"; sourceTree = "<group>"; };
+		1845E9E9140B9BA600C1AED6 /* Logic-level-button_click_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-level-button_click_bip.mp3"; sourceTree = "<group>"; };
+		1845E9EA140B9BA600C1AED6 /* Logic-score-ciselnik.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-score-ciselnik.mp3"; sourceTree = "<group>"; };
+		1845E9ED140B9BC600C1AED6 /* Logic-career-button_click_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-career-button_click_bip.mp3"; sourceTree = "<group>"; };
+		1845E9EE140B9BC600C1AED6 /* Logic-career-fanfara.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-career-fanfara.mp3"; sourceTree = "<group>"; };
+		1845E9EF140B9BC600C1AED6 /* Logic-career-packy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-career-packy.mp3"; sourceTree = "<group>"; };
+		1845E9F4140B9BDF00C1AED6 /* Logic-score-button_click_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-score-button_click_bip.mp3"; sourceTree = "<group>"; };
+		1845E9F5140B9BDF00C1AED6 /* Logic-score-paka_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-score-paka_bip.mp3"; sourceTree = "<group>"; };
+		1845E9F7140B9BDF00C1AED6 /* Logic-options-button_click_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-options-button_click_bip.mp3"; sourceTree = "<group>"; };
+		1845E9F8140B9BDF00C1AED6 /* Logic-options-paka_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-options-paka_bip.mp3"; sourceTree = "<group>"; };
 		185E53C71406A75E00F7CB19 /* Logic-main-packy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-main-packy.mp3"; sourceTree = "<group>"; };
-		185E53CA1406A76800F7CB19 /* Logic-main-packy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-main-packy.mp3"; sourceTree = "<group>"; };
 		186B63D71407B036009AE711 /* Loader-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Loader-hd.plist"; sourceTree = "<group>"; };
 		186B63D81407B036009AE711 /* Loader-hd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Loader-hd.pvr.ccz"; sourceTree = "<group>"; };
 		186B63D91407B036009AE711 /* Loader.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Loader.plist; sourceTree = "<group>"; };
 		186B63DA1407B036009AE711 /* Loader.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = Loader.pvr.ccz; sourceTree = "<group>"; };
+		1874F45814163C400090B829 /* Swipe.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Swipe.plist; sourceTree = "<group>"; };
+		1874F45914163C400090B829 /* SwipeTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SwipeTexture.png; sourceTree = "<group>"; };
 		187CBEEB1405788C005CD9F1 /* BellGothicBoldHt-sd.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "BellGothicBoldHt-sd.fnt"; sourceTree = "<group>"; };
 		187CBEEC1405788C005CD9F1 /* BellGothicBoldHt-sd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BellGothicBoldHt-sd.png"; sourceTree = "<group>"; };
 		187CBEEF140673C9005CD9F1 /* Gloucester_levelTutor.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Gloucester_levelTutor.fnt; sourceTree = "<group>"; };
@@ -359,23 +401,17 @@
 		187CBEFA14068B10005CD9F1 /* Logic-level-gong_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-level-gong_bip.mp3"; sourceTree = "<group>"; };
 		187CBEFB14068B10005CD9F1 /* Logic-level-greenbulb_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-level-greenbulb_bip.mp3"; sourceTree = "<group>"; };
 		187CBEFC14068B10005CD9F1 /* Logic-level-pincl_usazeni_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-level-pincl_usazeni_bip.mp3"; sourceTree = "<group>"; };
-		187CBEFD14068B10005CD9F1 /* Logic-level-scoretheme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-level-scoretheme.mp3"; sourceTree = "<group>"; };
 		187CBEFF14068B10005CD9F1 /* Logic-level-tikani_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-level-tikani_bip.mp3"; sourceTree = "<group>"; };
 		187CBF0014068B10005CD9F1 /* Logic-level-vyboj1_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-level-vyboj1_bip.mp3"; sourceTree = "<group>"; };
 		187CBF0114068B10005CD9F1 /* Logic-level-vyboj2_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-level-vyboj2_bip.mp3"; sourceTree = "<group>"; };
 		187CBF0214068B10005CD9F1 /* Logic-level-yellowbulb_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-level-yellowbulb_bip.mp3"; sourceTree = "<group>"; };
-		187CBF0314068B10005CD9F1 /* Logic-main-packy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-main-packy.mp3"; sourceTree = "<group>"; };
-		187CBF1314068B53005CD9F1 /* Logic-howto-startthegame.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-howto-startthegame.mp3"; sourceTree = "<group>"; };
 		187CBF1414068B53005CD9F1 /* Logic-level-swipe.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-level-swipe.mp3"; sourceTree = "<group>"; };
 		187CBF181406935B005CD9F1 /* Logic-main-button_click_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-main-button_click_bip.mp3"; sourceTree = "<group>"; };
 		187CBF191406935B005CD9F1 /* Logic-main-vrzani_lampy_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-main-vrzani_lampy_bip.mp3"; sourceTree = "<group>"; };
 		187CBF1D140693B0005CD9F1 /* Logic-main-pauzatheme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-main-pauzatheme.mp3"; sourceTree = "<group>"; };
 		187CBF1E140693B0005CD9F1 /* Logic-main-theme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-main-theme.mp3"; sourceTree = "<group>"; };
 		187CBF21140696B5005CD9F1 /* Logic-main-zarovka_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-main-zarovka_bip.mp3"; sourceTree = "<group>"; };
-		187CBF2314069933005CD9F1 /* krtz_loop_cisty.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = krtz_loop_cisty.mp3; sourceTree = "<group>"; };
 		187CBF2514069C8A005CD9F1 /* Logic-level-engine.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-level-engine.mp3"; sourceTree = "<group>"; };
-		187CBF271406A1E5005CD9F1 /* Logic-options-paka_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Logic-options-paka_bip.mp3"; path = "Logic/sounds/sfx/settings/Logic-options-paka_bip.mp3"; sourceTree = SOURCE_ROOT; };
-		187CBF291406A309005CD9F1 /* Logic-settings-button_click.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-settings-button_click.mp3"; sourceTree = "<group>"; };
 		187E7A141403F6490099AAF7 /* CCLabelBMFontMultiline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCLabelBMFontMultiline.h; sourceTree = "<group>"; };
 		187E7A151403F6490099AAF7 /* CCLabelBMFontMultiline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCLabelBMFontMultiline.m; sourceTree = "<group>"; };
 		187F931A14045B040099AA01 /* dest_test2-ipad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "dest_test2-ipad.plist"; sourceTree = "<group>"; };
@@ -392,6 +428,12 @@
 		1883F1C214043C08002C11AB /* Animations-ipad.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Animations-ipad.pvr.ccz"; sourceTree = "<group>"; };
 		1883F1C314043C08002C11AB /* Level-ipad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Level-ipad.plist"; sourceTree = "<group>"; };
 		1883F1C414043C08002C11AB /* Level-ipad.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Level-ipad.pvr.ccz"; sourceTree = "<group>"; };
+		18D3BF6B140BD3A100AD0CD9 /* Lightning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Lightning.h; sourceTree = "<group>"; };
+		18D3BF6C140BD3A100AD0CD9 /* Lightning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Lightning.m; sourceTree = "<group>"; };
+		18DE5BB8140A3386004878E0 /* Logic-howto-tapthebulb.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-howto-tapthebulb.mp3"; sourceTree = "<group>"; };
+		18DE5BBC140A4F68004878E0 /* Logic-intro-destblesk.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-intro-destblesk.mp3"; sourceTree = "<group>"; };
+		18DE5BBE140A6639004878E0 /* Flow1280x1920_VO.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = Flow1280x1920_VO.mp4; path = Resources/Flow1280x1920_VO.mp4; sourceTree = "<group>"; };
+		18DE5BC0140B7DAD004878E0 /* Logic-level-packy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-level-packy.mp3"; sourceTree = "<group>"; };
 		A308E0B913C474C8007697A6 /* dest_orig-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "dest_orig-hd.plist"; sourceTree = "<group>"; };
 		A308E0BA13C474C8007697A6 /* dest_orig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dest_orig.plist; sourceTree = "<group>"; };
 		A308E0BB13C474C8007697A6 /* Dest1-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Dest1-hd.plist"; sourceTree = "<group>"; };
@@ -450,7 +492,6 @@
 		A317D26913F6EBBA0013311D /* SoundEffects2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SoundEffects2.plist; sourceTree = "<group>"; };
 		A317D27913F71EDA0013311D /* Logic-intro&main-dest.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-intro&main-dest.mp3"; sourceTree = "<group>"; };
 		A317D2C613F7B7890013311D /* Logic-level-ambient.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-level-ambient.mp3"; sourceTree = "<group>"; };
-		A317D2D713F880350013311D /* krtz_loop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = krtz_loop.mp3; sourceTree = "<group>"; };
 		A31B088513FEDA0600E8F344 /* ScoreCalc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreCalc.h; sourceTree = "<group>"; };
 		A31B088613FEDA0600E8F344 /* ScoreCalc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreCalc.m; sourceTree = "<group>"; };
 		A31B614613958F5100FE697F /* Main_rain.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Main_rain.plist; sourceTree = "<group>"; };
@@ -890,10 +931,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1845E9F3140B9BDF00C1AED6 /* score */ = {
+			isa = PBXGroup;
+			children = (
+				1845E9F4140B9BDF00C1AED6 /* Logic-score-button_click_bip.mp3 */,
+				1845E9F5140B9BDF00C1AED6 /* Logic-score-paka_bip.mp3 */,
+			);
+			path = score;
+			sourceTree = "<group>";
+		};
+		1845E9F6140B9BDF00C1AED6 /* settings */ = {
+			isa = PBXGroup;
+			children = (
+				1845E9F7140B9BDF00C1AED6 /* Logic-options-button_click_bip.mp3 */,
+				1845E9F8140B9BDF00C1AED6 /* Logic-options-paka_bip.mp3 */,
+			);
+			path = settings;
+			sourceTree = "<group>";
+		};
 		185E53C91406A76800F7CB19 /* career */ = {
 			isa = PBXGroup;
 			children = (
-				185E53CA1406A76800F7CB19 /* Logic-main-packy.mp3 */,
+				181E73AC1413D18300442111 /* Logic-career-ciselnik.mp3 */,
+				181E73AA1413C8EA00442111 /* Logic-career-zarovka_bip.mp3 */,
+				1845E9ED140B9BC600C1AED6 /* Logic-career-button_click_bip.mp3 */,
+				1845E9EE140B9BC600C1AED6 /* Logic-career-fanfara.mp3 */,
+				1845E9EF140B9BC600C1AED6 /* Logic-career-packy.mp3 */,
+				18DE5BB8140A3386004878E0 /* Logic-howto-tapthebulb.mp3 */,
 			);
 			path = career;
 			sourceTree = "<group>";
@@ -905,6 +969,14 @@
 				187E7A151403F6490099AAF7 /* CCLabelBMFontMultiline.m */,
 			);
 			path = CCLabelBMFontMultiline;
+			sourceTree = "<group>";
+		};
+		18DE5BBB140A4F68004878E0 /* loader */ = {
+			isa = PBXGroup;
+			children = (
+				18DE5BBC140A4F68004878E0 /* Logic-intro-destblesk.mp3 */,
+			);
+			path = loader;
 			sourceTree = "<group>";
 		};
 		A308F44813C0F252000C98D8 /* Facebook */ = {
@@ -962,7 +1034,6 @@
 		A317D27513F71EDA0013311D /* main */ = {
 			isa = PBXGroup;
 			children = (
-				187CBF2314069933005CD9F1 /* krtz_loop_cisty.mp3 */,
 				187CBF1D140693B0005CD9F1 /* Logic-main-pauzatheme.mp3 */,
 				187CBF1E140693B0005CD9F1 /* Logic-main-theme.mp3 */,
 			);
@@ -972,11 +1043,12 @@
 		A317D27713F71EDA0013311D /* sfx */ = {
 			isa = PBXGroup;
 			children = (
+				1845E9F3140B9BDF00C1AED6 /* score */,
+				1845E9F6140B9BDF00C1AED6 /* settings */,
+				18DE5BBB140A4F68004878E0 /* loader */,
 				185E53C91406A76800F7CB19 /* career */,
 				A317D2C813F7B8C70013311D /* level */,
-				A317D28513F727900013311D /* score */,
 				A317D27813F71EDA0013311D /* main */,
-				A317D27C13F71EDA0013311D /* settings */,
 			);
 			path = sfx;
 			sourceTree = "<group>";
@@ -993,26 +1065,10 @@
 			path = main;
 			sourceTree = "<group>";
 		};
-		A317D27C13F71EDA0013311D /* settings */ = {
-			isa = PBXGroup;
-			children = (
-				187CBF291406A309005CD9F1 /* Logic-settings-button_click.mp3 */,
-			);
-			path = settings;
-			sourceTree = "<group>";
-		};
-		A317D28513F727900013311D /* score */ = {
-			isa = PBXGroup;
-			children = (
-				187CBF271406A1E5005CD9F1 /* Logic-options-paka_bip.mp3 */,
-			);
-			path = score;
-			sourceTree = "<group>";
-		};
 		A317D2C513F7B7890013311D /* level */ = {
 			isa = PBXGroup;
 			children = (
-				A317D2D713F880350013311D /* krtz_loop.mp3 */,
+				1845E9E7140B982600C1AED6 /* Logic-level-scoretheme.mp3 */,
 				A317D2C613F7B7890013311D /* Logic-level-ambient.mp3 */,
 			);
 			path = level;
@@ -1021,8 +1077,11 @@
 		A317D2C813F7B8C70013311D /* level */ = {
 			isa = PBXGroup;
 			children = (
+				181E73A51413866E00442111 /* Logic-howto-dragthepin.mp3 */,
+				1845E9E9140B9BA600C1AED6 /* Logic-level-button_click_bip.mp3 */,
+				1845E9EA140B9BA600C1AED6 /* Logic-score-ciselnik.mp3 */,
+				18DE5BC0140B7DAD004878E0 /* Logic-level-packy.mp3 */,
 				187CBF2514069C8A005CD9F1 /* Logic-level-engine.mp3 */,
-				187CBF1314068B53005CD9F1 /* Logic-howto-startthegame.mp3 */,
 				187CBF1414068B53005CD9F1 /* Logic-level-swipe.mp3 */,
 				187CBEF514068B10005CD9F1 /* Logic-howto-green.mp3 */,
 				187CBEF614068B10005CD9F1 /* Logic-howto-orange.mp3 */,
@@ -1031,12 +1090,10 @@
 				187CBEFA14068B10005CD9F1 /* Logic-level-gong_bip.mp3 */,
 				187CBEFB14068B10005CD9F1 /* Logic-level-greenbulb_bip.mp3 */,
 				187CBEFC14068B10005CD9F1 /* Logic-level-pincl_usazeni_bip.mp3 */,
-				187CBEFD14068B10005CD9F1 /* Logic-level-scoretheme.mp3 */,
 				187CBEFF14068B10005CD9F1 /* Logic-level-tikani_bip.mp3 */,
 				187CBF0014068B10005CD9F1 /* Logic-level-vyboj1_bip.mp3 */,
 				187CBF0114068B10005CD9F1 /* Logic-level-vyboj2_bip.mp3 */,
 				187CBF0214068B10005CD9F1 /* Logic-level-yellowbulb_bip.mp3 */,
-				187CBF0314068B10005CD9F1 /* Logic-main-packy.mp3 */,
 			);
 			path = level;
 			sourceTree = "<group>";
@@ -1055,6 +1112,11 @@
 		A31B614213958C0700FE697F /* particles */ = {
 			isa = PBXGroup;
 			children = (
+				1874F45814163C400090B829 /* Swipe.plist */,
+				1874F45914163C400090B829 /* SwipeTexture.png */,
+				181E73B21413F45300442111 /* Confirm.plist */,
+				180AC0451412561000F0B110 /* Sparkle.plist */,
+				180AC0461412561000F0B110 /* sparkleTexture.png */,
 				187F931A14045B040099AA01 /* dest_test2-ipad.plist */,
 				A32E1D1F13F4427F00856D97 /* smoke2-hd.plist */,
 				A32E1D1D13F43FA500856D97 /* smoke2.plist */,
@@ -1195,6 +1257,9 @@
 		A3213C0E137310F5006F18FB /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				181E73A814138E5D00442111 /* Flow1280x1920_VO_ver3.mp4 */,
+				180AC0421412408700F0B110 /* dt_logo.mp4 */,
+				18DE5BBE140A6639004878E0 /* Flow1280x1920_VO.mp4 */,
 				A3217DDC13B7DA9600CEB9FE /* BellGothicStd-Bold.otf */,
 				A3213C0F137310F5006F18FB /* Default.png */,
 				A3213C11137310F5006F18FB /* fps_images.png */,
@@ -1534,6 +1599,8 @@
 		A3339DE9139E610200EE5D71 /* Level */ = {
 			isa = PBXGroup;
 			children = (
+				18D3BF6B140BD3A100AD0CD9 /* Lightning.h */,
+				18D3BF6C140BD3A100AD0CD9 /* Lightning.m */,
 				A3855AD31383298000B680EF /* GameScene.h */,
 				A3855AD41383298000B680EF /* GameScene.m */,
 				A35F3EF31387CC7600F5D71A /* GameplayLayer.h */,
@@ -1880,6 +1947,10 @@
 				A3E1276213EE8CF70071914F /* PreloaderLayer.m */,
 				A3E1276413EE96B70071914F /* PreloaderScene.h */,
 				A3E1276513EE96B70071914F /* PreloaderScene.m */,
+				180AC03B1412372C00F0B110 /* LogoScene.h */,
+				180AC03C1412372C00F0B110 /* LogoScene.m */,
+				180AC03F1412376C00F0B110 /* LogoLayer.h */,
+				180AC0401412376C00F0B110 /* LogoLayer.m */,
 			);
 			name = Preloader;
 			sourceTree = "<group>";
@@ -2056,7 +2127,6 @@
 				A317D26A13F6EBBA0013311D /* SoundEffects2.plist in Resources */,
 				A317D28013F71EDA0013311D /* Logic-intro&main-dest.mp3 in Resources */,
 				A317D2C713F7B7890013311D /* Logic-level-ambient.mp3 in Resources */,
-				A317D2D813F880350013311D /* krtz_loop.mp3 in Resources */,
 				18835C8E14039FC100FE96E6 /* Main-ipad.plist in Resources */,
 				18835C8F14039FC100FE96E6 /* Main-ipad.pvr.ccz in Resources */,
 				18835C921403A4A800FE96E6 /* Hq-ipad.plist in Resources */,
@@ -2081,29 +2151,46 @@
 				187CBF0914068B10005CD9F1 /* Logic-level-gong_bip.mp3 in Resources */,
 				187CBF0A14068B10005CD9F1 /* Logic-level-greenbulb_bip.mp3 in Resources */,
 				187CBF0B14068B10005CD9F1 /* Logic-level-pincl_usazeni_bip.mp3 in Resources */,
-				187CBF0C14068B10005CD9F1 /* Logic-level-scoretheme.mp3 in Resources */,
 				187CBF0E14068B10005CD9F1 /* Logic-level-tikani_bip.mp3 in Resources */,
 				187CBF0F14068B10005CD9F1 /* Logic-level-vyboj1_bip.mp3 in Resources */,
 				187CBF1014068B10005CD9F1 /* Logic-level-vyboj2_bip.mp3 in Resources */,
 				187CBF1114068B10005CD9F1 /* Logic-level-yellowbulb_bip.mp3 in Resources */,
-				187CBF1214068B10005CD9F1 /* Logic-main-packy.mp3 in Resources */,
-				187CBF1514068B53005CD9F1 /* Logic-howto-startthegame.mp3 in Resources */,
 				187CBF1614068B53005CD9F1 /* Logic-level-swipe.mp3 in Resources */,
 				187CBF1B1406935B005CD9F1 /* Logic-main-button_click_bip.mp3 in Resources */,
 				187CBF1C1406935B005CD9F1 /* Logic-main-vrzani_lampy_bip.mp3 in Resources */,
 				187CBF1F140693B0005CD9F1 /* Logic-main-pauzatheme.mp3 in Resources */,
 				187CBF20140693B0005CD9F1 /* Logic-main-theme.mp3 in Resources */,
 				187CBF22140696B5005CD9F1 /* Logic-main-zarovka_bip.mp3 in Resources */,
-				187CBF2414069933005CD9F1 /* krtz_loop_cisty.mp3 in Resources */,
 				187CBF2614069C8A005CD9F1 /* Logic-level-engine.mp3 in Resources */,
-				187CBF281406A1E5005CD9F1 /* Logic-options-paka_bip.mp3 in Resources */,
-				187CBF2A1406A309005CD9F1 /* Logic-settings-button_click.mp3 in Resources */,
 				185E53C81406A75E00F7CB19 /* Logic-main-packy.mp3 in Resources */,
-				185E53CB1406A76800F7CB19 /* Logic-main-packy.mp3 in Resources */,
 				186B63DB1407B036009AE711 /* Loader-hd.plist in Resources */,
 				186B63DC1407B036009AE711 /* Loader-hd.pvr.ccz in Resources */,
 				186B63DD1407B036009AE711 /* Loader.plist in Resources */,
 				186B63DE1407B036009AE711 /* Loader.pvr.ccz in Resources */,
+				18DE5BB9140A3386004878E0 /* Logic-howto-tapthebulb.mp3 in Resources */,
+				18DE5BBD140A4F68004878E0 /* Logic-intro-destblesk.mp3 in Resources */,
+				18DE5BBF140A6639004878E0 /* Flow1280x1920_VO.mp4 in Resources */,
+				18DE5BC1140B7DAD004878E0 /* Logic-level-packy.mp3 in Resources */,
+				1845E9E8140B982600C1AED6 /* Logic-level-scoretheme.mp3 in Resources */,
+				1845E9EB140B9BA600C1AED6 /* Logic-level-button_click_bip.mp3 in Resources */,
+				1845E9EC140B9BA600C1AED6 /* Logic-score-ciselnik.mp3 in Resources */,
+				1845E9F0140B9BC600C1AED6 /* Logic-career-button_click_bip.mp3 in Resources */,
+				1845E9F1140B9BC600C1AED6 /* Logic-career-fanfara.mp3 in Resources */,
+				1845E9F2140B9BC600C1AED6 /* Logic-career-packy.mp3 in Resources */,
+				1845E9F9140B9BDF00C1AED6 /* Logic-score-button_click_bip.mp3 in Resources */,
+				1845E9FA140B9BDF00C1AED6 /* Logic-score-paka_bip.mp3 in Resources */,
+				1845E9FB140B9BDF00C1AED6 /* Logic-options-button_click_bip.mp3 in Resources */,
+				1845E9FC140B9BDF00C1AED6 /* Logic-options-paka_bip.mp3 in Resources */,
+				180AC0431412408700F0B110 /* dt_logo.mp4 in Resources */,
+				180AC0481412561000F0B110 /* Sparkle.plist in Resources */,
+				180AC0491412561000F0B110 /* sparkleTexture.png in Resources */,
+				181E73A61413866E00442111 /* Logic-howto-dragthepin.mp3 in Resources */,
+				181E73A914138E5D00442111 /* Flow1280x1920_VO_ver3.mp4 in Resources */,
+				181E73AB1413C8EA00442111 /* Logic-career-zarovka_bip.mp3 in Resources */,
+				181E73AD1413D18300442111 /* Logic-career-ciselnik.mp3 in Resources */,
+				181E73B41413F45300442111 /* Confirm.plist in Resources */,
+				1874F45A14163C400090B829 /* Swipe.plist in Resources */,
+				1874F45B14163C400090B829 /* SwipeTexture.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2275,6 +2362,9 @@
 				A31B088713FEDA0600E8F344 /* ScoreCalc.m in Sources */,
 				18352A1E1402B5B1001DC435 /* Guess.m in Sources */,
 				187E7A161403F6490099AAF7 /* CCLabelBMFontMultiline.m in Sources */,
+				18D3BF6D140BD3A100AD0CD9 /* Lightning.m in Sources */,
+				180AC03D1412372C00F0B110 /* LogoScene.m in Sources */,
+				180AC0411412376C00F0B110 /* LogoLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

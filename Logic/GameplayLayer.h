@@ -44,11 +44,15 @@
     int fid;
     
     int tutorStep;
+    BOOL isTutor;
+    BOOL tutorWillContinue;
+    BOOL tutorJoin;
     
     ScoreCalc *scoreCalc;
     
     BOOL isCareer;
     BOOL isRetina;
+    BOOL isEndOfGame;
     
     Figure *selSprite;//vybrany sprite
     CCSprite *targetSprite;//je zamereny target? (umistit nebo zpet na zakladnu)
@@ -68,6 +72,7 @@
     CCLayer *scoreTime;
     CCLayer *scoreLayer;
     CCLayerColor *blackout;
+    CCLayerColor *blackout2;
     CCLayer *tutorLayer;
     CCLayerColor *tutorBlackout;
     CCSprite *tutorFinger;
@@ -114,12 +119,11 @@
     
     CCSprite *base;//base pro 8 pinclu dole
     
-    //panels
+    //panels    
     CCSprite *scorePanel;
-    CCSprite *replayPanel;
+    CCSprite *replayPanel;//only single
     CCSprite *continuePanel;//only career
-    CCSprite *gameMenuLeftPanel;//for single play
-    CCSprite *gameMenuRightPanel;//for career play
+    CCSprite *gameMenuPanel;//for both
     
     //copy
     CCLabelBMFont *failLabelSmall;
@@ -134,6 +138,9 @@
     CCParticleSystem *dustSystem;
     CCParticleSystem *smokeSystem1;
     CCParticleSystem *smokeSystem2;
+    CCParticleSystem *sparkleSystem;
+    CCParticleSystem *confirmSystem;
+    CCParticleSystem *swipeSystem;
     
     //end game - moving labels
     CCLayer *finalTimeLayer;
@@ -148,6 +155,9 @@
     
     CCArray *movingTime;
     CCArray *movingScore;
+    
+    ALuint tutorSound;
+    ALuint ciselnik;
     
         
 }

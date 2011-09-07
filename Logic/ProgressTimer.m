@@ -157,6 +157,9 @@
     return myTime;
 }
 
+- (void) resumeTimer {
+    [self schedule:@selector(update:) interval:0];
+}
 
 - (void) update:(ccTime)dt {
     totalTime += dt;
