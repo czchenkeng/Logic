@@ -16,13 +16,7 @@
 FMDatabase *db;
 FMResultSet *rs;
     
-NSMutableArray *patterns4;
-NSMutableArray *patterns5;
-NSMutableArray *patterns6;
-    
 }
-//score calc
-
 //score
 - (void) writeScore:(int)score andDifficulty:(int)diff;
 - (NSMutableArray *) getScores:(int)diff;

@@ -17,6 +17,9 @@
         CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
         SettingsLayer *settingsLayer = [SettingsLayer node];
         [self addChild:settingsLayer z:5];
+        
+//        MaskTest *settingsLayer = [MaskTest node];
+//        [self addChild:settingsLayer z:5];
     }
     return self;
 }

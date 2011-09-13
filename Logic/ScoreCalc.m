@@ -10,7 +10,7 @@
 #import "Guess.h"
 
 @interface ScoreCalc (PrivateMethods)
-- (void) generatePatterns;
+- (void) generatePatterns:(NSMutableArray *)pattern colors:(int)colors pins:(int)pins;
 - (BOOL) compareArrays:(NSArray *)pattern1 withArray:(NSArray *)pattern2;
 @end
 
@@ -19,9 +19,9 @@ static const int NUM_OF_ROWS = 10;
 
 @implementation ScoreCalc
 
-@synthesize hiddenPattern;
+@synthesize hiddenPattern, endBonus;
 
-- (id) initWithColors:(int)c pins:(int)p {
+- (id) initWithColors:(int)c pins:(int)p row:(int)r {
     self = [super init];
     if (self) {
         backgroundQueue = dispatch_queue_create(NULL, NULL);
@@ -31,48 +31,23 @@ static const int NUM_OF_ROWS = 10;
         totalTurns = 0;
         points = 0;
         
-        [self generatePatterns];
+        //[self generatePatterns];
+        if (r == 0)
+            patterns = [[NSMutableArray alloc] initWithArray:[[GameManager sharedGameManager] getGamePattern] copyItems:YES];
+        else {
+            patterns = [[GameManager sharedGameManager] readPattern];
+            [patterns retain];
+        }
+        
+        CCLOG(@"game pattern ready %i", [patterns count]);
     }
     return self;
 }
 
-+ (id) scoreWithColors:(int)c pins:(int)p {
-    return [[[self alloc] initWithColors:(int)c pins:(int)p] autorelease];
++ (id) scoreWithColors:(int)c pins:(int)p row:(int)r {
+    return [[[self alloc] initWithColors:(int)c pins:(int)p row:(int)r] autorelease];
 }
 
-- (void) generatePatterns {
-    patterns = [[NSMutableArray alloc] init];
-    int patternCount = (int)pow(colorsCount, pinsCount);
-    int c = 0;
-    for (int i = 0; i < patternCount; i++) {
-        NSMutableArray *newPattern = [[NSMutableArray alloc] initWithCapacity:pinsCount];
-        [newPattern addObject:[NSNumber numberWithInt:i%colorsCount]]; 
-        for (int pin = 1; pin < pinsCount; pin++) {
-            [newPattern addObject:[NSNumber numberWithInt:i % (int)pow(colorsCount, pin + 1) / (int)pow(colorsCount, pin)]];
-        }
-        c++;
-        [patterns addObject:newPattern];
-    }
-    CCLOG(@"****\n****\n****\n****\n****\n****\nKOLIK TOHO JE? %i****\n****\n****\n****\n****\n****\n", c);
-    //return patterns;
-}
-
-//- (BOOL) hasDoubles
-//
-//
-//private static bool HasDoubles(int[] pattern)
-//{
-//    List<int> list = new List<int>();
-//    for (int i = 0; i < pattern.Length; i++)
-//    {
-//        if (list.Where(a => a == pattern[i]).FirstOrDefault() != null)
-//        {
-//            return true;
-//        }
-//        list.Add(pattern[i]);
-//    }
-//    return false;
-//}
 
 - (BOOL) isPlayerTurnInPatterns:(NSArray *)turn {
     BOOL retVal = NO;
@@ -96,7 +71,7 @@ static const int NUM_OF_ROWS = 10;
 
 - (Guess *) makeResult:(NSArray *)patternR guess:(NSArray *)guessR {
     Guess *guessResult = [[Guess alloc] init];
-    guessResult.pattern = [[NSArray alloc] initWithArray:guessR];
+    guessResult.pattern = [[NSArray alloc] initWithArray:guessR copyItems:YES];
     for (int i = 0; i < patternR.count; i++)
     {
         if ([[patternR objectAtIndex:i] intValue] == [[guessR objectAtIndex:i] intValue])
@@ -119,8 +94,9 @@ static const int NUM_OF_ROWS = 10;
     return guessResult;
 }
 
-- (void) hotovo {
-    CCLOG(@"HOTOVO!!!!");
+- (void) calculationDone {
+    CCLOG(@"CALC DONE");
+    [[GameManager sharedGameManager] savePattern:patterns];
 }
 
 - (void) removeNotEligible:(Guess *)guess {
@@ -131,26 +107,36 @@ static const int NUM_OF_ROWS = 10;
         }
     }
     dispatch_async(dispatch_get_main_queue(), ^(void) {
-        [self hotovo];
+        [self calculationDone];
     });
 }
 
+- (BOOL) hasDoubles:(NSArray *)array {
+    for (int i = 0; i < array.count - 1; i++) {
+        int item = [[array objectAtIndex:i] intValue];
+        for (int j = i + 1; j < array.count; j++) {
+            if (item == [[array objectAtIndex:j] intValue]) {
+                return YES;
+            }
+        }
+    }
+    return NO;
+}
+
 - (int) calculateScoreWithRow:(int)row andTurn:(NSArray *)turn{
-    for (NSNumber *t  in turn) {
-        //CCLOG(@"TURN JE %i", [t intValue]);
-    }
-    for (NSNumber *p  in hiddenPattern) {
-        //CCLOG(@"PATTERN JE %i", [p intValue]);
-    }
     totalTurns = row;
     
     int k1 = 1000; //koeficient spravneho tahu
-    //int k2 = 300; //bonus za dvojice v prvnim tahu
+    int k2 = 300; //bonus za dvojice v prvnim tahu
     int k3 = 300; //koeficient casu spravneho tahu
     int k4 = 100; //koeficient casu nespravneho tahu
     
-    int endBonus = 3000;
+    //int endBonusConst = 3000;
     
+    if (row == 0 && [self hasDoubles:turn]) {
+        CCLOG(@"HAS DOUBLES");
+        points += k2;
+    }
     
     if ([self isPlayerTurnInPatterns:turn]) {
         CCLOG(@"JE TAM PATTERN");
@@ -166,19 +152,25 @@ static const int NUM_OF_ROWS = 10;
         points += k4 / ([Utils randomNumberBetween:1 andMax:21]); 
     }
     
-    CCLOG(@"PATTERNS COUNT %i", patterns.count);
+    //CCLOG(@"PATTERNS COUNT %i", patterns.count);
     
     //Dohral
-    if (patterns.count == 1)
-    {
-        points += endBonus / (10 - totalTurns);
-    }
+//    if (patterns.count == 1)
+//    {
+//        endBonus = (int)ceil(endBonusConst / (10 - totalTurns));
+//    }
     
     return points;
 }
 
+- (int) getBonus {
+    return (int)ceil(3000 / (10 - totalTurns));
+}
+
 - (void) dealloc {
     dispatch_release(backgroundQueue);
+    [patterns release];
+    patterns = nil;
     [hiddenPattern release];
     hiddenPattern = nil;
     

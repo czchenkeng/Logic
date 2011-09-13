@@ -24,28 +24,28 @@
     
     NSString *imageFile;
     switch (figureID) {
-        case kYellow: 
+        case kYellow://0 
             imageFile = @"pinchYellow.png";
             break;
-        case kOrange:
+        case kOrange://1
             imageFile = @"pinchOrange.png";
             break;
-        case kPink:
+        case kPink://2
             imageFile = @"pinchPink.png";
             break;
-        case kRed:
+        case kRed://3
             imageFile = @"pinchRed.png";
             break;
-        case kPurple:
+        case kPurple://4
             imageFile = @"pinchPurple.png";
             break;
-        case kBlue:
+        case kBlue://5
             imageFile = @"pinchBlue.png";
             break;
-        case kGreen:
+        case kGreen://6
             imageFile = @"pinchGreen.png";
             break;
-        case kWhite:
+        case kWhite://7
             imageFile = @"pinchWhite.png";
             break;
         default:

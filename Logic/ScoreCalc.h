@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <dispatch/dispatch.h>
+#import "GameManager.h"
 
 
 @interface ScoreCalc : NSObject {
@@ -15,17 +16,20 @@
     int pinsCount;
     int totalTurns;
     int points;
+    int endBonus;
     
     NSArray *hiddenPattern;
     NSMutableArray *patterns;
-    
+        
     dispatch_queue_t backgroundQueue;
 }
 
 @property (nonatomic, copy) NSArray *hiddenPattern;
+@property (readonly) int endBonus;
 
-+ (id) scoreWithColors:(int)c pins:(int)p;
++ (id) scoreWithColors:(int)c pins:(int)p row:(int)r;
 
 - (int) calculateScoreWithRow:(int)row andTurn:(NSArray *)turn;
+- (int) getBonus;
 
 @end

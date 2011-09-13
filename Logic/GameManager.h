@@ -16,6 +16,7 @@
 #import "GameData.h"
 #import "FacebookViewController.h"
 #import "CCTransition.h"
+#import "ScoreCalc.h"
 
 @interface GameManager : NSObject {
     BOOL hasAudioBeenInitialized;
@@ -36,6 +37,11 @@
     BOOL isCareer;
     BOOL isTutor;
     BOOL mainTutor;
+    
+    NSMutableArray *patterns4;
+    NSMutableArray *patterns5;
+    NSMutableArray *patterns6;
+    
 }
 
 @property (readwrite) GameDifficulty currentDifficulty;
@@ -67,5 +73,10 @@
 - (void) updateSettings;
 
 - (void) duckling:(float)soundLevel;
+
+- (void) getScorePatterns;
+- (NSMutableArray *) getGamePattern;
+- (void) savePattern:(NSMutableArray *)pattern;
+- (NSMutableArray *) readPattern;
 
 @end

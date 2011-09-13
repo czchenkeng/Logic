@@ -30,22 +30,6 @@
     }
 }
 
-- (void) generatePatterns:(NSMutableArray *)pattern colors:(int)colorsCount pins:(int)pinsCount {
-    pattern = [[NSMutableArray alloc] init];
-    int patternCount = (int)pow(colorsCount, pinsCount);
-    int c = 0;
-    for (int i = 0; i < patternCount; i++) {
-        NSMutableArray *newPattern = [[NSMutableArray alloc] initWithCapacity:pinsCount];
-        [newPattern addObject:[NSNumber numberWithInt:i%colorsCount]]; 
-        for (int pin = 1; pin < pinsCount; pin++) {
-            [newPattern addObject:[NSNumber numberWithInt:i % (int)pow(colorsCount, pin + 1) / (int)pow(colorsCount, pin)]];
-        }
-        c++;
-        [pattern addObject:newPattern];
-    }
-    CCLOG(@"****\n****\n****\n****\n****\n****\nKOLIK TOHO JE? %i pri %i****\n****\n****\n****\n****\n****\n", c, pinsCount);
-}
-
 - (id) init {
     self = [super init];
     if (self != nil) {
@@ -68,24 +52,6 @@
             //[db setLogsErrors:TRUE];
             //[db setTraceExecution:TRUE];
         }
-        
-        [self generatePatterns:patterns4 colors:8 pins:4];
-        [self generatePatterns:patterns5 colors:8 pins:5];
-        [self generatePatterns:patterns6 colors:8 pins:6];
-        
-        ////////////////SCORE DATA
-        if ([paths count] > 0)
-        {
-            // Path to save array data
-            //NSString  *arrayPath = [[paths objectAtIndex:0] 
-            //                        stringByAppendingPathComponent:@"array4_.out"];
-            
-            // Write array
-            //[[self generatePatterns] writeToFile:arrayPath atomically:NO];
-        }
-        
-        //////////////////
-        
     }
     return self;
 }
@@ -96,7 +62,6 @@
     if ([rs next]) {
         totalCount = [rs intForColumnIndex:0];
     }
-    CCLOG(@"total count 2 is %i", totalCount);
     return totalCount == 0 ? NO : YES;
 }
 

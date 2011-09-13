@@ -28,6 +28,8 @@
 		1845E9FA140B9BDF00C1AED6 /* Logic-score-paka_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1845E9F5140B9BDF00C1AED6 /* Logic-score-paka_bip.mp3 */; };
 		1845E9FB140B9BDF00C1AED6 /* Logic-options-button_click_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1845E9F7140B9BDF00C1AED6 /* Logic-options-button_click_bip.mp3 */; };
 		1845E9FC140B9BDF00C1AED6 /* Logic-options-paka_bip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1845E9F8140B9BDF00C1AED6 /* Logic-options-paka_bip.mp3 */; };
+		184F145C141BF5F000D3ACF4 /* MaskTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 184F145B141BF5F000D3ACF4 /* MaskTest.m */; };
+		184F1460141BF65E00D3ACF4 /* CCMask.m in Sources */ = {isa = PBXBuildFile; fileRef = 184F145F141BF65E00D3ACF4 /* CCMask.m */; };
 		185E53C81406A75E00F7CB19 /* Logic-main-packy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 185E53C71406A75E00F7CB19 /* Logic-main-packy.mp3 */; };
 		186B63DB1407B036009AE711 /* Loader-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = 186B63D71407B036009AE711 /* Loader-hd.plist */; };
 		186B63DC1407B036009AE711 /* Loader-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = 186B63D81407B036009AE711 /* Loader-hd.pvr.ccz */; };
@@ -383,6 +385,10 @@
 		1845E9F5140B9BDF00C1AED6 /* Logic-score-paka_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-score-paka_bip.mp3"; sourceTree = "<group>"; };
 		1845E9F7140B9BDF00C1AED6 /* Logic-options-button_click_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-options-button_click_bip.mp3"; sourceTree = "<group>"; };
 		1845E9F8140B9BDF00C1AED6 /* Logic-options-paka_bip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-options-paka_bip.mp3"; sourceTree = "<group>"; };
+		184F145A141BF5F000D3ACF4 /* MaskTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MaskTest.h; sourceTree = "<group>"; };
+		184F145B141BF5F000D3ACF4 /* MaskTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MaskTest.m; sourceTree = "<group>"; };
+		184F145E141BF65E00D3ACF4 /* CCMask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCMask.h; sourceTree = "<group>"; };
+		184F145F141BF65E00D3ACF4 /* CCMask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCMask.m; sourceTree = "<group>"; };
 		185E53C71406A75E00F7CB19 /* Logic-main-packy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Logic-main-packy.mp3"; sourceTree = "<group>"; };
 		186B63D71407B036009AE711 /* Loader-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Loader-hd.plist"; sourceTree = "<group>"; };
 		186B63D81407B036009AE711 /* Loader-hd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Loader-hd.pvr.ccz"; sourceTree = "<group>"; };
@@ -1018,6 +1024,10 @@
 				A3144CD913AE6AC100E292C4 /* SettingsScene.m */,
 				A3144CDB13AE6ADF00E292C4 /* SettingsLayer.h */,
 				A3144CDC13AE6ADF00E292C4 /* SettingsLayer.m */,
+				184F145A141BF5F000D3ACF4 /* MaskTest.h */,
+				184F145B141BF5F000D3ACF4 /* MaskTest.m */,
+				184F145E141BF65E00D3ACF4 /* CCMask.h */,
+				184F145F141BF65E00D3ACF4 /* CCMask.m */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -2365,6 +2375,8 @@
 				18D3BF6D140BD3A100AD0CD9 /* Lightning.m in Sources */,
 				180AC03D1412372C00F0B110 /* LogoScene.m in Sources */,
 				180AC0411412376C00F0B110 /* LogoLayer.m in Sources */,
+				184F145C141BF5F000D3ACF4 /* MaskTest.m in Sources */,
+				184F1460141BF65E00D3ACF4 /* CCMask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2391,7 +2403,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				New_Setting = "";
-				PROVISIONING_PROFILE = "EEC51990-D1AC-4301-8B4D-8013E9520911";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2413,7 +2424,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				New_Setting = "";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "EEC51990-D1AC-4301-8B4D-8013E9520911";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2436,8 +2446,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "EEC51990-D1AC-4301-8B4D-8013E9520911";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EEC51990-D1AC-4301-8B4D-8013E9520911";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
@@ -2460,8 +2468,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "EEC51990-D1AC-4301-8B4D-8013E9520911";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EEC51990-D1AC-4301-8B4D-8013E9520911";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2485,7 +2491,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				New_Setting = "";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "EEC51990-D1AC-4301-8B4D-8013E9520911";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "372307B1-5B64-4824-968E-D4369252CE95";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2508,8 +2513,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "EEC51990-D1AC-4301-8B4D-8013E9520911";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EEC51990-D1AC-4301-8B4D-8013E9520911";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

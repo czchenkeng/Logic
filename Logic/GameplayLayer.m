@@ -65,8 +65,8 @@
         placeNumbers = [[CCArray alloc] init];
         colorNumbers = [[CCArray alloc] init];
         scoreLabelArray = [[CCArray alloc] init];
-//        scoreCalc = [ScoreCalc scoreWithColors:8 pins:currentDifficulty];
-//        [scoreCalc retain];
+        
+        CCLOG(@"JAKA JE CURRENT DIFFICULTY? %i", currentDifficulty);
         
         blackout = [Blackout node];
         [blackout setOpacity:230];
@@ -170,6 +170,9 @@
         infoData.tutor = tutorStep;
         [[[GameManager sharedGameManager] gameData] insertGameData:infoData];
     }
+    
+    //scoreCalc = [ScoreCalc scoreWithColors:8 pins:currentDifficulty row:activeRow];
+    //[scoreCalc retain];
     
     [self buildLevel];
     [self addFigures];
@@ -927,7 +930,7 @@
         [currentCode addObject:figure];
         [self addChild:cheatFigure z:3000 + i];
     }
-    scoreCalc.hiddenPattern = hiddenPattern;
+    //scoreCalc.hiddenPattern = hiddenPattern;
 }
 
 #pragma mark Construct score Label
@@ -1145,6 +1148,17 @@
             break;
         case kButtonMail:
             CCLOG(@"TAP ON MAIL");
+            
+//            MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+//            //picker.mailComposeDelegate = self;
+//            
+//            [picker setSubject:[NSString stringWithFormat:@"Game Support"]];
+//			NSArray *toRecipients = [NSArray arrayWithObject:@"pavel.krusek@gmail.com"];
+//			[picker setToRecipients:toRecipients];
+//			NSString *emailBody = @"> Please provide as much detail as you can <  \n\n\n\n";
+//			[picker setMessageBody:emailBody isHTML:NO];
+//            //[self presentModalViewController:picker animated:YES];
+            
             break;
         default:
             CCLOG(@"Logic debug: Unknown ID, cannot tap button");
@@ -1175,9 +1189,9 @@
     longPress.enabled = NO;
     isWinner = currentDifficulty == places ? YES : NO;
     if (isCareer) {
-        [[[GameManager sharedGameManager] gameData] updateCareerData:isWinner andScore:score];//mazu posledni karierni hru pri neuspechu?
+        [[[GameManager sharedGameManager] gameData] updateCareerData:isWinner andScore:score];
     } else {
-        [[[GameManager sharedGameManager] gameData] writeScore:[Utils randomNumberBetween:1000 andMax:99999999] andDifficulty:currentDifficulty];
+        [[[GameManager sharedGameManager] gameData] writeScore:score andDifficulty:currentDifficulty];
     }
     [self constructEndLabels:[timer stopTimer] andZero:NO];
     [[GameManager sharedGameManager] stopLoopSounds];
@@ -1565,8 +1579,7 @@
 - (void) timeBonusCallback {
     ciselnik = PLAYSOUNDEFFECT(SCORE);
     [self schedule:@selector(cisCallback) interval:1.0];
-    int fuckUp = 98654871;
-    [self drawScoreToLabel:fuckUp andArray:finalScoreArray andStyle:YES andZero:NO];
+    [self drawScoreToLabel:score + 2000 andArray:finalScoreArray andStyle:YES andZero:NO];
     [self drawTimeToLabel:(int)timer.gameTime/60 andArray:final1TimeArray andStyle:YES andZero:YES];
     [self drawTimeToLabel:(int)timer.gameTime%60 andArray:final2TimeArray andStyle:YES andZero:YES];
 }
@@ -1692,8 +1705,8 @@
             }
         }
     }
-    //score = [scoreCalc calculateScoreWithRow:activeRow andTurn:turn];
-    score = [Utils randomNumberBetween:1000 andMax:2000];
+    //score += [scoreCalc calculateScoreWithRow:activeRow andTurn:turn];
+    score += [Utils randomNumberBetween:1000 andMax:2000];
     [self drawScoreToLabel:score andArray:scoreLabelArray andStyle:YES andZero:NO];    
 }
 
