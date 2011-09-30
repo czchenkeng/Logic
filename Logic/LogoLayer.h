@@ -9,10 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 
-@interface LogoLayer : CCLayer <UIGestureRecognizerDelegate> {
+@interface LogoLayer : CCLayer {
     
     UITapGestureRecognizer *singleTap;
     MPMoviePlayerViewController *mp;
+    UIView *overlayView;
     
 }
 

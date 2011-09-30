@@ -9,7 +9,7 @@
 #define MIN_DISTANCE_SWIPE_X 200
 #define MIN_DISTANCE_SWIPE_Y 120
 #define LEVEL_SWIPE_AFTER_ROW 7
-#define LEVEL_SWIPE 30
+#define LEVEL_SWIPE 15
 //#define LEVEL_DEAD_FIGURES_MASK_HEIGHT 5
 #define LEVEL_DEAD_FIGURES_MASK_HEIGHT 0
 #define LEVEL_DISLOCATION 40
@@ -24,7 +24,7 @@
 #define SETTINGS_MUSIC_VOLUME 0.50
 #define SETTINGS_SOUND_VOLUME 0.70
 
-#define LEVEL_MIN_PRESS_DURATION 0.05
+#define LEVEL_MIN_PRESS_DURATION 0.20
 
 typedef struct {
     int gameDifficulty;
@@ -119,14 +119,14 @@ typedef enum {
 } TransitionTypes;
 
 typedef enum {
-    kYellow = 0,
-    kOrange = 1,
-    kPink = 2,
-    kRed = 3,
-    kPurple = 4,
-    kBlue = 5,
-    kGreen = 6,
-    kWhite = 7
+    kWhite = 0,
+    kYellow = 1,
+    kOrange = 2,
+    kPink = 3,
+    kRed = 4,
+    kPurple = 5,
+    kBlue = 6,
+    kGreen = 7
 } FigureTypes;
 
 typedef enum {

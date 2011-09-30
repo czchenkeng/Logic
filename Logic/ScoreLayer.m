@@ -248,6 +248,10 @@
         PressMenu *difficultyMenu = [PressMenu menuWithItems:easyItem, normalItem, hardItem, nil];
         difficultyMenu.position = CGPointZero;
         [self addChild:difficultyMenu z:20];
+        
+        dustSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"dust1.plist"];
+        dustSystem.autoRemoveOnFinish = YES;
+        [self addChild:dustSystem z:1000];
 
     }
     return self;

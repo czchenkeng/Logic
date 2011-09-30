@@ -68,48 +68,6 @@ static GameManager* _sharedGameManager = nil;
     return self;
 }
 
-- (void) getScorePatterns {
-    patterns4 = [[NSMutableArray alloc] init];
-    patterns5 = [[NSMutableArray alloc] init];
-    patterns6 = [[NSMutableArray alloc] init];
-    [self generatePatterns:patterns4 colors:8 pins:4];
-    [self generatePatterns:patterns5 colors:8 pins:5];
-    [self generatePatterns:patterns6 colors:8 pins:6];
-    CCLOG(@"kolik toho je p6? %i", [patterns6 count]);
-}
-
-- (NSMutableArray *) getGamePattern {
-    NSMutableArray *patterns;
-    switch (currentDifficulty) {
-        case kEasy:
-            patterns = patterns4;
-            break;
-        case kMedium:
-            patterns = patterns5;
-            break;
-        case kHard:
-            patterns = patterns6;
-            break;
-    }
-    
-    return patterns;
-}
-
-- (void) generatePatterns:(NSMutableArray *)pattern colors:(int)colors pins:(int)pins {
-    int patternCount = (int)pow(colors, pins);
-    int c = 0;
-    for (int i = 0; i < patternCount; i++) {
-        NSMutableArray *newPattern = [[NSMutableArray alloc] initWithCapacity:pins];
-        [newPattern addObject:[NSNumber numberWithInt:i%colors]]; 
-        for (int pin = 1; pin < pins; pin++) {
-            [newPattern addObject:[NSNumber numberWithInt:i % (int)pow(colors, pin + 1) / (int)pow(colors, pin)]];
-        }
-        c++;
-        [pattern addObject:newPattern];
-    }
-    CCLOG(@"****\n****\n****\n****\n****\n****\nKOLIK TOHO JE? %i pri %i****\n****\n****\n****\n****\n****\n", c, pins);
-}
-
 - (void) savePattern:(NSMutableArray *)pattern {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     
@@ -130,16 +88,13 @@ static GameManager* _sharedGameManager = nil;
         NSString  *arrayPath = [[paths objectAtIndex:0] 
                                 stringByAppendingPathComponent:@"pattern.out"];
         arrayFromFile = [NSMutableArray arrayWithContentsOfFile:arrayPath];
-        CCLOG(@"\n\n\n\n\nKOLIK 11111? %i\n\n\n\n\n", [arrayFromFile count]);
     }
-    
-    CCLOG(@"\n\n\n\n\nKOLIK? %i\n\n\n\n\n", [arrayFromFile count]);
     
     return arrayFromFile;
 }
 
-- (FacebookViewController *) facebookController:(CGRect)rect {
-    controller = [[FacebookViewController alloc] initWithFrame:rect];
+- (FacebookViewController *) facebookController {
+    controller = [[FacebookViewController alloc] init];
     return controller;
 }
 
@@ -545,12 +500,6 @@ static GameManager* _sharedGameManager = nil;
 
 
 - (void) dealloc {
-    [patterns4 release];
-    patterns4 = nil;
-    [patterns5 release];
-    patterns5 = nil;
-    [patterns6 release];
-    patterns6 = nil;
     [controller release];
     [loopingSfx release];
     loopingSfx = nil;

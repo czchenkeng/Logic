@@ -8,108 +8,147 @@
 
 #import "FacebookViewController.h"
 
+#import "ASIHTTPRequest.h"
+#import "ASIFormDataRequest.h"
+#import "JSON.h"
 
 @implementation FacebookViewController
-@synthesize loginView;
 @synthesize facebook = _facebook;
-static NSString *kAppId = @"237730952923005";
+//static NSString *kAppId = @"237730952923005";
+static NSString *kAppId = @"279570795404946";
 
-- (id) initWithFrame:(CGRect)_rect {
+
+- (id) init {
     self = [super init];
     if (self != nil) {
-        rect = _rect;
         _permissions =  [[NSArray arrayWithObjects:@"read_stream", @"publish_stream", @"offline_access",nil] retain];
-        loginView = [[UIView alloc] initWithFrame:_rect];
     }
     return self;
 }
 
-- (void) login:(id)sender {
-    [_facebook authorize:_permissions delegate:self];
-}
-
-- (void) loadView {
-	self.view = [[UIView alloc] initWithFrame:rect];
-	self.view.backgroundColor = [UIColor whiteColor];
-    
-    label = [[UILabel alloc] init]; 
-	label.frame = CGRectMake(10, 10, 150, 40);
-	label.textAlignment = UITextAlignmentCenter;
-	label.text = @"FACEBOOK";
-	[self.view addSubview:label]; 
-	[label release];
-    
-	// Initialization code
-	textField = [[UITextView alloc] initWithFrame:CGRectMake(10, 35, 250, 80)];
-    //textField.borderStyle = UITextBorderStyleRoundedRect;
-	//textField.delegate = self;
-	//textField.placeholder = @"I wonder if anybody of you is smarter than me? If you think so, try to beat my new career play score xxxxxx in the iPhone&iPad game The Power of Logic! Check it on iTunes App Store.";
-    textField.text = @"I wonder if anybody of you is smarter than me? If you think so, try to beat my new career play score xxxxxx in the iPhone&iPad game The Power of Logic! Check it on iTunes App Store.";
-	textField.textAlignment = UITextAlignmentLeft;
-	[self.view addSubview: textField];
-    //[textField becomeFirstResponder];
-    [textField release];
-    
-    
-    UIButton *loginButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];    
-    loginButton.frame = CGRectMake(10.0, 150.0, 100.0, 50.0);
-    [loginButton setTitle:@"Write to wall" forState:UIControlStateNormal];
-    
-    loginButton.backgroundColor = [UIColor clearColor];
-    [loginButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    
-    UIImage *buttonImageNormal = [UIImage imageNamed:@"LoginNormal.png"];    
-    UIImage *strechableButtonImageNormal = [buttonImageNormal stretchableImageWithLeftCapWidth:12 topCapHeight:0];    
-    [loginButton setBackgroundImage:strechableButtonImageNormal forState:UIControlStateNormal];
-    
-    UIImage *buttonImagePressed = [UIImage imageNamed:@"LoginPressed.png"];    
-    UIImage *strechableButtonImagePressed = [buttonImagePressed stretchableImageWithLeftCapWidth:12 topCapHeight:0];    
-    [loginButton setBackgroundImage:strechableButtonImagePressed forState:UIControlStateHighlighted];
-    
-    [loginButton addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.view addSubview:loginButton];
-	//[self.view addSubview:loginView];
-}
-
--(void) viewDidLoad {
+- (void) login:(int)score {
+    logicScore = score;
     @try {
         _facebook = [[Facebook alloc] initWithAppId:kAppId];        
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
     }
-//    @finally {
-//        NSLog(@"finally");
-//    }
-    CCLOG(@"FACEBOOK %@", _facebook);
-//	[UIView beginAnimations:nil];
-//	[UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-//	[UIView setAnimationDuration:0.50];
-//	[self.view addSubview:self.loginView];
-//	self.loginView.alpha = 1.0;
-//	[UIView endAnimations];
+    [_facebook authorize:_permissions delegate:self];  
 }
 
-- (void) fbDidLogin {
-    NSLog(@"LOGGED IN");
+//METHODS FOR USER OWN PHOTOS
+//- (void)writeToWall {
+//    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"fb_foto" ofType:@"jpg"];
+//
+//    NSString *message = @"Game logo";
+//    
+//    NSURL *url = [NSURL URLWithString:@"https://graph.facebook.com/me/photos"];
+//    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+//    [request addFile:filePath forKey:@"file"];
+//    [request setPostValue:message forKey:@"message"];
+//    [request setPostValue:_accessToken forKey:@"access_token"];
+//    [request setDidFinishSelector:@selector(sendToPhotosFinished:)];
+//    
+//    [request setDelegate:self];
+//    [request startAsynchronous];
+//    
+//}
+//
+//- (void)sendToPhotosFinished:(ASIHTTPRequest *)request
+//{
+//    NSString *responseString = [request responseString];
+//    
+//    NSMutableDictionary *responseJSON = [responseString JSONValue];
+//    NSString *photoId = [responseJSON objectForKey:@"id"];
+//    NSLog(@"Photo id is: %@", photoId);
+//    
+//    NSString *urlString = [NSString stringWithFormat:@"https://graph.facebook.com/%@?access_token=%@", photoId, [_accessToken stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//    NSURL *url = [NSURL URLWithString:urlString];
+//    ASIHTTPRequest *newRequest = [ASIHTTPRequest requestWithURL:url];
+//    [newRequest setDidFinishSelector:@selector(getFacebookPhotoFinished:)];
+//    
+//    [newRequest setDelegate:self];
+//    [newRequest startAsynchronous];
+//    
+//}
+//
+//- (void)getFacebookPhotoFinished:(ASIHTTPRequest *)request
+//{
+//    NSString *responseString = [request responseString];
+//    NSLog(@"Got Facebook Photo: %@", responseString);
+//    
+//    NSMutableDictionary *responseJSON = [responseString JSONValue];   
+//    
+//    NSString *link = [responseJSON objectForKey:@"link"];
+//    if (link == nil) return;
+//    NSLog(@"Link to photo: %@", link);
+//    
 //    NSURL *url = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
 //    ASIFormDataRequest *newRequest = [ASIFormDataRequest requestWithURL:url];
-//    [newRequest setPostValue:@"I'm learning how to post to Facebook from an iPhone app!" forKey:@"message"];
-//    [newRequest setPostValue:@"Check out the tutorial!" forKey:@"name"];
-//    [newRequest setPostValue:@"This tutorial shows you how to post to Facebook using the new Open Graph API." forKey:@"caption"];
-//    [newRequest setPostValue:@"From Ray Wenderlich's blog - an blog about iPhone and iOS development." forKey:@"description"];
-//    [newRequest setPostValue:@"http://www.raywenderlich.com" forKey:@"link"];
-//    [newRequest setPostValue:link forKey:@"picture"];
+//    [newRequest setPostValue:@"Message here" forKey:@"message"];
+//    [newRequest setPostValue:@"Name here" forKey:@"name"];
+//    [newRequest setPostValue:@"Caption here" forKey:@"caption"];
+//    [newRequest setPostValue:@"From team" forKey:@"description"];
+//    [newRequest setPostValue:@"http://www.google.com" forKey:@"link"];
+//    //[newRequest setPostValue:link forKey:@"picture"];
 //    [newRequest setPostValue:_accessToken forKey:@"access_token"];
 //    [newRequest setDidFinishSelector:@selector(postToWallFinished:)];
 //    
 //    [newRequest setDelegate:self];
 //    [newRequest startAsynchronous];
+//    
+//}
+
+- (void) writeToWall {
+    NSURL *url = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
+    ASIFormDataRequest *newRequest = [ASIFormDataRequest requestWithURL:url];
+    [newRequest setPostValue:@"" forKey:@"message"];
+    [newRequest setPostValue:@"Power of Logic for iPhone&iPad" forKey:@"name"];
+    [newRequest setPostValue:@"I wonder if anybody of you is smarter then me?" forKey:@"caption"];
+    [newRequest setPostValue:[NSString stringWithFormat:@"If you think so, try to beat my new high score %i in the game Power of Logic! Check it on iTunes App Store.", logicScore] forKey:@"description"];
+    [newRequest setPostValue:@"http://itunes.apple.com/us/app/power-of-logic/id452804654" forKey:@"link"];
+    [newRequest setPostValue:@"http://www.poweroflogic.net/App_PoL_icon.jpg" forKey:@"picture"];
+    //[newRequest setPostValue:@"{name: \"Test another link\", link: \"http://www.apple.com\"" forKey:@"actions"];
+    [newRequest setPostValue:_accessToken forKey:@"access_token"];
+    [newRequest setDidFinishSelector:@selector(postToWallFinished:)];
+    
+    [newRequest setDelegate:self];
+    [newRequest startAsynchronous];
+    
+}
+
+- (void) fbDidLogin {
+    _accessToken = _facebook.accessToken;
+    [self writeToWall];
+}
+
+- (void)postToWallFinished:(ASIHTTPRequest *)request
+{
+    NSString *responseString = [request responseString];
+    
+    NSMutableDictionary *responseJSON = [responseString JSONValue];
+    NSString *postId = [responseJSON objectForKey:@"id"];
+    NSLog(@"Post id is: %@", postId);
+    
+    UIAlertView *av = [[[UIAlertView alloc] initWithTitle:@"Sucessfully posted to wall!" 
+												  message:@"Check out your Facebook."
+												 delegate:nil 
+										cancelButtonTitle:@"OK"
+										otherButtonTitles:nil] autorelease];
+	[av show];
+    
 }
 
 - (void) fbDidNotLogin:(BOOL)cancelled {
     NSLog(@"did not login");
+    
+    UIAlertView *av = [[[UIAlertView alloc] initWithTitle:@"Problems with connection!" 
+												  message:@"Check your internet connection and try again."
+												 delegate:nil 
+										cancelButtonTitle:@"OK"
+										otherButtonTitles:nil] autorelease];
+	[av show];
 }
 
 - (void)request:(FBRequest *)request didReceiveResponse:(NSURLResponse *)response {

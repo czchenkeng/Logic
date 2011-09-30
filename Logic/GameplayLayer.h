@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-//#import <MessageUI/MFMailComposeViewController.h>
+#import <MessageUI/MFMailComposeViewController.h>
 #import "Figure.h"
 #import "RowScore.h"
 #import "RowStaticScore.h"
@@ -21,8 +21,9 @@
 #import "Blackout.h"
 #import "ScoreCalc.h"
 
-
-@interface GameplayLayer : CCLayerColor <UIGestureRecognizerDelegate> {    
+@interface GameplayLayer : CCLayerColor <UIGestureRecognizerDelegate, MFMailComposeViewControllerDelegate> {
+    UIViewController *mailController;
+    
     UIPanGestureRecognizer *panRecognizer;
     UILongPressGestureRecognizer *longPress;
     UITapGestureRecognizer *singleTap;
@@ -65,6 +66,11 @@
     //batches
     CCSpriteBatchNode *sphereNode;
     
+    //lightning
+    CCSpriteBatchNode *lightningNode;
+    NSMutableArray *lightningSphereFrames;
+    CCAnimation *lightningAnim;
+    
     //layers
     CCLayer *movableNode;
     CCLayer *figuresNode;
@@ -77,6 +83,9 @@
     CCLayer *tutorLayer;
     CCLayerColor *tutorBlackout;
     CCSprite *tutorFinger;
+    CCSprite *screenSprite;
+    CCSprite *pincl1;
+    CCSprite *pincl2;
     CCLabelBMFont *tutorTxt;
     
     CCSprite *rotorLeftLayer;
@@ -134,6 +143,7 @@
     CCLabelBMFont *superSmall;
     CCLabelBMFont *movesLabelBig;
     CCLabelBMFont *timeLabelBig;
+    CCLabelBMFont *infoTxt;
     
     //particles
     CCParticleSystem *dustSystem;
@@ -160,7 +170,7 @@
     ALuint tutorSound;
     ALuint ciselnik;
     
-        
+    
 }
 
 

@@ -39,6 +39,8 @@
     
     BOOL isSingleGame;
     CCMenuItem *lastSender;
+    
+    CCParticleSystem *dustSystem;
 }
 
 @end

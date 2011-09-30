@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <MessageUI/MFMailComposeViewController.h>
 #import "Mask.h"
 #import "City.h"
 #import "Wire.h"
@@ -14,13 +15,18 @@
 //#import "GameManager.h"
 #import "Blackout.h"
 #import "SimpleAudioEngine.h"
+#import "Utils.h"
+#import "FacebookViewController.h"
 
 @class GameManager;
 
-@interface CareerLayer : CCLayer <UIAlertViewDelegate, UIGestureRecognizerDelegate>{
+@interface CareerLayer : CCLayer <UIAlertViewDelegate, UIGestureRecognizerDelegate, MFMailComposeViewControllerDelegate>{
+    UIViewController *mailController;
+    
     ALuint tutorSound;
     ALuint scoreSound;
     ALuint scoreSoundErase;
+    ALuint fanfareSound;
     
     CCLayerColor *zoomBase;
     CGPoint zbLastPos;
@@ -46,6 +52,8 @@
     
     CCMenuItem *infoOff;
     CCMenuItem *infoOn;
+    
+    CCMenuItemToggle *toggleItem;
         
     int prog;
     float total;//progress bar width
@@ -58,6 +66,12 @@
     
     BOOL blink;
     BOOL isRetina;
+    
+    CCArray *finalBlinkArray;
+    BOOL endCareer;
+    int citiesFull;
+    
+    CCParticleSystem *dustSystem;
     
     UIPanGestureRecognizer *panGestureRecognizer;
     UIPinchGestureRecognizer *pinchGestureRecognizer;    

@@ -125,6 +125,11 @@ enum soundTags
     self = [super init];
     if (self != nil) {
         CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
+        
+        dustSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"dust1.plist"];
+        dustSystem.autoRemoveOnFinish = YES;
+        [self addChild:dustSystem z:1000];
+        
         difficulty = [[CCArray alloc] init];
         joysticks = [[CCArray alloc] init];
         

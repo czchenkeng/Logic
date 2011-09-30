@@ -11,20 +11,15 @@
 #import "FBConnect.h"
 
 
-@interface FacebookViewController : UIViewController <FBRequestDelegate, FBDialogDelegate, FBSessionDelegate> {
-    struct CGRect rect;
-    UIView *loginView;
-    
+@interface FacebookViewController : UIViewController <FBRequestDelegate, FBDialogDelegate, FBSessionDelegate> {    
     Facebook *_facebook;
     NSArray *_permissions;
-    
-    UILabel *label;
-    UITextView *textField;
+    NSString *_accessToken;
+    int logicScore;
 }
 
-@property (nonatomic, retain) UIView *loginView;
 @property (readonly) Facebook *facebook;
 
-- (id) initWithFrame:(CGRect)_rect;
+- (void) login:(int)score;
 
 @end

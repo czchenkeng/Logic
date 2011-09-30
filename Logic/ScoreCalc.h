@@ -22,6 +22,9 @@
     NSMutableArray *patterns;
         
     dispatch_queue_t backgroundQueue;
+    
+    BOOL done;
+    NSMutableArray *saveData;
 }
 
 @property (nonatomic, copy) NSArray *hiddenPattern;
@@ -29,7 +32,8 @@
 
 + (id) scoreWithColors:(int)c pins:(int)p row:(int)r;
 
-- (int) calculateScoreWithRow:(int)row andTurn:(NSArray *)turn;
+- (int) calculateScoreWithRow:(int)row andTurn:(NSArray *)turn andTime:(int)roundTime;
 - (int) getBonus;
+- (void) previousData;
 
 @end

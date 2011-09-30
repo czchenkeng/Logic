@@ -287,7 +287,7 @@
 - (void) runParticle {    
     system = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:kMainRainParticle];
     system.autoRemoveOnFinish = YES;
-    system.rotation = -5;
+    system.rotation = 0;
     [self addChild:system z:21 tag:1];
 }
 

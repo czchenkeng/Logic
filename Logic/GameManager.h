@@ -37,11 +37,6 @@
     BOOL isCareer;
     BOOL isTutor;
     BOOL mainTutor;
-    
-    NSMutableArray *patterns4;
-    NSMutableArray *patterns5;
-    NSMutableArray *patterns6;
-    
 }
 
 @property (readwrite) GameDifficulty currentDifficulty;
@@ -60,7 +55,7 @@
 
 + (GameManager*) sharedGameManager;
 - (void) runSceneWithID:(SceneTypes)sceneID andTransition:(TransitionTypes)transitionID;
-- (FacebookViewController *) facebookController:(CGRect)rect;
+- (FacebookViewController *) facebookController;
 
 - (void) setupAudioEngine; 
 - (ALuint) playSoundEffect:(NSString*)soundEffectKey; 
@@ -74,8 +69,7 @@
 
 - (void) duckling:(float)soundLevel;
 
-- (void) getScorePatterns;
-- (NSMutableArray *) getGamePattern;
+//score
 - (void) savePattern:(NSMutableArray *)pattern;
 - (NSMutableArray *) readPattern;
 

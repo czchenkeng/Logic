@@ -15,6 +15,8 @@
 - (void) buildCities;
 - (void) buildWires;
 - (void) buildCareer;
+- (void) endCareer;
+- (void) stopAnimationsAndSound;
 - (void) showCityInProgress;
 - (void) showLastCity;
 - (void) activateWires:(BOOL)animation;
@@ -50,6 +52,9 @@ static const float POS_Y = 0;
         wiresArray = [[CCArray alloc] init];
         percentLabelArray = [[CCArray alloc] init];
         scoreLabelArray = [[CCArray alloc] init];
+        finalBlinkArray = [[CCArray alloc] init];
+        
+        endCareer = NO;
         
         currentCity = nil;
         
@@ -105,7 +110,7 @@ static const float POS_Y = 0;
         infoOff = [CCMenuItemSprite itemFromNormalSprite:buttonInfoOff selectedSprite:nil target:nil selector:nil];
         infoOn = [CCMenuItemSprite itemFromNormalSprite:buttonInfoOn selectedSprite:nil target:nil selector:nil];
         
-        CCMenuItemToggle *toggleItem = [CCMenuItemToggle itemWithTarget:self selector:@selector(infoButtonTapped:) items:infoOff, infoOn, nil];
+        toggleItem = [CCMenuItemToggle itemWithTarget:self selector:@selector(infoButtonTapped:) items:infoOff, infoOn, nil];
         CCMenu *toggleMenu = [CCMenu menuWithItems:toggleItem, nil];
         toggleMenu.position = ccp(RIGHT_BUTTON_TOP_X, RIGHT_BUTTON_TOP_Y);
         toggleItem.anchorPoint = CGPointMake(0.5, 1);
@@ -136,6 +141,10 @@ static const float POS_Y = 0;
         CCMenu *eraseMenu = [CCMenu menuWithItems:eraseCareer, nil];
         eraseMenu.position = CGPointZero;
         [infoPanel addChild:eraseMenu z:2];
+        
+        dustSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"dust1.plist"];
+        dustSystem.autoRemoveOnFinish = YES;
+        [self addChild:dustSystem z:1000];
         
         [self constructPercentLabel];
         [self constructScoreLabel];
@@ -168,7 +177,8 @@ static const float POS_Y = 0;
     
     settings startSettings = [[[GameManager sharedGameManager] gameData] getSettings];
     
-    if ([GameManager sharedGameManager].isTutor && startSettings.careerTutor == 1) {
+    //if ([GameManager sharedGameManager].isTutor && startSettings.careerTutor == 1) {
+    if (startSettings.careerTutor == 1) {
         [self setupTutor];
     }
     
@@ -211,7 +221,8 @@ static const float POS_Y = 0;
             break;
         case kButtonNeverShow:
             CCLOG(@"never show");
-            [GameManager sharedGameManager].isTutor = NO;
+            //[GameManager sharedGameManager].isTutor = NO;
+            [[[GameManager sharedGameManager] gameData] writeCareerTutor];
             break;
         default:
             CCLOG(@"Logic debug: Unknown ID, cannot tap button");
@@ -380,7 +391,7 @@ static const float POS_Y = 0;
 
 #pragma mark Info button callback
 - (void) infoButtonTapped:(id)sender {  
-    CCMenuItemToggle *toggleItem = (CCMenuItemToggle *)sender;
+    //CCMenuItemToggle *toggleItem = (CCMenuItemToggle *)sender;
     if (toggleItem.selectedItem == infoOff) {
         panelActive = NO;
         [self endAnimation];//visible NO
@@ -512,6 +523,7 @@ static const float POS_Y = 0;
 #pragma mark Build career from data
 - (void) buildCareer {
     NSMutableArray *citiesDone = [[[GameManager sharedGameManager] gameData] getCareerData];
+    citiesFull = citiesDone.count;
     for (NSMutableDictionary *dict in citiesDone) {
        for (City *city in citiesArray) {
            if (city.idCity == [[dict objectForKey:@"city"] intValue]) {
@@ -527,8 +539,166 @@ static const float POS_Y = 0;
         }
     }
     [self activateWires:NO];
+    //[self endCareer];
 }
 
+#pragma mark -
+#pragma mark END CAREER
+#pragma mark Check end career
+- (void) endCareer {
+    endCareer = YES;
+    
+    tutorLayer = [CCLayer node];
+    [self addChild:tutorLayer z:1000];
+    tutorLayer.position = ccp(tutorLayer.position.x, tutorLayer.position.y + 480);
+    tutorBlackout = [Blackout node];
+    [tutorBlackout setOpacity:128];
+    tutorBlackout.position = ccp(tutorBlackout.position.x, tutorBlackout.position.y + 270);
+    [tutorLayer addChild:tutorBlackout z:1];
+    
+    CCSprite *buttonFb = [CCSprite spriteWithSpriteFrameName:@"logik_iconfcb.png"];
+    CCSprite *buttonFbOver = [CCSprite spriteWithSpriteFrameName:@"logik_iconfcb_active.png"];
+    CCSprite *buttonMail = [CCSprite spriteWithSpriteFrameName:@"logik_iconmail.png"];
+    CCSprite *buttonMailOver = [CCSprite spriteWithSpriteFrameName:@"logik_iconmail_active.png"];
+    
+    CCMenuItem *fbItem = [CCMenuItemSprite itemFromNormalSprite:buttonFb selectedSprite:buttonFbOver target:self selector:@selector(fbMailTapped:)];
+    fbItem.tag = kButtonFb;
+    fbItem.position = ccp(70.00, 300.00);
+    
+    CCMenuItem *mailItem = [CCMenuItemSprite itemFromNormalSprite:buttonMail selectedSprite:buttonMailOver target:self selector:@selector(fbMailTapped:)];
+    mailItem.tag = kButtonMail;
+    mailItem.position = ccp(260.00, 300.00);
+    
+    CCMenu *finalMenu = [CCMenu menuWithItems:fbItem, mailItem, nil];
+    finalMenu.position = CGPointZero;
+    [tutorLayer addChild:finalMenu z:60];
+    
+    CGSize screenSize = [CCDirector sharedDirector].winSizeInPixels;
+    
+    CCLabelBMFont *superBig = [CCLabelBMFont labelWithString:@"CONGRATULATIONS!" fntFile:@"Gloucester_levelBig.fnt"];
+    superBig.scale = isRetina ? 1 : 0.5;
+    superBig.rotation = -2;
+    superBig.position = ccp(screenSize.width/2 - 15, screenSize.height - 80);
+    [tutorLayer addChild:superBig z:21];
+    
+    CCLabelBMFont *superSmall = [CCLabelBMFont labelWithString:@"You have finished CAREER PLAY" fntFile:@"Gloucester_levelSmall.fnt"];
+    superSmall.scale = isRetina ? 1 : 0.5;
+    superSmall.rotation = -2;
+    superSmall.position = ccp(screenSize.width/2 - 15, screenSize.height - 105);
+    [tutorLayer addChild:superSmall z:21];
+    
+    
+    id tutorIn = [CCMoveTo actionWithDuration:1 position:ccp(tutorLayer.position.x, tutorLayer.position.y - 480)];
+    id tutorInSeq = [CCSequence actions:tutorIn,[CCCallFunc actionWithTarget:self selector:@selector(endInCallback)], nil];
+    
+    [tutorLayer runAction:tutorInSeq];
+}
+
+- (void) endInCallback {
+    //[self schedule:@selector(startFanfare) interval:0.1];
+    [self schedule:@selector(endFanfare) interval:17];
+    fanfareSound = PLAYSOUNDEFFECT(FANFARE);
+    [[GameManager sharedGameManager] duckling:0.05];
+    [toggleItem activate];
+    
+    
+    for (City *city in citiesArray) {
+        id blinkk = [CCBlink actionWithDuration:480 blinks:1000];
+        float delay = (float)[Utils randomNumberBetween:3 andMax:9]/10;
+        id seq = [CCSequence actions:[CCDelayTime actionWithDuration:delay], blinkk, nil];
+        //[finalBlinkArray addObject:seq];
+        [city runAction:seq];
+    } 
+}
+
+//- (void) startFanfare {
+//    fanfareSound = PLAYSOUNDEFFECT(FANFARE);
+//    if (fanfareSound != 0) {
+//        [self unschedule:@selector(startFanfare)];
+//    }
+//}
+
+- (void) endFanfare {
+    [self unschedule:@selector(endFanfare)];
+    if (endCareer) {
+        [self stopAnimationsAndSound];
+    }
+}
+
+- (void) stopAnimationsAndSound {
+    endCareer = NO;
+    [[GameManager sharedGameManager] duckling:[GameManager sharedGameManager].musicVolume];
+    STOPSOUNDEFFECT(fanfareSound);
+    for (City *city in citiesArray) {
+        [city stopAllActions];
+        city.visible = YES;
+    }
+    //id tutorOut = [CCMoveTo actionWithDuration:1 position:ccp(tutorLayer.position.x, tutorLayer.position.y + 480)];
+    //[tutorLayer runAction:tutorOut];
+    singleTapGestureRecognizer.enabled = NO;
+}
+
+- (void) fbMailTapped:(CCMenuItem *)sender {
+    PLAYSOUNDEFFECT(BUTTON_CAREER_CLICK);
+    switch (sender.tag) {
+        case kButtonFb: 
+            CCLOG(@"TAP ON FB");
+            FacebookViewController *controller = [[GameManager sharedGameManager] facebookController];
+            [controller login:1000];
+            break;
+        case kButtonMail:
+            CCLOG(@"TAP ON MAIL");
+            MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+            picker.mailComposeDelegate = self;           
+            [picker setSubject:[NSString stringWithFormat:@"Are you smarter then me?"]];
+            NSArray *toRecipients = [NSArray arrayWithObject:@""];
+            [picker setToRecipients:toRecipients];
+            NSString *emailBody = [NSString stringWithFormat:@"Hi, I wonder if you are smarter then me? If you think so, try to beat my new high score %i in the iPhone&iPod game The Power of Logic! Check it on <a href=\"http://itunes.apple.com/us/app/power-of-logic/id452804654\">iTunes App Store</a>.  \n\n\n\n", 1000];
+            [picker setMessageBody:emailBody isHTML:YES];
+            
+            mailController = [[UIViewController alloc] init];
+            [mailController setView:[[CCDirector sharedDirector] openGLView]]; 
+            [mailController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+            
+            NSString *iconpath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"LogicLogo.jpg"];
+            NSData *icondata = [NSData dataWithContentsOfFile:iconpath];
+            [picker addAttachmentData:icondata mimeType:@"image/jpeg" fileName:@"Logic.jpg"];
+            
+            [mailController presentModalViewController:picker animated: YES];
+            [picker release];
+            break;
+        default:
+            CCLOG(@"Logic debug: Unknown ID, cannot tap button");
+            return;
+            break;
+    }
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {   
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            CCLOG(@"Result: canceled");
+            break;
+        case MFMailComposeResultSaved:
+            CCLOG(@"Result: saved");
+            break;
+        case MFMailComposeResultSent:
+            CCLOG(@"Result: sent");
+            break;
+        case MFMailComposeResultFailed:
+            CCLOG(@"Result: failed");
+            break;
+        default:
+            CCLOG(@"Result: not sent");
+            break;
+    }
+    [mailController dismissModalViewControllerAnimated:YES];
+    [mailController release];
+}
+
+#pragma mark -
+#pragma mark CHECKING CITIES
 #pragma mark Show city currently in progress
 - (void) showCityInProgress {
     city city = [[[GameManager sharedGameManager] gameData] getCityInProgress];
@@ -576,11 +746,22 @@ static const float POS_Y = 0;
 
 #pragma mark Last city callback
 - (void) lastCity:(id)sender data:(City *)city {
+    CCLOG(@"tak kolik je kurva tech mest? %i", citiesFull);
     PLAYSOUNDEFFECT(BULB_BLINK);
     city.isActive = YES;
     [self activateWires:YES];
-    id fadeCitySeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.4f], [CCFadeIn actionWithDuration:0.3f], nil];
+    id fadeCitySeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.4f], [CCFadeIn actionWithDuration:0.3f],
+                      [CCCallFunc actionWithTarget:self selector:@selector(checkEnd)], nil];
     [city runAction:fadeCitySeq];
+}
+
+#pragma mark Check end game
+- (void) checkEnd {
+    //if (citiesFull == citiesArray.count) {
+    CCLOG(@"CITIES - END CAREER %i", citiesFull);
+    if (citiesFull == 1) {
+        [self endCareer];
+    }
 }
 
 #pragma mark Activate wires
@@ -648,7 +829,8 @@ static const float POS_Y = 0;
 - (void) setProgress {
     if (panelActive) {
         CGRect barRect = [progressBar textureRect];
-        barRect.size.width = total / 24 * prog;
+        //barRect.size.width = total / 24 * prog;
+        barRect.size.width = 137 / 24 * prog;
         [progressBar setTextureRect: barRect];
         [self drawPercentToLabel];
         [self drawScoreToLabel];
@@ -671,6 +853,8 @@ static const float POS_Y = 0;
 #pragma mark ANALYSE CITY, RUN GAME
 #pragma mark Analyse city
 - (void) analyseCity {
+    if (selSprite.isActive)
+        return;
     BOOL active = NO;
     diff = 6;
     City *city;
@@ -790,6 +974,9 @@ static const float POS_Y = 0;
     touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
     touchLocation = [background convertToNodeSpace:touchLocation];               
     [self selectSpriteForTouch:touchLocation];
+    if (endCareer) {
+        [self stopAnimationsAndSound];
+    }
 }
 
 #pragma mark Pan handler
@@ -846,6 +1033,8 @@ static const float POS_Y = 0;
     percentLabelArray = nil;
     [scoreLabelArray release];
     scoreLabelArray = nil;
+    [finalBlinkArray release];
+    finalBlinkArray = nil;
     [super dealloc];
 }
 

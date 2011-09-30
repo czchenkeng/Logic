@@ -114,6 +114,6 @@
 #define kLoaderTexture   SD1_OR_HD1(@"Loader.plist")
 
 /* PARTICLES */
-#define kMainRainParticle SD_OR_HD(@"dest_test2.plist")
+#define kMainRainParticle SD_OR_HD(@"rain_phone.plist")
 
 

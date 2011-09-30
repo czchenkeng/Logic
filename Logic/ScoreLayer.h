@@ -39,6 +39,8 @@
     
     BOOL firstClick;
     
+    CCParticleSystem *dustSystem;
+    
 }
 
 @property (nonatomic, retain, readwrite) NSMutableArray *scores;
