@@ -41,6 +41,7 @@
     CCMenuItem *lastSender;
     
     CCParticleSystem *dustSystem;
+    CCParticleSystem *smokeSmallSystem;
 }
 
 @end

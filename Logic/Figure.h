@@ -18,11 +18,11 @@
     int place;
     int oldPlace;
     int fid;
-    BOOL isActive;//vyhodit? uz se umistene neposouvaji
+    BOOL isActive;
     BOOL isCalculated;
     BOOL isOnActiveRow;
-    NSDate *startTime;
-    NSDate *endTime;
+//    NSDate *startTime;
+//    NSDate *endTime;
 }
 
 - (Figure *) initWithFigureType:(FigureTypes)figureID;
@@ -37,8 +37,8 @@
 @property BOOL isActive;
 @property BOOL isCalculated;
 @property BOOL isOnActiveRow;
-@property (nonatomic, copy) NSDate *startTime;
-@property (nonatomic, copy) NSDate *endTime;
+//@property (nonatomic, copy) NSDate *startTime;
+//@property (nonatomic, copy) NSDate *endTime;
 
 - (void) destroy;
 

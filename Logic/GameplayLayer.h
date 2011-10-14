@@ -20,6 +20,9 @@
 #import "ScoreNumber.h"
 #import "Blackout.h"
 #import "ScoreCalc.h"
+#import "Thunderbolt.h"
+#import "RandomThunderbolt.h"
+#import "ThunderboltVO.h"
 
 @interface GameplayLayer : CCLayerColor <UIGestureRecognizerDelegate, MFMailComposeViewControllerDelegate> {
     UIViewController *mailController;
@@ -51,6 +54,7 @@
     BOOL tutorJoin;
     
     ScoreCalc *scoreCalc;
+    RandomThunderbolt *randomThunderbolt;
     
     BOOL isCareer;
     BOOL isRetina;
@@ -65,11 +69,6 @@
     
     //batches
     CCSpriteBatchNode *sphereNode;
-    
-    //lightning
-    CCSpriteBatchNode *lightningNode;
-    NSMutableArray *lightningSphereFrames;
-    CCAnimation *lightningAnim;
     
     //layers
     CCLayer *movableNode;

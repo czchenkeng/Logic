@@ -13,9 +13,6 @@
     UIPanGestureRecognizer *panGestureRecognizer;
     CGPoint zbLastPos;
     CCLayer *howTo;
-    
-    BOOL anim3;
-    BOOL anim4;
 }
 
 @end

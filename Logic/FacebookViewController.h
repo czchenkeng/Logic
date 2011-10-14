@@ -16,10 +16,11 @@
     NSArray *_permissions;
     NSString *_accessToken;
     int logicScore;
+    NSString *fbText;
 }
 
 @property (readonly) Facebook *facebook;
 
-- (void) login:(int)score;
+- (void) login:(int)score fbText:(NSString *)fbTxt;
 
 @end

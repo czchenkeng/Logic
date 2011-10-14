@@ -42,7 +42,8 @@
 //- (void) applicationDidFinishLaunching:(UIApplication*)application
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	// Init the window
+    [TestFlight takeOff:@"6eb53b9b79d36a0278584451b328849f_MTkzMjkyMDExLTA3LTI3IDEyOjI4OjMzLjgwOTExMw"];
+    // Init the window
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
 	// Try to use CADisplayLink director
@@ -107,6 +108,7 @@
 	// You can change anytime.
     [CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
 	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
+    //[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
 
 	
 	// Removes the startup flicker

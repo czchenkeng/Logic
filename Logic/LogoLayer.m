@@ -20,13 +20,13 @@
 }
 
 - (void) onEnter {    
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"Flow1280x1920_VO_ver3" ofType:@"mp4"];
+    NSString *path = [[NSBundle mainBundle] pathForResource:kFlowVideo ofType:@"mp4"];
     NSURL *movieURL = [NSURL fileURLWithPath:path];
     
     mp = [[MPMoviePlayerViewController alloc] initWithContentURL:movieURL];
     [mp moviePlayer].controlStyle = MPMovieControlStyleNone;
     
-    overlayView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+    overlayView = [[UIView alloc] initWithFrame:kVideoOverlay];
     singleTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)] autorelease];
     [overlayView addGestureRecognizer:singleTap];
     

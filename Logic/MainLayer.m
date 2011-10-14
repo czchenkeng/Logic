@@ -95,8 +95,6 @@
         toggleMenu.position = kRightNavigationButtonPosition;
         toggleItem.anchorPoint = CGPointMake(0.5, 1);
         
-        
-        
         lightOff = [CCSprite spriteWithSpriteFrameName:@"lightOff.png"];
         lightOff.anchorPoint = ccp(0.5,1);
         lightOff.position = kMainLightPosition;
@@ -548,7 +546,8 @@
 
 #pragma mark Doors out
 - (void) doorsOut {
-    CCMoveTo *doorsOut = [CCMoveTo actionWithDuration:0.4 position:ccp(doors.position.x - 195, doors.position.y)];
+    PLAYSOUNDEFFECT(DOORSLIDE);
+    CCMoveTo *doorsOut = [CCMoveTo actionWithDuration:0.4 position:kMainDoorsOutPosition];
     CCSequence *moveDoorsOutSeq = [CCSequence actions:[CCDelayTime actionWithDuration: 0.2f], doorsOut, nil];
     
     [doors runAction:moveDoorsOutSeq];
@@ -595,7 +594,8 @@
 }
 
 - (void) removeHowTo {
-    id doorsIn = [CCSequence actions:[CCDelayTime actionWithDuration:0.2],[CCMoveTo actionWithDuration:0.4 position:ccp(doors.position.x + 195, doors.position.y)], 
+    PLAYSOUNDEFFECT(DOORSLIDE);
+    id doorsIn = [CCSequence actions:[CCDelayTime actionWithDuration:0.2],[CCMoveTo actionWithDuration:0.4 position:kMainDoorsPosition], 
                   [CCCallFunc actionWithTarget:self selector:@selector(removeHowToCallback)], nil];
     [doors runAction:doorsIn];
 }

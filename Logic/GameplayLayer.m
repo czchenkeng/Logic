@@ -153,6 +153,7 @@
 - (void) createGame {
     gameInfo infoData;
     if ([[GameManager sharedGameManager] gameInProgress]) {
+        //[TestFlight passCheckpoint:[NSString stringWithFormat:@"RESUME GAME %i", currentDifficulty]];
         infoData = [[[GameManager sharedGameManager] gameData] getGameData];
         currentDifficulty = infoData.difficulty;
         activeRow = infoData.activeRow;
@@ -161,6 +162,7 @@
         gameTime = infoData.gameTime;
         tutorStep = infoData.tutor;
     } else {
+        //[TestFlight passCheckpoint:[NSString stringWithFormat:@"NEW GAME %i", currentDifficulty]];
         gameTime = 0;
         infoData.difficulty = currentDifficulty;
         infoData.activeRow = 0;
@@ -192,10 +194,18 @@
     if ([[GameManager sharedGameManager] gameInProgress]) {
         NSMutableArray *deadFigures = [[[GameManager sharedGameManager] gameData] getDeadFigures];
         if ([deadFigures count] > 0) {
+            NSMutableString *output = [[NSMutableString alloc] init];
+            int i = 0;
             for (Figure *figure in deadFigures) {
                 figure.position = figure.tempPosition;
-                [deadFiguresNode addChild:figure z:2000];
+                [deadFiguresNode addChild:figure z:1];
+                
+                NSString *json = [NSString stringWithFormat:@"{\"row\": %i, \"point\": [%f, %f] },", 
+                                  (int)floor(i/currentDifficulty) + 1, figure.position.x, figure.position.y];
+                [output appendString:json];
+                i++;                
             }
+            CCLOG(@"JSON %@", output);
         }
         
         [timer setupClock:gameTime];
@@ -209,7 +219,6 @@
                 dataRow = [[dict objectForKey:@"row"] intValue];
                 dataPlaces = [[dict objectForKey:@"places"] intValue];
                 dataColors = [[dict objectForKey:@"colors"] intValue];
-                //tohle do jedne funkce sjednotit s normalni hrou
                 CCSprite *greenLight = [greenLights objectAtIndex:dataRow];
                 if (dataPlaces > 0) {
                     id fadeToGreen = [CCFadeTo actionWithDuration:0.5f opacity:255];
@@ -274,8 +283,9 @@
     }
     
     if ([GameManager sharedGameManager].isTutor) {
-        isTutor = YES;
-        [self setupTutor];
+//        isTutor = YES;
+//        [self setupTutor];
+        isTutor = NO;
     }
     
     //[self schedule:@selector(checkSelSprite) interval:0.1];
@@ -665,9 +675,8 @@
     
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kLevelBgTexture];
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kLevelLevelTexture]; 
-    lightningNode = [CCSpriteBatchNode batchNodeWithFile:@"Lightning.pvr.ccz"];
+    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Lightning.plist"];    
     sphereNode = [CCSpriteBatchNode batchNodeWithFile:kLevelLevelPvr];
-    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Lightning.plist"];
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kLevelAnimationsTexture];
     
     NSString *bgFrame;
@@ -708,6 +717,9 @@
     
     codeBase = [CCSprite spriteWithSpriteFrameName:levelEndFrame];
     codeBase.position = kLevelCodeBasePosition;
+    //codetest
+    //codeBase.position = ccp(codeBase.position.x, codeBase.position.y - ADJUST_2(47));
+    //codetest
     
     rotorLeftLayer = [CCSprite node];
     rotorRightLayer = [CCSprite node];
@@ -730,43 +742,8 @@
     sphereLight.position = kLevelSphereLightPosition;
     [self schedule:@selector(alphaShadows:) interval:0.1];
     
-    //LIGHTNING
-//    CCSpriteBatchNode *lightningNode2;
-//    lightningNode2 = [CCSpriteBatchNode batchNodeWithFile:@"Lightning.pvr.ccz"];
-//    //[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Lightning.plist"];
-//    lightningSphereFrames  = [NSMutableArray array];//convenient?
-//    for(int i = 1; i <= 15; ++i) {
-//        [lightningSphereFrames addObject:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:[NSString stringWithFormat:@"lightning_%i.png", i]]];
-//    }
-//    
-//    lightningAnim = [CCAnimation animationWithFrames:lightningSphereFrames delay:0.075f];
-//    id lSeq = [CCSequence actions:[CCAnimate actionWithAnimation:lightningAnim restoreOriginalFrame:YES], nil];
-//    
-//    id lightningAnim2 = [CCAnimation animationWithFrames:lightningSphereFrames delay:0.075f];
-//    id lSeq2 = [CCSequence actions:[CCAnimate actionWithAnimation:lightningAnim2 restoreOriginalFrame:YES], nil];
-    
-    
-//    CCSprite *lightning = [CCSprite spriteWithSpriteFrameName:@"lightning_1.png"];
-//    CCSprite *lightning2 = [CCSprite spriteWithSpriteFrameName:@"lightning_1.png"];
-//    [lightningNode addChild:lightning];
-//    [lightningNode2 addChild:lightning2];
-//    //[lightning runAction:lSeq];
-//    [lightning runAction:[CCRepeatForever actionWithAction:lSeq]];
-//    [lightning2 runAction:[CCRepeatForever actionWithAction:lSeq2]];
-    
-//    lightningNode.position = ccp(120, 240);
-//    lightningNode.scaleX = 1;
-//    lightningNode.scaleY = 0.5;
-//    lightningNode.rotation = 4;
-//    [self addChild:lightningNode z:25000];
-//    
-//    lightningNode2.position = ccp(220, 240);
-//    lightningNode2.rotation = 0;
-//    [self addChild:lightningNode2 z:25000];
-    
-    
     //SPHERE
-    morphingSphereFrames = [NSMutableArray array];//convenient?
+    morphingSphereFrames = [NSMutableArray array];
     for(int i = 1; i <= 15; ++i) {
         [morphingSphereFrames addObject:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:[NSString stringWithFormat:@"ball_anim%d.png", i]]];
     }
@@ -959,14 +936,63 @@
     [scoreTime addChild:final2ScoreLayer z:8];
     [scoreTime addChild:final2TimeLayer z:9];
     [scoreTime addChild:final3TimeLayer z:10];
-    [self addChild:pauseMenu z:20];
+    [self addChild:pauseMenu z:8000];
     [self addChild:endGameMenu z:21];
     [self addChild:scorePanel z:22];
     [self addChild:tutorLayer z:5000];
     
-    dustSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"dust1.plist"];
+    dustSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:kDustParticle];
     [self addChild:dustSystem z:1000];
+    
+    //test blesk
+//    CGPoint startPoint = ccp(250.00, 260.00);
+//    CGPoint endPoint = ccp(50.00, 460.00);
+//    
+//    CCSprite *debugStart = [CCSprite spriteWithSpriteFrameName:@"debug_center.png"];
+//    CCSprite *debugEnd = [CCSprite spriteWithSpriteFrameName:@"debug_center.png"];
+//    debugStart.position = startPoint;
+//    debugEnd.position = endPoint;
+//    
+//    Thunderbolt *t = [Thunderbolt node];
+//    [t initWithStartPoint:startPoint andEndPoint:endPoint];
+//    t.position = startPoint;
+//    [self addChild:t z:7000];
+//    [self addChild:debugStart z:7010];
+//    [self addChild:debugEnd z:7020];
+    //test blesk
+    
+    NSLog(@"BEFORE THUNDERBOLT");
+    [TestFlight passCheckpoint:[NSString stringWithFormat:@"CHECKPOINT BEFORE THUNDERBOLT"]];
+    
+    randomThunderbolt = [[RandomThunderbolt alloc] init];
+    [randomThunderbolt loadData:currentDifficulty];
+    [randomThunderbolt loadFiguresData:currentDifficulty];
+    
+    [self schedule:@selector(thunderboltRandomCallback) interval:[Utils randomNumberBetween:30 andMax:60]];
+    NSLog(@"AFTER THUNDERBOLT");
+    [TestFlight passCheckpoint:[NSString stringWithFormat:@"CHECKPOINT AFTER THUNDERBOLT"]];
 }
+
+#pragma mark Random thunderbolt callback
+- (void) thunderboltRandomCallback {
+    [self unschedule:@selector(thunderboltRandomCallback)];
+    if (isEndOfGame)
+        return;
+    [self schedule:@selector(thunderboltRandomCallback) interval:[Utils randomNumberBetween:30 andMax:60]];
+    if (activeRow == 0)
+        return;
+    
+    ThunderboltVO *tData = [randomThunderbolt getThunderbolt:activeRow];
+    NSString *tType = tData.type == 1 ? @"long_" : @"small_";
+    Thunderbolt *t = [Thunderbolt node];
+    [t initWithStartPoint:tData.startPos andEndPoint:tData.endPos andType:tType andScale:YES];
+    t.position = tData.startPos;
+    if (tData.typePos == 1)
+        [self addChild:t z:7000];
+    else
+        [movableNode addChild:t z:7000];
+}
+
 
 #pragma mark 8 figures to base 
 - (void) addFigures {    
@@ -1230,7 +1256,7 @@
         case kButtonFb: 
             CCLOG(@"TAP ON FB");
             FacebookViewController *controller = [[GameManager sharedGameManager] facebookController];
-            [controller login:score];
+            [controller login:score fbText:@"high"];
             break;
         case kButtonMail:
             CCLOG(@"TAP ON MAIL");
@@ -1239,7 +1265,7 @@
             [picker setSubject:[NSString stringWithFormat:@"Are you smarter then me?"]];
             NSArray *toRecipients = [NSArray arrayWithObject:@""];
             [picker setToRecipients:toRecipients];
-            NSString *emailBody = [NSString stringWithFormat:@"Hi, I wonder if you are smarter then me? If you think so, try to beat my new high score %i in the iPhone&iPod game The Power of Logic! Check it on <a href=\"http://itunes.apple.com/us/app/power-of-logic/id452804654\">iTunes App Store</a>.  \n\n\n\n", score];
+            NSString *emailBody = [NSString stringWithFormat:@"Hi, I wonder if you are smarter then me? If you think so, try to beat my new high score %i in the iPhone&iPod game Power of Logic! Check it on <a href=\"http://itunes.apple.com/us/app/power-of-logic/id452804654\">iTunes App Store</a>.  \n\n\n\n", score];
             [picker setMessageBody:emailBody isHTML:YES];
                 
             mailController = [[UIViewController alloc] init];
@@ -1294,6 +1320,7 @@
 #pragma mark END GAME
 #pragma mark Composite method
 - (void) endGame {
+    //[TestFlight passCheckpoint:[NSString stringWithFormat:@"END GAME %i", currentDifficulty]];
     singleTap.enabled = NO;
     tutorStep = 0;
     isTutor = NO;
@@ -1304,11 +1331,11 @@
     isMovable = NO;
     longPress.enabled = NO;
     isWinner = currentDifficulty == places ? YES : NO;
-    if (isCareer) {
+    if (isCareer) //{
         [[[GameManager sharedGameManager] gameData] updateCareerData:isWinner andScore:score + [scoreCalc getBonus]];
-    } else {
-        [[[GameManager sharedGameManager] gameData] writeScore:score + [scoreCalc getBonus] andDifficulty:currentDifficulty];
-    }
+    //} else {
+    [[[GameManager sharedGameManager] gameData] writeScore:score + [scoreCalc getBonus] andDifficulty:currentDifficulty];
+    //}
     [[GameManager sharedGameManager] stopLoopSounds];
     [self schedule:@selector(startEndGame) interval:1.00];
 }
@@ -1498,7 +1525,35 @@
     [self unschedule:@selector(deleteParticle)];
 }
 
-- (void) openLockEnded { 
+- (void) checkCode {
+    CCLOG(@"NODE Y %f", movableNode.position.y);
+    NSMutableArray *finalArray = [randomThunderbolt getRowData:activeRow];
+    for (ThunderboltVO *finalVO in finalArray) {
+//        float pos = 0.00;
+//        if (activeRow == 6) {
+//            pos = 45.00;
+//        }
+//        if (activeRow > 6) {
+//            pos = 90.00;
+//        }
+
+        
+        CGPoint startPoint = ccp(finalVO.startPos.x, 420 - movableNode.position.y);
+        CGPoint endPoint = ccp(finalVO.startPos.x, finalVO.startPos.y);
+        Thunderbolt *t = [Thunderbolt node];
+        NSString *typeT;
+        if (activeRow > 5) 
+            typeT = @"small_";
+        else
+            typeT = @"long_";
+        [t initWithStartPoint:startPoint andEndPoint:endPoint andType:typeT andScale:YES];
+        t.position = startPoint;
+        [figuresNode addChild:t z:7001];
+    }
+}
+
+- (void) openLockEnded {
+    //[self checkCode];
     float delayStep1 = 2.50;
     float delayStep2 = 3.00;
     float delayStep3 = delayStep2 + 1.00;
@@ -1756,6 +1811,7 @@
 #pragma mark END ROW
 #pragma mark Result algorithm
 - (void) endOfRow {
+    //[TestFlight passCheckpoint:[NSString stringWithFormat:@"END OF ROW %i", activeRow]];
     colors = 0;
     places = 0;
     int i = 0;
@@ -1797,6 +1853,9 @@
     } else {
         [self nextRow];
     }
+    //codetest
+    //[self checkCode];
+    //codetest
 }
 
 - (void) showResult:(int)row {
@@ -1844,7 +1903,6 @@
 }
 
 - (void) calculateScore {
-    CCLOG(@"****/n****/n****/n****/n****/n****/n****/n****/n****/n****/n****/n****/nCALCULATE SCORE****/n****/n****/n****/n****/n****/n****/n****/n****/n****/n****/n****/n");
     lastTime = timer.gameTime - lastTime;
     NSMutableArray *turn = [[NSMutableArray alloc] initWithCapacity:currentDifficulty];
     for (int i = 0; i < currentDifficulty; i++) {
@@ -1854,7 +1912,7 @@
             }
         }
     }
-    score += [scoreCalc calculateScoreWithRow:activeRow andTurn:turn andTime:lastTime];
+    score += [scoreCalc calculateScoreWithRow:activeRow andTurn:turn andTime:lastTime]*100;
     //score += [Utils randomNumberBetween:1000 andMax:2000];
     [self drawScoreToLabel:score andArray:scoreLabelArray andStyle:YES andZero:NO];    
 }
@@ -2054,6 +2112,12 @@
     
     [figuresNode reorderChild:selSprite z:sprite.zOrder - 100];
     
+    CCParticleSystem *pinclDust = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:kPinDustParticle];
+    pinclDust.autoRemoveOnFinish = YES;
+    pinclDust.position = ccp(sprite.position.x, sprite.position.y);
+    [figuresNode addChild:pinclDust];
+    
+    
     activeFigure dbFigure;
     dbFigure.fid = fid;
     dbFigure.color = sprite.currentFigure;
@@ -2196,6 +2260,17 @@
     return retval;
 }
 
+- (void) handleSwipe {
+    ThunderboltVO *startVO = [[randomThunderbolt getRowData:activeRow] objectAtIndex:0];
+    ThunderboltVO *endVO = [[randomThunderbolt getRowData:activeRow] objectAtIndex:currentDifficulty-1];
+    CGPoint startPoint = ccp(startVO.startPos.x - 7, startVO.startPos.y);
+    CGPoint endPoint = ccp(endVO.startPos.x + 7, endVO.startPos.y);
+    Thunderbolt *t = [Thunderbolt node];
+    [t initWithStartPoint:startPoint andEndPoint:endPoint andType:@"small_" andScale:YES];
+    t.position = startPoint;
+    [movableNode addChild:t z:7001];
+}
+
 #pragma mark Pan gestures handler
 - (void) handlePan:(UIPanGestureRecognizer *)recognizer {
     if (recognizer.state == UIGestureRecognizerStateBegan) {
@@ -2221,11 +2296,12 @@
         //CCLOG(@"SWIPE TRANSLATION %d", abs(translation.x));
         if (abs(translation.x) > LEVEL_SWIPE && !selSprite) {
             
-            swipeSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"Swipe.plist"];
-            swipeSystem.autoRemoveOnFinish = YES;
-            swipeSystem.position = ccp(position.x, position.y);
+//            swipeSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"Swipe.plist"];
+//            swipeSystem.autoRemoveOnFinish = YES;
+//            swipeSystem.position = ccp(position.x, position.y);
             
             if (isEndRow) {
+                [self handleSwipe];
                 PLAYSOUNDEFFECT(ROW_SWIPE);
                 if (tutorStep == 1 && activeRow == 0) {
                     [self unschedule:@selector(tutorEnable)];
@@ -2278,7 +2354,7 @@
         //CCLOG(@"co je sparkle system? %@", sparkleSystem);
         //CCLOG(@"sparkle count %i", sparkleSystem.particleCount);
         [sparkleSystem stopSystem];
-        [swipeSystem stopSystem];
+        //[swipeSystem stopSystem];
         //CCLOG(@"co je sparkle system? %@", sparkleSystem);
         if (isMovable && [movableNode numberOfRunningActions] == 0 && movableNode.position.y > jump) {
             longPress.enabled = YES;

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 #import "GameManager.h"
-#import <MediaPlayer/MediaPlayer.h>
+#import "Thunderbolt.h"
 
 @interface PreloaderLayer : CCLayerColor {
     CCSprite *factory;
@@ -24,14 +24,6 @@
     CCSprite *rucicka;
     
     CCLayer *composition;
-    
-    CGPoint controlPoint1;
-	CGPoint controlPoint2;
-	CGPoint endPosition;
-    
-    ccBezierConfig bezier;
-    
-    //MPMoviePlayerViewController *mp;
 }
 
 @end

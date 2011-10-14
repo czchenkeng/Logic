@@ -69,7 +69,10 @@
     
     CCArray *finalBlinkArray;
     BOOL endCareer;
+    BOOL endCareerRoleta;
     int citiesFull;
+    
+    BOOL careerSoundPlay;
     
     CCParticleSystem *dustSystem;
     

@@ -40,6 +40,7 @@
     BOOL firstClick;
     
     CCParticleSystem *dustSystem;
+    CCParticleSystem *smokeSmallSystem;
     
 }
 

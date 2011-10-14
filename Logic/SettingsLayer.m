@@ -7,7 +7,6 @@
 //
 
 #import "SettingsLayer.h"
-//#import "CCSlider.h"
 
 enum soundTags
 {
@@ -126,7 +125,7 @@ enum soundTags
     if (self != nil) {
         CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
         
-        dustSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"dust1.plist"];
+        dustSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:kDustParticle];
         dustSystem.autoRemoveOnFinish = YES;
         [self addChild:dustSystem z:1000];
         
@@ -328,8 +327,29 @@ enum soundTags
                 isSingleGame = YES;
             }
         }
+        
+        [self schedule:@selector(smokeSchedule) interval:3];
     }
     return self;
+}
+
+- (void) smokeSchedule {
+    [self unschedule:@selector(smokeSchedule)];
+    [self schedule:@selector(smokeSchedule) interval:12];
+    
+    smokeSmallSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:kSmokeSmallParticle];
+    smokeSmallSystem.autoRemoveOnFinish = YES;
+    smokeSmallSystem.position = kSettingsSmokeParticlePosition;
+    [self addChild:smokeSmallSystem z:1001];
+    
+    PLAYSOUNDEFFECT(SETTINGS_STEAM);
+    
+    [self schedule:@selector(smokeScheduleOut) interval:4];
+}
+
+- (void) smokeScheduleOut {
+    [self unschedule:@selector(smokeScheduleOut)];
+    [smokeSmallSystem stopSystem];
 }
 
 - (void) update:(ccTime)dt {

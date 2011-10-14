@@ -16,15 +16,10 @@
     if (self != nil) {
         CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
         
-        anim3 = YES;
-        anim4 = YES;
-        
-        CGSize screenSize = [CCDirector sharedDirector].winSize;
-        
-        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Howto.plist"];
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kHowToTexture];
         
         CCSprite *bg = [CCSprite spriteWithSpriteFrameName:@"howto_bg.png"];
-        [bg setPosition:ccp(screenSize.width/2 + 10, screenSize.height/2 - 51)];
+        [bg setPosition:kHowToBgPosition];
         [self addChild:bg z:1];
         
         howTo = [CCLayer node];
@@ -33,16 +28,16 @@
         CCSprite *sprite;
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"howto.png"];
-        [sprite setPosition:ccp(165.00, 323.50)];
+        [sprite setPosition:kHowToHeaderPosition];
         [howTo addChild:sprite z:2];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"copy.png"];
         sprite.anchorPoint = ccp(0.5, 1);
-        [sprite setPosition:ccp(170.00, 285)];
+        [sprite setPosition:kHowToCopyPosition];
         [howTo addChild:sprite z:3];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"screen.png"];
-        sprite.position = ccp(165, 165);
+        sprite.position = kHowToScreenPosition;
         sprite.scale = 0.8;
         sprite.opacity = 0;
         sprite.tag = 1;
@@ -50,61 +45,59 @@
         
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"screen_finger.png"];
-        sprite.position = ccp(165, -100);
+        sprite.position = kHowToFingerPosition;
         sprite.scale = 0.9;
         [howTo addChild:sprite z:4];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"prst.png"];
         sprite.anchorPoint = ccp(0.5, 0);
-        sprite.position = ccp(190, -153);
+        sprite.position = kHowToFinger2Position;
         sprite.scale = 0.9;
         sprite.tag = 2;
         sprite.opacity = 0;
         [howTo addChild:sprite z:5];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"pincl_1.png"];
-        sprite.position = ccp(200, -270);
+        sprite.position = kHowToPincl1Position;
         sprite.scale = 0.9;
         [howTo addChild:sprite z:5];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"red.png"];
-        sprite.position = ccp(120, -280);
+        sprite.position = kHowToRedPosition;
         sprite.scale = 1;
         sprite.opacity = 0;
         sprite.tag = 3;
         [howTo addChild:sprite z:5];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"pincl_2.png"];
-        sprite.position = ccp(200, -390);
+        sprite.position = kHowToPincl2Position;
         sprite.scale = 0.9;
         [howTo addChild:sprite z:6];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"green.png"];
-        sprite.position = ccp(120, -400);
+        sprite.position = kHowToGreenPosition;
         sprite.scale = 1;
         sprite.opacity = 0;
         sprite.tag = 4;
         [howTo addChild:sprite z:6];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"score=.png"];
-        sprite.position = ccp(165, -620);
+        sprite.position = kHowToScorePosition;
         sprite.tag = 5;
         sprite.opacity = 0;
         [howTo addChild:sprite z:7];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"logik_credits.png"];
-        [sprite setPosition:ccp(165.00, -700)];
+        sprite.position = kHowToCreditsHeaderPosition;
         [howTo addChild:sprite z:8];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"credits.png"];
         sprite.anchorPoint = ccp(0.5, 1);
-        [sprite setPosition:ccp(165.00, -738)];
+        sprite.position = kHowToCreditsCopyPosition;
         [howTo addChild:sprite z:9];
         
         [self schedule:@selector(startAnimation) interval:2];
-        //[self schedule:@selector(checkAnimations) interval:0.1];
-        
-//        id anim1 = [CCBlink actionWithDuration:1 blinks:2];
+
         id anim1FadeOut = [CCFadeTo actionWithDuration:0.75 opacity:100];
         id anim1FadeIn = [CCFadeTo actionWithDuration:0.75 opacity:255];
         id anim1Spawn1 = [CCSpawn actions:anim1FadeIn, [CCScaleTo actionWithDuration:0.75 scale:0.8], nil];
@@ -114,11 +107,11 @@
         
         CCSprite *finger = (CCSprite*)[howTo getChildByTag:2];
         id anim2FadeIn = [CCFadeTo actionWithDuration:0.0 opacity:255];
-        id anim2Move = [CCMoveTo actionWithDuration:0.5 position:ccp(finger.position.x + 50, finger.position.y)];
+        id anim2Move = [CCMoveTo actionWithDuration:0.5 position:ccp(finger.position.x + ADJUST_2(50), finger.position.y)];
         id anim2Rotate = [CCRotateTo actionWithDuration:0.5 angle:15];
         id anim2Spawn = [CCSpawn actions:anim2Move, anim2Rotate, nil];
         id anim2FadeOut = [CCFadeOut actionWithDuration:0.5];
-        id anim2Move2 = [CCMoveTo actionWithDuration:0 position:ccp(finger.position.x - 50, finger.position.y)];
+        id anim2Move2 = [CCMoveTo actionWithDuration:0 position:ccp(finger.position.x - ADJUST_2(50), finger.position.y)];
         id anim2RotateBack = [CCRotateTo actionWithDuration:0 angle:0];
         id anim2Seq = [CCSequence actions:anim2FadeIn, [CCDelayTime actionWithDuration:0.0], anim2Spawn, [CCDelayTime actionWithDuration:0.2], anim2FadeOut, anim2Move2, anim2RotateBack,
                        [CCDelayTime actionWithDuration:0.5], nil];
@@ -146,29 +139,11 @@
 }
 
 - (void) startAnimation {
-    CCMoveTo *htMove = [CCMoveTo actionWithDuration:30 position:ccp(howTo.position.x, 1369)];
+    CCMoveTo *htMove = [CCMoveTo actionWithDuration:30 position:ccp(howTo.position.x, ADJUST_2(1369))];
     htMove.tag = 100;
     [howTo runAction:htMove];
     [self unschedule:@selector(startAnimation)];
 }
-
-//- (void) checkAnimations {
-//    if (howTo.position.y > 337 && anim3) {
-//        anim3 = NO;
-//        id fade3 = [CCFadeIn actionWithDuration:0.4];
-//        CCSprite *animSprite3 = (CCSprite*)[howTo getChildByTag:3];
-//        [animSprite3 runAction:fade3];
-//    }
-//    if (howTo.position.y > 465 && anim4) {
-//        anim4 = NO;
-//        id fade4 = [CCFadeIn actionWithDuration:0.4];
-//        CCSprite *animSprite4 = (CCSprite*)[howTo getChildByTag:4];
-//        [animSprite4 runAction:fade4];
-//    }
-//    if (!anim3 && !anim4) {
-//        [self unschedule:@selector(checkAnimations)];
-//    }
-//}
 
 - (void) onEnter {
     panGestureRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanFrom:)] autorelease];
@@ -188,12 +163,7 @@
     CGPoint retval = newPos;
     retval.x = howTo.position.x;
     retval.y = MIN(-retval.y, 0);
-//    if (howTo.position.y < 1369) {
-//        retval.y = MAX(-retval.y, -1369 + winSize.height);
-//    } else {
-//        retval.y = MIN(-retval.y, 1369);
-//    }
-    retval.y = MIN(-retval.y, 1369);
+    retval.y = MIN(-retval.y, ADJUST_2(1369));
     return retval;
 }
 

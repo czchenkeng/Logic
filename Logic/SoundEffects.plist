@@ -56,6 +56,8 @@
 	</dict>
 	<key>kMainScene</key>
 	<dict>
+		<key>DOORSLIDE</key>
+		<string>Logic-main-doorslide.mp3</string>
 		<key>NAV_MAIN</key>
 		<string>Logic-main-packy.mp3</string>
 		<key>LAMP_BLINK</key>
@@ -71,11 +73,15 @@
 	<dict/>
 	<key>kPreloaderScene</key>
 	<dict>
+		<key>FLASH1</key>
+		<string>Logic-level-vyboj1_bip.mp3</string>
 		<key>ANIMATION</key>
 		<string>Logic-intro-destblesk.mp3</string>
 	</dict>
 	<key>kScoreScene</key>
 	<dict>
+		<key>SCORE_STEAM</key>
+		<string>Logic-score-steam_bip.mp3</string>
 		<key>JOYSTICK_SCORE_CLICK</key>
 		<string>Logic-score-paka_bip.mp3</string>
 		<key>BUTTON_SCORE_CLICK</key>
@@ -83,6 +89,8 @@
 	</dict>
 	<key>kSettingsScene</key>
 	<dict>
+		<key>SETTINGS_STEAM</key>
+		<string>Logic-options-steam_bip.mp3</string>
 		<key>JOYSTICK_SETTINGS_CLICK</key>
 		<string>Logic-options-paka_bip.mp3</string>
 		<key>BUTTON_SETTINGS_CLICK</key>

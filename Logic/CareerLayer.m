@@ -30,9 +30,9 @@
 - (void) handleError:(NSError *)error;
 @end
 
-static const float MIN_SCALE = 0.8;
-static const float MAX_SCALE = 1.667;
-static const float POS_X = 175;
+static const float MIN_SCALE = kCareerMinScale;
+//static const float MAX_SCALE = 1.667;
+static const float POS_X = ADJUST_2(175);
 static const float POS_Y = 0;
 
 @implementation CareerLayer
@@ -43,9 +43,9 @@ static const float POS_Y = 0;
 - (id) init {
     self = [super init];
     if (self != nil) {
-        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Career.plist"];
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kCareerTexture];
         [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
-        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"CareerHq.plist"];
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kCareerHqTexture];
         [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
         
         citiesArray = [[CCArray alloc] init];
@@ -55,12 +55,15 @@ static const float POS_Y = 0;
         finalBlinkArray = [[CCArray alloc] init];
         
         endCareer = NO;
+        endCareerRoleta = NO;
         
         currentCity = nil;
         
         blink = NO;
         
         score = 0;
+        
+        careerSoundPlay = YES;
         
         prog = 0;
         percent = 0;
@@ -84,7 +87,7 @@ static const float POS_Y = 0;
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"logik_levels_bulbon_start.png"];
         sprite.anchorPoint = ccp(0, 0);
-        sprite.position = ccp(359.5, 222);
+        sprite.position = kCareerStartBulbon;
         [background addChild:sprite z:100];
         
         sprite = [CCSprite spriteWithSpriteFrameName:@"shadow.png"];
@@ -100,7 +103,7 @@ static const float POS_Y = 0;
         CCMenuItem *backItem = [CCMenuItemSprite itemFromNormalSprite:buttonBackOff selectedSprite:buttonBackOn target:self selector:@selector(buttonTapped:)];
         backItem.tag = kButtonBack;
         backItem.anchorPoint = CGPointMake(0.5, 1);
-        backItem.position = ccp(LEFT_BUTTON_TOP_X, LEFT_BUTTON_TOP_Y);
+        backItem.position = kLeftNavigationButtonPosition;
         
         CCMenu *topMenu = [CCMenu menuWithItems:backItem, nil];
         topMenu.position = CGPointZero;
@@ -112,7 +115,7 @@ static const float POS_Y = 0;
         
         toggleItem = [CCMenuItemToggle itemWithTarget:self selector:@selector(infoButtonTapped:) items:infoOff, infoOn, nil];
         CCMenu *toggleMenu = [CCMenu menuWithItems:toggleItem, nil];
-        toggleMenu.position = ccp(RIGHT_BUTTON_TOP_X, RIGHT_BUTTON_TOP_Y);
+        toggleMenu.position = kRightNavigationButtonPosition;
         toggleItem.anchorPoint = CGPointMake(0.5, 1);
         [self addChild:toggleMenu z:4];
         
@@ -120,10 +123,10 @@ static const float POS_Y = 0;
         infoPanel = [CCSprite spriteWithSpriteFrameName:@"infoPanel.png"];        
         infoPanel.scaleY = 22;
         infoPanel.scaleX = 5;
-        [infoPanel setPosition:ccp(-850.00, 0.00)];
+        [infoPanel setPosition:kCareerInfoPanel];
         [self addChild:infoPanel z:4];
         
-        progressBar = [CCSprite spriteWithSpriteFrameName:@"progress.png"];
+        progressBar = [CCSprite spriteWithFile:@"progress.png"];
         progressBar.position = ccp(161 - progressBar.contentSize.width/2, 127);
         progressBar.anchorPoint = ccp(0, 0.5);
         total = progressBar.contentSize.width;
@@ -142,7 +145,7 @@ static const float POS_Y = 0;
         eraseMenu.position = CGPointZero;
         [infoPanel addChild:eraseMenu z:2];
         
-        dustSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"dust1.plist"];
+        dustSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:kDustParticle];
         dustSystem.autoRemoveOnFinish = YES;
         [self addChild:dustSystem z:1000];
         
@@ -196,9 +199,9 @@ static const float POS_Y = 0;
 #pragma mark -
 #pragma mark GESTURES DELEGATE METHODS
 #pragma mark Simultaneous
-- (BOOL) gestureRecognizer:pinchGestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:panGestureRecognizer {
-    return NO;
-}
+//- (BOOL) gestureRecognizer:pinchGestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:panGestureRecognizer {
+//    return NO;
+//}
 
 #pragma mark -
 #pragma mark TUTORIAL
@@ -323,7 +326,7 @@ static const float POS_Y = 0;
     
     float debugSlow = -0.40;
     
-    CCMoveTo *infoPanelMoveIn = [CCMoveTo actionWithDuration:debugSlow + 1.0 position:ccp(125.00, 98.00)];
+    CCMoveTo *infoPanelMoveIn = [CCMoveTo actionWithDuration:debugSlow + 1.0 position:kCareerPanelInPosition];
     CCScaleTo *infoPanelScaleInX = [CCScaleTo actionWithDuration:debugSlow + 1.0 scaleX:1.0 scaleY:1.0];
     CCSpawn *infoPanelSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.0f], infoPanelMoveIn, infoPanelScaleInX, nil];
     CCSequence *inSeq = [CCSequence actions:infoPanelSeq, [CCCallFunc actionWithTarget:self selector:@selector(endAnimation)], nil];
@@ -355,7 +358,7 @@ static const float POS_Y = 0;
     
     float debugSlow = -0.60;
     
-    CCMoveTo *infoPanelMoveOut = [CCMoveTo actionWithDuration:debugSlow + 1.0 position:ccp(-850.00, 0.00)];
+    CCMoveTo *infoPanelMoveOut = [CCMoveTo actionWithDuration:debugSlow + 1.0 position:kCareerPanelOutPosition];
     CCScaleTo *infoPanelScaleOutX = [CCScaleTo actionWithDuration:debugSlow + 1.0 scaleX:5 scaleY:22];
     CCSpawn *infoPanelSeqOut = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.0f], infoPanelScaleOutX, infoPanelMoveOut, nil];
     
@@ -396,6 +399,12 @@ static const float POS_Y = 0;
         panelActive = NO;
         [self endAnimation];//visible NO
         [self infoPanelOut];
+        if (endCareerRoleta) {
+            endCareerRoleta = NO;
+            id tutorOut = [CCMoveTo actionWithDuration:1 position:ccp(tutorLayer.position.x, tutorLayer.position.y + 480)];
+            
+            [tutorLayer runAction:tutorOut];
+        }
     } else if (toggleItem.selectedItem == infoOn) {
         panelActive = YES;
         [self infoPanelIn];
@@ -416,7 +425,7 @@ static const float POS_Y = 0;
 #pragma mark Construct percent Label
 - (void) constructPercentLabel {
     for (int i = 0; i<3; i++) {
-        Mask *percentMask = [Mask maskWithRect:CGRectMake(208 + 9*i, 135, 9, 18)];
+        Mask *percentMask = [Mask maskWithRect:CGRectMake(ADJUST_2(208 + 9*i), ADJUST_2(135), ADJUST_2(9), ADJUST_2(18))];
         [self addChild:percentMask z:100+i];
         PercentNumber *percentNumber = [[PercentNumber alloc] init];
         [percentMask addChild:percentNumber];
@@ -486,9 +495,9 @@ static const float POS_Y = 0;
         buttonHeight = [[cDictionary objectForKey:@"button_height"] intValue];
         city = [City spriteWithSpriteFrameName:@"logik_levels_bulbon_small.png"];
         city.anchorPoint = ccp(0, 0);
-        city.position = ccp([[lightsArray objectAtIndex:0] floatValue], [[lightsArray objectAtIndex:1] floatValue]);
-        city.buttonX = [[buttonsArray objectAtIndex:0] floatValue];
-        city.buttonY = [[buttonsArray objectAtIndex:1] floatValue];
+        city.position = ccp(ADJUST_2([[lightsArray objectAtIndex:0] floatValue]), ADJUST_2([[lightsArray objectAtIndex:1] floatValue]));
+        city.buttonX = ADJUST_2( [[buttonsArray objectAtIndex:0] floatValue] );
+        city.buttonY = ADJUST_2( [[buttonsArray objectAtIndex:1] floatValue] );
         city.belongs = [cDictionary objectForKey:@"belongs"];
         city.difficulty = [cDictionary objectForKey:@"difficulty"];
         city.idCity = [[cDictionary objectForKey:@"id"] intValue];
@@ -512,7 +521,7 @@ static const float POS_Y = 0;
         NSArray *posArray = [wDictionary objectForKey:@"position"];//convenient?
         wire = [Wire spriteWithSpriteFrameName:[NSString stringWithFormat:@"wire%i.png", i]];
         wire.anchorPoint = ccp(0, 0);
-        wire.position = ccp([[posArray objectAtIndex:0] floatValue]/2, [[posArray objectAtIndex:1] floatValue]/2);
+        wire.position = ccp(REVERSE_ADJUST_2([[posArray objectAtIndex:0] floatValue]), REVERSE_ADJUST_2([[posArray objectAtIndex:1] floatValue]));
         wire.lights = [wDictionary objectForKey:@"lights"];
         [background addChild:wire z:50];
         [wiresArray addObject:wire];
@@ -523,7 +532,7 @@ static const float POS_Y = 0;
 #pragma mark Build career from data
 - (void) buildCareer {
     NSMutableArray *citiesDone = [[[GameManager sharedGameManager] gameData] getCareerData];
-    citiesFull = citiesDone.count;
+    citiesFull = citiesDone.count + 1;
     for (NSMutableDictionary *dict in citiesDone) {
        for (City *city in citiesArray) {
            if (city.idCity == [[dict objectForKey:@"city"] intValue]) {
@@ -539,7 +548,6 @@ static const float POS_Y = 0;
         }
     }
     [self activateWires:NO];
-    //[self endCareer];
 }
 
 #pragma mark -
@@ -547,9 +555,10 @@ static const float POS_Y = 0;
 #pragma mark Check end career
 - (void) endCareer {
     endCareer = YES;
+    endCareerRoleta = YES;
     
     tutorLayer = [CCLayer node];
-    [self addChild:tutorLayer z:1000];
+    [self addChild:tutorLayer z:2];
     tutorLayer.position = ccp(tutorLayer.position.x, tutorLayer.position.y + 480);
     tutorBlackout = [Blackout node];
     [tutorBlackout setOpacity:128];
@@ -573,18 +582,20 @@ static const float POS_Y = 0;
     finalMenu.position = CGPointZero;
     [tutorLayer addChild:finalMenu z:60];
     
-    CGSize screenSize = [CCDirector sharedDirector].winSizeInPixels;
+    //CGSize screenSize = [CCDirector sharedDirector].winSizeInPixels;
     
     CCLabelBMFont *superBig = [CCLabelBMFont labelWithString:@"CONGRATULATIONS!" fntFile:@"Gloucester_levelBig.fnt"];
     superBig.scale = isRetina ? 1 : 0.5;
     superBig.rotation = -2;
-    superBig.position = ccp(screenSize.width/2 - 15, screenSize.height - 80);
+    //superBig.position = ccp(screenSize.width/2 - 15, screenSize.height - 80);
+    //superBig.anchorPoint = ccp(0, 0);
+    superBig.position = ccp(160, 400);
     [tutorLayer addChild:superBig z:21];
     
     CCLabelBMFont *superSmall = [CCLabelBMFont labelWithString:@"You have finished CAREER PLAY" fntFile:@"Gloucester_levelSmall.fnt"];
-    superSmall.scale = isRetina ? 1 : 0.5;
+    superSmall.scale = isRetina ? 0.94 : 0.47;
     superSmall.rotation = -2;
-    superSmall.position = ccp(screenSize.width/2 - 15, screenSize.height - 105);
+    superSmall.position = ccp(160, 375);
     [tutorLayer addChild:superSmall z:21];
     
     
@@ -595,28 +606,24 @@ static const float POS_Y = 0;
 }
 
 - (void) endInCallback {
-    //[self schedule:@selector(startFanfare) interval:0.1];
+    [toggleItem activate];
+    [self schedule:@selector(runParade) interval:1.5];
+}
+
+- (void) runParade {
+    [self unschedule:@selector(runParade)];
     [self schedule:@selector(endFanfare) interval:17];
     fanfareSound = PLAYSOUNDEFFECT(FANFARE);
     [[GameManager sharedGameManager] duckling:0.05];
-    [toggleItem activate];
-    
     
     for (City *city in citiesArray) {
         id blinkk = [CCBlink actionWithDuration:480 blinks:1000];
-        float delay = (float)[Utils randomNumberBetween:3 andMax:9]/10;
-        id seq = [CCSequence actions:[CCDelayTime actionWithDuration:delay], blinkk, nil];
+        //float delay = (float)[Utils randomNumberBetween:3 andMax:9]/10;
+        //id seq = [CCSequence actions:[CCDelayTime actionWithDuration:delay], blinkk, nil];
         //[finalBlinkArray addObject:seq];
-        [city runAction:seq];
-    } 
+        [city runAction:blinkk];
+    }
 }
-
-//- (void) startFanfare {
-//    fanfareSound = PLAYSOUNDEFFECT(FANFARE);
-//    if (fanfareSound != 0) {
-//        [self unschedule:@selector(startFanfare)];
-//    }
-//}
 
 - (void) endFanfare {
     [self unschedule:@selector(endFanfare)];
@@ -644,7 +651,7 @@ static const float POS_Y = 0;
         case kButtonFb: 
             CCLOG(@"TAP ON FB");
             FacebookViewController *controller = [[GameManager sharedGameManager] facebookController];
-            [controller login:1000];
+            [controller login:score fbText:@"career play"];
             break;
         case kButtonMail:
             CCLOG(@"TAP ON MAIL");
@@ -653,7 +660,7 @@ static const float POS_Y = 0;
             [picker setSubject:[NSString stringWithFormat:@"Are you smarter then me?"]];
             NSArray *toRecipients = [NSArray arrayWithObject:@""];
             [picker setToRecipients:toRecipients];
-            NSString *emailBody = [NSString stringWithFormat:@"Hi, I wonder if you are smarter then me? If you think so, try to beat my new high score %i in the iPhone&iPod game The Power of Logic! Check it on <a href=\"http://itunes.apple.com/us/app/power-of-logic/id452804654\">iTunes App Store</a>.  \n\n\n\n", 1000];
+            NSString *emailBody = [NSString stringWithFormat:@"Hi, I wonder if you are smarter then me? If you think so, try to beat my new career play score %i in the iPhone&iPod game Power of Logic! Check it on <a href=\"http://itunes.apple.com/us/app/power-of-logic/id452804654\">iTunes App Store</a>.  \n\n\n\n", score];
             [picker setMessageBody:emailBody isHTML:YES];
             
             mailController = [[UIViewController alloc] init];
@@ -746,7 +753,6 @@ static const float POS_Y = 0;
 
 #pragma mark Last city callback
 - (void) lastCity:(id)sender data:(City *)city {
-    CCLOG(@"tak kolik je kurva tech mest? %i", citiesFull);
     PLAYSOUNDEFFECT(BULB_BLINK);
     city.isActive = YES;
     [self activateWires:YES];
@@ -758,7 +764,7 @@ static const float POS_Y = 0;
 #pragma mark Check end game
 - (void) checkEnd {
     //if (citiesFull == citiesArray.count) {
-    CCLOG(@"CITIES - END CAREER %i", citiesFull);
+    //CCLOG(@"CITIES - END CAREER %i", citiesFull);
     if (citiesFull == 1) {
         [self endCareer];
     }
@@ -829,13 +835,15 @@ static const float POS_Y = 0;
 - (void) setProgress {
     if (panelActive) {
         CGRect barRect = [progressBar textureRect];
-        //barRect.size.width = total / 24 * prog;
-        barRect.size.width = 137 / 24 * prog;
-        [progressBar setTextureRect: barRect];
+        barRect.size.width = total / 24 * prog;
+        [progressBar setTextureRect:barRect];
         [self drawPercentToLabel];
         [self drawScoreToLabel];
-        scoreSound = PLAYSOUNDEFFECT(CAREER_SCORE);
-        [self schedule:@selector(stopSoundCallback) interval:1.0];
+        if (careerSoundPlay) {
+            careerSoundPlay = NO;
+            scoreSound = PLAYSOUNDEFFECT(CAREER_SCORE);
+            [self schedule:@selector(stopSoundCallback) interval:1.0];
+        }        
     }
 }
 
@@ -928,22 +936,22 @@ static const float POS_Y = 0;
     CGSize winSize = [CCDirector sharedDirector].winSize;
     CGPoint retval = newPos;
     retval.x = MIN(retval.x, POS_X);
-    retval.x = MAX(retval.x, -background.contentSize.width*0.8 + POS_X + winSize.width);
+    retval.x = MAX(retval.x, -background.contentSize.width*MIN_SCALE + POS_X + winSize.width);
     retval.y = MIN(retval.y, -POS_Y);
-    retval.y = MAX(retval.y, -background.contentSize.height*0.8 - POS_Y + winSize.height);
+    retval.y = MAX(retval.y, -background.contentSize.height*MIN_SCALE - POS_Y + winSize.height);
     return retval;
 }
 
 #pragma mark Zooming layer - pinch callback
-- (void) zoomLayer:(float)zoomScale {
-	if ((zoomBase.scale*zoomScale) <= MIN_SCALE) {
-		zoomScale = MIN_SCALE/zoomBase.scale;
-	}
-	if ((zoomBase.scale*zoomScale) >= MAX_SCALE) {
-		zoomScale =	MAX_SCALE/zoomBase.scale;
-	}
-	zoomBase.scale = zoomBase.scale*zoomScale;
-}
+//- (void) zoomLayer:(float)zoomScale {
+//	if ((zoomBase.scale*zoomScale) <= MIN_SCALE) {
+//		zoomScale = MIN_SCALE/zoomBase.scale;
+//	}
+//	if ((zoomBase.scale*zoomScale) >= MAX_SCALE) {
+//		zoomScale =	MAX_SCALE/zoomBase.scale;
+//	}
+//	zoomBase.scale = zoomBase.scale*zoomScale;
+//}
 
 #pragma mark Moving layer - pan callback
 - (void) moveBoard:(CGPoint)translation from:(CGPoint)lastLocation {
@@ -955,7 +963,7 @@ static const float POS_Y = 0;
 - (void) selectSpriteForTouch:(CGPoint)touchLocation {
     City *newSprite = nil;
     for (City *sprite in citiesArray) {
-        if (CGRectContainsPoint(CGRectMake(sprite.buttonX, sprite.buttonY, 46, 56), touchLocation)) {            
+        if (CGRectContainsPoint(CGRectMake(sprite.buttonX, sprite.buttonY, ADJUST_2(46), ADJUST_2(56)), touchLocation)) {            
             newSprite = sprite;
             break;
         }
@@ -991,16 +999,16 @@ static const float POS_Y = 0;
 }
 
 #pragma mark Pinch handler
-- (void) handlePinchFrom:(UIPinchGestureRecognizer *)recognizer {
-	if ((recognizer.state == UIGestureRecognizerStateBegan) || (recognizer.state == UIGestureRecognizerStateChanged)) {
-        float zoomScale = [recognizer scale];
-		[self zoomLayer:zoomScale];        
-		recognizer.scale = 1;
-	}
-	if (recognizer.state == UIGestureRecognizerStateEnded) {
-		zbLastPos = zoomBase.position;
-	}
-}
+//- (void) handlePinchFrom:(UIPinchGestureRecognizer *)recognizer {
+//	if ((recognizer.state == UIGestureRecognizerStateBegan) || (recognizer.state == UIGestureRecognizerStateChanged)) {
+//        float zoomScale = [recognizer scale];
+//		[self zoomLayer:zoomScale];        
+//		recognizer.scale = 1;
+//	}
+//	if (recognizer.state == UIGestureRecognizerStateEnded) {
+//		zbLastPos = zoomBase.position;
+//	}
+//}
 
 #pragma mark -
 #pragma mark Data from file - helper method

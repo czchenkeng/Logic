@@ -317,7 +317,7 @@ static const int NUM_OF_ROWS = 10;
 - (int) getBonus {
     int bonus;
     if (done) {
-        bonus = (int)ceil(5000 / (10 - totalTurns));
+        bonus = (int)ceil(5000 / (10 - totalTurns)) * 100;
     } else {
         bonus = 0;
     }

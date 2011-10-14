@@ -21,12 +21,13 @@ static NSString *kAppId = @"279570795404946";
 - (id) init {
     self = [super init];
     if (self != nil) {
-        _permissions =  [[NSArray arrayWithObjects:@"read_stream", @"publish_stream", @"offline_access",nil] retain];
+        _permissions =  [[NSArray arrayWithObjects:@"read_stream", @"publish_stream", @"offline_access", nil] retain];
     }
     return self;
 }
 
-- (void) login:(int)score {
+- (void) login:(int)score fbText:(NSString *)fbTxt {
+    fbText = fbTxt;
     logicScore = score;
     @try {
         _facebook = [[Facebook alloc] initWithAppId:kAppId];        
@@ -106,7 +107,7 @@ static NSString *kAppId = @"279570795404946";
     [newRequest setPostValue:@"" forKey:@"message"];
     [newRequest setPostValue:@"Power of Logic for iPhone&iPad" forKey:@"name"];
     [newRequest setPostValue:@"I wonder if anybody of you is smarter then me?" forKey:@"caption"];
-    [newRequest setPostValue:[NSString stringWithFormat:@"If you think so, try to beat my new high score %i in the game Power of Logic! Check it on iTunes App Store.", logicScore] forKey:@"description"];
+    [newRequest setPostValue:[NSString stringWithFormat:@"If you think so, try to beat my new %@ score %i in the game Power of Logic! Check it on iTunes App Store.", fbText, logicScore] forKey:@"description"];
     [newRequest setPostValue:@"http://itunes.apple.com/us/app/power-of-logic/id452804654" forKey:@"link"];
     [newRequest setPostValue:@"http://www.poweroflogic.net/App_PoL_icon.jpg" forKey:@"picture"];
     //[newRequest setPostValue:@"{name: \"Test another link\", link: \"http://www.apple.com\"" forKey:@"actions"];
