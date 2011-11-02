@@ -6,7 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "GameplayLayer.h"
+#import "GameLayer.h"
 
 
 @interface GameScene : CCScene {

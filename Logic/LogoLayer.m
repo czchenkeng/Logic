@@ -14,6 +14,7 @@
 - (id) init {
     self = [super init];
     if (self != nil) {
+        CCLOG(@"\n\n\n\nLOGO INIT\n\n\n\n");
         CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
     }
     return self;
@@ -42,7 +43,10 @@
 }
 
 - (void) handleSingleTap:(UITapGestureRecognizer *)recognizer {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
     [[mp moviePlayer] stop];
+    [overlayView removeFromSuperview];
+    [mp.view removeFromSuperview];
     [[GameManager sharedGameManager] runSceneWithID:kPreloaderScene andTransition:kNoTransition];
 }
 
@@ -75,6 +79,7 @@
 
 
 - (void)dealloc {
+    CCLOG(@"\n\n\n\nLOGO DEALLOC\n\n\n\n");
     CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
     [overlayView release];
     overlayView = nil;

@@ -82,25 +82,31 @@
 }
 
 - (void)onEnter {
-	[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
-    
-    switch ([[GameManager sharedGameManager] currentDifficulty]) {
-        case kEasy: 
-            [easyItem activate];
-            break;
-        case kMedium:
-            [normalItem activate];
-            break;
-        case kHard:
-            [hardItem activate];
-            break; 
-    }
+    #ifndef LITE_VERSION
+        [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+        switch ([[GameManager sharedGameManager] currentDifficulty]) {
+            case kEasy: 
+                [easyItem activate];
+                break;
+            case kMedium:
+                [normalItem activate];
+                break;
+            case kHard:
+                [hardItem activate];
+                break; 
+        }
+    #else
+       [easyItem activate]; 
+    #endif
     
 	[super onEnter];
 }
 
 - (void)onExit {
-	[[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
+    #ifndef LITE_VERSION
+        [[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
+    #endif
+	
 	[super onExit];
 }
 
@@ -116,7 +122,7 @@
         firstClick = NO;
         scores = [[[NSMutableArray alloc] init] retain];
         
-        CGRect frame = CGRectMake(30, 100, 260, 180);
+        CGRect frame = CGRectMake(ADJUST_X(30), ADJUST_Y(100), ADJUST_2(260), ADJUST_2(180));
         controller = [[ScoresListViewController alloc] init];
         
         UIView *tableContainer = [[UIView alloc] initWithFrame:frame];
@@ -244,6 +250,11 @@
         hardItem = [CCMenuItemSprite itemFromNormalSprite:buttonHardOff selectedSprite:buttonHardOn target:self selector:@selector(diffTapped:)];
         hardItem.tag = kHard;
         hardItem.position = ADJUST_CCP(ccp(205.00, 53.00));
+        
+        #ifdef LITE_VERSION
+            [normalItem setIsEnabled:NO];
+            [hardItem setIsEnabled:NO];
+        #endif
         
         PressMenu *difficultyMenu = [PressMenu menuWithItems:easyItem, normalItem, hardItem, nil];
         difficultyMenu.position = CGPointZero;

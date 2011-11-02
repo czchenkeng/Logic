@@ -13,7 +13,7 @@
 @implementation Thunderbolt
 
 - (void) initWithStartPoint:(CGPoint) startPoint andEndPoint:(CGPoint) endPoint andType:(NSString *)type andScale:(BOOL)sc {
-    thunderboltNode = [CCSpriteBatchNode batchNodeWithFile:@"Lightning.pvr.ccz"];
+    thunderboltNode = [CCSpriteBatchNode batchNodeWithFile:kThunderboltPvr];
     thunderboltFrames = [[NSMutableArray alloc] initWithCapacity:15];
     
     distance = ccpDistance(startPoint, endPoint);

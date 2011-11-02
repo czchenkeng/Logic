@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SettingsLayer.h"
-#import "MaskTest.h"
+//#import "MaskTest.h"
 
 
 @interface SettingsScene : CCScene {

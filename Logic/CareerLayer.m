@@ -28,6 +28,8 @@
 - (void) blinkCity:(City *)city;
 - (NSString *) jsonFromFile:(NSString *)file;
 - (void) handleError:(NSError *)error;
+- (void) addLiteVersion;
+- (void) infoPanelIn;
 @end
 
 static const float MIN_SCALE = kCareerMinScale;
@@ -52,7 +54,6 @@ static const float POS_Y = 0;
         wiresArray = [[CCArray alloc] init];
         percentLabelArray = [[CCArray alloc] init];
         scoreLabelArray = [[CCArray alloc] init];
-        finalBlinkArray = [[CCArray alloc] init];
         
         endCareer = NO;
         endCareerRoleta = NO;
@@ -70,7 +71,7 @@ static const float POS_Y = 0;
         panelActive = NO;
         
         CGSize screenSize = [CCDirector sharedDirector].winSizeInPixels;
-        isRetina = screenSize.height == 960.0f ? YES : NO;
+        isRetina = screenSize.height >= 960.0f ? YES : NO;
         
         zoomBase = [CCLayerColor layerWithColor:ccc4(0,0,0,0)];
 		zoomBase.position = ccp(0, 0);
@@ -97,8 +98,6 @@ static const float POS_Y = 0;
         //Back menu
         CCSprite *buttonBackOff = [CCSprite spriteWithSpriteFrameName:@"back_off.png"];
         CCSprite *buttonBackOn = [CCSprite spriteWithSpriteFrameName:@"back_on.png"];
-        CCSprite *buttonInfoOff = [CCSprite spriteWithSpriteFrameName:@"i_off.png"];
-        CCSprite *buttonInfoOn = [CCSprite spriteWithSpriteFrameName:@"i_on.png"];
         
         CCMenuItem *backItem = [CCMenuItemSprite itemFromNormalSprite:buttonBackOff selectedSprite:buttonBackOn target:self selector:@selector(buttonTapped:)];
         backItem.tag = kButtonBack;
@@ -109,15 +108,20 @@ static const float POS_Y = 0;
         topMenu.position = CGPointZero;
         [self addChild:topMenu z:3];
         
-        //Info toggle button
-        infoOff = [CCMenuItemSprite itemFromNormalSprite:buttonInfoOff selectedSprite:nil target:nil selector:nil];
-        infoOn = [CCMenuItemSprite itemFromNormalSprite:buttonInfoOn selectedSprite:nil target:nil selector:nil];
-        
-        toggleItem = [CCMenuItemToggle itemWithTarget:self selector:@selector(infoButtonTapped:) items:infoOff, infoOn, nil];
-        CCMenu *toggleMenu = [CCMenu menuWithItems:toggleItem, nil];
-        toggleMenu.position = kRightNavigationButtonPosition;
-        toggleItem.anchorPoint = CGPointMake(0.5, 1);
-        [self addChild:toggleMenu z:4];
+        #ifdef LITE_VERSION
+        #else
+            CCSprite *buttonInfoOff = [CCSprite spriteWithSpriteFrameName:@"i_off.png"];
+            CCSprite *buttonInfoOn = [CCSprite spriteWithSpriteFrameName:@"i_on.png"];
+            //Info toggle button
+            infoOff = [CCMenuItemSprite itemFromNormalSprite:buttonInfoOff selectedSprite:nil target:nil selector:nil];
+            infoOn = [CCMenuItemSprite itemFromNormalSprite:buttonInfoOn selectedSprite:nil target:nil selector:nil];
+            
+            toggleItem = [CCMenuItemToggle itemWithTarget:self selector:@selector(infoButtonTapped:) items:infoOff, infoOn, nil];
+            CCMenu *toggleMenu = [CCMenu menuWithItems:toggleItem, nil];
+            toggleMenu.position = kRightNavigationButtonPosition;
+            toggleItem.anchorPoint = CGPointMake(0.5, 1);
+            [self addChild:toggleMenu z:4];
+        #endif
         
         //Info panel
         infoPanel = [CCSprite spriteWithSpriteFrameName:@"infoPanel.png"];        
@@ -127,19 +131,19 @@ static const float POS_Y = 0;
         [self addChild:infoPanel z:4];
         
         progressBar = [CCSprite spriteWithFile:@"progress.png"];
-        progressBar.position = ccp(161 - progressBar.contentSize.width/2, 127);
+        progressBar.position = ccp(ADJUST_2(161) - progressBar.contentSize.width/2, ADJUST_2(127));
         progressBar.anchorPoint = ccp(0, 0.5);
         total = progressBar.contentSize.width;
         [infoPanel addChild:progressBar z:1];
         
-        CCSprite *buttonErase = [CCSprite spriteWithFile:@"2x2.png" rect:CGRectMake(0, 0, 111, 30)];
+        CCSprite *buttonErase = [CCSprite spriteWithFile:@"2x2.png" rect:CGRectMake(0, 0, ADJUST_2(111), ADJUST_2(30))];
         CCSprite *diod = [CCSprite spriteWithSpriteFrameName:@"dioda.png"];
         diod.anchorPoint = ccp(0, 0);
-        diod.position = ccp(-4, 4);
+        diod.position = ccp(ADJUST_2(-4), ADJUST_2(4));
         CCMenuItem *eraseCareer = [CCMenuItemSprite itemFromNormalSprite:buttonErase selectedSprite:diod target:self selector:@selector(buttonTapped:)];
         eraseCareer.tag = kButtonEraseCareer;
         eraseCareer.anchorPoint = CGPointMake(0, 0);
-        eraseCareer.position = ccp(140, 23);
+        eraseCareer.position = ccp(ADJUST_2(140), ADJUST_2(23));
         
         CCMenu *eraseMenu = [CCMenu menuWithItems:eraseCareer, nil];
         eraseMenu.position = CGPointZero;
@@ -152,47 +156,124 @@ static const float POS_Y = 0;
         [self constructPercentLabel];
         [self constructScoreLabel];
         [self buildCities];
-        [self buildWires];
-        [self buildCareer];
-        [self showCityInProgress];
-        [self showLastCity];
+        #ifdef LITE_VERSION
+            [self addLiteVersion];
+        #else
+            [self buildWires];
+            [self buildCareer];
+            [self showCityInProgress];
+            [self showLastCity];
+        #endif
     }
     return self;
 }
 
 #pragma mark -
+#pragma mark LITE VERSION
+- (void) addLiteVersion {
+    [self infoPanelIn];
+    progressBar.visible = NO;
+
+    tutorLayer = [CCLayer node];
+    [self addChild:tutorLayer z:2];
+    tutorLayer.position = ccp(tutorLayer.position.x, tutorLayer.position.y + 480);
+    tutorBlackout = [Blackout node];
+    [tutorBlackout setOpacity:128];
+    tutorBlackout.position = ccp(tutorBlackout.position.x, tutorBlackout.position.y + 270);
+    [tutorLayer addChild:tutorBlackout z:1];
+    
+    CCLabelBMFont *superBig = [CCLabelBMFont labelWithString:@"FULL VERSION" fntFile:@"Gloucester_levelBig.fnt"];
+    superBig.scale = isRetina ? 1 : 0.5;
+    superBig.rotation = -2;
+    superBig.position = ccp(160, 400);
+    [tutorLayer addChild:superBig z:21];
+    
+    CCLabelBMFont *levelsText = [CCLabelBMFont labelWithString:@"3 difficulty levels" fntFile:@"Gloucester_levelSmall.fnt"];
+    levelsText.scale = isRetina ? 0.94 : 0.47;
+    levelsText.anchorPoint = ccp(0, 0);
+    levelsText.rotation = -2;
+    levelsText.position = ccp(140, 358);
+    [tutorLayer addChild:levelsText z:21];
+    
+    CCLabelBMFont *careerText = [CCLabelBMFont labelWithString:@"career play" fntFile:@"Gloucester_levelSmall.fnt"];
+    careerText.scale = isRetina ? 0.94 : 0.47;
+    careerText.anchorPoint = ccp(0, 0);
+    careerText.rotation = -2;
+    careerText.position = ccp(140, 323);
+    [tutorLayer addChild:careerText z:21];
+    
+    CCLabelBMFont *adsText = [CCLabelBMFont labelWithString:@"ads free" fntFile:@"Gloucester_levelSmall.fnt"];
+    adsText.scale = isRetina ? 0.94 : 0.47;
+    adsText.anchorPoint = ccp(0, 0);
+    adsText.rotation = -2;
+    adsText.position = ccp(140, 288);
+    [tutorLayer addChild:adsText z:21];
+    
+    CCSprite *pinch;
+    
+    pinch = [CCSprite spriteWithSpriteFrameName:@"pinchRed.png"];
+    pinch.scale = 0.7;
+    pinch.position = ccp(120, 365);
+    [tutorLayer addChild:pinch z:30];
+    
+    pinch = [CCSprite spriteWithSpriteFrameName:@"pinchBlue.png"];
+    pinch.scale = 0.7;
+    pinch.position = ccp(120, 330);
+    [tutorLayer addChild:pinch z:30];
+    
+    pinch = [CCSprite spriteWithSpriteFrameName:@"pinchYellow.png"];
+    pinch.scale = 0.7;
+    pinch.position = ccp(120, 295);
+    [tutorLayer addChild:pinch z:30];
+    
+    id tutorIn = [CCMoveTo actionWithDuration:1 position:ccp(tutorLayer.position.x, tutorLayer.position.y - 480)];
+    id tutorInSeq = [CCSequence actions:tutorIn, nil];
+    
+    [tutorLayer runAction:tutorInSeq];
+
+}
+
+#pragma mark -
 #pragma mark ENTER & EXIT
 - (void) onEnter {
-    panGestureRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanFrom:)] autorelease];
-    //pinchGestureRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)] autorelease];
+    #ifdef LITE_VERSION
     
-    singleTapGestureRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTapFrom:)] autorelease];
-    singleTapGestureRecognizer.numberOfTapsRequired = 1;
-    singleTapGestureRecognizer.numberOfTouchesRequired = 1;
-    
-    [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:singleTapGestureRecognizer];
-    [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:panGestureRecognizer];
-    //[[[CCDirector sharedDirector] openGLView] addGestureRecognizer:pinchGestureRecognizer];
-    
-    singleTapGestureRecognizer.cancelsTouchesInView = NO;
-    
-    pinchGestureRecognizer.delegate = self;
-    
-    settings startSettings = [[[GameManager sharedGameManager] gameData] getSettings];
-    
-    //if ([GameManager sharedGameManager].isTutor && startSettings.careerTutor == 1) {
-    if (startSettings.careerTutor == 1) {
-        [self setupTutor];
-    }
+    #else
+        panGestureRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanFrom:)] autorelease];
+        //pinchGestureRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)] autorelease];
+        
+        singleTapGestureRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTapFrom:)] autorelease];
+        singleTapGestureRecognizer.numberOfTapsRequired = 1;
+        singleTapGestureRecognizer.numberOfTouchesRequired = 1;
+        
+        [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:singleTapGestureRecognizer];
+        [[[CCDirector sharedDirector] openGLView] addGestureRecognizer:panGestureRecognizer];
+        //[[[CCDirector sharedDirector] openGLView] addGestureRecognizer:pinchGestureRecognizer];
+        
+        singleTapGestureRecognizer.cancelsTouchesInView = NO;
+        
+        pinchGestureRecognizer.delegate = self;
+        
+        settings startSettings = [[[GameManager sharedGameManager] gameData] getSettings];
+        
+        //if ([GameManager sharedGameManager].isTutor && startSettings.careerTutor == 1) {
+        if (startSettings.careerTutor == 1) {
+            [self setupTutor];
+        }    
+    #endif
     
     [super onEnter];
 }
 
 - (void) onExit {
-    [[GameManager sharedGameManager] duckling:[GameManager sharedGameManager].musicVolume];
-    [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:singleTapGestureRecognizer];
-    [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:panGestureRecognizer];
-    //[[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:pinchGestureRecognizer];
+    #ifdef LITE_VERSION
+    
+    #else
+        [[GameManager sharedGameManager] duckling:[GameManager sharedGameManager].musicVolume];
+        [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:singleTapGestureRecognizer];
+        [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:panGestureRecognizer];
+        //[[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:pinchGestureRecognizer];
+    #endif
     [super onExit];
 }
 
@@ -243,12 +324,13 @@ static const float POS_Y = 0;
 }
 
 - (void) setupTutor {
+    CGSize screenSize = [CCDirector sharedDirector].winSize;
     tutorLayer = [CCLayer node];
     [self addChild:tutorLayer z:1000];
-    tutorLayer.position = ccp(tutorLayer.position.x, tutorLayer.position.y + 480);
+    tutorLayer.position = ccp(tutorLayer.position.x, tutorLayer.position.y + screenSize.height);
     tutorBlackout = [Blackout node];
     [tutorBlackout setOpacity:128];
-    tutorBlackout.position = ccp(tutorBlackout.position.x, tutorBlackout.position.y + 270);
+    tutorBlackout.position = ccp(tutorBlackout.position.x, tutorBlackout.position.y + screenSize.height/2 + ADJUST_2(30));
     [tutorLayer addChild:tutorBlackout z:1];
     
     CCSprite *buttonSkipOff = [CCSprite spriteWithSpriteFrameName:@"end_off.png"];
@@ -260,9 +342,9 @@ static const float POS_Y = 0;
     CCMenuItem *tutorItem = [CCMenuItemSprite itemFromNormalSprite:buttonTutorOff selectedSprite:buttonTutorOn target:self selector:@selector(skipTutorTapped:)];
     
     skipItem.tag = kButtonSkipTutor;
-    skipItem.position = ccp(287.00, 481.00 - tutorItem.contentSize.height/2);        
+    skipItem.position = ccp(ADJUST_X_BUTTON_RIGHT(287.00), ADJUST_Y_MASK(481.00) - tutorItem.contentSize.height/2);        
     tutorItem.tag = kButtonNeverShow;
-    tutorItem.position = ccp(33, 481.00 - skipItem.contentSize.height/2);
+    tutorItem.position = ccp(ADJUST_2(33), ADJUST_Y_MASK(481.00) - skipItem.contentSize.height/2);
     
     CCMenu *tutorMenu = [CCMenu menuWithItems:skipItem, tutorItem, nil];
     tutorMenu.position = CGPointZero;
@@ -271,34 +353,33 @@ static const float POS_Y = 0;
     
     CCLabelBMFont *skipTxt = [CCLabelBMFont labelWithString:@"skip" fntFile:@"Gloucester_levelBig.fnt"];
     skipTxt.scale = isRetina ? 1 : 0.5;
-    skipTxt.position = ccp(240, skipItem.position.y);
+    skipTxt.position = ccp(ADJUST_X_BUTTON_RIGHT(240), skipItem.position.y);
     [tutorLayer addChild:skipTxt z:3];
     
     CCLabelBMFont *neverTxt = [CCLabelBMFont labelWithString:@"never show" fntFile:@"Gloucester_levelBig.fnt"];
     neverTxt.scale = isRetina ? 1 : 0.5;
-    neverTxt.position = ccp(108, tutorItem.position.y);
+    neverTxt.position = ccp(ADJUST_2(108), tutorItem.position.y);
     [tutorLayer addChild:neverTxt z:4];
     
     tutorTxt =  [CCLabelBMFont labelWithString:@"" fntFile:@"Gloucester_levelTutor.fnt"];
     tutorTxt.rotation = -1;
     tutorTxt.scale = isRetina ? 1 : 0.5;
-    tutorTxt.position = ccp(150, 345);
+    tutorTxt.position = ADJUST_CCP(ccp(150, 345));
     [tutorLayer addChild:tutorTxt z:5];
     [tutorTxt setString:@"Tap the bulb to light\nup next city"];
     
     tutorFinger = [CCSprite spriteWithSpriteFrameName:@"prst.png"];
     [tutorLayer addChild:tutorFinger z:6];
-    tutorFinger.position = ccp(310, 150);
+    tutorFinger.position = ADJUST_CCP(ccp(310, 150));
     tutorFinger.rotation = -20;
     tutorFinger.visible = YES;
     tutorFinger.opacity = 0;
     
-    id moveFinger = [CCSequence actions:[CCDelayTime actionWithDuration:1], [CCFadeIn actionWithDuration:0.1], [CCMoveTo actionWithDuration:1 position:ccp(290, 190)],[CCCallFunc actionWithTarget:self selector:@selector(fingerCallback)] ,nil];
+    id moveFinger = [CCSequence actions:[CCDelayTime actionWithDuration:1], [CCFadeIn actionWithDuration:0.1], [CCMoveTo actionWithDuration:1 position:ADJUST_CCP(ccp(290, 190))],[CCCallFunc actionWithTarget:self selector:@selector(fingerCallback)] ,nil];
     [tutorFinger runAction:moveFinger];
     [self schedule:@selector(disableTutor) interval:6];
-    //tutorSound = PLAYSOUNDEFFECT(TUTOR7);
     
-    id tutorIn = [CCMoveTo actionWithDuration:1 position:ccp(tutorLayer.position.x, tutorLayer.position.y - 480)];
+    id tutorIn = [CCMoveTo actionWithDuration:1 position:ccp(tutorLayer.position.x, tutorLayer.position.y - screenSize.height)];
     id tutorInSeq = [CCSequence actions:tutorIn,[CCCallFunc actionWithTarget:self selector:@selector(tutorInCallback)], nil];
     
     [tutorLayer runAction:tutorInSeq];
@@ -370,6 +451,8 @@ static const float POS_Y = 0;
 #pragma mark Button back & erase career
 - (void) buttonTapped:(CCMenuItem *)sender {
     PLAYSOUNDEFFECT(BUTTON_CAREER_CLICK);
+    UIAlertView *alert;
+    alert = [[[UIAlertView alloc] initWithTitle:@"ERASE CAREER" message:@"Do you really want to erase your career?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil] autorelease];
     switch (sender.tag) {
         case kButtonBack:
             if ([GameManager sharedGameManager].oldScene == kMainScene || [GameManager sharedGameManager].oldScene == kGameScene) {
@@ -379,11 +462,13 @@ static const float POS_Y = 0;
             }
             break;
         case kButtonEraseCareer:
-            CCLOG(@"UIAlertView");
-            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"ERASE CAREER" message:@"Do you really want to erase your career?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil] autorelease];
-            [alert addButtonWithTitle:@"Yes"];
-            [alert setTag:1];
-            [alert show];
+            #ifdef LITE_VERSION
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/us/app/power-of-logic/id452804654"]];
+            #else
+                [alert addButtonWithTitle:@"Yes"];
+                [alert setTag:1];
+                [alert show];
+            #endif
             break;
         default:
             CCLOG(@"Logic debug: Unknown ID, cannot tap button");
@@ -425,7 +510,7 @@ static const float POS_Y = 0;
 #pragma mark Construct percent Label
 - (void) constructPercentLabel {
     for (int i = 0; i<3; i++) {
-        Mask *percentMask = [Mask maskWithRect:CGRectMake(ADJUST_2(208 + 9*i), ADJUST_2(135), ADJUST_2(9), ADJUST_2(18))];
+        Mask *percentMask = [Mask maskWithRect:CGRectMake(ADJUST_X(208) + 9*ADJUST_2(i), ADJUST_2(135), ADJUST_2(9), ADJUST_2(18))];
         [self addChild:percentMask z:100+i];
         PercentNumber *percentNumber = [[PercentNumber alloc] init];
         [percentMask addChild:percentNumber];
@@ -437,7 +522,7 @@ static const float POS_Y = 0;
 
 - (void) constructScoreLabel {
     for (int i = 0; i<8; i++) {
-        Mask *percentMask = [Mask maskWithRect:CGRectMake(170 + 9*i, 90, 9, 18)];
+        Mask *percentMask = [Mask maskWithRect:CGRectMake(ADJUST_X(170) + 9*ADJUST_2(i), ADJUST_2(90), ADJUST_2(9), ADJUST_2(18))];
         [self addChild:percentMask z:200+i];
         PercentNumber *percentNumber = [[PercentNumber alloc] init];
         [percentMask addChild:percentNumber];
@@ -489,8 +574,8 @@ static const float POS_Y = 0;
     NSArray *dataArray = [resultsDictionary objectForKey:@"cities"];
     City *city;
     for (NSDictionary *cDictionary in dataArray) {
-        NSArray *lightsArray = [cDictionary objectForKey:@"light"];//convenient?
-        NSArray *buttonsArray = [cDictionary objectForKey:@"button"];//convenient?
+        NSArray *lightsArray = [cDictionary objectForKey:@"light"];
+        NSArray *buttonsArray = [cDictionary objectForKey:@"button"];
         buttonWidth = [[cDictionary objectForKey:@"button_width"] intValue];
         buttonHeight = [[cDictionary objectForKey:@"button_height"] intValue];
         city = [City spriteWithSpriteFrameName:@"logik_levels_bulbon_small.png"];
@@ -557,12 +642,13 @@ static const float POS_Y = 0;
     endCareer = YES;
     endCareerRoleta = YES;
     
+    CGSize screenSize = [CCDirector sharedDirector].winSize;
     tutorLayer = [CCLayer node];
     [self addChild:tutorLayer z:2];
-    tutorLayer.position = ccp(tutorLayer.position.x, tutorLayer.position.y + 480);
+    tutorLayer.position = ccp(tutorLayer.position.x, tutorLayer.position.y + screenSize.height);
     tutorBlackout = [Blackout node];
     [tutorBlackout setOpacity:128];
-    tutorBlackout.position = ccp(tutorBlackout.position.x, tutorBlackout.position.y + 270);
+    tutorBlackout.position = ccp(tutorBlackout.position.x, tutorBlackout.position.y + screenSize.height/2 + ADJUST_2(30));
     [tutorLayer addChild:tutorBlackout z:1];
     
     CCSprite *buttonFb = [CCSprite spriteWithSpriteFrameName:@"logik_iconfcb.png"];
@@ -572,11 +658,11 @@ static const float POS_Y = 0;
     
     CCMenuItem *fbItem = [CCMenuItemSprite itemFromNormalSprite:buttonFb selectedSprite:buttonFbOver target:self selector:@selector(fbMailTapped:)];
     fbItem.tag = kButtonFb;
-    fbItem.position = ccp(70.00, 300.00);
+    fbItem.position = ADJUST_CCP(ccp(70.00, 300.00));
     
     CCMenuItem *mailItem = [CCMenuItemSprite itemFromNormalSprite:buttonMail selectedSprite:buttonMailOver target:self selector:@selector(fbMailTapped:)];
     mailItem.tag = kButtonMail;
-    mailItem.position = ccp(260.00, 300.00);
+    mailItem.position = ADJUST_CCP(ccp(260.00, 300.00));
     
     CCMenu *finalMenu = [CCMenu menuWithItems:fbItem, mailItem, nil];
     finalMenu.position = CGPointZero;
@@ -589,17 +675,17 @@ static const float POS_Y = 0;
     superBig.rotation = -2;
     //superBig.position = ccp(screenSize.width/2 - 15, screenSize.height - 80);
     //superBig.anchorPoint = ccp(0, 0);
-    superBig.position = ccp(160, 400);
+    superBig.position = ADJUST_CCP(ccp(160, 400));
     [tutorLayer addChild:superBig z:21];
     
     CCLabelBMFont *superSmall = [CCLabelBMFont labelWithString:@"You have finished CAREER PLAY" fntFile:@"Gloucester_levelSmall.fnt"];
     superSmall.scale = isRetina ? 0.94 : 0.47;
     superSmall.rotation = -2;
-    superSmall.position = ccp(160, 375);
+    superSmall.position = ADJUST_CCP(ccp(160, 375));
     [tutorLayer addChild:superSmall z:21];
     
     
-    id tutorIn = [CCMoveTo actionWithDuration:1 position:ccp(tutorLayer.position.x, tutorLayer.position.y - 480)];
+    id tutorIn = [CCMoveTo actionWithDuration:1 position:ccp(tutorLayer.position.x, tutorLayer.position.y - screenSize.height)];
     id tutorInSeq = [CCSequence actions:tutorIn,[CCCallFunc actionWithTarget:self selector:@selector(endInCallback)], nil];
     
     [tutorLayer runAction:tutorInSeq];
@@ -620,7 +706,6 @@ static const float POS_Y = 0;
         id blinkk = [CCBlink actionWithDuration:480 blinks:1000];
         //float delay = (float)[Utils randomNumberBetween:3 andMax:9]/10;
         //id seq = [CCSequence actions:[CCDelayTime actionWithDuration:delay], blinkk, nil];
-        //[finalBlinkArray addObject:seq];
         [city runAction:blinkk];
     }
 }
@@ -912,7 +997,6 @@ static const float POS_Y = 0;
 
 #pragma mark Run career game
 - (void) runGame {
-    CCLOG(@"RUN GAME");
     //delete career game eventually in progress
     [[[GameManager sharedGameManager] gameData] updateCareerData:NO andScore:0];
     [[[GameManager sharedGameManager] gameData] gameDataCleanup];
@@ -1041,8 +1125,6 @@ static const float POS_Y = 0;
     percentLabelArray = nil;
     [scoreLabelArray release];
     scoreLabelArray = nil;
-    [finalBlinkArray release];
-    finalBlinkArray = nil;
     [super dealloc];
 }
 

@@ -245,7 +245,6 @@ static GameManager* _sharedGameManager = nil;
     
     if (sceneToRun == nil) {
         // Revert back, since no new scene was found
-        CCLOG(@"je tady?");
         currentScene = oldScene;
         return;
     }
@@ -263,10 +262,12 @@ static GameManager* _sharedGameManager = nil;
         
         switch (transitionID) {
             case kSlideInR: 
-                transition = [CCTransitionSlideInR transitionWithDuration:timeTransition scene:sceneToRun];
+                //transition = [CCTransitionSlideInR transitionWithDuration:timeTransition scene:sceneToRun];
+                transition = [CCTransitionFade transitionWithDuration:timeTransition scene:sceneToRun];
                 break;
             case kSlideInL: 
-                transition = [CCTransitionSlideInL transitionWithDuration:timeTransition scene:sceneToRun];
+                //transition = [CCTransitionSlideInL transitionWithDuration:timeTransition scene:sceneToRun];
+                transition = [CCTransitionFade transitionWithDuration:timeTransition scene:sceneToRun];
                 break;
             case kLogicTrans:
                 transition = [CCTransitionLogic transitionWithDuration:0.7 scene:sceneToRun];

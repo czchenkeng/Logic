@@ -111,12 +111,16 @@ enum soundTags
 }
 
 - (void)onEnter {
-	[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+    #ifndef LITE_VERSION
+        [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+    #endif
 	[super onEnter];
 }
 
 - (void)onExit {
-	[[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
+    #ifndef LITE_VERSION
+        [[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
+    #endif
 	[super onExit];
 }
 
@@ -303,6 +307,11 @@ enum soundTags
         hardItem.tag = kHard;
         hardItem.position = ADJUST_CCP(ccp(205.00, 53.00));
         
+        #ifdef LITE_VERSION
+            [normalItem setIsEnabled:NO];
+            [hardItem setIsEnabled:NO];
+        #endif
+        
         PressMenu *difficultyMenu = [PressMenu menuWithItems:easyItem, normalItem, hardItem, mute, nil];
         difficultyMenu.position = CGPointZero;
         [self addChild:difficultyMenu z:20];
@@ -432,6 +441,7 @@ enum soundTags
 }
 
 - (void) dealloc {
+    CCLOG(@"\n\n\n\n\n\nDEALLOC SETTINGS\n\n\n\n\n\n");
     CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
     [joysticks release];
     joysticks = nil;

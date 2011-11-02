@@ -13,6 +13,9 @@
 #import "Lightning.h"
 #import "Utils.h"
 
+#import "GADBannerView.h"
+#import "RootViewController.h"
+
 @interface MainLayer : CCLayerColor {
     int counter;
     int flag;
@@ -47,6 +50,9 @@
     CCMenu *topMenu;
     
     CCParticleSystem *system;
+    
+    GADBannerView *bannerView;
+    RootViewController *controller;
 }
 
 @end

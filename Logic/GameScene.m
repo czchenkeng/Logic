@@ -15,7 +15,7 @@
     self = [super init];
     if (self != nil) {
         CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
-        GameplayLayer* gameLayer = [GameplayLayer node];
+        GameLayer *gameLayer = [GameLayer node];
         [self addChild:gameLayer z:1 tag:1];
     }
     return self;

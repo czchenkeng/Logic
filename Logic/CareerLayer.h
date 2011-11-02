@@ -67,7 +67,6 @@
     BOOL blink;
     BOOL isRetina;
     
-    CCArray *finalBlinkArray;
     BOOL endCareer;
     BOOL endCareerRoleta;
     int citiesFull;

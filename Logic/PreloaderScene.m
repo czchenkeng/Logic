@@ -23,7 +23,6 @@
 
 - (void) dealloc {
     CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
-    
     [super dealloc];
 }
 

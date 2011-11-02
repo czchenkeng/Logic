@@ -1,5 +1,14 @@
-//#define IS_IPAD() (YES)
-#define IS_IPAD() (NO)
+#ifdef HD_VERSION
+    #define IS_IPAD() (YES)
+    #define FLURRY_KEY @"5TYI8Q5VSL3P1ZK1LYVM"
+#else
+    #define IS_IPAD() (NO)
+    #ifdef LITE_VERSION
+        #define FLURRY_KEY @"5Q2159WHDQQI8879Q35D"
+    #else
+        #define FLURRY_KEY @"B7MQTF5UJ7QYMXQQ5AGW"
+    #endif
+#endif
 
 #define kXoffsetiPad        64
 #define kYoffsetiPad        32
@@ -24,6 +33,9 @@
 //COMMON
 #define ADJUST_X(__x__) (IS_IPAD() == YES ? ( __x__ * 2 ) + kXoffsetiPad : __x__)
 #define ADJUST_Y(__y__) (IS_IPAD() == YES ? ( __y__ * 2 ) + kYoffsetiPad : __y__)
+#define ADJUST_Y_MASK(__y__) (IS_IPAD() == YES ? ( __y__ * 2 ) + kYoffsetiPad*2 : __y__)
+
+#define ADJUST_X_BUTTON_RIGHT(__x__) (IS_IPAD() == YES ? ( __x__ * 2 ) + kXoffsetiPad*2 : __x__)
 
 #define ADJUST_2(__v__) (IS_IPAD() == YES ? ( __v__ * 2 ) : __v__)
 #define REVERSE_ADJUST_2(__v__) (IS_IPAD() == YES ? ( __v__ ) : __v__ / 2)
@@ -117,6 +129,16 @@
 #define kLevelSphereLightPosition   ADJUST_CCP( ccp(150.00, 411.00) )
 #define kLevelMantlePosition        ADJUST_CCP( ccp(160.00, 456.00) )
 #define kLevelSpherePosition        ADJUST_CCP( ccp(152, 474) )
+
+#define kScorePanelInPosition      ADJUST_CCP( ccp(102.00, 220.00) )
+#define kScorePanelOutPosition     ADJUST_CCP( ccp(-720.00, 0.00) )
+#define kReplayPanelInPosition      ADJUST_CCP( ccp(225.50, 235.00) )
+#define kReplayPanelOutPosition     ADJUST_CCP( ccp(1000.00, 367.00) )
+#define kGameMenuPanelInPosition      ADJUST_CCP( ccp(100.00, 161.00) )
+#define kGameMenuPanelOutPosition     ADJUST_CCP( ccp(-700.00, 0.00) )
+#define kContinuePanelInPosition      ADJUST_CCP( ccp(225.50, 235.00) )
+#define kContinuePanelOutPosition     ADJUST_CCP( ccp(1000.00, 367.00) )
+
 //Settings scene
 #define kSettingsScoreItemPosition   ADJUST_CCP( ccp(56.50, 377.50) )
 #define kSettingsCareerItemPosition  ADJUST_CCP( ccp(56.50, 323.50) )
@@ -133,12 +155,14 @@
 #define kCareerPanelInPosition      ADJUST_CCP_MAIN_SCENE( ccp(125.00, 98.00) )
 #define kCareerPanelOutPosition      ADJUST_CCP_MAIN_SCENE( ccp(-850.00, 0.00) )
 
+
 /* ANIMATIONS */
 //Main scene
 #define kMainLogoShadowMoveLeft     ADJUST_CCP_MAIN_SCENE( ccp(kScreenCenterX - 5, kScreenCenterY + 162) )
 #define kMainLogoShadowMoveRight    ADJUST_CCP_MAIN_SCENE( ccp(kScreenCenterX + 5, kScreenCenterY + 162) )
 
 /* TEXTURE FILES */
+#define kThunderboltsTexture SD_OR_HD(@"Lightning.plist")
 //Video
 #define kFlowVideo SDVIDEO_OR_HDVIDEO(@"Flow_video")
 //Main scene
@@ -151,6 +175,7 @@
 #define kLevelAnimationsTexture SD_OR_HD(@"Animations.plist")
 #define kLevelLevelTexture SD_OR_HD(@"Level.plist")
 #define kLevelLevelPvr SDPVR_OR_HDPVR(@"Animations.pvr.ccz")
+#define kThunderboltPvr SDPVR_OR_HDPVR(@"Lightning.pvr.ccz")
 //Settings
 #define kSettingsTexture   SD_OR_HD(@"Settings.plist")
 //Score
@@ -165,7 +190,10 @@
 /* PARTICLES */
 #define kMainRainParticle SD_OR_HD(@"rain.plist")
 #define kDustParticle SD_OR_HD(@"dust.plist")
+#define kSmokeParticle SD_OR_HD(@"smoke2.plist")
 #define kSmokeSmallParticle SD_OR_HD(@"smokeSmall.plist")
 #define kVyronParticle SD_OR_HD(@"vyron.plist")
 #define kPinDustParticle SD_OR_HD(@"pin_dust.plist")
+#define kConfirmParticle SD_OR_HD(@"confirm.plist")
+
 

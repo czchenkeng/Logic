@@ -132,8 +132,8 @@
 - (void) runThunderbolt {
     [self unschedule:@selector(runThunderbolt)];
     Thunderbolt *t = [Thunderbolt node];
-    [t initWithStartPoint:ccp(50, 530) andEndPoint:ccp(136, 63) andType:@"long_" andScale:YES];
-    t.position = ccp(50, 530);
+    [t initWithStartPoint:ADJUST_CCP(ccp(50, 530)) andEndPoint:ADJUST_CCP(ccp(136, 63)) andType:@"long_" andScale:YES];
+    t.position = ADJUST_CCP(ccp(50, 530));
     [self addChild:t z:1000];
 }
 
@@ -166,11 +166,12 @@
 
 - (id) init {
     self = [super initWithColor:ccc4(12,16,16,255)];
-    if (self != nil) {        
+    if (self != nil) {
+        CCLOG(@"\n\n\n\nPRELOADER INIT\n\n\n\n");
         CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
         [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kLoaderTexture];
-        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Lightning.plist"];
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kThunderboltsTexture];
         
         composition = [CCLayer node];
         [self addChild:composition z:1];
@@ -238,8 +239,10 @@
 
 
 - (void)dealloc {
+    CCLOG(@"\n\n\n\n\n\nDEALLOC PRELOADER\n\n\n\n\n\n");
     CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
     //[[CCTextureCache sharedTextureCache] removeUnusedTextures];
+    [[CCTextureCache sharedTextureCache] removeAllTextures];
     [super dealloc];
 }
 @end

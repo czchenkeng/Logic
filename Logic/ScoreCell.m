@@ -43,28 +43,28 @@
 //		[self.scoreLabel release];
         
         self.idLabel = [[[ShadowedLabel alloc] init] autorelease];
-        self.idLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:14];
+        self.idLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:ADJUST_2(14)];
         self.idLabel.backgroundColor = [UIColor clearColor];
         self.idLabel.textColor = [UIColor whiteColor];
         [myContentView addSubview:self.idLabel];
 
         
         self.scoreLabel = [[[ShadowedLabel alloc] init] autorelease];
-        self.scoreLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:14];
+        self.scoreLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:ADJUST_2(14)];
         self.scoreLabel.backgroundColor = [UIColor clearColor];
         self.scoreLabel.textAlignment = UITextAlignmentRight;
         self.scoreLabel.textColor = [UIColor whiteColor];
         [myContentView addSubview:self.scoreLabel];
         
         self.timeLabel = [[[ShadowedLabel alloc] init] autorelease];
-        self.timeLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:14];
+        self.timeLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:ADJUST_2(14)];
         self.timeLabel.backgroundColor = [UIColor clearColor];
         self.timeLabel.textAlignment = UITextAlignmentRight;
         self.timeLabel.textColor = [UIColor whiteColor];
         [myContentView addSubview:self.timeLabel];
         
         self.dateLabel = [[[ShadowedLabel alloc] init] autorelease];
-        self.dateLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:14];
+        self.dateLabel.font = [UIFont fontWithName:@"BellGothicStd-Bold" size:ADJUST_2(14)];
         self.dateLabel.backgroundColor = [UIColor clearColor];
         self.dateLabel.textAlignment = UITextAlignmentRight;
         self.dateLabel.textColor = [UIColor whiteColor];
@@ -108,16 +108,16 @@
         CGFloat boundsX = contentRect.origin.x;
 		CGRect frame;
         
-		frame = CGRectMake(boundsX + 15, 4, 200, 20);
+		frame = CGRectMake(ADJUST_2(boundsX + 15), ADJUST_2(4), ADJUST_2(200), ADJUST_2(20));
 		self.idLabel.frame = frame;
 
-		frame = CGRectMake(boundsX + 25, 4, 90, 20);
+		frame = CGRectMake(ADJUST_2(boundsX + 25), ADJUST_2(4), ADJUST_2(90), ADJUST_2(20));
 		self.scoreLabel.frame = frame;
         
-        frame = CGRectMake(boundsX + 125, 4, 60, 20);
+        frame = CGRectMake(ADJUST_2(boundsX + 125), ADJUST_2(4), ADJUST_2(60), ADJUST_2(20));
 		self.timeLabel.frame = frame;
         
-        frame = CGRectMake(boundsX + 190, 4, 60, 20);
+        frame = CGRectMake(ADJUST_2(boundsX + 190), ADJUST_2(4), ADJUST_2(60), ADJUST_2(20));
 		self.dateLabel.frame = frame;
 	}
 }

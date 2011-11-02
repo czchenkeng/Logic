@@ -21,6 +21,7 @@
     self = [super init];
     if (self != nil) {
         CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
+        gameTime = 0;
         clockArray = [[CCArray alloc] init];
         [self buildTimer];
     }
@@ -177,7 +178,7 @@
         sec = myTime % 10;
         min = myTime % 60;
         
-        //CCLOG(@"game timer %@",  [NSString stringWithFormat:@"%02d:%02d", myTime/60, myTime%60]);
+        CCLOG(@"game timer %@",  [NSString stringWithFormat:@"%02d:%02d", myTime/60, myTime%60]);
         [self moveClock:secondsArray];
                 
         if (sec == 9) {
@@ -200,7 +201,7 @@
 }
 
 - (void) dealloc {
-    //CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
+    CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
     [secondsArray release];
     [tenSecondsArray release];
     [minutesArray release];

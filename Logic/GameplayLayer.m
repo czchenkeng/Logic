@@ -67,24 +67,24 @@
         scoreLabelArray = [[CCArray alloc] init];
         
         CCLOG(@"JAKA JE CURRENT DIFFICULTY? %i", currentDifficulty);
-        
-        blackout = [Blackout node];
-        [blackout setOpacity:230];
-        if ([GameManager sharedGameManager].oldScene == kMainScene) {
-            blackout2 = [Blackout node];
-            [blackout2 setOpacity:230];
-            blackout2.position = ccp(blackout2.position.x, 480);
-            id fade2Out = [CCFadeTo actionWithDuration:0.7 opacity:0];
-            CCEaseIn *easeFade2Out = [CCEaseIn actionWithAction:fade2Out rate:5];
-            id fade2Seq = [CCSequence actions:easeFade2Out, nil];
-            [self addChild:blackout2 z:5001];
-            [blackout2 runAction:fade2Seq];
-        }
-        id fadeOut = [CCFadeTo actionWithDuration:0.7 opacity:0];
-        CCEaseIn *easeFadeOut = [CCEaseIn actionWithAction:fadeOut rate:5];
-        id fadeSeq = [CCSequence actions:easeFadeOut,[CCCallFunc actionWithTarget:self selector:@selector(blackoutCallback)], nil];
-        [self addChild:blackout z:5000];
-        [blackout runAction:fadeSeq];
+        //1. blackout node
+//        blackout = [Blackout node];
+//        [blackout setOpacity:230];
+//        if ([GameManager sharedGameManager].oldScene == kMainScene) {
+//            blackout2 = [Blackout node];
+//            [blackout2 setOpacity:230];
+//            blackout2.position = ccp(blackout2.position.x, 480);
+//            id fade2Out = [CCFadeTo actionWithDuration:0.7 opacity:0];
+//            CCEaseIn *easeFade2Out = [CCEaseIn actionWithAction:fade2Out rate:5];
+//            id fade2Seq = [CCSequence actions:easeFade2Out, nil];
+//            [self addChild:blackout2 z:5001];
+//            [blackout2 runAction:fade2Seq];
+//        }
+//        id fadeOut = [CCFadeTo actionWithDuration:0.7 opacity:0];
+//        CCEaseIn *easeFadeOut = [CCEaseIn actionWithAction:fadeOut rate:5];
+//        id fadeSeq = [CCSequence actions:easeFadeOut,[CCCallFunc actionWithTarget:self selector:@selector(blackoutCallback)], nil];
+//        [self addChild:blackout z:5000];
+//        [blackout runAction:fadeSeq];
         
         [self createGame];
     }
@@ -123,7 +123,6 @@
 }
 
 - (void)onExit {
-    //longPress.cancelsTouchesInView = YES;
     [[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
     longPress.delegate = nil;
     [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:panRecognizer];
@@ -166,7 +165,7 @@
         gameTime = 0;
         infoData.difficulty = currentDifficulty;
         infoData.activeRow = 0;
-        infoData.career = 0;
+        infoData.career = 0;//proc davam 0?
         infoData.score = 0;
         infoData.gameTime = 0;
         infoData.tutor = tutorStep;
@@ -190,22 +189,22 @@
         CCLOG(@"**************************************************\nno career**************************************************\n");
     }
     
-    //POZOR!!! VOLA SE VZDY!!! OSETRIT!!!!!
+    //POZOR!!! VOLA SE VZDY!!! OSETRIT!!!!!  VOLA SE VZDY?
     if ([[GameManager sharedGameManager] gameInProgress]) {
         NSMutableArray *deadFigures = [[[GameManager sharedGameManager] gameData] getDeadFigures];
         if ([deadFigures count] > 0) {
-            NSMutableString *output = [[NSMutableString alloc] init];
-            int i = 0;
+            //NSMutableString *output = [[NSMutableString alloc] init];
+            //int i = 0;
             for (Figure *figure in deadFigures) {
                 figure.position = figure.tempPosition;
                 [deadFiguresNode addChild:figure z:1];
                 
-                NSString *json = [NSString stringWithFormat:@"{\"row\": %i, \"point\": [%f, %f] },", 
-                                  (int)floor(i/currentDifficulty) + 1, figure.position.x, figure.position.y];
-                [output appendString:json];
-                i++;                
+                //NSString *json = [NSString stringWithFormat:@"{\"row\": %i, \"point\": [%f, %f] },", 
+                //                  (int)floor(i/currentDifficulty) + 1, figure.position.x, figure.position.y];
+                //[output appendString:json];
+                //i++;                
             }
-            CCLOG(@"JSON %@", output);
+            //CCLOG(@"JSON %@", output);
         }
         
         [timer setupClock:gameTime];
@@ -251,7 +250,6 @@
         [self jumpGamePlay];
         
         NSMutableArray *activeFigures = [[[GameManager sharedGameManager] gameData] getActiveFigures];
-        CCLOG(@"active figures %i", [activeFigures count]);
         if ([activeFigures count] > 0) {
             for (NSMutableDictionary *dict in activeFigures) {
                 Figure *figure = [[Figure alloc] initWithFigureType:[[dict objectForKey:@"color"] intValue]];
@@ -283,8 +281,8 @@
     }
     
     if ([GameManager sharedGameManager].isTutor) {
-//        isTutor = YES;
-//        [self setupTutor];
+        //isTutor = YES;
+        //[self setupTutor];
         isTutor = NO;
     }
     
@@ -675,7 +673,7 @@
     
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kLevelBgTexture];
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kLevelLevelTexture]; 
-    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Lightning.plist"];    
+    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kThunderboltsTexture];    
     sphereNode = [CCSpriteBatchNode batchNodeWithFile:kLevelLevelPvr];
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kLevelAnimationsTexture];
     
@@ -711,7 +709,7 @@
     //    highlightSprite.position = ccp(150, 280);
     //    highlightSprite.visible = NO;
     
-    confirmSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"Confirm.plist"];
+    confirmSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:kConfirmParticle];
     confirmSystem.visible = NO;
     
     
@@ -836,14 +834,14 @@
     scorePanel.scaleX = 5;
     scorePanel.scaleY = 22;
     scorePanel.visible = NO;
-    [scorePanel setPosition:ccp(-700.00, 0.00)];
+    [scorePanel setPosition:kScorePanelOutPosition];
     
     if (isCareer) {
         continuePanel = [CCSprite spriteWithSpriteFrameName:@"rameno_right.png"];
         continuePanel.scaleX = 5;
         continuePanel.scaleY = 22;
         continuePanel.visible = NO;
-        [continuePanel setPosition:ccp(1000.00, 367.00)];
+        [continuePanel setPosition:kContinuePanelOutPosition];
         
         CCSprite *buttonContinueOff = [CCSprite spriteWithSpriteFrameName:@"logik_continue1.png"];
         CCSprite *buttonContinueOn = [CCSprite spriteWithSpriteFrameName:@"logik_continue2.png"];
@@ -851,7 +849,7 @@
         CCMenuItem *continueItem = [CCMenuItemSprite itemFromNormalSprite:buttonContinueOff selectedSprite:buttonContinueOn target:self selector:@selector(menuTapped:)];
         continueItem.tag = kButtonContinue;
         CCMenu *continueMenu = [CCMenu menuWithItems:continueItem, nil];
-        continueMenu.position = ccp(66.00, 31.50);
+        continueMenu.position = ADJUST_CCP_OFFSET(ccp(66.00, 31.50));
         [continuePanel addChild:continueMenu z:1];
         [self addChild:continuePanel z:31];
         
@@ -860,7 +858,7 @@
         replayPanel.scaleX = 5;
         replayPanel.scaleY = 22;
         replayPanel.visible = NO;
-        [replayPanel setPosition:ccp(1000.00, 367.00)];
+        [replayPanel setPosition:kReplayPanelOutPosition];
         
         //panels buttons/menus
         CCSprite *buttonReplayOff = [CCSprite spriteWithSpriteFrameName:@"logik_replay1.png"];
@@ -869,7 +867,7 @@
         CCMenuItem *replayItem = [CCMenuItemSprite itemFromNormalSprite:buttonReplayOff selectedSprite:buttonReplayOn target:self selector:@selector(menuTapped:)];
         replayItem.tag = kButtonReplay;
         CCMenu *replayMenu = [CCMenu menuWithItems:replayItem, nil];
-        replayMenu.position = ccp(66.00, 31.50);;
+        replayMenu.position = ADJUST_CCP_OFFSET(ccp(66.00, 31.50));
         [replayPanel addChild:replayMenu z:1];
         [self addChild:replayPanel z:31];
     }
@@ -881,12 +879,12 @@
     gameMenuPanel.scaleX = 5;
     gameMenuPanel.scaleY = 22;
     gameMenuPanel.visible = NO;
-    [gameMenuPanel setPosition:ccp(-700.00, 0.00)];
+    [gameMenuPanel setPosition:kGameMenuPanelOutPosition];
     
     CCMenuItem *gameMenuItemLeft = [CCMenuItemSprite itemFromNormalSprite:buttonGameMenuOff selectedSprite:buttonGameMenuOn target:self selector:@selector(menuTapped:)];
     gameMenuItemLeft.tag = kButtonGameMenu;
     CCMenu *gameMenuLeft = [CCMenu menuWithItems:gameMenuItemLeft, nil];
-    gameMenuLeft.position = ccp(195.50, 35.50);
+    gameMenuLeft.position = ADJUST_CCP_OFFSET2(ccp(195.50, 35.50));
     [gameMenuPanel addChild:gameMenuLeft z:2];
     
     [self addChild:gameMenuPanel z:32];
@@ -961,16 +959,17 @@
 //    [self addChild:debugEnd z:7020];
     //test blesk
     
-    NSLog(@"BEFORE THUNDERBOLT");
-    [TestFlight passCheckpoint:[NSString stringWithFormat:@"CHECKPOINT BEFORE THUNDERBOLT"]];
+    //[TestFlight passCheckpoint:[NSString stringWithFormat:@"CHECKPOINT BEFORE THUNDERBOLT"]];
     
     randomThunderbolt = [[RandomThunderbolt alloc] init];
     [randomThunderbolt loadData:currentDifficulty];
     [randomThunderbolt loadFiguresData:currentDifficulty];
     
     [self schedule:@selector(thunderboltRandomCallback) interval:[Utils randomNumberBetween:30 andMax:60]];
-    NSLog(@"AFTER THUNDERBOLT");
-    [TestFlight passCheckpoint:[NSString stringWithFormat:@"CHECKPOINT AFTER THUNDERBOLT"]];
+    //[TestFlight passCheckpoint:[NSString stringWithFormat:@"CHECKPOINT AFTER THUNDERBOLT"]];
+    
+//    id spr = [CCSprite spriteWithSpriteFrameName:@"factory.png"];
+//    [self addChild:spr z:10000];
 }
 
 #pragma mark Random thunderbolt callback
@@ -1183,7 +1182,7 @@
         id iOut = [CCFadeOut actionWithDuration:.2];
         [infoTxt runAction:iOut];
         
-        CCMoveTo *scoreMoveOut = [CCMoveTo actionWithDuration:0.4 position:ccp(-700.00, 0.00)];
+        CCMoveTo *scoreMoveOut = [CCMoveTo actionWithDuration:0.4 position:kScorePanelOutPosition];
         CCScaleTo *scoreScaleOutX = [CCScaleTo actionWithDuration:0.4 scaleX:5 scaleY:22];
         CCRotateTo *scoreRotationOut = [CCRotateTo actionWithDuration:1.0 angle:0];
         CCSpawn *moveLeftGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.5f], scoreMoveOut, scoreScaleOutX, scoreRotationOut, nil];
@@ -1211,16 +1210,16 @@
     
     CCSequence *endGameMenuSeq = [CCSequence actions:
                                   [CCDelayTime actionWithDuration: 0.0f],
-                                  [CCMoveTo actionWithDuration:.4 position:CGPointMake(endGameMenu.position.x, endGameMenu.position.y + 60)],
+                                  [CCMoveTo actionWithDuration:.4 position:CGPointMake(endGameMenu.position.x, ADJUST_2(endGameMenu.position.y + 60))],
                                   nil];
     
     if (isCareer) {        
-        CCMoveTo *continueMoveIn = [CCMoveTo actionWithDuration:.6 position:ccp(225.50, 235.00)];
+        CCMoveTo *continueMoveIn = [CCMoveTo actionWithDuration:.6 position:kContinuePanelInPosition];
         CCScaleTo *continueScaleInX = [CCScaleTo actionWithDuration:.6 scaleX:1.0 scaleY:1.0];
         CCRotateTo *continueRotationIn = [CCRotateTo actionWithDuration:.6 angle:1];
         CCSpawn *continueSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: delay], continueMoveIn, continueScaleInX, continueRotationIn, nil];
         
-        CCMoveTo *gmRightMoveIn = [CCMoveTo actionWithDuration:0.6 position:ccp(100.00, 161.00)];
+        CCMoveTo *gmRightMoveIn = [CCMoveTo actionWithDuration:0.6 position:kGameMenuPanelInPosition];
         CCScaleTo *gmRightScaleInX = [CCScaleTo actionWithDuration:0.6 scaleX:1.0 scaleY:1.0];
         CCRotateTo *gmRightRotationIn = [CCRotateTo actionWithDuration:0.6 angle:-2];        
         CCSpawn *gmRightSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: delay], gmRightMoveIn, gmRightScaleInX, gmRightRotationIn, nil];        
@@ -1231,12 +1230,12 @@
         [continuePanel runAction:continueSeq];
         [gameMenuPanel runAction:gmRightSeq];
     } else {
-        CCMoveTo *replayMoveIn = [CCMoveTo actionWithDuration:0.6 position:ccp(225.50, 235.00)];
+        CCMoveTo *replayMoveIn = [CCMoveTo actionWithDuration:0.6 position:kReplayPanelInPosition];
         CCScaleTo *replayScaleInX = [CCScaleTo actionWithDuration:0.6 scaleX:1.0 scaleY:1.0];
         CCRotateTo *replayRotationIn = [CCRotateTo actionWithDuration:0.6 angle:1];        
         CCSpawn *replaySeq = [CCSpawn actions:[CCDelayTime actionWithDuration: delay], replayMoveIn, replayScaleInX, replayRotationIn, nil];
         
-        CCMoveTo *gmLeftMoveIn = [CCMoveTo actionWithDuration:.6 position:ccp(100.00, 161.00)];
+        CCMoveTo *gmLeftMoveIn = [CCMoveTo actionWithDuration:.6 position:kGameMenuPanelInPosition];
         CCScaleTo *gmLeftScaleInX = [CCScaleTo actionWithDuration:.6 scaleX:1.0 scaleY:1.0];
         CCRotateTo *gmLeftRotationIn = [CCRotateTo actionWithDuration:.6 angle:-2];
         CCSpawn *moveGmLeftSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: delay], gmLeftMoveIn, gmLeftScaleInX, gmLeftRotationIn, nil];
@@ -1567,7 +1566,7 @@
     
     CCSequence *endButtonSeq = [CCSequence actions:
                                 [CCDelayTime actionWithDuration: delayStep1],
-                                [CCMoveTo actionWithDuration:.3 position:CGPointMake(endGameMenu.position.x, endGameMenu.position.y - 60)],
+                                [CCMoveTo actionWithDuration:.3 position:CGPointMake(endGameMenu.position.x, ADJUST_2(endGameMenu.position.y - 60))],
                                 nil];
     
     [blackout runAction:fadeSeq];
@@ -1592,7 +1591,7 @@
         [self constructScoreLabelWithLayer:finalScoreLabel andArray:finalScoreArray andLength:8 andRotation:-2 andXpos:155 andYPos:226];
         //score Panel
         scorePanel.visible = YES;
-        CCMoveTo *spMoveIn = [CCMoveTo actionWithDuration:.5 position:ccp(102.00, 220.00)];
+        CCMoveTo *spMoveIn = [CCMoveTo actionWithDuration:.5 position:kScorePanelInPosition];
         CCScaleTo *spScaleInX = [CCScaleTo actionWithDuration:.5 scaleX:1.0 scaleY:1.0];
         CCRotateTo *spRotationIn = [CCRotateTo actionWithDuration:.5 angle:-2];
         CCSpawn *moveSpSeq = [CCSpawn actions:spMoveIn, spScaleInX, spRotationIn, nil];
@@ -2376,21 +2375,17 @@
 }
 
 - (BOOL) ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
+    CCLOG(@"TOUCH BEGAN");
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
     CCLOG(@"touch location %@", NSStringFromCGPoint(touchLocation));
-//    if (touchLocation.y > 60) {
-//        longPress.minimumPressDuration = 2;
-//    } else {
-//        longPress.minimumPressDuration = 0.01;
-//    }
-    sparkleSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"Sparkle.plist"];
-    sparkleSystem.autoRemoveOnFinish = YES;
-    sparkleSystem.positionType = kCCPositionTypeRelative;
-    [self addChild:sparkleSystem z:10000];
-    
-    if (touchLocation.y < 60) {
+//    sparkleSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"Sparkle.plist"];
+//    sparkleSystem.autoRemoveOnFinish = YES;
+//    sparkleSystem.positionType = kCCPositionTypeRelative;
+//    [self addChild:sparkleSystem z:10000];
+    CCLOG(@"KOLIK JE TOUCH LOC %i", ADJUST_Y(60));
+    //if (touchLocation.y < ADJUST_Y(60)) {
         [self selectSpriteForTouch:touchLocation];
-    }
+    //}
     return YES;
 }
 
@@ -2411,7 +2406,7 @@
     CGPoint touchLocation = [recognizer locationInView:recognizer.view];
     touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
     touchLocation = [self convertToNodeSpace:touchLocation];
-    if (recognizer.state == UIGestureRecognizerStateBegan && touchLocation.y > 60) {
+    if (recognizer.state == UIGestureRecognizerStateBegan && touchLocation.y > ADJUST_Y(60)) {
         //CGPoint touchLocation = [recognizer locationInView:recognizer.view];
         //touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
         //touchLocation = [self convertToNodeSpace:touchLocation];                
@@ -2431,6 +2426,7 @@
 #pragma mark -
 #pragma mark FREEING MEMORY
 - (void) dealloc {
+    CCLOG(@"\n\n\n\n\n\nDEALLOC GAME\n\n\n\n\n\n");
     CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
     [scoreCalc release];
     [movableFigures release];

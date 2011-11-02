@@ -17,6 +17,7 @@
 - (void) logicTransition;
 - (void) buttonsOut;
 - (void) lampOut;
+- (void) addBanner;
 @end
 
 
@@ -55,12 +56,19 @@
         rightGib = [CCSprite spriteWithSpriteFrameName:@"rameno_right.png"];
         rightGib.scaleY = 22;
         rightGib.scaleX = 5;
+//        rightGib.scaleY = 5;
+//        rightGib.scaleX = 5;
         rightGib.position = kMainRightGibOutPosition;
         
         leftGib = [CCSprite spriteWithSpriteFrameName:@"rameno_left.png"];
         leftGib.scaleY = 22;
         leftGib.scaleX = 5;
+        //leftGib.scaleY = 5;
+        //leftGib.scaleX = 5;
         leftGib.position = kMainLeftGibOutPosition;
+        
+        rightGib.opacity = 0;
+        leftGib.opacity = 0;
         
         rightSingleGib = [CCSprite spriteWithSpriteFrameName:@"rameno_right.png"];
         rightSingleGib.scaleY = 22;
@@ -139,20 +147,27 @@
         CCSprite *buttonSingleOff = [CCSprite spriteWithSpriteFrameName:@"logik_single1.png"];
         CCSprite *buttonSingleOn = [CCSprite spriteWithSpriteFrameName:@"logik_single2.png"];
         
-        CCSprite *buttonCareerOff = [CCSprite spriteWithSpriteFrameName:@"logik_career1.png"];
-        CCSprite *buttonCareerOn = [CCSprite spriteWithSpriteFrameName:@"logik_career2.png"];
+        #ifdef LITE_VERSION
+            CCSprite *buttonCareerOff = [CCSprite spriteWithSpriteFrameName:@"logik_full1.png"];
+            CCSprite *buttonCareerOn = [CCSprite spriteWithSpriteFrameName:@"logik_full2.png"];
+        #else
+            CCSprite *buttonCareerOff = [CCSprite spriteWithSpriteFrameName:@"logik_career1.png"];
+            CCSprite *buttonCareerOn = [CCSprite spriteWithSpriteFrameName:@"logik_career2.png"];
+        #endif
         
         CCMenuItem *singlePlayItem = [CCMenuItemSprite itemFromNormalSprite:buttonSingleOff selectedSprite:buttonSingleOn target:self selector:@selector(buttonTapped:)];
         singlePlayItem.tag = kButtonSinglePlay;
         singleMenu = [CCMenu menuWithItems:singlePlayItem, nil];
         //singleMenu.position = ccp(66.00, 31.50);
         singleMenu.position = kMainRightGibButtonPosition;
+        //[singleMenu setOpacity:0];
         
         CCMenuItem *careerPlayItem = [CCMenuItemSprite itemFromNormalSprite:buttonCareerOff selectedSprite:buttonCareerOn target:self selector:@selector(buttonTapped:)];
         careerPlayItem.tag = kButtonCareerPlay;
         careerMenu = [CCMenu menuWithItems:careerPlayItem, nil];
         //careerMenu.position = ccp(195.50, 35.50);
         careerMenu.position = kMainLeftGibButtonPosition;
+        //[careerMenu setOpacity:0];
         
         //CONTINUE - SINGLE, CAREER, SAME POSITIONS
         CCSprite *buttonContinueOff = [CCSprite spriteWithSpriteFrameName:@"logik_continue1.png"];
@@ -217,8 +232,46 @@
             id doorsIn = [CCSequence actions:[CCDelayTime actionWithDuration:0.2],[CCMoveTo actionWithDuration:0.4 position:ccp(doors.position.x + 195, doors.position.y)], nil];
             [doors runAction:doorsIn];
         }
+        #ifdef LITE_VERSION
+            [self addBanner];
+        #endif        
     }
     return self;
+}
+
+- (void) addBanner {
+    CGSize size = [[CCDirector sharedDirector] winSize];
+    
+    controller = [[RootViewController alloc] init];
+    controller.view.frame = CGRectMake(0,0,size.width,size.height);
+    
+//    if (iPad && !retina){
+//        
+//        bannerView = [[GADBannerView alloc]
+//                      initWithFrame:CGRectMake(size.width/2-364,
+//                                               size.height -
+//                                               GAD_SIZE_728x90.height*3.5,
+//                                               GAD_SIZE_728x90.width,
+//                                               GAD_SIZE_728x90.height)];
+//        
+//    }
+//    else { // It's an iPhone
+        
+        bannerView = [[GADBannerView alloc]
+                      initWithFrame:CGRectMake(size.width/2-160,
+                                               size.height -
+                                               GAD_SIZE_320x50.height,
+                                               GAD_SIZE_320x50.width,
+                                               GAD_SIZE_320x50.height)];
+        
+    //}
+    bannerView.adUnitID = @"a14dede8c073878";
+    bannerView.rootViewController = controller;
+    
+    [bannerView loadRequest:[GADRequest request]];
+    
+    [controller.view addSubview:bannerView];
+    [[[CCDirector sharedDirector] openGLView] addSubview:controller.view];
 }
 
 #pragma mark -
@@ -275,6 +328,11 @@
 
 - (void) onExit {
 	//[[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
+    #ifdef LITE_VERSION
+        [bannerView release];
+        [controller.view removeFromSuperview];
+        [controller release];
+    #endif
 	[super onExit];
 }
 
@@ -291,17 +349,21 @@
 
 #pragma mark Animations in
 - (void) animationIn {
-    float debugSlow = -0.40;
+    //float debugSlow = -0.40;
+    //float debugSlow = 5;
+    float debugSlow = 0;
     PLAYSOUNDEFFECT(NAV_MAIN);
     CCMoveTo *rightGibMoveIn = [CCMoveTo actionWithDuration:debugSlow + 1.0 position:kMainRightGibInPosition];
     CCScaleTo *rightGibScaleInX = [CCScaleTo actionWithDuration:debugSlow + 1.0 scaleX:1.0 scaleY:1.0];
-    CCRotateTo *rightGibRotationIn = [CCRotateTo actionWithDuration:debugSlow + 1.0 angle:1];        
-    CCSpawn *moveRightGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.5f], rightGibMoveIn, rightGibScaleInX, rightGibRotationIn, nil];
+    CCRotateTo *rightGibRotationIn = [CCRotateTo actionWithDuration:debugSlow + 1.0 angle:1];
+    id rightGibOpacity = [CCSequence actions:[CCDelayTime actionWithDuration:0.75], [CCFadeIn actionWithDuration:debugSlow + 0.25], nil];
+    CCSpawn *moveRightGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.5f], rightGibMoveIn, rightGibScaleInX, rightGibRotationIn, rightGibOpacity, nil];
     
     CCMoveTo *leftGibMoveIn = [CCMoveTo actionWithDuration:debugSlow + 1.0 position:kMainLeftGibInPosition];
     CCScaleTo *leftGibScaleInX = [CCScaleTo actionWithDuration:debugSlow + 1.0 scaleX:1.0 scaleY:1.0];
     CCRotateTo *leftGibRotationIn = [CCRotateTo actionWithDuration:debugSlow + 1.0 angle:-2];
-    CCSpawn *moveLeftGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.5f], leftGibMoveIn, leftGibScaleInX, leftGibRotationIn, nil];
+    id leftGibOpacity = [CCSequence actions:[CCDelayTime actionWithDuration:0.75], [CCFadeIn actionWithDuration:debugSlow + 0.25], nil];
+    CCSpawn *moveLeftGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.5f], leftGibMoveIn, leftGibScaleInX, leftGibRotationIn, leftGibOpacity, nil];
     
     [rightGib runAction:moveRightGibSeq];
     [leftGib runAction:moveLeftGibSeq];
@@ -502,6 +564,7 @@
             [self logicTransition];
             break;
         case kButtonQuitCareer:
+            CCLOG(@"QUIT CAREER");
             [[[GameManager sharedGameManager] gameData] gameDataCleanup];
             [[[GameManager sharedGameManager] gameData] updateCareerData:NO andScore:0];
             [self animationTwoOut];

@@ -12,7 +12,7 @@
 #import "GameConfig.h"
 #import "RootViewController.h"
 #import "GameManager.h"
-#import "PreloaderLayer.h"
+#import "FlurryAPI.h"
 
 @implementation AppDelegate
 
@@ -39,9 +39,24 @@
 	
 #endif // GAME_AUTOROTATION == kGameAutorotationUIViewController	
 }
-//- (void) applicationDidFinishLaunching:(UIApplication*)application
+
+void uncaughtExceptionHandler (NSException *exception) {
+    NSArray *backtrace = [exception callStackSymbols];
+    NSString *platform = [[UIDevice currentDevice] model];
+    NSString *version = [[UIDevice currentDevice] systemVersion];
+    NSString *message = [NSString stringWithFormat:@"Device: %@. OS: %@. Backtrace:\n%@",
+                         platform,
+                         version,
+                         backtrace];
+    
+    [FlurryAPI logError:@"Uncaught" message:message exception:exception];
+}
+
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+{        
+    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+    [FlurryAPI startSession:FLURRY_KEY];
+    
     [TestFlight takeOff:@"6eb53b9b79d36a0278584451b328849f_MTkzMjkyMDExLTA3LTI3IDEyOjI4OjMzLjgwOTExMw"];
     // Init the window
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -107,10 +122,12 @@
 	// It can be RGBA8888, RGBA4444, RGB5_A1, RGB565
 	// You can change anytime.
     [CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
-	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
-    //[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
+    #ifdef HD_VERSION
+        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
+    #else
+        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
+    #endif
 
-	
 	// Removes the startup flicker
 	[self removeStartupFlicker];
 	
@@ -132,7 +149,6 @@
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    CCLOG(@"HANDLE OPEN URL");
     return [[[[GameManager sharedGameManager] controller] facebook] handleOpenURL:url];
 }
 
@@ -149,12 +165,11 @@
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application {
-    CCLOG(@"ENTER BACKGROUND");
 	[[CCDirector sharedDirector] stopAnimation];
+    [[CCDirector sharedDirector] purgeCachedData];
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application {
-    CCLOG(@"ENTER FOREGROUND");
 	[[CCDirector sharedDirector] startAnimation];
 }
 

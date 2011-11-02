@@ -41,7 +41,7 @@
     self.scores = [[[NSMutableArray alloc] init] retain];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.separatorColor = [UIColor clearColor];
-    self.tableView.rowHeight = 20;
+    self.tableView.rowHeight = ADJUST_2(20);
     self.tableView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
 }
 

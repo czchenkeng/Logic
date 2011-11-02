@@ -362,7 +362,9 @@ static CCTextureCache *sharedTextureCache;
 
 -(void) removeAllTextures
 {
-	[textures_ removeAllObjects];
+	CCLOG(@"cocos2d: removing all textures %@", textures_);
+    [textures_ removeAllObjects];
+    CCLOG(@"cocos2d: removing all textures %@", textures_);
 }
 
 -(void) removeUnusedTextures
