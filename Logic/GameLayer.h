@@ -14,6 +14,7 @@
 #import "Thunderbolt.h"
 #import "RandomThunderbolt.h"
 #import "ThunderboltVO.h"
+#import "CCLabelBMFontMultiline.h"
 #import <MessageUI/MFMailComposeViewController.h>
 
 @interface GameLayer : CCLayerColor <UIGestureRecognizerDelegate, MFMailComposeViewControllerDelegate> {
@@ -38,6 +39,7 @@
     BOOL isWinner;//level success?
     int maxScore;//present max score for final animations - level end
     int fid;
+    BOOL skipEnd;
     
     CGPoint tramwayLocation;
     
@@ -52,7 +54,8 @@
     CCSprite *screenSprite;
     CCSprite *pincl1;
     CCSprite *pincl2;
-    CCLabelBMFont *tutorTxt;
+    //CCLabelBMFont *tutorTxt;
+    CCLabelBMFontMultiline *tutorTxt;
     
     ScoreCalc *scoreCalc;//score object
     RandomThunderbolt *randomThunderbolt;//lightning object
@@ -140,7 +143,7 @@
     CCParticleSystem *dustSystem;
     CCParticleSystem *smokeSystem1;
     CCParticleSystem *smokeSystem2;
-//    CCParticleSystem *sparkleSystem;
+    CCParticleSystem *sparkleSystem;
     CCParticleSystem *confirmSystem;
     
     //end game - moving labels

@@ -22,14 +22,7 @@
     int minute;
     int tenMin;
     
-    BOOL firstRun;
-    BOOL firstRun1;
-    BOOL firstRun2;
-    
-    int vsec;
-    int vtenSec;
-    int vmin;
-    int vtenMin;
+    int min;
 }
 
 @property (readonly) int gameTime;

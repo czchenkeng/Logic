@@ -244,27 +244,10 @@
     
     controller = [[RootViewController alloc] init];
     controller.view.frame = CGRectMake(0,0,size.width,size.height);
+        
+    bannerView = [[GADBannerView alloc]
+                  initWithFrame:CGRectMake(size.width/2-160, size.height - GAD_SIZE_320x50.height, GAD_SIZE_320x50.width, GAD_SIZE_320x50.height)];
     
-//    if (iPad && !retina){
-//        
-//        bannerView = [[GADBannerView alloc]
-//                      initWithFrame:CGRectMake(size.width/2-364,
-//                                               size.height -
-//                                               GAD_SIZE_728x90.height*3.5,
-//                                               GAD_SIZE_728x90.width,
-//                                               GAD_SIZE_728x90.height)];
-//        
-//    }
-//    else { // It's an iPhone
-        
-        bannerView = [[GADBannerView alloc]
-                      initWithFrame:CGRectMake(size.width/2-160,
-                                               size.height -
-                                               GAD_SIZE_320x50.height,
-                                               GAD_SIZE_320x50.width,
-                                               GAD_SIZE_320x50.height)];
-        
-    //}
     bannerView.adUnitID = @"a14dede8c073878";
     bannerView.rootViewController = controller;
     
@@ -328,11 +311,11 @@
 
 - (void) onExit {
 	//[[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
-    #ifdef LITE_VERSION
-        [bannerView release];
-        [controller.view removeFromSuperview];
-        [controller release];
-    #endif
+//    #ifdef LITE_VERSION
+//        [bannerView release];
+//        [controller.view removeFromSuperview];
+//        [controller release];
+//    #endif
 	[super onExit];
 }
 
@@ -534,6 +517,13 @@
 #pragma mark -
 #pragma mark MENU CALLBACK
 - (void) buttonTapped:(CCMenuItem *)sender {
+    if (sender.tag != kButtonQuitCareer && sender.tag != kButtonGameMenu) {
+#ifdef LITE_VERSION
+        [bannerView release];
+        [controller.view removeFromSuperview];
+        [controller release];
+#endif
+    }
     PLAYSOUNDEFFECT(BUTTON_MAIN_CLICK);
 //    Lightning *lightning = [Lightning lightningWithStrikePoint:ccp(160,380) strikePoint2:ccp(80, 20)];
     //int xPos = [Utils randomNumberBetween:140 andMax:180];
@@ -553,7 +543,11 @@
             [self logicTransition];
             break;
         case kButtonCareerPlay:
+#ifdef LITE_VERSION
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/us/app/power-of-logic/id452804654"]];
+#else
             [[GameManager sharedGameManager] runSceneWithID:kCareerScene andTransition:kFadeTrans];
+#endif
             break;
         case kButtonContinuePlay:
             [self logicTransition];

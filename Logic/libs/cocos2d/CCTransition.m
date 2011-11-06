@@ -473,6 +473,7 @@ enum {
 	CCActionInterval *scaleIn = [CCScaleTo actionWithDuration:duration_ scale:1.0f];
     CCActionInterval *moveIn = [CCMoveTo actionWithDuration:duration_ position:ccp(0, 0)];
     CCActionInterval *scaleOut = [CCScaleTo actionWithDuration:duration_ scale:1.7f];
+    //CCActionInterval *fadeOut = [CCFadeOut actionWithDuration:duration_];
     
     [inScene_ runAction:[CCSpawn actions:scaleIn, moveIn, nil]];
     [outScene_ runAction:[CCSequence actions:scaleOut, [CCCallFunc actionWithTarget:self selector:@selector(finish)], nil]];

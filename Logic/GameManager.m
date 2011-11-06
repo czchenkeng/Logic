@@ -93,6 +93,17 @@ static GameManager* _sharedGameManager = nil;
     return arrayFromFile;
 }
 
+- (void) deletePattern {
+    NSError *error;
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    NSString *documentsDirectory = [NSHomeDirectory() 
+                                    stringByAppendingPathComponent:@"Documents"];
+    NSString *filePath = [documentsDirectory 
+                          stringByAppendingPathComponent:@"pattern.out"];
+    if ([fileMgr removeItemAtPath:filePath error:&error] != YES)
+        NSLog(@"Unable to delete file: %@", [error localizedDescription]);
+}
+
 - (FacebookViewController *) facebookController {
     controller = [[FacebookViewController alloc] init];
     return controller;
@@ -270,7 +281,7 @@ static GameManager* _sharedGameManager = nil;
                 transition = [CCTransitionFade transitionWithDuration:timeTransition scene:sceneToRun];
                 break;
             case kLogicTrans:
-                transition = [CCTransitionLogic transitionWithDuration:0.7 scene:sceneToRun];
+                transition = [CCTransitionLogic transitionWithDuration:0.5 scene:sceneToRun];
                 break;
             case kNoTransition:
                 transition = [CCTransitionFade transitionWithDuration:timeTransition scene:sceneToRun];
@@ -279,7 +290,7 @@ static GameManager* _sharedGameManager = nil;
                 transition = [CCTransitionFade transitionWithDuration:0.2 scene:sceneToRun];
                 break;
             case kLogicTransRev:
-                transition = [CCTransitionLogicRev transitionWithDuration:0.7 scene:sceneToRun];
+                transition = [CCTransitionLogicRev transitionWithDuration:0.5 scene:sceneToRun];
                 break;
             default:
                 CCLOG(@"Logic debug: Unknown ID, default transition");

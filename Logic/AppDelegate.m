@@ -122,11 +122,12 @@ void uncaughtExceptionHandler (NSException *exception) {
 	// It can be RGBA8888, RGBA4444, RGB5_A1, RGB565
 	// You can change anytime.
     [CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
-    #ifdef HD_VERSION
-        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
-    #else
-        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
-    #endif
+//    #ifdef HD_VERSION
+//        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
+//    #else
+//        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
+//    #endif
+    [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
 
 	// Removes the startup flicker
 	[self removeStartupFlicker];
@@ -137,9 +138,9 @@ void uncaughtExceptionHandler (NSException *exception) {
     if ([[GameManager sharedGameManager] gameInProgress]) {
         [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kNoTransition];
     } else {
-        [[GameManager sharedGameManager] runSceneWithID:kLogoScene andTransition:kNoTransition];
+        //[[GameManager sharedGameManager] runSceneWithID:kLogoScene andTransition:kNoTransition];
         //[[GameManager sharedGameManager] runSceneWithID:kPreloaderScene andTransition:kNoTransition];
-        //[[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kSlideInR];
+        [[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kSlideInR];
         //[[GameManager sharedGameManager] runSceneWithID:kCareerScene andTransition:kNoTransition];
         //[[GameManager sharedGameManager] runSceneWithID:kScoreScene andTransition:kNoTransition];
         //[[GameManager sharedGameManager] runSceneWithID:kSettingsScene andTransition:kNoTransition];

@@ -14,7 +14,7 @@
     CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
     self = [super init];
     if (self != nil) {
-        mainLayer = [MainLayer node];
+        mainLayer = [MainGameLayer node];
         [self addChild:mainLayer];
     }
     return self;
@@ -22,8 +22,6 @@
 
 - (void) dealloc {
     CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
-//    [mainLayer release];
-//    mainLayer = nil;
     [super dealloc];    
 }
 

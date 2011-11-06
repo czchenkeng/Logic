@@ -17,6 +17,7 @@
     int totalTurns;
     int points;
     int endBonus;
+    int time;
     
     NSArray *hiddenPattern;
     NSMutableArray *patterns;
@@ -32,7 +33,7 @@
 
 + (id) scoreWithColors:(int)c pins:(int)p row:(int)r;
 
-- (int) calculateScoreWithRow:(int)row andTurn:(NSArray *)turn andTime:(int)roundTime;
+- (int) calculateScoreWithRow:(int)row andTurn:(NSArray *)turn andTime:(int)roundTime andTotalTime:(int)totalTime;
 - (int) getBonus;
 - (void) previousData;
 

@@ -72,6 +72,7 @@
     [db executeUpdate:@"DELETE FROM game_data"];
     [db executeUpdate:@"DELETE FROM game_rows"];
     [db executeUpdate:@"DELETE FROM game_code"];
+    [[GameManager sharedGameManager] deletePattern];
     [db commit];
 }
 
@@ -87,6 +88,12 @@
     [db commit];
 }
 
+- (void) updateSettingsWithReview {
+    [db beginTransaction];
+    [db executeUpdate:@"UPDATE game_settings SET review = 0 WHERE id=1"];
+    [db commit];
+}
+
 - (settings) getSettings {
     rs = [db executeQuery:@"SELECT * FROM game_settings WHERE id = 1"];
     settings retVal;
@@ -96,6 +103,7 @@
         retVal.soundLevel = [rs doubleForColumn:@"sound_level"];
         retVal.tutor = [rs intForColumn:@"tutor"];
         retVal.careerTutor = [rs intForColumn:@"career_tutor"];
+        retVal.review = [rs intForColumn:@"review"];
     }
     return retVal;
 }
@@ -340,6 +348,20 @@
     }
     
     return retVal;
+}
+
+- (int) getNumScores {
+    FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM scores"];
+    int totalCount;
+    if ([s next]) {
+        totalCount = [s intForColumnIndex:0];
+    }else{
+        totalCount = 0;
+    }
+    //rs = [db executeQuery:@"SELECT count(id) FROM scores"];    
+    //int retVal = [rs intForColumn:@"id"];
+    
+    return totalCount;
 }
 
 - (NSMutableArray *) getScores:(int)diff {    

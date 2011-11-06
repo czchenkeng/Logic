@@ -31,15 +31,10 @@ static const int NUM_OF_ROWS = 10;
         totalTurns = 0;
         points = 0;
         done = NO;
+        time = 0;
         saveData = [[NSMutableArray alloc] init];
         
         patterns = [[NSMutableArray alloc] init];
-            
-        //patterns = [[GameManager sharedGameManager] readPattern];
-        //[patterns retain];
-        
-        CCLOG(@"game pattern ready %i", [patterns count]);
-        //[self testAlgorithm];
     }
     return self;
 }
@@ -47,15 +42,6 @@ static const int NUM_OF_ROWS = 10;
 + (id) scoreWithColors:(int)c pins:(int)p row:(int)r {
     return [[[self alloc] initWithColors:(int)c pins:(int)p row:(int)r] autorelease];
 }
-
-//- (BOOL) compareArrays:(NSArray *)pattern1 withArray:(NSArray *)pattern2 {
-//    for (int i = [pattern2 count] - 1; i >= 0; i--) {
-//        if ([[pattern1 objectAtIndex:i] intValue] != [[pattern2 objectAtIndex:i] intValue]) {
-//            return NO;
-//        }
-//    }
-//    return YES;
-//}
 
 - (void) previousData {
     NSMutableArray *data = [[GameManager sharedGameManager] readPattern];
@@ -103,28 +89,9 @@ static const int NUM_OF_ROWS = 10;
         }
     }
     guessResult.resultOutOfPosition = guessResult.resultOutOfPosition - guessResult.resultInPosition;
-    CCLOG(@"IN POSITION %i", guessResult.resultInPosition);
-    CCLOG(@"OUT POSITION %i", guessResult.resultOutOfPosition);
     
     return guessResult;
 }
-
-//- (void) calculationDone {
-//    CCLOG(@"CALC DONE");
-//    [[GameManager sharedGameManager] savePattern:patterns];
-//}
-//
-//- (void) removeNotEligible:(Guess *)guess {
-//    for (int i = patterns.count - 1; i >= 0; i--) {
-//        Guess *g = [self makeResult:[patterns objectAtIndex:i] guess:guess.pattern];
-//        if (![guess compareResult:g]) {
-//            [patterns removeObjectAtIndex:i];
-//        }
-//    }
-//    dispatch_async(dispatch_get_main_queue(), ^(void) {
-//        [self calculationDone];
-//    });
-//}
 
 - (BOOL) hasDoubles:(NSArray *)array {
     for (int i = 0; i < array.count - 1; i++) {
@@ -140,28 +107,25 @@ static const int NUM_OF_ROWS = 10;
 
 - (BOOL) compareResult:(Guess *)oldGuess res:(Guess *)newGuess {
     Guess *result = [self makeResult:oldGuess.pattern guess:newGuess.pattern];
-    CCLOG(@"R IN POSITION %i", result.resultInPosition);
-    CCLOG(@"R OUT POSITION %i", result.resultOutOfPosition);
-    CCLOG(@"O IN POSITION %i", oldGuess.resultInPosition);    
-    CCLOG(@"O OUT POSITION %i", oldGuess.resultOutOfPosition);
     return result.resultInPosition == oldGuess.resultInPosition && result.resultOutOfPosition == oldGuess.resultOutOfPosition;
 }
 
 
-- (int) calculateScoreWithRow:(int)row andTurn:(NSArray *)turn andTime:(int)roundTime{
+- (int) calculateScoreWithRow:(int)row andTurn:(NSArray *)turn andTime:(int)roundTime andTotalTime:(int)totalTime{
     totalTurns = row;
+    
+    time = totalTime;
     
     points = 0;
     
-    int k1 = 1000; //koeficient spravneho tahu
+    int k1 = 3000; //koeficient spravneho tahu
     int k2 = 300; //bonus za dvojice v prvnim tahu
-    int k3 = 400; //koeficient casu spravneho tahu
+    int k3 = 600; //koeficient casu spravneho tahu
     int k4 = 200; //koeficient casu nespravneho tahu
     
     //int endBonusConst = 5000;
     
     if (row == 0 && [self hasDoubles:turn]) {
-        CCLOG(@"HAS DOUBLES");
         points += k2;
     }
     
@@ -183,8 +147,10 @@ static const int NUM_OF_ROWS = 10;
         points += k4 / (roundTime + 1);
     }
     
+    if (row == 0)
+        points = (int)ceil(points/4);
+    
     if (result.resultInPosition == pinsCount) {
-        CCLOG(@"end game");
         done = YES;
     }
     
@@ -197,127 +163,24 @@ static const int NUM_OF_ROWS = 10;
     return points;
 }
 
-//- (void) testAlgorithm {
-//    NSArray *h = [[NSArray alloc] initWithObjects:
-//                  [NSNumber numberWithInt:1],
-//                  [NSNumber numberWithInt:2],
-//                  [NSNumber numberWithInt:3],
-//                  [NSNumber numberWithInt:1],
-//                  [NSNumber numberWithInt:7],
-//                  [NSNumber numberWithInt:7],
-//                  nil];
-//    NSMutableArray *turns = [[NSMutableArray alloc] init];
-//    
-//
-//    NSArray *turn1 = [[NSArray alloc] initWithObjects:
-//                      [NSNumber numberWithInt:0],
-//                      [NSNumber numberWithInt:0],
-//                      [NSNumber numberWithInt:4],
-//                      [NSNumber numberWithInt:4],
-//                      [NSNumber numberWithInt:5],
-//                      [NSNumber numberWithInt:5],
-//                      nil];
-//    NSArray *turn2 = [[NSArray alloc] initWithObjects:
-//                      [NSNumber numberWithInt:6],
-//                      [NSNumber numberWithInt:6],
-//                      [NSNumber numberWithInt:6],
-//                      [NSNumber numberWithInt:6],
-//                      [NSNumber numberWithInt:6],
-//                      [NSNumber numberWithInt:6],
-//                      nil];
-//    NSArray *turn3 = [[NSArray alloc] initWithObjects:
-//                      [NSNumber numberWithInt:1],
-//                      [NSNumber numberWithInt:1],
-//                      [NSNumber numberWithInt:7],
-//                      [NSNumber numberWithInt:7],
-//                      [NSNumber numberWithInt:2],
-//                      [NSNumber numberWithInt:2],
-//                      nil];
-//    
-//    NSArray *turn4 = [[NSArray alloc] initWithObjects:
-//                      [NSNumber numberWithInt:1],
-//                      [NSNumber numberWithInt:2],
-//                      [NSNumber numberWithInt:1],
-//                      [NSNumber numberWithInt:7],
-//                      [NSNumber numberWithInt:7],
-//                      [NSNumber numberWithInt:6],
-//                      nil];
-//    NSArray *turn5 = [[NSArray alloc] initWithObjects:
-//                      [NSNumber numberWithInt:7],
-//                      [NSNumber numberWithInt:7],
-//                      [NSNumber numberWithInt:3],
-//                      [NSNumber numberWithInt:3],
-//                      [NSNumber numberWithInt:1],
-//                      [NSNumber numberWithInt:1],
-//                      nil];
-//    NSArray *turn6 = [[NSArray alloc] initWithObjects:
-//                      [NSNumber numberWithInt:0],
-//                      [NSNumber numberWithInt:0],
-//                      [NSNumber numberWithInt:1],
-//                      [NSNumber numberWithInt:2],
-//                      [NSNumber numberWithInt:0],
-//                      [NSNumber numberWithInt:7],
-//                      nil];
-//    NSArray *turn7 = [[NSArray alloc] initWithObjects:
-//                      [NSNumber numberWithInt:1],
-//                      [NSNumber numberWithInt:2],
-//                      [NSNumber numberWithInt:3],
-//                      [NSNumber numberWithInt:2],
-//                      [NSNumber numberWithInt:0],
-//                      [NSNumber numberWithInt:7],
-//                      nil];
-//    NSArray *turn8 = [[NSArray alloc] initWithObjects:
-//                      [NSNumber numberWithInt:1],
-//                      [NSNumber numberWithInt:2],
-//                      [NSNumber numberWithInt:3],
-//                      [NSNumber numberWithInt:1],
-//                      [NSNumber numberWithInt:5],
-//                      [NSNumber numberWithInt:7],
-//                      nil];
-//    NSArray *turn9 = [[NSArray alloc] initWithObjects:
-//                      [NSNumber numberWithInt:1],
-//                      [NSNumber numberWithInt:2],
-//                      [NSNumber numberWithInt:3],
-//                      [NSNumber numberWithInt:1],
-//                      [NSNumber numberWithInt:7],
-//                      [NSNumber numberWithInt:7],
-//                      nil];
-//    [turns addObject:turn1];
-//    [turns addObject:turn2];
-//    [turns addObject:turn3];
-//    [turns addObject:turn4];
-//    [turns addObject:turn5];
-//    [turns addObject:turn6];
-//    [turns addObject:turn7];
-//    [turns addObject:turn8];
-//    [turns addObject:turn9];
-//    
-//    for (int i = 0; i < turns.count; i++) {
-//        Guess *result = [self makeResult:h guess:[turns objectAtIndex:i]];
-//        BOOL correctGuess = true;
-//        
-//        for (int i = 0; i < patterns.count; i++) {
-//            if (![self compareResult:[patterns objectAtIndex:i] res:result]){
-//                correctGuess = false;
-//                break;
-//            }
-//        }
-//        
-//        if (correctGuess) {
-//            CCLOG(@"TEST ALGORITHM - CORRECT TURN AT ROW %i", i);
-//        } else {
-//            CCLOG(@"TEST ALGORITHM - BAD TURN AT ROW %i", i);
-//        }
-//        
-//        [patterns addObject:result];
-//    }
-//    
-//}
-
 - (int) getBonus {
     int bonus;
     if (done) {
-        bonus = (int)ceil(5000 / (10 - totalTurns)) * 100;
+        float bonusConst;
+        switch ([hiddenPattern count]) {
+            case 4:
+                bonusConst = 1.34;
+                break;
+            case 5:
+                bonusConst = 1.196;
+                break;
+            case 6:
+                bonusConst = 1.137;
+                break;
+            default:
+                break;
+        }
+        bonus = (int)floor( 100000 * ( 1/pow(sqrt(bonusConst), time) ) );
     } else {
         bonus = 0;
     }

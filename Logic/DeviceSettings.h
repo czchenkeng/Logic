@@ -19,6 +19,9 @@
 #define SD      @".plist"
 #define HD      @"-hd.plist"
 
+#define SD_PNG      @".png"
+#define HD_PNG      @"-hd.png"
+
 #define SD_PVR      @".pvr.ccz"
 #define HD_PVR      @"-ipad.pvr.ccz"
 
@@ -72,6 +75,7 @@
 #define SD1_OR_HD1(__filename__) (IS_IPAD() == YES ? [__filename__ stringByReplacingOccurrencesOfString:SD withString:HD] : __filename__)
 #define SDPVR_OR_HDPVR(__filename__) (IS_IPAD() == YES ? [__filename__ stringByReplacingOccurrencesOfString:SD_PVR withString:HD_PVR] : __filename__)
 #define SDVIDEO_OR_HDVIDEO(__filename__) (IS_IPAD() == YES ? [__filename__ stringByReplacingOccurrencesOfString:SD_VIDEO withString:HD_VIDEO] : __filename__)
+#define SDPNG_OR_HDPNG(__filename__) (IS_IPAD() == YES ? [__filename__ stringByReplacingOccurrencesOfString:SD_TEXTURE withString:HD_TEXTURE] : __filename__)
 
 
 /* POSITIONS */
@@ -98,12 +102,13 @@
 #define kMainLogoShadowPosition     ADJUST_CCP_MAIN_SCENE( ccp(kScreenCenterX, kScreenCenterY + 162) )
 #define kMainGrassPosition          ADJUST_CCP_MAIN_SCENE_GRASS( ccp(160, 16) )
 #define kMainLightPosition          ADJUST_CCP_MAIN_SCENE( ccp(kScreenCenterX, 487) )
-#define kMainRightGibOutPosition    ADJUST_CCP_MAIN_SCENE( ccp(1000.00, 367.00) )
+#define kMainRightGibOutPosition    ADJUST_CCP_MAIN_SCENE( ccp(366, 260) )
 #define kMainRightGibInPosition     ADJUST_CCP_MAIN_SCENE( ccp(225.50, 235.00) )
-#define kMainLeftGibOutPosition     ADJUST_CCP_MAIN_SCENE( ccp(-700.00, 0.00) )
+#define kMainLeftGibOutPosition     ADJUST_CCP_MAIN_SCENE( ccp(-35, 147) )
 #define kMainLeftGibInPosition      ADJUST_CCP_MAIN_SCENE( ccp(100.00, 161.00) )
 #define kMainLeftSingleGibInPosition  ADJUST_CCP_MAIN_SCENE( ccp(100.00, 176.00) )//3
 #define kMainRightSingleGibInPosition ADJUST_CCP_MAIN_SCENE( ccp(225.50, 127.00) )//3
+#define kMainRightSingleGibOutPosition ADJUST_CCP_MAIN_SCENE( ccp(366, 75.00) )
 #define kMainRightGibButtonPosition ADJUST_CCP_OFFSET( ccp(66.00, 31.50) )
 #define kMainLeftGibButtonPosition  ADJUST_CCP_OFFSET2( ccp(195.50, 35.50) )
 #define kMainDoorsOutPosition          ADJUST_CCP_MAIN_SCENE( ccp(kScreenCenterX - 190, kScreenCenterY - 51) )
@@ -184,6 +189,7 @@
 //#define kCareerTexture   SD1_OR_HD1(@"Career.plist")
 #define kCareerTexture   SD_OR_HD(@"Career.plist")
 #define kCareerHqTexture   SD_OR_HD(@"CareerHq.plist")
+#define kProgressTexture   SDPNG_OR_HDPNG(@"progress.png")
 //Loader
 #define kLoaderTexture   SD1_OR_HD1(@"Loader.plist")
 

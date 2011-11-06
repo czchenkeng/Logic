@@ -39,6 +39,27 @@
 }
 
 - (void) diffTapped:(CCMenuItem *)sender {
+#ifdef LITE_VERSION
+    if (sender.tag != kEasy) {
+        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"FULL VERSION" message:@"3 difficulty levels, career play and ads free game." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil] autorelease];
+        [alert addButtonWithTitle:@"Buy"];
+        [alert setTag:1];
+        [alert show];
+    }
+    switch (sender.tag) {
+        case kMedium:
+            normal.visible = YES;
+            break;
+        case kHard:
+            hard.visible = YES;
+            break;
+        default:
+            CCLOG(@"Logic debug: Unknown ID, cannot tap button");
+            return;
+            break;
+    }
+    [self schedule:@selector(liteButtonOff) interval:0.1];
+#else
     if (firstClick) {
         PLAYSOUNDEFFECT(JOYSTICK_SCORE_CLICK);
     }
@@ -79,6 +100,21 @@
     
     [self getRecordsWithDifficulty:sender.tag];
     //[GameManager sharedGameManager].currentDifficulty = sender.tag;
+#endif
+}
+
+- (void) liteButtonOff {
+    [self unschedule:@selector(liteButtonOff)];
+    normal.visible = NO;
+    hard.visible = NO;
+}
+
+- (void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if ([alertView tag] == 1) {
+        if (buttonIndex == 1) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/us/app/power-of-logic/id452804654"]];
+        }
+    }
 }
 
 - (void)onEnter {
@@ -251,9 +287,21 @@
         hardItem.tag = kHard;
         hardItem.position = ADJUST_CCP(ccp(205.00, 53.00));
         
+//        #ifdef LITE_VERSION
+//            [normalItem setIsEnabled:NO];
+//            [hardItem setIsEnabled:NO];
+//        #endif
+        
         #ifdef LITE_VERSION
-            [normalItem setIsEnabled:NO];
-            [hardItem setIsEnabled:NO];
+            for (CCSprite *joy in joysticks) {
+                joy.visible = NO; 
+            }
+            CCSprite *currentJoy = [joysticks objectAtIndex:0];
+            currentJoy.visible = YES;
+            joyStick.position = ADJUST_CCP(ccp(92.00, 135.00));
+            CCSprite *currentButton = [difficulty objectAtIndex:0];
+            currentButton.visible = YES;
+            [self getRecordsWithDifficulty:kEasy];
         #endif
         
         PressMenu *difficultyMenu = [PressMenu menuWithItems:easyItem, normalItem, hardItem, nil];

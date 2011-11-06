@@ -95,20 +95,24 @@ static CCTouchDispatcher *sharedDispatcher = nil;
 //
 // handlers management
 //
-
 #pragma mark TouchDispatcher - Add Hanlder
 
 -(void) forceAddHandler:(CCTouchHandler*)handler array:(NSMutableArray*)array
 {
 	NSUInteger i = 0;
-	
+	BOOL isHandler = NO;
+    
 	for( CCTouchHandler *h in array ) {
 		if( h.priority < handler.priority )
 			i++;
 		
-		NSAssert( h.delegate != handler.delegate, @"Delegate already added to touch dispatcher.");
+		//NSAssert( h.delegate != handler.delegate, @"Delegate already added to touch dispatcher.");
+        if (h.delegate == handler.delegate)
+            isHandler = YES;
+        
 	}
-	[array insertObject:handler atIndex:i];		
+    if (!isHandler)
+        [array insertObject:handler atIndex:i];		
 }
 
 -(void) addStandardDelegate:(id<CCStandardTouchDelegate>) delegate priority:(int)priority

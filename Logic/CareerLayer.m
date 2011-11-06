@@ -130,20 +130,42 @@ static const float POS_Y = 0;
         [infoPanel setPosition:kCareerInfoPanel];
         [self addChild:infoPanel z:4];
         
-        progressBar = [CCSprite spriteWithFile:@"progress.png"];
+        progressBar = [CCSprite spriteWithFile:kProgressTexture];
         progressBar.position = ccp(ADJUST_2(161) - progressBar.contentSize.width/2, ADJUST_2(127));
         progressBar.anchorPoint = ccp(0, 0.5);
         total = progressBar.contentSize.width;
         [infoPanel addChild:progressBar z:1];
         
         CCSprite *buttonErase = [CCSprite spriteWithFile:@"2x2.png" rect:CGRectMake(0, 0, ADJUST_2(111), ADJUST_2(30))];
-        CCSprite *diod = [CCSprite spriteWithSpriteFrameName:@"dioda.png"];
-        diod.anchorPoint = ccp(0, 0);
-        diod.position = ccp(ADJUST_2(-4), ADJUST_2(4));
-        CCMenuItem *eraseCareer = [CCMenuItemSprite itemFromNormalSprite:buttonErase selectedSprite:diod target:self selector:@selector(buttonTapped:)];
-        eraseCareer.tag = kButtonEraseCareer;
-        eraseCareer.anchorPoint = CGPointMake(0, 0);
-        eraseCareer.position = ccp(ADJUST_2(140), ADJUST_2(23));
+        
+        #ifdef LITE_VERSION
+            CCSprite *krytka = [CCSprite spriteWithSpriteFrameName:@"logik_buyfull.png"];
+            krytka.anchorPoint = ccp(0, 0);
+            krytka.position = ccp(ADJUST_2(131), ADJUST_2(21));
+            [infoPanel addChild:krytka z:5];
+            buyFullOff = [CCSprite spriteWithSpriteFrameName:@"logik_buyfull1.png"];
+            buyFullOff.anchorPoint = ccp(0, 0);
+            buyFullOff.position = ccp(ADJUST_2(131), ADJUST_2(20));
+            [infoPanel addChild:buyFullOff z:6];
+            buyFullOn = [CCSprite spriteWithSpriteFrameName:@"logik_buyfull2.png"];
+            buyFullOn.anchorPoint = ccp(0, 0);
+            buyFullOn.position = ccp(ADJUST_2(131), ADJUST_2(20));
+            [infoPanel addChild:buyFullOn z:7];
+            CCMenuItem *eraseCareer = [CCMenuItemSprite itemFromNormalSprite:buttonErase selectedSprite:nil target:self selector:@selector(buttonTapped:)];
+            eraseCareer.tag = kButtonEraseCareer;
+            eraseCareer.anchorPoint = CGPointMake(0, 0);
+            eraseCareer.position = ccp(ADJUST_2(140), ADJUST_2(23));
+            buyVisible = NO;
+            [self schedule:@selector(buyFull) interval:0.3];
+        #else
+            CCSprite *diod = [CCSprite spriteWithSpriteFrameName:@"dioda.png"];
+            diod.anchorPoint = ccp(0, 0);
+            diod.position = ccp(ADJUST_2(-4), ADJUST_2(4));
+            CCMenuItem *eraseCareer = [CCMenuItemSprite itemFromNormalSprite:buttonErase selectedSprite:diod target:self selector:@selector(buttonTapped:)];
+            eraseCareer.tag = kButtonEraseCareer;
+            eraseCareer.anchorPoint = CGPointMake(0, 0);
+            eraseCareer.position = ccp(ADJUST_2(140), ADJUST_2(23));        
+        #endif
         
         CCMenu *eraseMenu = [CCMenu menuWithItems:eraseCareer, nil];
         eraseMenu.position = CGPointZero;
@@ -168,10 +190,17 @@ static const float POS_Y = 0;
     return self;
 }
 
+#pragma mark Buy full callback
+- (void) buyFull {
+    buyFullOn.visible = buyVisible;
+    buyFullOff.visible = !buyVisible;
+    buyVisible = !buyVisible;
+}
+
 #pragma mark -
 #pragma mark LITE VERSION
 - (void) addLiteVersion {
-    [self infoPanelIn];
+    panelActive = YES;
     progressBar.visible = NO;
 
     tutorLayer = [CCLayer node];
@@ -183,54 +212,60 @@ static const float POS_Y = 0;
     [tutorLayer addChild:tutorBlackout z:1];
     
     CCLabelBMFont *superBig = [CCLabelBMFont labelWithString:@"FULL VERSION" fntFile:@"Gloucester_levelBig.fnt"];
-    superBig.scale = isRetina ? 1 : 0.5;
+    superBig.scale = isRetina ? 1.2 : 0.6;
     superBig.rotation = -2;
-    superBig.position = ccp(160, 400);
+    superBig.position = ccp(170, 425);
     [tutorLayer addChild:superBig z:21];
     
     CCLabelBMFont *levelsText = [CCLabelBMFont labelWithString:@"3 difficulty levels" fntFile:@"Gloucester_levelSmall.fnt"];
-    levelsText.scale = isRetina ? 0.94 : 0.47;
+    levelsText.scale = isRetina ? 1.20 : 0.6;
     levelsText.anchorPoint = ccp(0, 0);
     levelsText.rotation = -2;
-    levelsText.position = ccp(140, 358);
+    levelsText.position = ccp(136, 365);
     [tutorLayer addChild:levelsText z:21];
     
     CCLabelBMFont *careerText = [CCLabelBMFont labelWithString:@"career play" fntFile:@"Gloucester_levelSmall.fnt"];
-    careerText.scale = isRetina ? 0.94 : 0.47;
+    careerText.scale = isRetina ? 1.20 : 0.6;
     careerText.anchorPoint = ccp(0, 0);
     careerText.rotation = -2;
-    careerText.position = ccp(140, 323);
+    careerText.position = ccp(136, 330);
     [tutorLayer addChild:careerText z:21];
     
     CCLabelBMFont *adsText = [CCLabelBMFont labelWithString:@"ads free" fntFile:@"Gloucester_levelSmall.fnt"];
-    adsText.scale = isRetina ? 0.94 : 0.47;
+    adsText.scale = isRetina ? 1.20 : 0.6;
     adsText.anchorPoint = ccp(0, 0);
     adsText.rotation = -2;
-    adsText.position = ccp(140, 288);
+    adsText.position = ccp(136, 295);
     [tutorLayer addChild:adsText z:21];
     
     CCSprite *pinch;
     
     pinch = [CCSprite spriteWithSpriteFrameName:@"pinchRed.png"];
     pinch.scale = 0.7;
-    pinch.position = ccp(120, 365);
+    pinch.position = ccp(116, 375);
     [tutorLayer addChild:pinch z:30];
     
     pinch = [CCSprite spriteWithSpriteFrameName:@"pinchBlue.png"];
     pinch.scale = 0.7;
-    pinch.position = ccp(120, 330);
+    pinch.position = ccp(116, 340);
     [tutorLayer addChild:pinch z:30];
     
     pinch = [CCSprite spriteWithSpriteFrameName:@"pinchYellow.png"];
     pinch.scale = 0.7;
-    pinch.position = ccp(120, 295);
+    pinch.position = ccp(116, 305);
     [tutorLayer addChild:pinch z:30];
     
     id tutorIn = [CCMoveTo actionWithDuration:1 position:ccp(tutorLayer.position.x, tutorLayer.position.y - 480)];
     id tutorInSeq = [CCSequence actions:tutorIn, nil];
     
     [tutorLayer runAction:tutorInSeq];
+    [self schedule:@selector(litePanelIn) interval:0.3];
 
+}
+
+- (void) litePanelIn {
+    [self unschedule:@selector(litePanelIn)];
+    [self infoPanelIn];
 }
 
 #pragma mark -
@@ -402,7 +437,6 @@ static const float POS_Y = 0;
 #pragma mark INFO PANEL
 #pragma mark Panel in
 - (void) infoPanelIn {
-    PLAYSOUNDEFFECT(NAV_CAREER);
     //singleTapGestureRecognizer.enabled = NO;
     
     float debugSlow = -0.40;
@@ -413,6 +447,13 @@ static const float POS_Y = 0;
     CCSequence *inSeq = [CCSequence actions:infoPanelSeq, [CCCallFunc actionWithTarget:self selector:@selector(endAnimation)], nil];
     
     [infoPanel runAction:inSeq];
+    
+    [self schedule:@selector(panelsoundIn) interval:0.2];
+}
+
+- (void) panelsoundIn {
+    [self unschedule:@selector(panelsoundIn)];
+    PLAYSOUNDEFFECT(NAV_CAREER);
 }
 
 #pragma mark Panel in callback
@@ -848,9 +889,9 @@ static const float POS_Y = 0;
 
 #pragma mark Check end game
 - (void) checkEnd {
-    //if (citiesFull == citiesArray.count) {
+    if (citiesFull == citiesArray.count) {
     //CCLOG(@"CITIES - END CAREER %i", citiesFull);
-    if (citiesFull == 1) {
+    //if (citiesFull == 1) {
         [self endCareer];
     }
 }

@@ -47,6 +47,28 @@ enum soundTags
         [alert setTag:1];
         [alert show];
     } else {
+#ifdef LITE_VERSION
+        if (sender.tag != kEasy) {
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"FULL VERSION" message:@"3 difficulty levels, career play and ads free game." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil] autorelease];
+            [alert addButtonWithTitle:@"Buy"];
+            [alert setTag:1];
+            [alert show];
+        }
+        switch (sender.tag) {
+            case kMedium:
+                normal.visible = YES;
+                break;
+            case kHard:
+                hard.visible = YES;
+                break;
+            default:
+                CCLOG(@"Logic debug: Unknown ID, cannot tap button");
+                return;
+                break;
+        }
+        [self schedule:@selector(liteButtonOff) interval:0.1];
+#else
+
         PLAYSOUNDEFFECT(JOYSTICK_SETTINGS_CLICK);
         int flag;
         switch (sender.tag) {
@@ -83,18 +105,33 @@ enum soundTags
         currentJoy.visible = YES;
         
         [GameManager sharedGameManager].currentDifficulty = sender.tag;
+#endif
     }
 }
 
+- (void) liteButtonOff {
+    [self unschedule:@selector(liteButtonOff)];
+    normal.visible = NO;
+    hard.visible = NO;
+}
+
 - (void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    #ifdef LITE_VERSION
     if ([alertView tag] == 1) {
         if (buttonIndex == 1) {
-            [[[GameManager sharedGameManager] gameData] gameDataCleanup];
-            [self diffTapped:lastSender];
-        } else {
-            isSingleGame = YES;
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/us/app/power-of-logic/id452804654"]];
         }
     }
+    #else
+        if ([alertView tag] == 1) {
+            if (buttonIndex == 1) {
+                [[[GameManager sharedGameManager] gameData] gameDataCleanup];
+                [self diffTapped:lastSender];
+            } else {
+                isSingleGame = YES;
+            }
+        }
+    #endif
 }
 
 - (void) muteTapped:(CCMenuItem *)sender {
@@ -307,9 +344,20 @@ enum soundTags
         hardItem.tag = kHard;
         hardItem.position = ADJUST_CCP(ccp(205.00, 53.00));
         
+//        #ifdef LITE_VERSION
+//            [normalItem setIsEnabled:NO];
+//            [hardItem setIsEnabled:NO];
+//        #endif
+        
         #ifdef LITE_VERSION
-            [normalItem setIsEnabled:NO];
-            [hardItem setIsEnabled:NO];
+            for (CCSprite *joy in joysticks) {
+                joy.visible = NO; 
+            }
+            CCSprite *currentJoy = [joysticks objectAtIndex:0];
+            currentJoy.visible = YES;
+            joyStick.position = ADJUST_CCP(ccp(92.00, 135.00));
+            CCSprite *currentButton = [difficulty objectAtIndex:0];
+            currentButton.visible = YES;
         #endif
         
         PressMenu *difficultyMenu = [PressMenu menuWithItems:easyItem, normalItem, hardItem, mute, nil];

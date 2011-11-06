@@ -72,5 +72,6 @@
 //score
 - (void) savePattern:(NSMutableArray *)pattern;
 - (NSMutableArray *) readPattern;
+- (void) deletePattern;
 
 @end

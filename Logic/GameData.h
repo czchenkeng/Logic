@@ -21,11 +21,13 @@ FMResultSet *rs;
 - (void) writeScore:(int)score andDifficulty:(int)diff;
 - (NSMutableArray *) getScores:(int)diff;
 - (int) getMaxScore:(int)diff;
+- (int) getNumScores;
 
 //game settings
 - (void) updateSettingsWithDifficulty:(int)diff andMusicLevel:(float)music andSoundLevel:(float)sound;
 - (void) updateSettingsWithTutor;
 - (settings) getSettings;
+- (void) updateSettingsWithReview;
 
 //truncate game data tables
 - (void) gameDataCleanup;
@@ -42,7 +44,6 @@ FMResultSet *rs;
 - (void) deleteActiveFigure:(int)place;
 - (void) deleteActiveFigures;
 
-//- (void) updateActiveFigure:(int)oldPlace withPlace:(int)newPlace andPosition:(CGPoint)pos;
 - (void) updateActiveFigure:(int)fid withPlace:(int)newPlace andPosition:(CGPoint)pos;
 - (void) updateActiveFigurePosition:(int)place andPosition:(CGPoint)pos;
 

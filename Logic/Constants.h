@@ -32,6 +32,7 @@ typedef struct {
     float soundLevel;
     int tutor;
     int careerTutor;
+    int review;
 } settings;
 
 typedef struct {

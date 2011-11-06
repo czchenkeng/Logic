@@ -47,6 +47,10 @@
     City *currentCity;
     CCSprite *progressBar;
     
+    CCSprite *buyFullOff;
+    CCSprite *buyFullOn;
+    BOOL buyVisible;
+    
     int buttonWidth;//zatim nefachci - mrknout se
     int buttonHeight;//zatim nefachci - mrknout se
     

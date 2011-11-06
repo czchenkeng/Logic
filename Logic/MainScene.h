@@ -6,7 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "MainLayer.h"
+#import "MainGameLayer.h"
 
 @interface MainScene : CCScene {
     CCLayer *mainLayer;
