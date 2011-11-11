@@ -132,7 +132,7 @@
 - (void) runThunderbolt {
     [self unschedule:@selector(runThunderbolt)];
     Thunderbolt *t = [Thunderbolt node];
-    [t initWithStartPoint:ADJUST_CCP(ccp(50, 530)) andEndPoint:ADJUST_CCP(ccp(136, 63)) andType:@"long_" andScale:YES];
+    [t initWithStartPoint:ADJUST_CCP(ccp(50, 530)) andEndPoint:ADJUST_CCP_OFFSET_X(ccp(136, 63)) andType:@"long_" andScale:YES];
     t.position = ADJUST_CCP(ccp(50, 530));
     [self addChild:t z:1000];
 }
@@ -241,8 +241,6 @@
 - (void)dealloc {
     CCLOG(@"\n\n\n\n\n\nDEALLOC PRELOADER\n\n\n\n\n\n");
     CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
-    //[[CCTextureCache sharedTextureCache] removeUnusedTextures];
-    [[CCTextureCache sharedTextureCache] removeAllTextures];
     [super dealloc];
 }
 @end

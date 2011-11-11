@@ -1,0 +1,209 @@
+{
+    "thunderbolts": [
+        {
+            "row": 1,
+            "startPoint": [
+                120,
+                450
+            ],
+            "endPoint": [
+                33.5,
+                76
+            ],
+            "type": 1,
+            "position": 1
+        },
+        {
+            "row": 1,
+            "startPoint": [
+                145,
+                430
+            ],
+            "endPoint": [
+                194.5,
+                76
+            ],
+            "type": 1,
+            "position": 1
+        },        
+        {
+            "row": 2,
+            "startPoint": [
+                120,
+                450
+            ],
+            "endPoint": [
+                33.5,
+                120
+            ],
+            "type": 1,
+            "position": 1
+        },
+        {
+            "row": 2,
+            "startPoint": [
+                195,
+                430
+            ],
+            "endPoint": [235.5, 120],
+            "type": 1,
+            "position": 1
+        },
+        {
+            "row": 2,
+            "startPoint": [
+                31.5,
+                86
+            ],
+            "endPoint": [
+                237.5,
+                130
+            ],
+            "type": 1,
+            "position": 0
+        },
+        {
+            "row": 2,
+            "startPoint": [
+                71.5,
+                130
+            ],
+            "endPoint": [
+                239.5,
+                83
+            ],
+            "type": 0,
+            "position": 0
+        },
+        {
+            "row": 3,
+            "startPoint": [
+                31.5,
+                174
+            ],
+            "endPoint": [
+                197.5,
+                83
+            ],
+            "type": 1,
+            "position": 0
+        },
+        {
+            "row": 3,
+            "startPoint": [
+                242.5,
+                178
+            ],
+            "endPoint": [
+                69.5,
+                81
+            ],
+            "type": 0,
+            "position": 0
+        },
+        {
+            "row": 4,
+            "startPoint": [
+                177,
+                410
+            ],
+            "endPoint": [
+                196.5,
+                211
+            ],
+            "type": 1,
+            "position": 1
+        },
+        {
+            "row": 4,
+            "startPoint": [
+                32.5,
+                220
+            ],
+            "endPoint": [
+                198.5,
+                82
+            ],
+            "type": 1,
+            "position": 0
+        },
+        {
+            "row": 4,
+            "startPoint": [
+                76.5,
+                224
+            ],
+            "endPoint": [
+                34.5,
+                79
+            ],
+            "type": 0,
+            "position": 0
+        },
+        {
+            "row": 5,
+            "startPoint": [
+                28.5,
+                262
+            ],
+            "endPoint": [
+                200.5,
+                214
+            ],
+            "type": 0,
+            "position": 0
+        },
+        {
+            "row": 6,
+            "startPoint": [
+                145,
+                430
+            ],
+            "endPoint": [
+                72.5,
+                299
+            ],
+            "type": 0,
+            "position": 1
+        },
+        {
+            "row": 6,
+            "startPoint": [
+                192.5,
+                310
+            ],
+            "endPoint": [
+                237.5,
+                79
+            ],
+            "type": 1,
+            "position": 0
+        },
+        {
+            "row": 7,
+            "startPoint": [
+                26.5,
+                350
+            ],
+            "endPoint": [
+                243.5,
+                301
+            ],
+            "type": 0,
+            "position": 0
+        },
+        {
+            "row": 9,
+            "startPoint": [
+                72.5,
+                441
+            ],
+            "endPoint": [
+                156.5,
+                211
+            ],
+            "type": 1,
+            "position": 0
+        }
+    ]
+}

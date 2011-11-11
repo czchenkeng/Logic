@@ -137,8 +137,16 @@ typedef enum {
 } GameDifficulty;
 
 typedef enum {
-    kFigureZoom
+    kFigureZoom,
+    kTutorBlink,
+    kTutorBlinkGreen,
+    kTutorBlinkOrange
 } ActionTypes;
+
+typedef enum {
+    kGreenLight,
+    kOrangeLight
+} SpriteTypes;
 
 //MUSIC, SOUNDS
 #define AUDIO_MAX_WAITTIME 150

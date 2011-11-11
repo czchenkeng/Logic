@@ -17,6 +17,7 @@
 #import "SimpleAudioEngine.h"
 #import "Utils.h"
 #import "FacebookViewController.h"
+#import "CCLabelBMFontMultiline.h"
 
 @class GameManager;
 
@@ -33,7 +34,7 @@
     
     CCLayer *tutorLayer;
     CCLayerColor *tutorBlackout;
-    CCLabelBMFont *tutorTxt;
+    CCLabelBMFontMultiline *tutorTxt;
     CCSprite *tutorFinger;
     
     CCArray *citiesArray;

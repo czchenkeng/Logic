@@ -32,6 +32,8 @@
         gameInProgress = NO;
         isCareer = NO;
         
+        isFromLevel = NO;
+        
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kMainMainTexture];
         
         doors = [CCSprite spriteWithSpriteFrameName:@"doors.png"];
@@ -39,11 +41,12 @@
         
         background = [CCSprite spriteWithSpriteFrameName:@"background.png"];
         background.anchorPoint = ccp(0,0);
+        background.position = ccp(-1, -1);
         
-        CCSprite *logoShadow = [CCSprite spriteWithSpriteFrameName:@"logo_shadow.png"];
+        logoShadow = [CCSprite spriteWithSpriteFrameName:@"logo_shadow.png"];
         logoShadow.position = kMainLogoShadowPosition;
         
-        CCSprite *logo = [CCSprite spriteWithSpriteFrameName:@"logo.png"];
+        logo = [CCSprite spriteWithSpriteFrameName:@"logo.png"];
         logo.position = kMainLogoPosition;
         
         CCSprite *grass = [CCSprite spriteWithSpriteFrameName:@"grass.png"];
@@ -505,7 +508,6 @@
 #pragma mark -
 #pragma mark GAMEPLAY CUSTOM TRANSITION
 - (void) logicTransition {
-    CCLOG(@"\n\n\n\nRUN GAME\n\n\n\n");
     [system stopSystem];
     if (gameInProgress) {
         if (isCareer) 
@@ -538,7 +540,16 @@
 }
 
 #pragma mark Game transition
-- (void) startTransition {    
+- (void) startTransition {
+    id bgFadeOut = [CCFadeOut actionWithDuration:0.35];
+    id doorsFadeOut = [CCFadeOut actionWithDuration:0.35];
+    id logoShadowFadeOut = [CCFadeOut actionWithDuration:0.35];
+    id logoFadeOut = [CCFadeOut actionWithDuration:0.35];
+    [background runAction:bgFadeOut];
+    [doors runAction:doorsFadeOut];
+    [logoShadow runAction:logoShadowFadeOut];
+    [logo runAction:logoFadeOut];
+    [CDXPropertyModifierAction fadeBackgroundMusic:1.0f finalVolume:0.0f curveType:kIT_Exponential shouldStop:NO];
     [self doorsOut];
     [self lampOut];
     [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kLogicTrans];
@@ -547,12 +558,8 @@
 - (void) tutorStart {
     [self unschedule:@selector(tutorStart)];
     [GameManager sharedGameManager].mainTutor = NO;
-    [self doorsOut];
-    howToLayer = [HowToLayer node];
-    [self addChild:howToLayer z:0];
-    [self unscheduleUpdate];
-    lightOff.visible = YES;
-    light.visible = NO;
+    isFromLevel = YES;
+    [toggleItem activate];
 }
 
 
@@ -566,16 +573,17 @@
     lightOff.visible = YES;
     light.visible = NO;
     
-    if (gameInProgress) {
-        if (isCareer) 
-            [self animationOut];
-        else
-            [self animationThreeOut];
-    }else{
-        [self animationOut];  
+    if (!isFromLevel) {
+        if (gameInProgress) {
+            if (isCareer) 
+                [self animationOut];
+            else
+                [self animationThreeOut];
+        }else{
+            [self animationOut];  
+        }
     }
-
-    
+    isFromLevel = NO;
 }
 
 #pragma mark REMOVE HOW TO LAYER
@@ -592,7 +600,7 @@
 - (void) runParticle {    
     system = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:kMainRainParticle];
     system.autoRemoveOnFinish = YES;
-    system.rotation = 0;
+    system.rotation = -3;
     [self addChild:system z:21 tag:1];
 }
 
@@ -637,7 +645,7 @@
 }
 
 - (void) dealloc {
-    CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);    
+    CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
     [super dealloc];
 }
 

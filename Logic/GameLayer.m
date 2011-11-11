@@ -36,6 +36,7 @@
 - (void) writeProgress;
 - (void) reviewNotification;
 - (void) tutorDisable;
+- (void) tutorBlinkCallback;
 @end
 
 @implementation GameLayer
@@ -48,7 +49,7 @@
     if (self != nil) {
         CCLOG(@"\n\n\n\n\n\nALLOC GAME\n\n\n\n\n\n");
         CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
-        cheat = YES;
+        cheat = NO;
         [self createGame];
     }
     return self;
@@ -77,8 +78,14 @@
 
 #pragma mark Enter finish
 -(void) onEnterTransitionDidFinish {
-    [[GameManager sharedGameManager] playBackgroundTrack:BACKGROUND_TRACK_LEVEL];
+    [self schedule:@selector(delayMusic) interval:0.5];
     [[GameManager sharedGameManager] playLoopSounds];
+}
+
+- (void) delayMusic {
+    [self unschedule:@selector(delayMusic)];
+    [SimpleAudioEngine sharedEngine].backgroundMusicVolume = [[GameManager sharedGameManager] musicVolume];
+    [[GameManager sharedGameManager] playBackgroundTrack:BACKGROUND_TRACK_LEVEL];
 }
 
 #pragma mark Exit scene
@@ -90,12 +97,12 @@
     [super onExit];
 }
 
-//- (void) blackoutCallback {
-//    [blackout removeFromParentAndCleanup:YES];
-//    if ([GameManager sharedGameManager].oldScene == kMainScene) {
-//        [blackout2 removeFromParentAndCleanup:YES];
-//    }    
-//}
+- (void) blackoutCallback {
+    [blackout removeFromParentAndCleanup:YES];
+    if ([GameManager sharedGameManager].oldScene == kMainScene) {
+        [blackout2 removeFromParentAndCleanup:YES];
+    }    
+}
 
 #pragma mark -
 #pragma mark GESTURES DELEGATE METHODS
@@ -109,6 +116,8 @@
 #pragma mark INITIALIZATION OF LEVEL
 #pragma mark Composite method for starting level
 - (void) createGame {
+    tutorNeverShow = NO;
+    forcedEnd = NO;
     isWinner = NO;
     isEndOfGame = NO;
     lastTime = 0;
@@ -133,7 +142,6 @@
     if ([[GameManager sharedGameManager] gameInProgress]) {//probihajici hra nebo prisel z kariery
         gameInfo infoData;
         infoData = [[[GameManager sharedGameManager] gameData] getGameData];
-        CCLOG(@"**************************************************\n\n\n\n\n\nnacita game progress\n\n\n\n\n\n\n**************************************************\n, %i", infoData.difficulty);
         currentDifficulty = infoData.difficulty;
         activeRow = infoData.activeRow;
         isCareer = infoData.career == 0 ? NO : YES;
@@ -154,11 +162,6 @@
     
     maxScore = [[[GameManager sharedGameManager] gameData] getMaxScore:currentDifficulty];
     
-    if (isCareer) {
-        CCLOG(@"**************************************************\n\n\n\n\n\ncareer here\n\n\n\n\n\n\n**************************************************\n");
-    } else {
-        CCLOG(@"**************************************************\n\n\n\n\n\nno career\n\n\n\n\n\n\n\n**************************************************\n");
-    }
     [self buildLevel];
     [self addFigures];
     [self generateTargets];
@@ -248,18 +251,36 @@
         [self writeProgress];
     }
     [timer setupClock:gameTime];
-    //[timer setupClock:3539];
+    //[timer setupClock:1749];
     [self schedule:@selector(checkTime) interval:1];
     
     if ([GameManager sharedGameManager].isTutor) {
         isTutor = YES;
         [self setupTutor];
-        //isTutor = NO;
     }
+    
+    blackout = [Blackout node];
+    [blackout setOpacity:230];
+    if ([GameManager sharedGameManager].oldScene == kMainScene) {
+        blackout2 = [Blackout node];
+        [blackout2 setOpacity:230];
+        blackout2.position = ccp(blackout2.position.x, 480);
+        id fade2Out = [CCFadeTo actionWithDuration:0.3 opacity:0];
+        CCEaseIn *easeFade2Out = [CCEaseIn actionWithAction:fade2Out rate:5];
+        id fade2Seq = [CCSequence actions:easeFade2Out, nil];
+        [self addChild:blackout2 z:5001];
+        [blackout2 runAction:fade2Seq];
+    }
+    id fadeOut = [CCFadeTo actionWithDuration:0.3 opacity:0];
+    CCEaseIn *easeFadeOut = [CCEaseIn actionWithAction:fadeOut rate:5];
+    id fadeSeq = [CCSequence actions:easeFadeOut,[CCCallFunc actionWithTarget:self selector:@selector(blackoutCallback)], nil];
+    [self addChild:blackout z:5000];
+    [blackout runAction:fadeSeq];
 }
 
 - (void) checkTime {
-    if (timer.gameTime == 3599) {
+    if (timer.gameTime == 1799) {
+        forcedEnd = YES;
         [self unschedule:@selector(checkTime)];
         [self endGame];
     }
@@ -267,7 +288,6 @@
 
 #pragma mark Build level
 - (void) buildLevel {
-    CCLOG(@"BUILD LEVEL METHOD");
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kLevelBgTexture];
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kLevelLevelTexture]; 
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kThunderboltsTexture];    
@@ -441,8 +461,9 @@
     
     if (isCareer) {
         continuePanel = [CCSprite spriteWithSpriteFrameName:@"rameno_right.png"];
-        continuePanel.scaleX = 5;
-        continuePanel.scaleY = 22;
+        continuePanel.scaleY = 2.4;
+        continuePanel.scaleX = 2.4;
+        continuePanel.rotation = 1;
         continuePanel.visible = NO;
         [continuePanel setPosition:kContinuePanelOutPosition];
         
@@ -451,15 +472,18 @@
         
         CCMenuItem *continueItem = [CCMenuItemSprite itemFromNormalSprite:buttonContinueOff selectedSprite:buttonContinueOn target:self selector:@selector(menuTapped:)];
         continueItem.tag = kButtonContinue;
-        CCMenu *continueMenu = [CCMenu menuWithItems:continueItem, nil];
+        continueMenu = [CCMenu menuWithItems:continueItem, nil];
         continueMenu.position = ADJUST_CCP_OFFSET(ccp(66.00, 31.50));
+        [continueMenu setOpacity:0];
+        continueMenu.visible = NO;
         [continuePanel addChild:continueMenu z:1];
         [self addChild:continuePanel z:31];
         
     } else {
         replayPanel = [CCSprite spriteWithSpriteFrameName:@"rameno_right.png"];
-        replayPanel.scaleX = 5;
-        replayPanel.scaleY = 22;
+        replayPanel.scaleX = 2.4;
+        replayPanel.scaleY = 2.4;
+        replayPanel.rotation = 1;
         replayPanel.visible = NO;
         [replayPanel setPosition:kReplayPanelOutPosition];
         
@@ -469,8 +493,10 @@
         
         CCMenuItem *replayItem = [CCMenuItemSprite itemFromNormalSprite:buttonReplayOff selectedSprite:buttonReplayOn target:self selector:@selector(menuTapped:)];
         replayItem.tag = kButtonReplay;
-        CCMenu *replayMenu = [CCMenu menuWithItems:replayItem, nil];
+        replayMenu = [CCMenu menuWithItems:replayItem, nil];
         replayMenu.position = ADJUST_CCP_OFFSET(ccp(66.00, 31.50));
+        [replayMenu setOpacity:0];
+        replayMenu.visible = NO;
         [replayPanel addChild:replayMenu z:1];
         [self addChild:replayPanel z:31];
     }
@@ -479,24 +505,25 @@
     CCSprite *buttonGameMenuOn = [CCSprite spriteWithSpriteFrameName:@"logik_gmenu2.png"];
     
     gameMenuPanel = [CCSprite spriteWithSpriteFrameName:@"rameno_left.png"];
-    gameMenuPanel.scaleX = 5;
-    gameMenuPanel.scaleY = 22;
+    gameMenuPanel.scaleX = 2.4;
+    gameMenuPanel.scaleY = 2.4;
+    gameMenuPanel.rotation = -2;
     gameMenuPanel.visible = NO;
     [gameMenuPanel setPosition:kGameMenuPanelOutPosition];
     
     CCMenuItem *gameMenuItemLeft = [CCMenuItemSprite itemFromNormalSprite:buttonGameMenuOff selectedSprite:buttonGameMenuOn target:self selector:@selector(menuTapped:)];
     gameMenuItemLeft.tag = kButtonGameMenu;
-    CCMenu *gameMenuLeft = [CCMenu menuWithItems:gameMenuItemLeft, nil];
+    gameMenuLeft = [CCMenu menuWithItems:gameMenuItemLeft, nil];
     gameMenuLeft.position = ADJUST_CCP_OFFSET2(ccp(195.50, 35.50));
+    gameMenuLeft.visible = NO;
+    [gameMenuLeft setOpacity:0];
     [gameMenuPanel addChild:gameMenuLeft z:2];
     
     [self addChild:gameMenuPanel z:32];
     
-    //NOTE
     CCSprite *shadowBase = [CCSprite spriteWithSpriteFrameName:@"shadowBase.png"];
-    shadowBase.anchorPoint = ccp(0, 1);
-    shadowBase.position = ccp(0, 115);
-    //NOTE
+    shadowBase.anchorPoint = ccp(0, 0);
+    shadowBase.position = ccp(0, -1);
     
     //add nodes to display list
     [self addChild:movableNode z:1];
@@ -642,7 +669,6 @@
 #pragma mark Draw time
 - (void) drawTimeToLabel:(int)value andArray:(CCArray *)array andStyle:(BOOL)animated andZero:(BOOL)toZero {
     NSString *scoreString = [NSString stringWithFormat:@"%02d", value];
-    CCLOG(@"TIME STRING %@", scoreString);
     NSMutableArray *characters = [[NSMutableArray alloc] initWithCapacity:[scoreString length]];
     for (int i=0; i < [scoreString length]; i++) {
         NSString *ichar;
@@ -779,28 +805,29 @@
 
 
 - (void) transitionOut {
-//    blackout = [Blackout node];
-//    [blackout setOpacity:0];
-//    id fadeIn = [CCFadeTo actionWithDuration:0.4 opacity:250];
-//    CCEaseIn *easeFadeOut = [CCEaseIn actionWithAction:fadeIn rate:5];
-//    id fadeSeq = [CCSequence actions:easeFadeOut, nil];
-//    [self addChild:blackout z:5000];
-//    [blackout runAction:fadeSeq];
-//    
-//    blackout2 = [Blackout node];
-//    [blackout2 setOpacity:0];
-//    blackout2.position = ccp(blackout2.position.x, 480);
-//    id fade2Out = [CCFadeTo actionWithDuration:0.7 opacity:250];
-//    CCEaseIn *easeFade2Out = [CCEaseIn actionWithAction:fade2Out rate:5];
-//    id fade2Seq = [CCSequence actions:easeFade2Out, nil];
-//    [self addChild:blackout2 z:5001];
-//    [blackout2 runAction:fade2Seq];
+    blackout = [Blackout node];
+    [blackout setOpacity:0];
+    id fadeIn = [CCFadeTo actionWithDuration:0.4 opacity:250];
+    CCEaseIn *easeFadeOut = [CCEaseIn actionWithAction:fadeIn rate:5];
+    id fadeSeq = [CCSequence actions:easeFadeOut, nil];
+    [self addChild:blackout z:5000];
+    [blackout runAction:fadeSeq];
+    
+    blackout2 = [Blackout node];
+    [blackout2 setOpacity:0];
+    blackout2.position = ccp(blackout2.position.x, 480);
+    id fade2Out = [CCFadeTo actionWithDuration:0.7 opacity:250];
+    CCEaseIn *easeFade2Out = [CCEaseIn actionWithAction:fade2Out rate:5];
+    id fade2Seq = [CCSequence actions:easeFade2Out, nil];
+    [self addChild:blackout2 z:5001];
+    [blackout2 runAction:fade2Seq];
     
     [[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kLogicTransRev];
 }
 
 #pragma mark End game button
 - (void) skipFinalPresentation:(CCMenuItem *)sender {
+    [self unschedule:@selector(ovationParticle)];
     skipEnd = YES;
     STOPSOUNDEFFECT(ciselnik);
     PLAYSOUNDEFFECT(BUTTON_LEVEL_CLICK);
@@ -840,6 +867,12 @@
 - (void) endGameTapped {
     [[GameManager sharedGameManager] playBackgroundTrack:BACKGROUND_TRACK_LEVEL];
     PLAYSOUNDEFFECT(NAV_LEVEL);
+    if (isCareer) {
+        continueMenu.visible = YES; 
+    }else{
+        replayMenu.visible = YES;
+    }
+    gameMenuLeft.visible = YES;
     finalMenu.visible = NO;
     float delay;
     if (isWinner) {
@@ -857,8 +890,8 @@
         id iOut = [CCFadeOut actionWithDuration:.2];
         [infoTxt runAction:iOut];
         
-        CCMoveTo *scoreMoveOut = [CCMoveTo actionWithDuration:0.4 position:kScorePanelOutPosition];
-        CCScaleTo *scoreScaleOutX = [CCScaleTo actionWithDuration:0.4 scaleX:5 scaleY:22];
+        CCMoveTo *scoreMoveOut = [CCMoveTo actionWithDuration:0.2 position:kScorePanelOutPosition];
+        CCScaleTo *scoreScaleOutX = [CCScaleTo actionWithDuration:0.2 scaleX:5 scaleY:22];
         CCRotateTo *scoreRotationOut = [CCRotateTo actionWithDuration:1.0 angle:0];
         CCSpawn *moveLeftGibSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.5f], scoreMoveOut, scoreScaleOutX, scoreRotationOut, nil];
         
@@ -873,9 +906,9 @@
         [self constructEndLabels:timer.gameTime andZero:YES];
         [scoreTime runAction:scoreTimeSeq];
         [scorePanel runAction:moveLeftGibSeq];
-        delay = 0.4;
+        delay = 0.6;
     } else {
-        delay = 0.3;
+        delay = 0.5;
         id fadeFailLabel = [CCFadeOut actionWithDuration:.3];
         id fadeFailLabelBig = [CCFadeOut actionWithDuration:.3];
         
@@ -889,40 +922,62 @@
                                   nil];
     
     if (isCareer) {        
-        CCMoveTo *continueMoveIn = [CCMoveTo actionWithDuration:.6 position:kContinuePanelInPosition];
-        CCScaleTo *continueScaleInX = [CCScaleTo actionWithDuration:.6 scaleX:1.0 scaleY:1.0];
-        CCRotateTo *continueRotationIn = [CCRotateTo actionWithDuration:.6 angle:1];
-        CCSpawn *continueSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: delay], continueMoveIn, continueScaleInX, continueRotationIn, nil];
+        CCMoveTo *continueMoveIn = [CCMoveTo actionWithDuration:.2 position:kContinuePanelInPosition];
+        CCScaleTo *continueScaleInX = [CCScaleTo actionWithDuration:.2 scaleX:1.0 scaleY:1.0];
+        CCFadeIn *continueFadeIn = [CCFadeIn actionWithDuration:0.2];
+        CCSequence *continueSeq = [CCSequence actions:[CCDelayTime actionWithDuration: delay],[CCSpawn actions: continueMoveIn, continueScaleInX, continueFadeIn, nil], nil];
         
-        CCMoveTo *gmRightMoveIn = [CCMoveTo actionWithDuration:0.6 position:kGameMenuPanelInPosition];
-        CCScaleTo *gmRightScaleInX = [CCScaleTo actionWithDuration:0.6 scaleX:1.0 scaleY:1.0];
-        CCRotateTo *gmRightRotationIn = [CCRotateTo actionWithDuration:0.6 angle:-2];        
-        CCSpawn *gmRightSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: delay], gmRightMoveIn, gmRightScaleInX, gmRightRotationIn, nil];        
+        CCMoveTo *gmRightMoveIn = [CCMoveTo actionWithDuration:0.2 position:kGameMenuPanelInPosition];
+        CCScaleTo *gmRightScaleInX = [CCScaleTo actionWithDuration:0.2 scaleX:1.0 scaleY:1.0];
+        CCFadeIn *gmFadeIn = [CCFadeIn actionWithDuration:0.2];       
+        CCSequence *gmRightSeq = [CCSequence actions:[CCDelayTime actionWithDuration: delay],[CCSpawn actions: gmRightMoveIn, gmRightScaleInX, gmFadeIn, nil], nil];
+        
+        id continueIn = [CCSequence actions:[CCDelayTime actionWithDuration: delay], [CCFadeIn actionWithDuration:0.2], nil];
+        id gmIn = [CCSequence actions:[CCDelayTime actionWithDuration: delay],[CCFadeIn actionWithDuration:0.2], nil];
+        
+        [continueMenu runAction:continueIn];
+        [gameMenuLeft runAction:gmIn];
         
         continuePanel.visible = YES;
         gameMenuPanel.visible = YES;
+        continuePanel.opacity = 0;
+        gameMenuPanel.opacity = 0;
         
         [continuePanel runAction:continueSeq];
         [gameMenuPanel runAction:gmRightSeq];
     } else {
-        CCMoveTo *replayMoveIn = [CCMoveTo actionWithDuration:0.6 position:kReplayPanelInPosition];
-        CCScaleTo *replayScaleInX = [CCScaleTo actionWithDuration:0.6 scaleX:1.0 scaleY:1.0];
-        CCRotateTo *replayRotationIn = [CCRotateTo actionWithDuration:0.6 angle:1];        
-        CCSpawn *replaySeq = [CCSpawn actions:[CCDelayTime actionWithDuration: delay], replayMoveIn, replayScaleInX, replayRotationIn, nil];
+        CCMoveTo *continueMoveIn = [CCMoveTo actionWithDuration:.2 position:kContinuePanelInPosition];
+        CCScaleTo *continueScaleInX = [CCScaleTo actionWithDuration:.2 scaleX:1.0 scaleY:1.0];
+        CCFadeIn *continueFadeIn = [CCFadeIn actionWithDuration:0.2];
+        CCSequence *continueSeq = [CCSequence actions:[CCDelayTime actionWithDuration: delay],[CCSpawn actions: continueMoveIn, continueScaleInX, continueFadeIn, nil], nil];
         
-        CCMoveTo *gmLeftMoveIn = [CCMoveTo actionWithDuration:.6 position:kGameMenuPanelInPosition];
-        CCScaleTo *gmLeftScaleInX = [CCScaleTo actionWithDuration:.6 scaleX:1.0 scaleY:1.0];
-        CCRotateTo *gmLeftRotationIn = [CCRotateTo actionWithDuration:.6 angle:-2];
-        CCSpawn *moveGmLeftSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: delay], gmLeftMoveIn, gmLeftScaleInX, gmLeftRotationIn, nil];
+        CCMoveTo *gmRightMoveIn = [CCMoveTo actionWithDuration:0.2 position:kGameMenuPanelInPosition];
+        CCScaleTo *gmRightScaleInX = [CCScaleTo actionWithDuration:0.2 scaleX:1.0 scaleY:1.0];
+        CCFadeIn *gmFadeIn = [CCFadeIn actionWithDuration:0.2];       
+        CCSequence *gmRightSeq = [CCSequence actions:[CCDelayTime actionWithDuration: delay], [CCSpawn actions: gmRightMoveIn, gmRightScaleInX, gmFadeIn, nil], nil];
         
         replayPanel.visible = YES;
         gameMenuPanel.visible = YES;
+        replayPanel.opacity = 0;
+        gameMenuPanel.opacity = 0;
         
-        [replayPanel runAction:replaySeq];
-        [gameMenuPanel runAction:moveGmLeftSeq];
+        id continueIn = [CCSequence actions:[CCDelayTime actionWithDuration: delay], [CCFadeIn actionWithDuration:0.2], nil];
+        id gmIn = [CCSequence actions:[CCDelayTime actionWithDuration: delay],[CCFadeIn actionWithDuration:0.2], nil];
+        
+        [replayMenu runAction:continueIn];
+        [gameMenuLeft runAction:gmIn];
+        
+        [replayPanel runAction:continueSeq];
+        [gameMenuPanel runAction:gmRightSeq];
     }
+    [self schedule:@selector(packyIn) interval:delay];
     [endGameMenu runAction:endGameMenuSeq]; 
     [self schedule:@selector(reviewCallback) interval:1.0];
+}
+
+- (void) packyIn {
+    [self unschedule:@selector(packyIn)];
+    PLAYSOUNDEFFECT(NAV_LEVEL);
 }
 
 - (void) reviewCallback {
@@ -1000,6 +1055,8 @@
 #pragma mark END GAME
 #pragma mark Composite method - end game
 - (void) endGame {
+    if(sparkleSystem != nil)
+        [sparkleSystem stopSystem];
     tutorStep = 0;
     isTutor = NO;
     isEndOfGame = YES;
@@ -1162,10 +1219,20 @@
 }
 
 - (void) checkCode {
-    NSMutableArray *finalArray = [randomThunderbolt getRowData:activeRow];
+    NSMutableArray *finalArray = [randomThunderbolt getRowData:forcedEnd ? activeRow - 1 : activeRow];
+    CCLOG(@"\n\n\n\nACTIVE ROW LIGHT %i\n\n\n", activeRow);
     for (ThunderboltVO *finalVO in finalArray) {        
         CGPoint startPoint = ADJUST_CCP(ccp(finalVO.startPos.x, 471));
-        CGPoint endPoint = ADJUST_CCP(ccp(finalVO.startPos.x, finalVO.startPos.y + trans));
+        float endY = finalVO.startPos.y + trans;
+        CCLOG(@"\n\n\n\nCALC ROW %f\n\n\n", finalVO.startPos.y + trans);
+#ifdef HD_VERSION
+        if (activeRow == 7 || activeRow == 8)
+            endY = 367.00;
+        if (activeRow == 9)
+            endY = 407.00;
+#endif
+        CGPoint endPoint = ADJUST_CCP(ccp(finalVO.startPos.x, endY));
+        //endPoint = ccp(endPoint.x, endPoint.y + ADJUST_2(trans));
         Thunderbolt *t = [Thunderbolt node];
         NSString *typeT;
         if (activeRow > 5) 
@@ -1178,7 +1245,7 @@
     }
 }
 
-- (void) openLockEnded {
+- (void) openLockEnded {    
     float delayStep1 = 2.50;
     float delayStep2 = 3.00;
     float delayStep3 = delayStep2 + 1.00;
@@ -1202,10 +1269,11 @@
     infoTxt.scale = isRetina ? 0.6 : 0.30;
     infoTxt.rotation = -2;
     infoTxt.opacity = 0;
-    infoTxt.position = ccp(screenSize.width/2 - 15, screenSize.height/2 + 18);
+    infoTxt.position = ccp(screenSize.width/2 - ADJUST_2(15), screenSize.height/2 + ADJUST_2(18));
     [self addChild:infoTxt z:21];
     
     if (isWinner) {
+        [self schedule:@selector(ovationParticle) interval:6.5f];
         final1TimeArray = [[CCArray alloc] init];
         final2TimeArray = [[CCArray alloc] init];
         finalScoreArray = [[CCArray alloc] init];
@@ -1306,7 +1374,7 @@
             [superSmall runAction:super2Seq];
             NSString *finalResult = [NSString stringWithFormat:@"Row: %i   Time: %02d:%02d", activeRow + 1, timer.gameTime/60, timer.gameTime%60];
             [infoTxt setString:finalResult];
-            infoTxt.position = ccp(infoTxt.position.x, infoTxt.position.y + 3);
+            infoTxt.position = ccp(infoTxt.position.x, infoTxt.position.y + ADJUST_2(3));
         }
         
         
@@ -1321,7 +1389,7 @@
         failLabelSmall.scale = isRetina ? 0.9 : 0.45;
         failLabelSmall.opacity = 0;
         failLabelSmall.rotation = -2;
-        failLabelSmall.position = ccp(screenSize.width/2 - 15, screenSize.height/2);
+        failLabelSmall.position = ccp(screenSize.width/2 - ADJUST_2(15), screenSize.height/2);
         [self addChild:failLabelSmall z:30];
         
         failLabelBig = [CCLabelBMFont labelWithString:@"TRY IT AGAIN!" fntFile:@"Gloucester_levelBig.fnt"];
@@ -1343,9 +1411,23 @@
                             [CCFadeIn actionWithDuration:.3],
                             nil];
         [infoTxt runAction:iSeq];
-        infoTxt.position = ccp(infoTxt.position.x + 2, infoTxt.position.y - 66);
+        infoTxt.position = ccp(infoTxt.position.x + ADJUST_2(2), infoTxt.position.y - ADJUST_2(66));
     }
 }
+
+- (void) ovationParticle {
+    ovationSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:kOvationParticle];
+    ovationSystem.autoRemoveOnFinish = YES;
+    [self addChild:ovationSystem z:13];
+    [self schedule:@selector(deleteOvation) interval:1.00];
+    [self unschedule:@selector(ovationParticle)];
+}
+
+- (void) deleteOvation {
+    [ovationSystem stopSystem];
+    [self unschedule:@selector(deleteOvation)];
+}
+
 
 - (void) constructEndLabels:(int)time andZero:(BOOL)toZero {
     //time label
@@ -1607,30 +1689,33 @@
     if (row == 0 && tutorStep == 2) {
         [self schedule:@selector(tutorEnable) interval:1];
     }
-    float delay = 0.0f;
-    CCSprite *greenLight = [greenLights objectAtIndex:row];
-    if (places > 0) {
-        delay = 1.0f;
-        id fadeToGreen = [CCFadeTo actionWithDuration:0.5f opacity:255];
-        [greenLight runAction:fadeToGreen];
-        PLAYSOUNDEFFECT(SHOW_RESULT_GREEN);
-    }   
-    RowStaticScore *place = [placeNumbers objectAtIndex:row];
-    [place showNumber:places];
-    Mask *holderPlace = [Mask maskWithRect:CGRectMake(greenLight.position.x - ADJUST_2(3), greenLight.position.y + ADJUST_2(trans + 8), ADJUST_2(9), ADJUST_2(18))];
-    [self addChild:holderPlace z:100 + row];
-    RowScore *rs = [[RowScore alloc] init];
-    [holderPlace addChild:rs z:1];
-    [rs moveToPosition:places andMask:holderPlace];
-    
-    CCSprite *orangeLight = [orangeLights objectAtIndex:row];
-    if (colors > 0) {
-        id spawnOrange = [CCSpawn actions:[CCFadeTo actionWithDuration:0.5f opacity:255], [CCCallFuncND actionWithTarget:self selector:@selector(showColors:data:) data:[NSNumber numberWithInt:row]], nil];
-        id fadeToOrange = [CCSequence actions:[CCDelayTime actionWithDuration: delay], spawnOrange, nil];
-        [orangeLight runAction:fadeToOrange];
-    } else {
-        [self showColors:nil data:[NSNumber numberWithInt:row]];
+    if(!forcedEnd){
+        float delay = 0.0f;
+        CCSprite *greenLight = [greenLights objectAtIndex:row];
+        if (places > 0) {
+            delay = 1.0f;
+            id fadeToGreen = [CCFadeTo actionWithDuration:0.5f opacity:255];
+            [greenLight runAction:fadeToGreen];
+            PLAYSOUNDEFFECT(SHOW_RESULT_GREEN);
+        }   
+        RowStaticScore *place = [placeNumbers objectAtIndex:row];
+        [place showNumber:places];
+        Mask *holderPlace = [Mask maskWithRect:CGRectMake(greenLight.position.x - ADJUST_2(3), greenLight.position.y + ADJUST_2(trans + 8), ADJUST_2(9), ADJUST_2(18))];
+        [self addChild:holderPlace z:100 + row];
+        RowScore *rs = [[RowScore alloc] init];
+        [holderPlace addChild:rs z:1];
+        [rs moveToPosition:places andMask:holderPlace];
+        
+        CCSprite *orangeLight = [orangeLights objectAtIndex:row];
+        if (colors > 0) {
+            id spawnOrange = [CCSpawn actions:[CCFadeTo actionWithDuration:0.5f opacity:255], [CCCallFuncND actionWithTarget:self selector:@selector(showColors:data:) data:[NSNumber numberWithInt:row]], nil];
+            id fadeToOrange = [CCSequence actions:[CCDelayTime actionWithDuration: delay], spawnOrange, nil];
+            [orangeLight runAction:fadeToOrange];
+        } else {
+            [self showColors:nil data:[NSNumber numberWithInt:row]];
+        }
     }
+
 }
 
 - (void) showColors:(id)sender data:(NSNumber *)rowObj {
@@ -1838,6 +1923,10 @@
         [[[GameManager sharedGameManager] gameData] deleteActiveFigure:sprite.place];
     }
     
+    if (activeRow == 0 && movableFigures.count ==  8 + currentDifficulty && tutorStep == 1) {
+        [self schedule:@selector(tutorEnable) interval:2];
+    }
+    
     [userCode addObject:sprite];
     
     [figuresNode reorderChild:selSprite z:sprite.zOrder - 100];
@@ -1904,16 +1993,20 @@
 #pragma mark Pan gestures handler
 - (void) handlePan:(UIPanGestureRecognizer *)recognizer {
     if (recognizer.state == UIGestureRecognizerStateBegan) {
-        sparkleSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"Sparkle.plist"];
-        sparkleSystem.autoRemoveOnFinish = YES;
-        sparkleSystem.positionType = kCCPositionTypeRelative;
-        [self addChild:sparkleSystem z:10000];
+        if (sparkleSystem == nil) {
+            sparkleSystem = [ARCH_OPTIMAL_PARTICLE_SYSTEM particleWithFile:@"Sparkle.plist"];
+            //sparkleSystem.autoRemoveOnFinish = YES;
+            sparkleSystem.positionType = kCCPositionTypeRelative;
+            [self addChild:sparkleSystem z:10000];
+        }
     } else if (recognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint touchLocation = [recognizer locationInView:recognizer.view];
         touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];        
         CGPoint pos = CGPointZero;
         CGPoint position = ccpSub(touchLocation, pos);
-        sparkleSystem.position = ccp(position.x, position.y);
+        if (sparkleSystem != nil) {
+             sparkleSystem.position = ccp(position.x, position.y);
+        }
         
         CGPoint translation = [recognizer translationInView:recognizer.view];
         translation = ccp(translation.x, -translation.y);
@@ -1942,14 +2035,9 @@
             touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
             touchLocation = [self convertToNodeSpace:touchLocation];
             if (selSprite) {
-                //if (abs(tramwayLocation.x - touchLocation.x) < 100) {
                     [self panForTranslation:translation];
                     [self detectTarget];
-                //}
             } else {
-//                CGPoint touchLocation = [recognizer locationInView:recognizer.view];
-//                touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
-//                touchLocation = [self convertToNodeSpace:touchLocation];
                 if (isMovable && translation.y > 0 && touchLocation.y > MIN_DISTANCE_SWIPE_Y) {
                     longPress.enabled = NO;
                     [movableNode setPosition:[self boundMovePos:translation withPosition:ccp(0, 0) andNode:movableNode]];
@@ -1967,15 +2055,13 @@
         [recognizer setTranslation:CGPointZero inView:recognizer.view];
         
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
-        CCLOG(@"ended pan");
-        [sparkleSystem stopSystem];
+        if (sparkleSystem != nil) {
+            [sparkleSystem stopSystem];
+            sparkleSystem = nil;
+        }
         //tutorial 1 NO
         if (activeRow == 0 && userCode.count == 0 && tutorStep == 0){
             isTutor = NO;
-        }
-        //tutorial 2 RUN
-        if (activeRow == 0 && userCode.count == currentDifficulty - 1 && tutorStep == 1) {
-            [self schedule:@selector(tutorEnable) interval:2];
         }
         [selSprite stopActionByTag:kFigureZoom];
         selSprite.scale = 1;
@@ -2014,23 +2100,15 @@
 
 #pragma mark Touch began
 - (BOOL) ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
-    tramwayLocation = [self convertTouchToNodeSpace:touch];
-    if (tramwayLocation.y < ADJUST_Y(56) && !isEndOfGame) {
-        [self selectSpriteForTouch:tramwayLocation];
+    CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
+    if (touchLocation.y < ADJUST_Y(56) && !isEndOfGame) {
+        [self selectSpriteForTouch:touchLocation];
     }
     return YES;
 }
 
 #pragma mark Touch ended
 - (void) ccTouchEnded: (UITouch *)touch withEvent: (UIEvent *)event {
-    CCLOG(@"ended touch");
-    //[sparkleSystem stopSystem];
-    //    if (activeRow == 0 && userCode.count == 0 && tutorStep == 0){
-    //        isTutor = NO;
-    //    }
-    //    if (activeRow == 0 && userCode.count == currentDifficulty - 1 && tutorStep == 1) {
-    //        [self schedule:@selector(tutorEnable) interval:2];
-    //    }
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
     if (touchLocation.y < ADJUST_Y(56)) {
         [selSprite stopActionByTag:kFigureZoom];
@@ -2043,17 +2121,25 @@
 #pragma mark Skip tutorial
 - (void) skipTutorTapped:(CCMenuItem *)sender {
     PLAYSOUNDEFFECT(BUTTON_LEVEL_CLICK);
-    [self tutorDisable];
+    //CCLOG(@"tutor step::: %i", tutorStep);
+    if (tutorStep == 2) {
+        [[movableNode getChildByTag:kGreenLight] stopActionByTag:kTutorBlinkGreen];
+    }else if(tutorStep == 3) {
+        CCLOG(@"orange light %@", [movableNode getChildByTag:kOrangeLight]);
+        [[movableNode getChildByTag:kOrangeLight] stopActionByTag:kTutorBlinkOrange];
+    }
+    [self tutorBlinkCallback];
     [self unschedule:@selector(firstTutorStep2)];
     switch (sender.tag) {
         case kButtonSkipTutor:
-            CCLOG(@"skip - play game");
+            [self tutorDisable];
             break;
         case kButtonNeverShow:
-            CCLOG(@"never show");
+            tutorJoin = NO;
             [GameManager sharedGameManager].mainTutor = NO;
-            tutorStep = 0;
+            tutorNeverShow = YES;
             isTutor = NO;
+            [self tutorDisable];
             [GameManager sharedGameManager].isTutor = NO;
             break;
         default:
@@ -2108,6 +2194,9 @@
     } else {
         boxW = 640;
     }
+#ifdef HD_VERSION
+    boxW = 640;
+#endif
     tutorTxt =  [CCLabelBMFontMultiline labelWithString:@"" fntFile:@"Gloucester_levelTutor.fnt" width:boxW alignment:CenterAlignment];
     tutorTxt.rotation = -1;
     tutorTxt.scale = isRetina ? 1 : 0.5;
@@ -2141,109 +2230,127 @@
 }
 
 - (void) tutorEnable {
-    if (isTutor) {        
-        if (selSprite) {
-            tutorWillContinue = YES;
-            [self unschedule:@selector(tutorEnable)];
-            return;
-        }        
-        longPress.enabled = NO;
-        panRecognizer.enabled = NO;
-        [[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
-        
-        [timer stopTimer];
-        [[GameManager sharedGameManager] pauseLoopSounds];
-        
-        CCLOG(@"TUTOR STEP %i", tutorStep);
-        CGSize screenSize = [CCDirector sharedDirector].winSize;
-        if (!tutorJoin) {
-            CCSequence *pauseSeq = [CCSequence actions:
-                                    [CCDelayTime actionWithDuration:.8],
-                                    [CCMoveTo actionWithDuration:.2 position:CGPointMake(pauseMenu.position.x, pauseMenu.position.y + ADJUST_2(60))],
-                                    nil];
-            [pauseMenu runAction:pauseSeq];
-            id tutorIn = [CCMoveTo actionWithDuration:1 position:ccp(tutorLayer.position.x, tutorLayer.position.y - screenSize.height)];
-            id tutorInSeq = [CCSequence actions:tutorIn,[CCCallFunc actionWithTarget:self selector:@selector(tutorInCallback)], nil];
-            [tutorLayer runAction:tutorInSeq];
-        } else {
-            id tutorInSeq = [CCSequence actions:[CCDelayTime actionWithDuration:1],[CCCallFunc actionWithTarget:self selector:@selector(tutorInCallback)], nil];
-            [tutorLayer runAction:tutorInSeq];
-        }
-        
-        CCSprite *buttonPauseOff = [CCSprite spriteWithSpriteFrameName:@"i_t_off.png"];
-        CCSprite *buttonPauseOn = [CCSprite spriteWithSpriteFrameName:@"i_t_on.png"];    
-        CCMenuItem *pauseItem = [CCMenuItemSprite itemFromNormalSprite:buttonPauseOff selectedSprite:buttonPauseOn target:self selector:@selector(pauseTapped:)];
-        
-        switch (tutorStep) {
-            case kTutorFirst:
-                screenSprite.visible = YES;
-                [tutorTxt setString:@"Break the secret code!"];
-                tutorTxt.position = ADJUST_CCP(ccp(150, 395));
-                break;
-            case kTutorSecond:
-                screenSprite.visible = NO;
-                [tutorTxt setString:@"Swipe across the pins \nto get your score"];
-                tutorTxt.position = ccp(150, 345);
-                break;
-            case kTutorThird:
-                screenSprite.visible = NO;
-                pincl1.visible = YES;
-                [tutorTxt setString:@"RIGHT COLOR & \nRIGHT POSITION"];
-                tutorJoin = YES;
-                tutorTxt.position = ccp(150, 345);
-                break;
-            case kTutorFourth:
-                screenSprite.visible = NO;
-                tutorTxt.opacity = 0;
-                id txtFadeIn = [CCSequence actions:[CCDelayTime actionWithDuration:1.0],[CCFadeIn actionWithDuration:0.0], nil];
-                [tutorTxt runAction:txtFadeIn];
-                [tutorTxt setString:@"RIGHT COLOR but \nWRONG POSITION"];
-                tutorJoin = NO;
-                tutorTxt.position = ccp(150, 345);
-                break;
-            case kTutorFifth:
-                pincl1.visible = NO;
-                pincl2.visible = NO;
-                screenSprite.visible = NO;
-                tutorJoin = YES;
-                [tutorTxt setString:@"SCORE = ROWS x TIME"];
-                tutorTxt.position = ccp(150, 345);
-                break;
-            case kTutorSixth:
-                pincl1.visible = NO;
-                pincl2.visible = NO;
-                screenSprite.visible = NO;
-                tutorJoin = NO;
-                [tutorTxt setString:@"Find the HOW TO \nin the main menu"];
-                tutorTxt.position = ccp(150, 345);
-                [GameManager sharedGameManager].mainTutor = YES; 
-                pauseItem.tag = kButtonPause;
-                pauseItem.anchorPoint = CGPointMake(0.5, 1);
-                pauseItem.position = ADJUST_CCP_ABOVE(ccp(152.00, 310.00));    
-                CCMenu *tutorPauseMenu = [CCMenu menuWithItems:pauseItem, nil];
-                tutorPauseMenu.position = CGPointZero;
-                [tutorLayer addChild:tutorPauseMenu z:100];
-                break;
-            default:
-                CCLOG(@"Logic debug: Unknown tutor ID, cannot run tutor");
+    if (!tutorNeverShow) {
+        if (isTutor) {        
+            if (selSprite) {
+                tutorWillContinue = YES;
+                [self unschedule:@selector(tutorEnable)];
                 return;
-                break;
+            }        
+            longPress.enabled = NO;
+            panRecognizer.enabled = NO;
+            [[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
+            if (sparkleSystem != nil) 
+                [sparkleSystem stopSystem];
+            
+            [timer stopTimer];
+            [[GameManager sharedGameManager] pauseLoopSounds];
+            
+            //CCLOG(@"TUTOR STEP %i", tutorStep);
+            CGSize screenSize = [CCDirector sharedDirector].winSize;
+            if (!tutorJoin) {
+                CCSequence *pauseSeq = [CCSequence actions:
+                                        [CCDelayTime actionWithDuration:.8],
+                                        [CCMoveTo actionWithDuration:.2 position:CGPointMake(pauseMenu.position.x, pauseMenu.position.y + ADJUST_2(60))],
+                                        nil];
+                [pauseMenu runAction:pauseSeq];
+                id tutorIn = [CCMoveTo actionWithDuration:1 position:ccp(tutorLayer.position.x, tutorLayer.position.y - screenSize.height)];
+                id tutorInSeq = [CCSequence actions:tutorIn,[CCCallFunc actionWithTarget:self selector:@selector(tutorInCallback)], nil];
+                [tutorLayer runAction:tutorInSeq];
+            } else {
+                id tutorInSeq = [CCSequence actions:[CCDelayTime actionWithDuration:1],[CCCallFunc actionWithTarget:self selector:@selector(tutorInCallback)], nil];
+                [tutorLayer runAction:tutorInSeq];
+            }
+            
+            CCSprite *buttonPauseOff = [CCSprite spriteWithSpriteFrameName:@"i_t_off.png"];
+            CCSprite *buttonPauseOn = [CCSprite spriteWithSpriteFrameName:@"i_t_on.png"];    
+            CCMenuItem *pauseItem = [CCMenuItemSprite itemFromNormalSprite:buttonPauseOff selectedSprite:buttonPauseOn target:self selector:@selector(pauseTapped:)];
+            
+            switch (tutorStep) {
+                case kTutorFirst:
+                    screenSprite.visible = YES;
+                    [tutorTxt setString:@"Break the secret code!"];
+                    tutorTxt.position = ADJUST_CCP(ccp(150, 395));
+                    break;
+                case kTutorSecond:
+                    screenSprite.visible = NO;
+                    [tutorTxt setString:@"Swipe across the pins \nto get your score"];
+                    tutorTxt.position = ADJUST_CCP(ccp(150, 345));
+                    break;
+                case kTutorThird:
+                    screenSprite.visible = NO;
+                    pincl1.visible = YES;
+                    [tutorTxt setString:@"RIGHT COLOR & \nRIGHT POSITION"];
+                    tutorJoin = YES;
+                    tutorTxt.position = ADJUST_CCP(ccp(150, 345));
+                    break;
+                case kTutorFourth:
+                    screenSprite.visible = NO;
+                    tutorTxt.opacity = 0;
+                    id txtFadeIn = [CCSequence actions:[CCDelayTime actionWithDuration:1.0],[CCFadeIn actionWithDuration:0.0], nil];
+                    [tutorTxt runAction:txtFadeIn];
+                    [tutorTxt setString:@"RIGHT COLOR but \nWRONG POSITION"];
+                    tutorJoin = NO;
+                    tutorTxt.position = ADJUST_CCP(ccp(150, 345));
+                    break;
+                case kTutorFifth:
+                    pincl1.visible = NO;
+                    pincl2.visible = NO;
+                    screenSprite.visible = NO;
+                    tutorJoin = YES;
+                    [tutorTxt setString:@"SCORE = ROWS x TIME"];
+                    tutorTxt.position = ADJUST_CCP(ccp(150, 345));
+                    break;
+                case kTutorSixth:
+                    pincl1.visible = NO;
+                    pincl2.visible = NO;
+                    screenSprite.visible = NO;
+                    tutorJoin = NO;
+                    [tutorTxt setString:@"Find the HOW TO \nin the main menu"];
+                    tutorTxt.position = ADJUST_CCP(ccp(150, 345));
+                    [GameManager sharedGameManager].mainTutor = YES; 
+                    pauseItem.tag = kButtonPause;
+                    pauseItem.anchorPoint = CGPointMake(0.5, 1);
+                    pauseItem.position = ADJUST_CCP(ccp(152.00, 300.00));    
+                    CCMenu *tutorPauseMenu = [CCMenu menuWithItems:pauseItem, nil];
+                    tutorPauseMenu.position = CGPointZero;
+                    [tutorLayer addChild:tutorPauseMenu z:100];
+                    break;
+                default:
+                    CCLOG(@"Logic debug: Unknown tutor ID, cannot run tutor");
+                    return;
+                    break;
+            }
+            int intervals[] = {12, 8, 8, 8 ,8, 5};
+            [self schedule:@selector(tutorDisable) interval:intervals[tutorStep]];
+        } else {
+            tutorStep += 1;
+            [self writeProgress]; 
         }
-        int intervals[] = {12, 8, 8, 8 ,8, 5};
-        [self schedule:@selector(tutorDisable) interval:intervals[tutorStep]];
-    } else {
-        tutorStep += 1;
-        [self writeProgress]; 
-    }
-    
-    isTutor = YES;
-    [self unschedule:@selector(tutorEnable)];
+        
+        isTutor = YES;
+        [self unschedule:@selector(tutorEnable)];
+    }    
 }
 
 - (void) tutorInCallback {
-    CCSprite *greenLight = [greenLights objectAtIndex:0];
-    CCSprite *orangeLight = [orangeLights objectAtIndex:0];
-    id blink = [CCSequence actions:[CCBlink actionWithDuration:7.0 blinks:8],[CCCallFunc actionWithTarget:self selector:@selector(tutorBlinkCallback)] ,nil];
+    CCLOG(@"tutor step :::::%i", tutorStep);
+    CCSprite *greenLight;
+    CCSprite *orangeLight;
+    CCSequence *blinkGreen;
+    CCSequence *blinkOrange;
+    if (tutorStep == 2) {
+        greenLight = [greenLights objectAtIndex:0];
+        greenLight.tag = kGreenLight;
+        blinkGreen = [CCSequence actions:[CCBlink actionWithDuration:7.0 blinks:8],[CCCallFunc actionWithTarget:self selector:@selector(tutorBlinkCallback)] ,nil];
+        blinkGreen.tag = kTutorBlinkGreen;
+    }
+    if (tutorStep == 3) {
+        orangeLight = [orangeLights objectAtIndex:0];
+        orangeLight.tag = kOrangeLight;
+        blinkOrange = [CCSequence actions:[CCBlink actionWithDuration:7.0 blinks:8],[CCCallFunc actionWithTarget:self selector:@selector(tutorBlinkCallback)] ,nil];
+        blinkOrange.tag = kTutorBlinkOrange;
+    }
     
     switch (tutorStep) {
         case kTutorFirst:
@@ -2254,10 +2361,10 @@
             tutorSound = PLAYSOUNDEFFECT(TUTOR2);
             tutorFinger.visible = YES;
             tutorFinger.opacity = 255;
-            tutorFinger.position = ccp(30, 40);
-            id moveFingerRight = [CCMoveTo actionWithDuration:1.0 position:ccp(tutorFinger.position.x + 240, tutorFinger.position.y)];
+            tutorFinger.position = ADJUST_CCP(ccp(30, 40));
+            id moveFingerRight = [CCMoveTo actionWithDuration:1.0 position:ccp(tutorFinger.position.x + ADJUST_2(240), tutorFinger.position.y)];
             id fadeOutFinger22 = [CCFadeOut actionWithDuration:0.5];
-            id moveFingerLeft = [CCMoveTo actionWithDuration:0 position:ccp(30, tutorFinger.position.y)];
+            id moveFingerLeft = [CCMoveTo actionWithDuration:0 position:ccp(ADJUST_X(30), tutorFinger.position.y)];
             id fingerSeq2 = [CCSequence actions:[CCDelayTime actionWithDuration:0.0],
                              moveFingerRight,[CCDelayTime actionWithDuration:1], fadeOutFinger22, 
                              moveFingerLeft, [CCDelayTime actionWithDuration:0.5], [CCFadeIn actionWithDuration:0.5], moveFingerRight, [CCDelayTime actionWithDuration:1], fadeOutFinger22, nil];
@@ -2266,14 +2373,14 @@
         case kTutorThird:
             tutorSound = PLAYSOUNDEFFECT(TUTOR3);
             greenLight.opacity = 255;
-            [greenLight runAction:blink];
+            [greenLight runAction:blinkGreen];
             break;
         case kTutorFourth:
             tutorSound = PLAYSOUNDEFFECT(TUTOR4);
             tutorJoin = NO;
             pincl2.visible = YES;
             orangeLight.opacity = 255;
-            [orangeLight runAction:blink];
+            [orangeLight runAction:blinkOrange];
             break;
         case kTutorFifth:
             tutorSound = PLAYSOUNDEFFECT(TUTOR5);
@@ -2296,7 +2403,7 @@
     tutorFinger.position = ADJUST_CCP(ccp(120, -90));
     id moveFinger1 = [CCMoveTo actionWithDuration:0.5 position:ccp(tutorFinger.position.x, 0)];
     id fadeOutFinger1 = [CCFadeOut actionWithDuration:.5];
-    id moveFinger2 = [CCMoveTo actionWithDuration:0 position:ccp(tutorFinger.position.x, -90)];
+    id moveFinger2 = [CCMoveTo actionWithDuration:0 position:ccp(tutorFinger.position.x, ADJUST_Y(-90))];
     id fadeIn = [CCFadeIn actionWithDuration:0];
     id moveFinger3 = [CCMoveTo actionWithDuration:0.5 position:ccp(tutorFinger.position.x, 0)];
     id fadeOutFinger2 = [CCFadeOut actionWithDuration:.5];
@@ -2317,17 +2424,14 @@
     
     [[GameManager sharedGameManager] playLoopSounds];
     
-    
-    CCLOG(@"TUTOR STEP 2::: %i", tutorStep);
     if (!tutorJoin) {
         CCLOG(@"ODJEDE");
         CCSequence *pauseSeq = [CCSequence actions:
-                                [CCMoveTo actionWithDuration:.2 position:CGPointMake(pauseMenu.position.x, pauseMenu.position.y - 60)],
+                                [CCMoveTo actionWithDuration:.2 position:CGPointMake(pauseMenu.position.x, pauseMenu.position.y - ADJUST_2(60))],
                                 nil];
         [pauseMenu runAction:pauseSeq];
-        id tutorOut = [CCMoveTo actionWithDuration:1 position:ccp(tutorLayer.position.x, tutorLayer.position.y + 480)];
-        //CCEaseOut *easeTutorOut = [CCEaseOut actionWithAction:tutorOut rate:5];
-        //id sequence TODO -> callback [tutorBlackout setOpacity:255];
+        CGSize screenSize = [CCDirector sharedDirector].winSize;
+        id tutorOut = [CCMoveTo actionWithDuration:1 position:ccp(tutorLayer.position.x, tutorLayer.position.y + screenSize.height)];
         [tutorLayer runAction:tutorOut];
     }
     
@@ -2341,13 +2445,10 @@
             break;
         case kTutorThird:
             pincl1.visible = NO;
-            //[self schedule:@selector(tutorEnable) interval:1.0];
-            //[self tutorEnable];
             break;
         case kTutorFourth:
             break;
         case kTutorFifth:
-            //[self schedule:@selector(tutorEnable) interval:1.0];
             break;
         case kTutorSixth:
             [GameManager sharedGameManager].mainTutor = NO;

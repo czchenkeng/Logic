@@ -118,10 +118,11 @@ static const int NUM_OF_ROWS = 10;
     
     points = 0;
     
-    int k1 = 3000; //koeficient spravneho tahu
-    int k2 = 300; //bonus za dvojice v prvnim tahu
-    int k3 = 600; //koeficient casu spravneho tahu
-    int k4 = 200; //koeficient casu nespravneho tahu
+    int k1 = 1000; //koeficient spravneho tahu
+    int k2 = 1000; //bonus za dvojice v prvnim tahu
+    int k3 = 800; //koeficient casu spravneho tahu
+    int k4 = 600; //koeficient casu nespravneho tahu
+    int k5 = 200; //koeficient nespravneho tahu
     
     //int endBonusConst = 5000;
     
@@ -144,11 +145,11 @@ static const int NUM_OF_ROWS = 10;
         points += k1 / (row + 1) + k3 / (roundTime + 1);
     } else {
         CCLOG(@"BAD");
-        points += k4 / (roundTime + 1);
+        points += k5 / (row + 1) + k4 / (roundTime + 1);
     }
     
     if (row == 0)
-        points = (int)ceil(points/4);
+        points = (int)ceil(points/2);
     
     if (result.resultInPosition == pinsCount) {
         done = YES;
@@ -180,7 +181,8 @@ static const int NUM_OF_ROWS = 10;
             default:
                 break;
         }
-        bonus = (int)floor( 100000 * ( 1/pow(sqrt(bonusConst), time) ) );
+        //bonus = (int)floor( 100000 * ( 1/pow(sqrt(bonusConst), time) ) );
+        bonus = (int)floor( 100000 * ( 1/pow(pow(bonusConst, 0.02), time) ) );
     } else {
         bonus = 0;
     }

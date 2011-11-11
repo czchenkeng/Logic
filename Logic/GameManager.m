@@ -68,6 +68,11 @@ static GameManager* _sharedGameManager = nil;
     return self;
 }
 
+- (void) clearTextures {
+    //[[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
+    [[CCTextureCache sharedTextureCache] removeUnusedTextures];
+}
+
 - (void) savePattern:(NSMutableArray *)pattern {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     

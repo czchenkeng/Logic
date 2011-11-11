@@ -22,6 +22,7 @@
 
 - (void) dealloc {
     CCLOG(@"Logic debug: %@: %@", NSStringFromSelector(_cmd), self);
+    [[GameManager sharedGameManager] clearTextures];
     [super dealloc];    
 }
 

@@ -66,8 +66,8 @@
 #define ADJUST_CCP_LEVEL_BASE(__p__) (IS_IPAD() == YES ? ccp( ( __p__.x * 2 ) + 24, ( __p__.y * 2 ) ) : __p__)
 #define ADJUST_CCP_LEVEL_CODE(__p__) (IS_IPAD() == YES ? ccp( ( __p__.x * 2 ), ( __p__.y * 2 ) ) : __p__)
 
-#define ADJUST_X_FIGURE_BASE(__x__) (IS_IPAD() == YES ? ( __x__ * 2 ) + kXoffsetiPad : __x__)
-#define ADJUST_Y_FIGURE_BASE(__y__) (IS_IPAD() == YES ? ( __y__ * 2 ) + 32 : __y__)
+#define ADJUST_X_FIGURE_BASE(__x__) (IS_IPAD() == YES ? ( __x__ * 2 ) + kXoffsetiPad - 3 : __x__)
+#define ADJUST_Y_FIGURE_BASE(__y__) (IS_IPAD() == YES ? ( __y__ * 2 ) + 32 + 2 : __y__)
 
 
 //FILES HANDLING
@@ -138,11 +138,11 @@
 #define kScorePanelInPosition      ADJUST_CCP( ccp(102.00, 220.00) )
 #define kScorePanelOutPosition     ADJUST_CCP( ccp(-720.00, 0.00) )
 #define kReplayPanelInPosition      ADJUST_CCP( ccp(225.50, 235.00) )
-#define kReplayPanelOutPosition     ADJUST_CCP( ccp(1000.00, 367.00) )
+#define kReplayPanelOutPosition     ADJUST_CCP( ccp(366, 260) )
 #define kGameMenuPanelInPosition      ADJUST_CCP( ccp(100.00, 161.00) )
-#define kGameMenuPanelOutPosition     ADJUST_CCP( ccp(-700.00, 0.00) )
+#define kGameMenuPanelOutPosition     ADJUST_CCP( ccp(-35, 147) )
 #define kContinuePanelInPosition      ADJUST_CCP( ccp(225.50, 235.00) )
-#define kContinuePanelOutPosition     ADJUST_CCP( ccp(1000.00, 367.00) )
+#define kContinuePanelOutPosition     ADJUST_CCP( ccp(366, 260) )
 
 //Settings scene
 #define kSettingsScoreItemPosition   ADJUST_CCP( ccp(56.50, 377.50) )
@@ -159,7 +159,6 @@
 #define kCareerMinScale (IS_IPAD() == YES ? 0.8533 : 0.8)
 #define kCareerPanelInPosition      ADJUST_CCP_MAIN_SCENE( ccp(125.00, 98.00) )
 #define kCareerPanelOutPosition      ADJUST_CCP_MAIN_SCENE( ccp(-850.00, 0.00) )
-
 
 /* ANIMATIONS */
 //Main scene
@@ -201,5 +200,5 @@
 #define kVyronParticle SD_OR_HD(@"vyron.plist")
 #define kPinDustParticle SD_OR_HD(@"pin_dust.plist")
 #define kConfirmParticle SD_OR_HD(@"confirm.plist")
-
+#define kOvationParticle SD_OR_HD(@"ovation.plist")
 

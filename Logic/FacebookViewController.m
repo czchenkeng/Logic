@@ -132,7 +132,7 @@ static NSString *kAppId = @"279570795404946";
     NSString *postId = [responseJSON objectForKey:@"id"];
     NSLog(@"Post id is: %@", postId);
     
-    UIAlertView *av = [[[UIAlertView alloc] initWithTitle:@"Sucessfully posted to wall!" 
+    UIAlertView *av = [[[UIAlertView alloc] initWithTitle:@"Successfully posted to wall!" 
 												  message:@"Check out your Facebook."
 												 delegate:nil 
 										cancelButtonTitle:@"OK"

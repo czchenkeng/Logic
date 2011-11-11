@@ -57,7 +57,7 @@ void uncaughtExceptionHandler (NSException *exception) {
     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
     [FlurryAPI startSession:FLURRY_KEY];
     
-    [TestFlight takeOff:@"6eb53b9b79d36a0278584451b328849f_MTkzMjkyMDExLTA3LTI3IDEyOjI4OjMzLjgwOTExMw"];
+    //[TestFlight takeOff:@"6eb53b9b79d36a0278584451b328849f_MTkzMjkyMDExLTA3LTI3IDEyOjI4OjMzLjgwOTExMw"];
     // Init the window
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
@@ -69,6 +69,7 @@ void uncaughtExceptionHandler (NSException *exception) {
 	
 	CCDirector *director = [CCDirector sharedDirector];
 	
+    
 	// Init the View Controller
 	viewController = [[RootViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.wantsFullScreenLayout = YES;
@@ -83,6 +84,7 @@ void uncaughtExceptionHandler (NSException *exception) {
 								   pixelFormat:kEAGLColorFormatRGB565	// kEAGLColorFormatRGBA8
 								   depthFormat:0						// GL_DEPTH_COMPONENT16_OES
 						];
+    
 	
 	// attach the openglView to the director
 	[director setOpenGLView:glView];
@@ -107,7 +109,7 @@ void uncaughtExceptionHandler (NSException *exception) {
 //#endif
 	
 	[director setAnimationInterval:1.0/30];
-	[director setDisplayFPS:YES];
+	[director setDisplayFPS:NO];
 	
 	
 	// make the OpenGLView a child of the view controller
@@ -138,9 +140,9 @@ void uncaughtExceptionHandler (NSException *exception) {
     if ([[GameManager sharedGameManager] gameInProgress]) {
         [[GameManager sharedGameManager] runSceneWithID:kGameScene andTransition:kNoTransition];
     } else {
-        //[[GameManager sharedGameManager] runSceneWithID:kLogoScene andTransition:kNoTransition];
+        [[GameManager sharedGameManager] runSceneWithID:kLogoScene andTransition:kNoTransition];
         //[[GameManager sharedGameManager] runSceneWithID:kPreloaderScene andTransition:kNoTransition];
-        [[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kSlideInR];
+        //[[GameManager sharedGameManager] runSceneWithID:kMainScene andTransition:kSlideInR];
         //[[GameManager sharedGameManager] runSceneWithID:kCareerScene andTransition:kNoTransition];
         //[[GameManager sharedGameManager] runSceneWithID:kScoreScene andTransition:kNoTransition];
         //[[GameManager sharedGameManager] runSceneWithID:kSettingsScene andTransition:kNoTransition];
@@ -162,12 +164,12 @@ void uncaughtExceptionHandler (NSException *exception) {
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
-	[[CCDirector sharedDirector] purgeCachedData];
+    [[GameManager sharedGameManager] clearTextures];
+	//[[CCDirector sharedDirector] purgeCachedData];
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application {
 	[[CCDirector sharedDirector] stopAnimation];
-    [[CCDirector sharedDirector] purgeCachedData];
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application {

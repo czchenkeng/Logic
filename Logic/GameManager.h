@@ -57,6 +57,8 @@
 - (void) runSceneWithID:(SceneTypes)sceneID andTransition:(TransitionTypes)transitionID;
 - (FacebookViewController *) facebookController;
 
+- (void) clearTextures;
+
 - (void) setupAudioEngine; 
 - (ALuint) playSoundEffect:(NSString*)soundEffectKey; 
 - (void) stopSoundEffect:(ALuint)soundEffectID; 

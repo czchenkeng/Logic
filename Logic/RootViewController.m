@@ -52,6 +52,11 @@
 	//  - The ViewController way
 	//    - A bit slower, but the UiKit objects are placed in the right place
 	//
+#ifdef HD_VERSION
+    if (interfaceOrientation == UIInterfaceOrientationPortrait) {
+        return YES;
+    }
+#endif
 	
 #if GAME_AUTOROTATION==kGameAutorotationNone
 	//
@@ -85,7 +90,8 @@
 	//
 	// return YES for the supported orientations
 	
-	return ( UIInterfaceOrientationIsLandscape( interfaceOrientation ) );
+	//return ( UIInterfaceOrientationIsLandscape( interfaceOrientation ) );
+    return ( UIInterfaceOrientationIsPortrait(interfaceOrientation) );
 	
 #else
 #error Unknown value in GAME_AUTOROTATION
@@ -101,30 +107,51 @@
 // This callback only will be called when GAME_AUTOROTATION == kGameAutorotationUIViewController
 //
 #if GAME_AUTOROTATION == kGameAutorotationUIViewController
+//-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+//{
+//	//
+//	// Assuming that the main window has the size of the screen
+//	// BUG: This won't work if the EAGLView is not fullscreen
+//	///
+//	CGRect screenRect = [[UIScreen mainScreen] bounds];
+//	CGRect rect = CGRectZero;
+//
+//	
+//	if(toInterfaceOrientation == UIInterfaceOrientationPortrait || toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)		
+//		rect = screenRect;
+//	
+//	else if(toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight)
+//		rect.size = CGSizeMake( screenRect.size.height, screenRect.size.width );
+//	
+//	CCDirector *director = [CCDirector sharedDirector];
+//	EAGLView *glView = [director openGLView];
+//	float contentScaleFactor = [director contentScaleFactor];
+//	
+//	if( contentScaleFactor != 1 ) {
+//		rect.size.width *= contentScaleFactor;
+//		rect.size.height *= contentScaleFactor;
+//	}
+//	glView.frame = rect;
+//}
+
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-	//
-	// Assuming that the main window has the size of the screen
-	// BUG: This won't work if the EAGLView is not fullscreen
-	///
-	CGRect screenRect = [[UIScreen mainScreen] bounds];
-	CGRect rect = CGRectZero;
-
-	
-	if(toInterfaceOrientation == UIInterfaceOrientationPortrait || toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)		
-		rect = screenRect;
-	
-	else if(toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight)
-		rect.size = CGSizeMake( screenRect.size.height, screenRect.size.width );
-	
-	CCDirector *director = [CCDirector sharedDirector];
-	EAGLView *glView = [director openGLView];
-	float contentScaleFactor = [director contentScaleFactor];
-	
-	if( contentScaleFactor != 1 ) {
-		rect.size.width *= contentScaleFactor;
-		rect.size.height *= contentScaleFactor;
-	}
+	CCLOG(@"rotate - view controller");
+    CGRect rect;
+	if(UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+			rect = CGRectMake(0, 0, 768, 1024);
+		else
+			rect = CGRectMake(0, 0, 320, 480 );
+    }    
+//	} else if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+//		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+//			rect = CGRectMake(0, 0, 1024, 768);
+//		else
+//			rect = CGRectMake(0, 0, 480, 320 );
+//	}
+    
+	EAGLView *glView = [[CCDirector sharedDirector] openGLView];
 	glView.frame = rect;
 }
 #endif // GAME_AUTOROTATION == kGameAutorotationUIViewController

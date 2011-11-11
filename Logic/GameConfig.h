@@ -27,8 +27,11 @@
 // TIP:
 // To improve the performance, you should set this value to "kGameAutorotationNone" or "kGameAutorotationCCDirector"
 #if defined(__ARM_NEON__) || TARGET_IPHONE_SIMULATOR
+#ifdef HD_VERSION
+#define GAME_AUTOROTATION kGameAutorotationUIViewController
+#else
 #define GAME_AUTOROTATION kGameAutorotationNone //kGameAutorotationUIViewController
-
+#endif
 // ARMv6 (1st and 2nd generation devices): Don't rotate. It is very expensive
 #elif __arm__
 #define GAME_AUTOROTATION kGameAutorotationNone

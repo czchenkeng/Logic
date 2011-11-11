@@ -11,6 +11,7 @@
 
 #import "GADBannerView.h"
 #import "RootViewController.h"
+#import "CDXPropertyModifierAction.h"
 
 @interface MainGameLayer : CCLayerColor {
     int counter;
@@ -21,6 +22,8 @@
     BOOL gameInProgress;
     BOOL isCareer;
     
+    BOOL isFromLevel;
+    
     CCParticleSystem *system;
     
     CCSprite *light;
@@ -30,6 +33,8 @@
     CCSprite *rightSingleGib;
     CCSprite *background;
     CCSprite *doors;
+    CCSprite *logoShadow;
+    CCSprite *logo;
     
     CCMenu *topMenu;
     CCMenu *toggleMenu;

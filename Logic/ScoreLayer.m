@@ -28,7 +28,9 @@
     PLAYSOUNDEFFECT(BUTTON_SCORE_CLICK);
     switch (sender.tag) {
         case kButtonBack:
-            tableWrapper.visible = NO;
+            //tableWrapper.visible = NO;
+            tableContainer.hidden = YES;
+            [tableContainer removeFromSuperview];
             [[GameManager sharedGameManager] runSceneWithID:kSettingsScene andTransition:kSlideInL];
             break;
         default:
@@ -147,7 +149,8 @@
 }
 
 - (void) onEnterTransitionDidFinish {
-    tableWrapper.visible = YES;
+    //tableWrapper.visible = YES;
+    tableContainer.hidden = NO;
     [super onEnterTransitionDidFinish];
 }
 
@@ -161,12 +164,15 @@
         CGRect frame = CGRectMake(ADJUST_X(30), ADJUST_Y(100), ADJUST_2(260), ADJUST_2(180));
         controller = [[ScoresListViewController alloc] init];
         
-        UIView *tableContainer = [[UIView alloc] initWithFrame:frame];
+        tableContainer = [[UIView alloc] initWithFrame:frame];
         [tableContainer addSubview:controller.view];
+        tableContainer.hidden = YES;
         
-        tableWrapper = [CCUIViewWrapper wrapperForUIView:tableContainer];
-        [self addChild:tableWrapper z:2];
-        tableWrapper.visible = NO;
+        //tableWrapper = [CCUIViewWrapper wrapperForUIView:tableContainer];
+        //[self addChild:tableWrapper z:2];
+        //tableWrapper.visible = NO;
+        [[[CCDirector sharedDirector] openGLView] insertSubview:tableContainer atIndex:1];
+        
         
         difficulty = [[CCArray alloc] init];
         joysticks = [[CCArray alloc] init];

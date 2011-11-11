@@ -181,10 +181,10 @@ static const float POS_Y = 0;
         #ifdef LITE_VERSION
             [self addLiteVersion];
         #else
+            [self showLastCity];
             [self buildWires];
             [self buildCareer];
             [self showCityInProgress];
-            [self showLastCity];
         #endif
     }
     return self;
@@ -271,9 +271,7 @@ static const float POS_Y = 0;
 #pragma mark -
 #pragma mark ENTER & EXIT
 - (void) onEnter {
-    #ifdef LITE_VERSION
-    
-    #else
+    #ifndef LITE_VERSION
         panGestureRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanFrom:)] autorelease];
         //pinchGestureRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)] autorelease];
         
@@ -301,9 +299,7 @@ static const float POS_Y = 0;
 }
 
 - (void) onExit {
-    #ifdef LITE_VERSION
-    
-    #else
+    #ifndef LITE_VERSION
         [[GameManager sharedGameManager] duckling:[GameManager sharedGameManager].musicVolume];
         [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:singleTapGestureRecognizer];
         [[[CCDirector sharedDirector] openGLView] removeGestureRecognizer:panGestureRecognizer];
@@ -396,7 +392,16 @@ static const float POS_Y = 0;
     neverTxt.position = ccp(ADJUST_2(108), tutorItem.position.y);
     [tutorLayer addChild:neverTxt z:4];
     
-    tutorTxt =  [CCLabelBMFont labelWithString:@"" fntFile:@"Gloucester_levelTutor.fnt"];
+    int boxW;
+    if (isRetina) {
+        boxW = 320;
+    } else {
+        boxW = 640;
+    }
+#ifdef HD_VERSION
+    boxW = 640;
+#endif
+    tutorTxt =  [CCLabelBMFontMultiline labelWithString:@"" fntFile:@"Gloucester_levelTutor.fnt" width:boxW alignment:CenterAlignment];
     tutorTxt.rotation = -1;
     tutorTxt.scale = isRetina ? 1 : 0.5;
     tutorTxt.position = ADJUST_CCP(ccp(150, 345));
@@ -440,7 +445,7 @@ static const float POS_Y = 0;
     //singleTapGestureRecognizer.enabled = NO;
     
     float debugSlow = -0.40;
-    
+    progressBar.visible = NO;
     CCMoveTo *infoPanelMoveIn = [CCMoveTo actionWithDuration:debugSlow + 1.0 position:kCareerPanelInPosition];
     CCScaleTo *infoPanelScaleInX = [CCScaleTo actionWithDuration:debugSlow + 1.0 scaleX:1.0 scaleY:1.0];
     CCSpawn *infoPanelSeq = [CCSpawn actions:[CCDelayTime actionWithDuration: 0.0f], infoPanelMoveIn, infoPanelScaleInX, nil];
@@ -458,6 +463,7 @@ static const float POS_Y = 0;
 
 #pragma mark Panel in callback
 - (void) endAnimation {
+    progressBar.visible = YES;
     PercentNumber *tempPercentNumber;
     PercentNumber *tempScoreNumber;
     for (int i=0; i < 3; i++) {
@@ -853,7 +859,7 @@ static const float POS_Y = 0;
     if (lcity.idCity > 0) {
         zoomBase.position = ccp(lcity.position.x, lcity.position.y);
         zbLastPos = zoomBase.position;
-        score = lcity.score;
+        //score = lcity.score;
         prog += 1;
         if (lcity.idCity == 7 || lcity.idCity == 12)
             percent += 6;

@@ -40,14 +40,14 @@
     int maxScore;//present max score for final animations - level end
     int fid;
     BOOL skipEnd;
-    
-    CGPoint tramwayLocation;
+    BOOL forcedEnd;
     
     //tutorial
     int tutorStep;
     BOOL isTutor;
     BOOL tutorWillContinue;
-    BOOL tutorJoin;    
+    BOOL tutorJoin;
+    BOOL tutorNeverShow;
     CCLayer *tutorLayer;
     CCLayerColor *tutorBlackout;
     CCSprite *tutorFinger;
@@ -102,6 +102,10 @@
     CCMenu *endGameMenu;    
     CCMenu *finalMenu;
     
+    CCMenu *continueMenu;
+    CCMenu *replayMenu;
+    CCMenu *gameMenuLeft;
+    
     //sprites
     CCSprite *highlightSprite;//upozorneni, ze target je zameren - modre kolecko
     CCSprite *codeBase;//baze pro kod nahore
@@ -145,6 +149,7 @@
     CCParticleSystem *smokeSystem2;
     CCParticleSystem *sparkleSystem;
     CCParticleSystem *confirmSystem;
+    CCParticleSystem *ovationSystem;
     
     //end game - moving labels
     CCLayer *finalTimeLayer;

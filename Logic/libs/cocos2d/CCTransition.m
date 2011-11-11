@@ -462,7 +462,8 @@ enum {
 {
 	[super onEnter];
 	
-	[inScene_ setScale:0.88f];
+	//[inScene_ setScale:0.88f];
+    [inScene_ setScale:1.2f];
 	[outScene_ setScale:1.0f];
     
     [inScene_ setAnchorPoint:ccp(0.5f,0.0f)];

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Score.h"
-#import "CCUIViewWrapper.h"
+//#import "CCUIViewWrapper.h"
 #import "ScoresListViewController.h"
 
 
@@ -35,7 +35,8 @@
     CGPoint touchOrigin;
     CGPoint touchStop;
     
-    CCUIViewWrapper *tableWrapper;
+    //CCUIViewWrapper *tableWrapper;
+    UIView *tableContainer;
     
     BOOL firstClick;
     

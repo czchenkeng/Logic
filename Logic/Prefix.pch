@@ -12,5 +12,5 @@
 #import "Constants.h"
 #import "DeviceSettings.h"
 #import "Utils.h"
-#import "TestFlight.h"
+//#import "TestFlight.h"
 #endif
